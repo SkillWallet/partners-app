@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import Image from "next/image";
 import { Form, Input, Slider } from "formik-antd";
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { Formik } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';
