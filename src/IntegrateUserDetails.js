@@ -1,16 +1,31 @@
 import React, { useState } from "react";
-// import Image from "next/image";
 import { Form, Input, Slider } from "formik-antd";
-// import 'antd/dist/antd.css';
 import { Formik } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';
 import { pushImage } from './api/textile.hub';
+import paper from './assets/paper.svg';
+import importContract from './assets/import-contract.svg';
+import logo from './assets/sw-logo.svg';
+import lineBreak from './assets/geometric-card-line-break.png';
+import openSource from './assets/opensource-defi-white.png';
+import art from './assets/art-nft-white.png';
+import local from './assets/local-dao-white.png';
 
 const IntegrateUserDetails = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [key, setKey] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
+    const selectedImg = () => {
+        if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
+            return 'openSource';
+        } else if (props.templateOptions.imageSrc === './assets/art-nft-white.png') {
+            return 'art';
+        } else if (props.templateOptions.imageSrc === './assets/local-dao-white.png') {
+            return 'local';
+        }
+    }
+
     const { TextArea } = Input;
     let userContractAddress = '';
 
@@ -18,6 +33,7 @@ const IntegrateUserDetails = (props) => {
     const ALLOWED_FILE_TYPES = 'image.*';
 
     const userClickedUndo = () => {
+        console.log(props.templateOptions.imageSrc)
         props.undoTemplateOption(true)
         return;
     };
@@ -121,7 +137,7 @@ const IntegrateUserDetails = (props) => {
                         <div className="integrate-user-sidebar">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
 
-                            {/* <Image src="/d-pad-logo.png" alt="d-pad logo" width="100" height="100"></Image> */}
+                            <img src={logo} alt="skillwallet logo"></img>
 
                             <div className="user-details-fields">
 
@@ -151,13 +167,13 @@ const IntegrateUserDetails = (props) => {
 
                                     {!avatarUrl ? <label htmlFor="file" >
                                         <div className="avatar-upload-div">
-                                            {/* <Image className="line-26" src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" width="40" height="20" /> */}
+                                            <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line"/>
                                             <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
                                             <p>.svg , .png, or .jpg</p>
                                         </div>
                                     </label> :
                                         <div className="avatar-div">
-                                            {/* <Image className="line-26" src={avatarUrl} alt="line" width="40" height="40" /> */}
+                                            <img className="line-26" src={avatarUrl} alt="line"/>
                                         </div>
                                     }
                                 </div>
@@ -191,7 +207,7 @@ const IntegrateUserDetails = (props) => {
                                     <div className='template-card card-black'
                                         onClick={userClickedUndo}>
                                         <div className="top-card">
-                                            {/* <Image className="image-7" src={props.templateOptions.imageSrc} alt="card-logo" width="40" height="40" /> */}
+                                            <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo"/>
 
                                             <div className="raleway-bold-alto-22px title-black-card">
                                                 {props.templateOptions.header}
@@ -202,7 +218,7 @@ const IntegrateUserDetails = (props) => {
                                             {props.templateOptions.description}
                                         </div>
 
-                                        {/* <Image className="line-26" src='/geometric-card-line-break.png' alt="line" width="40" height="2" /> */}
+                                        <img className="line-26" src={lineBreak} alt="line"/>
                                     </div>
 
                                     <div className='template-card card-white'>
@@ -265,12 +281,12 @@ const IntegrateUserDetails = (props) => {
                                     <div className="integrate-button-panel">
                                         <button type="button">
                                             <p>Start from Scratch</p>
-                                            {/* <Image src='/paper.svg' alt="white sheet of paper" width="40" height="40" /> */}
+                                            <img src={paper} alt="white sheet of paper"/>
                                         </button>
 
                                         <button onClick={toggleModal} className="importYourContract" type='button'>
                                             <p>Import your Contract</p>
-                                            {/* <Image src='/import-contract.svg' alt="black sheet of paper" width="40" height="40" /> */}
+                                            <img src={importContract} alt="black sheet of paper"/>
                                         </button>
                                     </div>
 

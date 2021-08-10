@@ -32,7 +32,7 @@ a {
 }
 
 .landing-sidebar {
-  /* background-color: #B7B7B7; */
+  background-color: #B7B7B7;
   /* background-image: linear-gradient(white, #B7B7B7); */
   /* background-image:url('../public/textured-cover.svg'); */
   /* background-image:url('../public/beanstalk.png'); */
@@ -410,6 +410,7 @@ a {
   }
 
 .integrate-sidebar, .integrate-user-sidebar {
+  background-color: #B7B7B7;
   /* background-image:url('../public/beanstalk.png'); */
   text-align: center;
   min-width: 20%;

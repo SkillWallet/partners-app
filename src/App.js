@@ -12,17 +12,17 @@ function App() {
 
   useEffect(() => {
       const openSource = {
-          imageSrc: '/opensource-defi-white.png',
+          imageSrc: './assets/opensource-defi-white.png',
           header: 'Open-Source & DeFi',
           description: 'For researchers & web3, open-source teams, that innovate in a liberal fashion - for a more sustainable, meritocratic world.'
       }
       const art = {
-          imageSrc: '/art-nft-white.png',
+          imageSrc: './assets/art-nft-white.png',
           header: 'Art, Events & NFTs',
           description: 'Art movements, writers & creatives of all kind who use Art & provable ownership for purer forms of human interaction.'
       }
       const local = {
-          imageSrc: '/local-dao-white.png',
+          imageSrc: './assets/local-dao-white.png',
           header: 'Local Projects & DAOs',
           description: 'From support for people in need, to innovative local hubs to get together & create something greater than oneself.'
       }
