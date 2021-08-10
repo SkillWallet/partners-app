@@ -1,0 +1,72 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "distributedTownAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "partnersAgreementAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "communityAddress",
+          "type": "address"
+        }
+      ],
+      "name": "PartnersAgreementCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "template",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rolesCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "numberOfActions",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "partnersContractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "membersAllowed",
+          "type": "uint256"
+        }
+      ],
+      "name": "create",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
