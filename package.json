@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@textile/hub": "^6.2.0",
     "ethers": "^5.4.4",
     "formik": "^2.2.9",
     "formik-antd": "^2.0.1",

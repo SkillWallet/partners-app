@@ -3,7 +3,7 @@ import './Integrate.css';
 import { useEffect, useState } from 'react';
 import IntegrateUserDetails from './IntegrateUserDetails';
 import IntegrateWelcomeScreen from './IntegrateWelcomeScreen';
-import {openSourceImg, artImage, localImage } from './images';
+// import {openSourceImg, artImage, localImage } from './images';
 
 function App() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);

@@ -121,7 +121,7 @@ const IntegrateUserDetails = (props) => {
                         <div className="integrate-user-sidebar">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
 
-                            <Image src="/d-pad-logo.png" alt="d-pad logo" width="100" height="100"></Image>
+                            {/* <Image src="/d-pad-logo.png" alt="d-pad logo" width="100" height="100"></Image> */}
 
                             <div className="user-details-fields">
 
@@ -151,13 +151,13 @@ const IntegrateUserDetails = (props) => {
 
                                     {!avatarUrl ? <label htmlFor="file" >
                                         <div className="avatar-upload-div">
-                                            <Image className="line-26" src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" width="40" height="20" />
+                                            {/* <Image className="line-26" src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" width="40" height="20" /> */}
                                             <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
                                             <p>.svg , .png, or .jpg</p>
                                         </div>
                                     </label> :
                                         <div className="avatar-div">
-                                            <Image className="line-26" src={avatarUrl} alt="line" width="40" height="40" />
+                                            {/* <Image className="line-26" src={avatarUrl} alt="line" width="40" height="40" /> */}
                                         </div>
                                     }
                                 </div>
@@ -191,7 +191,7 @@ const IntegrateUserDetails = (props) => {
                                     <div className='template-card card-black'
                                         onClick={userClickedUndo}>
                                         <div className="top-card">
-                                            <Image className="image-7" src={props.templateOptions.imageSrc} alt="card-logo" width="40" height="40" />
+                                            {/* <Image className="image-7" src={props.templateOptions.imageSrc} alt="card-logo" width="40" height="40" /> */}
 
                                             <div className="raleway-bold-alto-22px title-black-card">
                                                 {props.templateOptions.header}
@@ -202,7 +202,7 @@ const IntegrateUserDetails = (props) => {
                                             {props.templateOptions.description}
                                         </div>
 
-                                        <Image className="line-26" src='/geometric-card-line-break.png' alt="line" width="40" height="2" />
+                                        {/* <Image className="line-26" src='/geometric-card-line-break.png' alt="line" width="40" height="2" /> */}
                                     </div>
 
                                     <div className='template-card card-white'>
@@ -265,12 +265,12 @@ const IntegrateUserDetails = (props) => {
                                     <div className="integrate-button-panel">
                                         <button type="button">
                                             <p>Start from Scratch</p>
-                                            <Image src='/paper.svg' alt="white sheet of paper" width="40" height="40" />
+                                            {/* <Image src='/paper.svg' alt="white sheet of paper" width="40" height="40" /> */}
                                         </button>
 
                                         <button onClick={toggleModal} className="importYourContract" type='button'>
                                             <p>Import your Contract</p>
-                                            <Image src='/import-contract.svg' alt="black sheet of paper" width="40" height="40" />
+                                            {/* <Image src='/import-contract.svg' alt="black sheet of paper" width="40" height="40" /> */}
                                         </button>
                                     </div>
 

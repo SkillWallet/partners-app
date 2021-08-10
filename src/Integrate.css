@@ -24,7 +24,7 @@ a {
   /* Background pattern from Toptal Subtle Patterns */
   /* background-image: linear-gradient(to right, #37373C, #86868B); */
   /* background-image:url('../public/main-background.svg'); */
-  background-image:url('../public/prism.png');
+  /* background-image:url('../public/prism.png'); */
   /* background-repeat: space; */
   height: 100%;
   width: 100%;
@@ -35,7 +35,7 @@ a {
   /* background-color: #B7B7B7; */
   /* background-image: linear-gradient(white, #B7B7B7); */
   /* background-image:url('../public/textured-cover.svg'); */
-  background-image:url('../public/beanstalk.png');
+  /* background-image:url('../public/beanstalk.png'); */
   /* background-repeat: repeat-y; */
   /* background-image:url('../public/gravel.png'); */
   /* background-image:url('../public/criss-cross.png'); */
@@ -410,7 +410,7 @@ a {
   }
 
 .integrate-sidebar, .integrate-user-sidebar {
-  background-image:url('../public/beanstalk.png');
+  /* background-image:url('../public/beanstalk.png'); */
   text-align: center;
   min-width: 20%;
   max-width: 25%;
@@ -949,7 +949,7 @@ a {
     }
 
     .design-sidebar {
-      background-image:url('../public/beanstalk.png');
+      /* background-image:url('../public/beanstalk.png'); */
       text-align: center;
       min-width: 20%;
       max-width: 25%;
@@ -999,7 +999,7 @@ a {
   .profit-sidebar {
     min-width: 20%;
     max-width: 25%;
-    background-image:url('../public/beanstalk.png');
+    /* background-image:url('../public/beanstalk.png'); */
     display: flex;
     flex-direction: column;
   }
