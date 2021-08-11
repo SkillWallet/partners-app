@@ -1,5 +1,5 @@
 export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/community/key`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community/key`, {
         method: 'POST',
         body: JSON.stringify({
             communityAddress,

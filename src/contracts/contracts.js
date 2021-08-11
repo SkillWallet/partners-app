@@ -49,9 +49,9 @@ export const createPartnersAgreement = async (
   const network = await provider.getNetwork();
   const signer = provider.getSigner();
 
-  console.log(process.env.NEXT_PUBLIC_PARTNERS_REGISTRY_ADDRESS);
+  console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
   const contract = new ethers.Contract(
-    process.env.NEXT_PUBLIC_PARTNERS_REGISTRY_ADDRESS,
+    process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
     partnersRegistryABI,
     signer,
   );

@@ -62,6 +62,10 @@
   background-size: cover;
 }
 
+.sw-description > p {
+  color: white;
+}
+
 .header-row, .content-row {
   display: flex;
   width: 90%;
