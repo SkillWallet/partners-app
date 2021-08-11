@@ -1,64 +1,98 @@
 import './App.css';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import logo from './assets/sw-logo.svg';
+import {getUsersData} from './contracts/api';
 import './Integrate.css';
-import { useEffect, useState } from 'react';
-import IntegrateUserDetails from './IntegrateUserDetails';
-import IntegrateWelcomeScreen from './IntegrateWelcomeScreen';
-// import {openSourceImg, artImage, localImage } from './images';
+import { VictoryChart, VictoryStack, VictoryArea } from 'victory';
+import networkIcon from "./assets/network.svg";
+import analyticsIcon from "./assets/database-server.svg";
+
 
 function App() {
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [templateOptions, setTemplateOptions] = useState(null);
-  const [userUnselectedTemplate, setUserUnselectedTemplate] = useState(false);
 
-  useEffect(() => {
-      const openSource = {
-          imageSrc: './assets/opensource-defi-white.png',
-          header: 'Open-Source & DeFi',
-          description: 'For researchers & web3, open-source teams, that innovate in a liberal fashion - for a more sustainable, meritocratic world.'
-      }
-      const art = {
-          imageSrc: './assets/art-nft-white.png',
-          header: 'Art, Events & NFTs',
-          description: 'Art movements, writers & creatives of all kind who use Art & provable ownership for purer forms of human interaction.'
-      }
-      const local = {
-          imageSrc: './assets/local-dao-white.png',
-          header: 'Local Projects & DAOs',
-          description: 'From support for people in need, to innovative local hubs to get together & create something greater than oneself.'
-      }
+  const [userData, setUserData] = useState({});
+  
+  useEffect(async () => {
+    await setUserData(getUsersData());
+  }, [])
+  console.log(userData);
 
-      setUserUnselectedTemplate(false);
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = () => setShowModal(!showModal);
+  const [showQRModal, setShowQRModal] = useState(false);
+  const showNewQRModal = () => {
+    setShowQRModal(!showQRModal);
+};
 
-      if (selectedTemplate === 0) {
-          setTemplateOptions(openSource);
-          localStorage.setItem('header', 'Open-Source & DeFi');
-          localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi');
-      } else if (selectedTemplate === 1) {
-          setTemplateOptions(art);
-          localStorage.setItem('header', 'Art, Events & NFTs');
-          localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreigxry2ojoqmfs5wo5ijyzkdsmsyb7yfcjokiegkkhokca2wiltsdu');
-      } else if (selectedTemplate === 2) {
-          setTemplateOptions(local);
-          localStorage.setItem('header', 'Local Projects & DAOs');
-          localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreibaxbmskevzm6wk7gzmuahvzjghmal2lanlbjabnzn7i5posmehem');
-      }
-
-  }, [selectedTemplate]);
   return (
     <div className="App">
-        <div className="container">
-            <main className="integrate-main">
-                {templateOptions === null || userUnselectedTemplate ?
-                    <IntegrateWelcomeScreen 
-                        setSelectedTemplate={setSelectedTemplate}/> :
+    <div className="container">
+      <main className="landing-main">
+        <div className="landing-sidebar">
+          <p>The <b>SkillWallet</b> is a free, truly Ownable, Universal Identity based on Skills, rather than personal data. 
+            It uses a new standard for an upgradable, non-transferable NFT (U-NT-NFT) tied to a Community .
+          </p>
 
-                    <IntegrateUserDetails 
-                        selectedTemplate={selectedTemplate}
-                        templateOptions={templateOptions}
-                        undoTemplateOption={setUserUnselectedTemplate}/> 
-                }
-            </main>
+          <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+
+          <p>SkillWallet makes IDs non-transferable, and non-fungible - to ensure uniqueness, value and sybil-resistancy to each and every Individual. 
+            Integrate the SkillWallet & bootstrap a fair, cross-chain economy for your Community.
+          </p>
         </div>
+
+        <div className="landing-content">
+          <div className="connect-wallet-container">
+            <skillwallet-auth 
+              id="walletButton"
+              className="connect-wallet"
+              partner-key="6a918cdf9ae3d32131c779c22ae30290a2e729c3"
+            ></skillwallet-auth>
+          </div>
+
+          <div className="buttons">
+            <div className="buttons-top-row">
+              <Link to="/integrate">
+                <div className="landing-button-container">
+                  <div className="landing-button-text">
+                      <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Integrate</h2>
+                      <p>SkillWallet Auth</p>
+                  </div>
+                  <img src={networkIcon} className="landing-button-img" alt="4 small circles of network nodes connected together"/>
+                </div>
+              </Link>
+
+              <Link to="/analytics">
+                <div className="landing-button-container">
+                  <div className="landing-button-text">
+                      <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Analytics</h2>
+                      <p>Token Metrics</p>
+                  </div>
+                  <img src={analyticsIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+            {/* <VictoryStack>
+                <VictoryArea
+                  data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 5}]}
+                />
+                <VictoryArea
+                  data={[{x: "a", y: 1}, {x: "b", y: 4}, {x: "c", y: 5}]}
+                />
+                <VictoryArea
+                  data={[{x: "a", y: 3}, {x: "b", y: 2}, {x: "c", y: 6}]}
+                />
+            </VictoryStack> */}
     </div>
   );
 }

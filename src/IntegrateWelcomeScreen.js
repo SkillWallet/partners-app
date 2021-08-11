@@ -13,7 +13,7 @@ const IntegrateWelcomeScreen = (props) => {
             <div className="integrate-sidebar">
                 <h2>Welcome to your <br></br><span style={{ fontWeight: 'bold' }}> Partner Agreement!</span></h2>
 
-                <img src={logo} alt="d-pad logo"></img>
+                <img src={logo} className="logo-img" alt="skillwallet logo"></img>
 
                 <p>In just two steps, you will integrate a <b>universal, sybil-resistant login </b>
                     for your users - and automate <b>an internal, mathematically-fair Tokenomics </b>

@@ -64,6 +64,8 @@ a {
 }
 
 .connect-wallet-container {
+  top: 20px;
+  right: 3%;
   height: 64px;
   position: absolute;
   z-index: 10;
@@ -76,8 +78,6 @@ a {
   height: 48px;
   min-width: 20%;
   max-width: 30%;
-  margin-right: 5%;
-  margin-top: 20px;
   border-radius: 15px;
   border: 1px solid black;
   box-shadow: 0.8px 0.6px #080808;
@@ -135,35 +135,23 @@ a {
   display: flex;
   justify-content: space-between;
   min-width: 30%;
-  max-width: 38%;
   align-items: center;
   border: 3px solid black;
   border-radius: 40px;
   box-shadow: 0.8px 0.6px #383838;
   padding: 8px;
   margin: 20px;
-  background-color: white;
-}
-
-.landing-button-container:hover {
-  cursor: pointer;
-}
-
-/* .landing-button-container > a:hover {
-  margin-bottom: -1px;
-} */
-
-.buttons > div > div {
   background-color: #F0F0F0;
   box-shadow: 0.6px 0.6px #080808;
 }
 
-.buttons > div > div:hover {
+.landing-button-container:hover {
+  cursor: pointer;
   background-color: #F0F0F0;
   box-shadow: 1.6px 2.0px #080808;
 }
 
-.buttons > div > div:active {
+.landing-button-container:active {
   background-color: black;
   color: white;
 }

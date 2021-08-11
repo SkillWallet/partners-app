@@ -137,7 +137,7 @@ const IntegrateUserDetails = (props) => {
                         <div className="integrate-user-sidebar">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
 
-                            <img src={logo} alt="skillwallet logo"></img>
+                            <img src={logo} className="logo-img" alt="skillwallet logo"></img>
 
                             <div className="user-details-fields">
 
