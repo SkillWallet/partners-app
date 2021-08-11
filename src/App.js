@@ -1,17 +1,12 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import {Link} from "react-router-dom";
 import logo from './assets/sw-logo.svg';
 import {getUsersData} from './contracts/api';
 import './Integrate.css';
-import { VictoryChart, VictoryStack, VictoryArea } from 'victory';
 import networkIcon from "./assets/network.svg";
-import analyticsIcon from "./assets/database-server.svg";
+import analyticsLightIcon from "./assets/analytics.svg";
+import analyticsIcon from "./assets/analytics-dark.svg";
 
 
 function App() {
@@ -35,15 +30,13 @@ function App() {
     <div className="container">
       <main className="landing-main">
         <div className="landing-sidebar">
-          <p>The <b>SkillWallet</b> is a free, truly Ownable, Universal Identity based on Skills, rather than personal data. 
-            It uses a new standard for an upgradable, non-transferable NFT (U-NT-NFT) tied to a Community .
-          </p>
+          <div>
+              <h1><b>SkillWallet v.0.1</b></h1>
 
-          <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+              <img src={logo} className="logo-img" alt="skillwallet logo"></img>
 
-          <p>SkillWallet makes IDs non-transferable, and non-fungible - to ensure uniqueness, value and sybil-resistancy to each and every Individual. 
-            Integrate the SkillWallet & bootstrap a fair, cross-chain economy for your Community.
-          </p>
+              <p><b>Welcome, Partner!</b></p>
+          </div>
         </div>
 
         <div className="landing-content">
@@ -55,8 +48,14 @@ function App() {
             ></skillwallet-auth>
           </div>
 
+
+
           <div className="buttons">
-            <div className="buttons-top-row">
+            <div className="buttons-top-row sw-description">
+            <p>SkillWallet lets any Community Member create a Self-Sovereign NFT ID. In 2 easy steps, our Partners can 
+            bootstrap a role-based membership with Native Governance & On-Chain Analytics for their Web3 Community!</p>
+            </div>
+            <div className="buttons-bottom-row">
               <Link to="/integrate">
                 <div className="landing-button-container">
                   <div className="landing-button-text">
@@ -81,18 +80,6 @@ function App() {
         </div>
       </main>
     </div>
-
-            {/* <VictoryStack>
-                <VictoryArea
-                  data={[{x: "a", y: 2}, {x: "b", y: 3}, {x: "c", y: 5}]}
-                />
-                <VictoryArea
-                  data={[{x: "a", y: 1}, {x: "b", y: 4}, {x: "c", y: 5}]}
-                />
-                <VictoryArea
-                  data={[{x: "a", y: 3}, {x: "b", y: 2}, {x: "c", y: 6}]}
-                />
-            </VictoryStack> */}
     </div>
   );
 }

@@ -32,29 +32,25 @@ a {
 }
 
 .landing-sidebar {
-  background-color: #B7B7B7;
-  /* background-image: linear-gradient(white, #B7B7B7); */
-  /* background-image:url('../public/textured-cover.svg'); */
-  /* background-image:url('../public/beanstalk.png'); */
-  /* background-repeat: repeat-y; */
-  /* background-image:url('../public/gravel.png'); */
-  /* background-image:url('../public/criss-cross.png'); */
+  background-image:url('./assets/sidebar-background.svg');
   text-align: center;
-  min-width: 20%;
-  max-width: 25%;
+  min-width: 30%;
+  max-width: 35%;
+  display: flex;
+  align-items: center;
 }
 
-.landing-sidebar > p {
-  font-size: large;
-  width: 75%;
-  margin: 15% auto;
+.landing-sidebar > div > p, .landing-sidebar > div > h1 {
+  margin: 60px auto;
   line-height: 1.6;
+}
+.landing-sidebar > div > p {
+  font-size: x-large;
 }
 
 .landing-sidebar > div {
-  width: 50%;
-  height: 20%;
-  margin: 10px auto;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .landing-content {
@@ -110,7 +106,13 @@ a {
 .buttons-top-row {
   display: flex;
   justify-content: center;
+  text-align: center;
   margin-bottom: 3px;
+}
+
+.sw-description {
+  margin: 0 auto;
+  width: 80%;
 }
 
 .buttons-bottom-row {
@@ -399,7 +401,7 @@ a {
 
 .integrate-sidebar, .integrate-user-sidebar {
   background-color: #B7B7B7;
-  /* background-image:url('../public/beanstalk.png'); */
+  background-image:url('./assets/sidebar-background.svg');
   text-align: center;
   min-width: 20%;
   max-width: 25%;
@@ -983,18 +985,6 @@ a {
 
   .profit-share:hover {
     cursor: pointer;
-  }
-
-  .profit-sidebar {
-    min-width: 20%;
-    max-width: 25%;
-    /* background-image:url('../public/beanstalk.png'); */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .profit-sidebar-buttons > * {
-    margin: 50px 0;
   }
 
   .pill {
