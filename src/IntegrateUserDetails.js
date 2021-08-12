@@ -167,13 +167,13 @@ const IntegrateUserDetails = (props) => {
 
                                     {!avatarUrl ? <label htmlFor="file" >
                                         <div className="avatar-upload-div">
-                                            <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line"/>
+                                            <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" />
                                             <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
                                             <p>.svg , .png, or .jpg</p>
                                         </div>
                                     </label> :
                                         <div className="avatar-div">
-                                            <img className="line-26" src={avatarUrl} alt="line"/>
+                                            <img className="line-26" src={avatarUrl} alt="line" />
                                         </div>
                                     }
                                 </div>
@@ -207,7 +207,7 @@ const IntegrateUserDetails = (props) => {
                                     <div className='template-card card-black'
                                         onClick={userClickedUndo}>
                                         <div className="top-card">
-                                            <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo"/>
+                                            <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
 
                                             <div className="raleway-bold-alto-22px title-black-card">
                                                 {props.templateOptions.header}
@@ -218,7 +218,7 @@ const IntegrateUserDetails = (props) => {
                                             {props.templateOptions.description}
                                         </div>
 
-                                        <img className="line-26" src={lineBreak} alt="line"/>
+                                        <img className="line-26" src={lineBreak} alt="line" />
                                     </div>
 
                                     <div className='template-card card-white'>
@@ -281,12 +281,12 @@ const IntegrateUserDetails = (props) => {
                                     <div className="integrate-button-panel">
                                         <button type="button">
                                             <p>Start from Scratch</p>
-                                            <img src={paper} alt="white sheet of paper"/>
+                                            <img src={paper} alt="white sheet of paper" />
                                         </button>
 
                                         <button onClick={toggleModal} className="importYourContract" type='button'>
                                             <p>Import your Contract</p>
-                                            <img src={importContract} alt="black sheet of paper"/>
+                                            <img src={importContract} alt="black sheet of paper" />
                                         </button>
                                     </div>
 
@@ -304,12 +304,16 @@ const IntegrateUserDetails = (props) => {
                                     <div id="modalWindow">
                                         <div className="modal-window-child">
                                             <div className="wallet-header">
-                                                <h2 style={{ textDecoration: "underline" }}>Partners Key: </h2>
+                                                <h2 style={{ textDecoration: "underline" }}>Welcome, Partner! </h2>
+                                            </div>
+                                            <div className="wallet-header" style={{ display: 'block', 'text-align': 'center' }}>
+                                                <strong style={{ color: 'white' }}>As a final step, install the <a style={{ textDecoration: "underline", color: '#919BE5'}} href='https://www.npmjs.com/package/@skill-wallet/auth'>SW library</a></strong><br/>
+                                                <strong style={{ color: 'white' }}>- and use your Partner's Key.</strong><br/>
+                                                <strong style={{ color: 'white' }}>Use it wisely (or not) 😎 </strong>
                                             </div>
                                             <div className="wallet-header">
-                                                <p style={{ textDecoration: "underline", color: 'white' }}>{key} </p>
+                                                <strong style={{ textDecoration: "underline", color: 'white' }}>{key} </strong>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div> : undefined}
