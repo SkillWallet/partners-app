@@ -14,7 +14,7 @@ import local from './assets/local-dao-white.png';
 
 const IntegrateUserDetails = (props) => {
     const [showModal, setShowModal] = useState(false);
-    const [key, setKey] = useState('git ');
+    const [key, setKey] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
