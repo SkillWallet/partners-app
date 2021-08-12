@@ -13,14 +13,14 @@ export const generatePartnersKey = async (communityAddress, partnersAgreementAdd
     return partnersKey.key;
 }
 
-export const getUsersData = async () => {
-    const response = await fetch(`https://api.skillwallet.id/api/analytics/activeUsers?startDate=1622592571001&perMonth=true`, {
+export const getUsersData = () => {
+    return fetch(`https://api.skillwallet.id/api/analytics/activeUsers?startDate=1622592571001&perMonth=true`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'key': '193485710394857'
         }
-    });
-    const data = await response.json();
-    return data;
+    }).then(res => res.json());
+    // const data = await response;
+    // return data;
 }

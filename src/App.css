@@ -82,6 +82,13 @@
   border: 1px solid black;
   border-radius: 20px;
   padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-container > svg {
+  max-width: 90%;
+  margin: 0 auto;
 }
 
 .community-div {
@@ -151,6 +158,20 @@
   align-items: center;
 }
 
+.user-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-header > h4 {
+  margin-left: 0 !important;
+}
+
+.user-header > img {
+  width: 80px;
+}
+
 .chart-div {
   width: 100%;
   max-height: 500px;
@@ -165,4 +186,12 @@
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
+}
+
+.listed-contracts > form > input {
+  max-width: 100%;
+}
+
+.listed-contracts > div > p {
+  overflow: hidden;
 }

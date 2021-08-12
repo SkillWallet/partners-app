@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import './Integrate.css';
 import roleActivity from './assets/role-activity.svg';
 import listedContracts from './assets/listed-contracts.svg';
@@ -8,42 +8,14 @@ import overviewStats from './assets/overview-stats.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';
 import dPad from './assets/d-pad-logo.png';
-import { VictoryChart, VictoryStack, VictoryArea, VictoryTheme } from 'victory';
+import Chart from './Chart';
 
 const AnalyticsDashboard = () => {
-    const data = [[
-        { x: 'Jan', y: 1000 },
-        { x: 'Feb', y: 1800 },
-        { x: 'Mar', y: 1200 },
-        { x: 'Apr', y: 2400 },
-        { x: 'May', y: 2000 },
-        { x: 'Jun', y: 2400 },
-        { x: 'Jul', y: 2400 },
-        { x: 'Aug', y: 1800 },
-        { x: 'Sep', y: 2200 },
-        { x: 'Oct', y: 2200 },
-        { x: 'Nov', y: 3100 },
-        { x: 'Dec', y: 1900 },
-      ], [
-        { x: 'Jan', y: 1000 },
-        { x: 'Feb', y: 1800 },
-        { x: 'Mar', y: 1200 },
-        { x: 'Apr', y: 2400 },
-        { x: 'May', y: 2000 },
-        { x: 'Jun', y: 2400 },
-        { x: 'Jul', y: 2400 },
-        { x: 'Aug', y: 1800 },
-        { x: 'Sep', y: 2200 },
-        { x: 'Oct', y: 2200 },
-        { x: 'Nov', y: 3100 },
-        { x: 'Dec', y: 1900 },
-      ]]
-
     return (
         <main className="analytics-main">
             <div className="analytics-sidebar">
             <div className="user-header">
-                <img src={logo} alt="d-pad logo" width="55" height="40" />
+                <img src={logo} alt="d-pad logo" />
                 {/* <h4>{username ? username : "Please sign in..."}</h4> */}
                 <h4>Jabyl</h4>
             </div>
@@ -60,13 +32,17 @@ const AnalyticsDashboard = () => {
                     <img src={listedContracts} alt="d-pad logo"/>
                     <div className="listed-contracts">
                         <h4>Listed Contracts</h4>
-                        <form>
+                        {/* <form>
                             <input placeholder="0x..." ></input>
 
                             <input placeholder="0x..." ></input>
 
                             <input placeholder="0x..." ></input>
-                        </form>
+                        </form> */}
+                        <div>
+                            <p>0x8761345...134</p>
+                            <p>0x0981934...357</p>
+                        </div>
                     </div>
                 </div>
 
@@ -133,53 +109,8 @@ const AnalyticsDashboard = () => {
                             <option value="activeUsers">Active Users</option>
                             <option value="roles">Roles</option>
                         </select>
-                    <VictoryChart
-                        theme={VictoryTheme.material}
-                        animate={{duration: 1000}}
-                    >
-                        {/* <VictoryStack
-                        colorScale={"blue"}
-                        > */}
-                        {/* {data.map((data, i) => {
-                            console.log(data, i);
-                            return ( */}
-                            <VictoryArea
-                                key={1}
-                                data={[
-                                    { x: 'Jan', y: 1000, y0: 1800 },
-                                    { x: 'Feb', y: 1800, y0: 1500 },
-                                    { x: 'Mar', y: 1200, y0: 1900 },
-                                    { x: 'Apr', y: 2400, y0: 1300 },
-                                    { x: 'May', y: 2000, y0: 1950 },
-                                    { x: 'Jun', y: 2400, y0: 2250 },
-                                    { x: 'Jul', y: 2400, y0: 2000 },
-                                    { x: 'Aug', y: 1800, y0: 1750 },
-                                    { x: 'Sep', y: 2200, y0: 2400 },
-                                    { x: 'Oct', y: 2200, y0: 2350 },
-                                    { x: 'Nov', y: 3100, y0: 2600 },
-                                    { x: 'Dec', y: 1900, y0: 1700 },
-                                  ]
-                                //   , [
-                                //     { x: 'Jan', y: 1000 },
-                                //     { x: 'Feb', y: 1800 },
-                                //     { x: 'Mar', y: 1200 },
-                                //     { x: 'Apr', y: 2400 },
-                                //     { x: 'May', y: 2000 },
-                                //     { x: 'Jun', y: 2400 },
-                                //     { x: 'Jul', y: 2400 },
-                                //     { x: 'Aug', y: 1800 },
-                                //     { x: 'Sep', y: 2200 },
-                                //     { x: 'Oct', y: 2200 },
-                                //     { x: 'Nov', y: 3100 },
-                                //     { x: 'Dec', y: 1900 },
-                                //   ]
-                                }
-                                interpolation={"natural"}
-                            />
-                            {/* );
-                        })} */}
-                        {/* </VictoryStack> */}
-                    </VictoryChart>
+
+                    <Chart />
 
                         <div className="chart-buttons-div">
                             <button disabled={true}>Community Checkups</button>
