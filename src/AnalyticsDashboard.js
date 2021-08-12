@@ -1,6 +1,8 @@
 import React, {useState, useEffect } from 'react';
 import './Integrate.css';
 import roleActivity from './assets/role-activity.svg';
+import checkups from './assets/checkups-dark.svg';
+import checkupsLight from './assets/checkups.svg';
 import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
@@ -8,6 +10,8 @@ import overviewStats from './assets/overview-stats.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';
 import dPad from './assets/d-pad-logo.png';
+import blueChartStroke from './assets/blue-chart-stroke.svg';
+import blackChartStroke from './assets/black-chart-stroke.svg';
 import Chart from './Chart';
 
 const AnalyticsDashboard = () => {
@@ -103,18 +107,46 @@ const AnalyticsDashboard = () => {
                     </div>
 
                     <div className="chart-div dashboard-container">
-                        <select id="chartType" name="chartType">
-                            <option value="interactions">Interactions</option>
-                            <option value="newUsers">New Users</option>
-                            <option value="activeUsers">Active Users</option>
-                            <option value="roles">Roles</option>
-                        </select>
+                        <div>
+                            <div className="chart-nav">
+                                <select id="chartType" name="chartType">
+                                    <option value="interactions">Interactions</option>
+                                    <option value="newUsers">New Users</option>
+                                    <option value="activeUsers">Active Users</option>
+                                    <option value="roles">Roles</option>
+                                </select>
 
-                    <Chart />
+                                <div>
+                                    <p>Daily</p>
+                                    <p>Weekly</p>
+                                    <p>Monthly</p>
+                                </div>
+                            </div>
 
-                        <div className="chart-buttons-div">
-                            <button disabled={true}>Community Checkups</button>
-                            <button disabled={true}>Role Activity</button>
+                            <Chart />
+
+                            <div className="chart-buttons-div">
+                                <button disabled={false}>
+                                    <p>Commmunity Checkups</p>
+                                    <img src={roleActivity} />
+                                    </button>
+                                <button disabled={true} className="disabled">
+                                    <p>Role Activity</p>
+                                    <img src={checkups} />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="chart-legend">
+                            <div>
+                                <img src={blueChartStroke} />
+                                <p>0x8761345...134</p>
+                            </div>
+                            
+                            <div>
+                                <img src={blackChartStroke} />
+                                <p>0x0981934...357</p>
+                            </div>
                         </div>
                     </div>
                 </div>

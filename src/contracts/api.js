@@ -21,6 +21,4 @@ export const getUsersData = () => {
             'key': '193485710394857'
         }
     }).then(res => res.json());
-    // const data = await response;
-    // return data;
 }

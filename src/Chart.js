@@ -169,14 +169,14 @@ const Chart = () => {
         // https://formidable.com/open-source/victory/guides/custom-charts/
         <svg 
             // style={styles.parent} 
-            viewBox="0 0 450 350">
+            viewBox="0 0 450 290">
 
 
             {/* <VictoryLabel x={425} y={55} style={styles.labelTwo}
             text={"Dinosaur exports\n $bn"}
             /> */}
 
-            <g transform={"translate(0, 40)"}>
+            <g transform={"translate(0, 0)"}>
                 {/* Add shared independent axis */}
                 <VictoryAxis
                 scale="time"
@@ -205,10 +205,6 @@ const Chart = () => {
                 {/* dataset one */}
                 <VictoryLine
                 data={dataSetOne}
-                // domain={{
-                //   x: ['Jan', 'Dec'],
-                //   y: [0, 10000]
-                // }}
                 interpolation="monotoneX"
                 scale={{x: "time", y: "linear"}}
                 standalone={false}
@@ -218,10 +214,7 @@ const Chart = () => {
                 {/* dataset two */}
                 <VictoryLine
                 data={dataSetTwo}
-                // domain={{
-                //   x: [new Date(1999, 1, 1), new Date(2016, 1, 1)],
-                //   y: [0, 50]
-                // }}
+
                 interpolation="monotoneX"
                 scale={{x: "time", y: "linear"}}
                 standalone={false}
