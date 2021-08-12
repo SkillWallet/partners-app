@@ -11,15 +11,33 @@ import dPad from './assets/d-pad-logo.png';
 import { VictoryChart, VictoryStack, VictoryArea, VictoryTheme } from 'victory';
 
 const AnalyticsDashboard = () => {
-    const data = [1, 2, 3, 4, 5, 6, 7].map(() => {
-        return [
-        { x: 1, y: 2 },
-        { x: 2, y: 8 },
-        { x: 3, y: 5 },
-        { x: 4, y: 6 },
-        { x: 5, y: 12 }
-      ]
-    });
+    const data = [[
+        { x: 'Jan', y: 1000 },
+        { x: 'Feb', y: 1800 },
+        { x: 'Mar', y: 1200 },
+        { x: 'Apr', y: 2400 },
+        { x: 'May', y: 2000 },
+        { x: 'Jun', y: 2400 },
+        { x: 'Jul', y: 2400 },
+        { x: 'Aug', y: 1800 },
+        { x: 'Sep', y: 2200 },
+        { x: 'Oct', y: 2200 },
+        { x: 'Nov', y: 3100 },
+        { x: 'Dec', y: 1900 },
+      ], [
+        { x: 'Jan', y: 1000 },
+        { x: 'Feb', y: 1800 },
+        { x: 'Mar', y: 1200 },
+        { x: 'Apr', y: 2400 },
+        { x: 'May', y: 2000 },
+        { x: 'Jun', y: 2400 },
+        { x: 'Jul', y: 2400 },
+        { x: 'Aug', y: 1800 },
+        { x: 'Sep', y: 2200 },
+        { x: 'Oct', y: 2200 },
+        { x: 'Nov', y: 3100 },
+        { x: 'Dec', y: 1900 },
+      ]]
 
     return (
         <main className="analytics-main">
@@ -119,19 +137,48 @@ const AnalyticsDashboard = () => {
                         theme={VictoryTheme.material}
                         animate={{duration: 1000}}
                     >
-                        <VictoryStack
+                        {/* <VictoryStack
                         colorScale={"blue"}
-                        >
-                        {data.map((data, i) => {
-                            return (
+                        > */}
+                        {/* {data.map((data, i) => {
+                            console.log(data, i);
+                            return ( */}
                             <VictoryArea
-                                key={i}
-                                data={data}
-                                interpolation={"basis"}
+                                key={1}
+                                data={[
+                                    { x: 'Jan', y: 1000, y0: 1800 },
+                                    { x: 'Feb', y: 1800, y0: 1500 },
+                                    { x: 'Mar', y: 1200, y0: 1900 },
+                                    { x: 'Apr', y: 2400, y0: 1300 },
+                                    { x: 'May', y: 2000, y0: 1950 },
+                                    { x: 'Jun', y: 2400, y0: 2250 },
+                                    { x: 'Jul', y: 2400, y0: 2000 },
+                                    { x: 'Aug', y: 1800, y0: 1750 },
+                                    { x: 'Sep', y: 2200, y0: 2400 },
+                                    { x: 'Oct', y: 2200, y0: 2350 },
+                                    { x: 'Nov', y: 3100, y0: 2600 },
+                                    { x: 'Dec', y: 1900, y0: 1700 },
+                                  ]
+                                //   , [
+                                //     { x: 'Jan', y: 1000 },
+                                //     { x: 'Feb', y: 1800 },
+                                //     { x: 'Mar', y: 1200 },
+                                //     { x: 'Apr', y: 2400 },
+                                //     { x: 'May', y: 2000 },
+                                //     { x: 'Jun', y: 2400 },
+                                //     { x: 'Jul', y: 2400 },
+                                //     { x: 'Aug', y: 1800 },
+                                //     { x: 'Sep', y: 2200 },
+                                //     { x: 'Oct', y: 2200 },
+                                //     { x: 'Nov', y: 3100 },
+                                //     { x: 'Dec', y: 1900 },
+                                //   ]
+                                }
+                                interpolation={"natural"}
                             />
-                            );
-                        })}
-                        </VictoryStack>
+                            {/* );
+                        })} */}
+                        {/* </VictoryStack> */}
                     </VictoryChart>
 
                         <div className="chart-buttons-div">
