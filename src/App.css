@@ -123,16 +123,21 @@
 .members-div > div {
   display: flex;
   justify-content: space-between;
-  width: 80%;
-  margin: 0 auto;
+  width: 90%;
+  margin: 4px auto;
   align-items: center;
+}
+
+.members-div > div > p {
+  font-size: 14px;
 }
 
 .members-div > div > div {
   background-color: black;
   color: white;
   font-weight: bold;
-  width: 160px;
+  font-size: 14px;
+  width: 55%;
   text-align: center;
   padding: 4px;
   border: 1px solid black;

@@ -52,8 +52,8 @@ function App() {
 
           <div className="buttons">
             <div className="buttons-top-row sw-description">
-            <p>SkillWallet lets any Community Member create a Self-Sovereign NFT ID. In 2 easy steps, our Partners can 
-            bootstrap a role-based membership with Native Governance & On-Chain Analytics for their Web3 Community!</p>
+            <p>SkillWallet lets any Community Member create a <b><i>Self-Sovereign NFT ID</i></b>. In 2 easy steps, our Partners can 
+            bootstrap a <b>role-based membership</b> with <b><i>Native Governance & On-Chain Analytics</i></b> for their Web3 Community!</p>
             </div>
             <div className="buttons-bottom-row">
               <Link to="/integrate">

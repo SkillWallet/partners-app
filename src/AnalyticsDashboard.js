@@ -7,6 +7,7 @@ import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
 import overviewStats from './assets/overview-stats.svg';
+import overviewStatsWhite from './assets/overview-stats-white.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';
 import dPad from './assets/d-pad-logo.png';
@@ -27,9 +28,9 @@ const AnalyticsDashboard = () => {
             <img className="line-break header-line" src={geometricLine} alt="line"/>
 
             <div className="profit-sidebar-buttons">
-                <div className="pill">
-                    <img src={overviewStats} alt="d-pad logo"/>
-                    <h4>Overview & Stats</h4>
+                <div className="pill analytics-pill">
+                    <img src={overviewStatsWhite} alt="d-pad logo"/>
+                    <h4>Analytics</h4>
                 </div>
 
                 <div className="pill contracts-pill">

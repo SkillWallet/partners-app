@@ -7,6 +7,10 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+h1, p {
+  margin:0 0
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -143,8 +147,8 @@ a {
   justify-content: space-between;
   min-width: 30%;
   align-items: center;
-  border: 3px solid black;
-  border-radius: 40px;
+  border: 2px solid black;
+  border-radius: 20px;
   box-shadow: 0.8px 0.6px #383838;
   padding: 8px;
   margin: 20px;
@@ -998,7 +1002,7 @@ a {
     border: 1px solid black;
     border-radius: 40px;
     justify-content: flex-start;
-    padding: 5px 0px 5px 20px;
+    padding: 3px 0px 3px 15px;
     width: 80%;
     margin: 40px auto;
     box-shadow: 0.8px 0.6px #696969;
@@ -1011,15 +1015,24 @@ a {
 
   .pill h4 {
     margin-left: 15px;
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .pill:hover {
     cursor: pointer;
   }
 
+  .analytics-pill {
+    background-color: black;
+    color: white;
+  }
+
+  .analytics-pill:hover {
+    background-color: black;
+  }
+
   .contracts-pill {
-    /* justify-content: space-between; */
+    border-radius: 10px;
     align-items: flex-start;
   }
 
@@ -1031,6 +1044,10 @@ a {
 
   .contracts-pill > *:first-child {
     margin-top: 10px !important;
+  }
+
+  .contracts-pill > *:last-child {
+    padding-bottom: 7px;
   }
 
   .listed-contracts {
