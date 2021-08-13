@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Slider } from "formik-antd";
+import { Form, Input } from "formik-antd";
 import { Formik } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';

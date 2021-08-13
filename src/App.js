@@ -1,30 +1,14 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
 import logo from './assets/sw-logo.svg';
-import {getUsersData} from './contracts/api';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
-import analyticsLightIcon from "./assets/analytics.svg";
+// import analyticsLightIcon from "./assets/analytics.svg";
 import analyticsIcon from "./assets/analytics-dark.svg";
 
 
 function App() {
-
-  const [userData, setUserData] = useState({});
-  
-  useEffect(async () => {
-    await setUserData(getUsersData());
-  }, [])
-  console.log(userData);
-
-  const [showModal, setShowModal] = useState(false);
-  const toggleModal = () => setShowModal(!showModal);
-  const [showQRModal, setShowQRModal] = useState(false);
-  const showNewQRModal = () => {
-    setShowQRModal(!showQRModal);
-};
-
   return (
     <div className="App">
     <div className="container">

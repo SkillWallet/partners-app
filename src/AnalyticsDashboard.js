@@ -1,21 +1,30 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState } from 'react';
 import './Integrate.css';
 import roleActivity from './assets/role-activity.svg';
 import checkups from './assets/checkups-dark.svg';
-import checkupsLight from './assets/checkups.svg';
+// import checkupsLight from './assets/checkups.svg';
 import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
-import overviewStats from './assets/overview-stats.svg';
+// import overviewStats from './assets/overview-stats.svg';
 import overviewStatsWhite from './assets/overview-stats-white.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';
 import dPad from './assets/d-pad-logo.png';
 import blueChartStroke from './assets/blue-chart-stroke.svg';
 import blackChartStroke from './assets/black-chart-stroke.svg';
-import Chart from './Chart';
+import ChartInteractions from './ChartInteractions';
+import ChartNewUsers from './ChartNewUsers';
+import ChartActiveUsers from './ChartActiveUsers';
+import ChartRoles from './ChartRoles';
+
 
 const AnalyticsDashboard = () => {
+    const [currentChart, updateCurrentChart] = useState('interactions');
+    const updateChart = (event) => {
+        updateCurrentChart(event.target.value);
+    };
+
     return (
         <main className="analytics-main">
             <div className="analytics-sidebar">
@@ -110,7 +119,7 @@ const AnalyticsDashboard = () => {
                     <div className="chart-div dashboard-container">
                         <div>
                             <div className="chart-nav">
-                                <select id="chartType" name="chartType">
+                                <select id="chartType" name="chartType" onChange={(event) => updateChart(event)}>
                                     <option value="interactions">Interactions</option>
                                     <option value="newUsers">New Users</option>
                                     <option value="activeUsers">Active Users</option>
@@ -124,28 +133,32 @@ const AnalyticsDashboard = () => {
                                 </div>
                             </div>
 
-                            <Chart />
+                            {
+                                currentChart === 'interactions' ? <ChartInteractions /> : 
+                                currentChart === 'newUsers' ?     <ChartNewUsers />     : 
+                                currentChart === 'activeUsers' ?  <ChartActiveUsers />  : 
+                                currentChart === 'roles' ?        <ChartRoles />        : null}
 
                             <div className="chart-buttons-div">
-                                <button disabled={false}>
+                                <button disabled={true} className="disabled">
                                     <p>Commmunity Checkups</p>
-                                    <img src={roleActivity} />
+                                    <img alt="Heartbeat monitor icon" src={roleActivity} />
                                     </button>
                                 <button disabled={true} className="disabled">
                                     <p>Role Activity</p>
-                                    <img src={checkups} />
+                                    <img alt="white notepad and stethoscope" src={checkups} />
                                 </button>
                             </div>
                         </div>
 
                         <div className="chart-legend">
                             <div>
-                                <img src={blueChartStroke} />
+                                <img alt="blue line of a chart moving up and to the right" src={blueChartStroke} />
                                 <p>0x8761345...134</p>
                             </div>
                             
                             <div>
-                                <img src={blackChartStroke} />
+                                <img alt="black line of a chart moving up and to the right" src={blackChartStroke} />
                                 <p>0x0981934...357</p>
                             </div>
                         </div>

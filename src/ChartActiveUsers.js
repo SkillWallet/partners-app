@@ -1,8 +1,8 @@
 import React from 'react';
-import { getUsersData } from './contracts/api';
+// import { getUsersData } from './contracts/api';
 import { VictoryAxis, VictoryLine } from 'victory';
 
-const Chart = () => {
+const ChartInteractions = () => {
     // const [userData, setUserData] = useState({});
   
     //Live Testnet data
@@ -35,18 +35,18 @@ const Chart = () => {
   
     function getDataSetTwo() {
       return [
-          { x: 'Jan', y: 1800 },
-          { x: 'Feb', y: 1500 },
-          { x: 'Mar', y: 1900 },
-          { x: 'Apr', y: 1300 },
-          { x: 'May', y: 1950 },
-          { x: 'Jun', y: 2250 },
-          { x: 'Jul', y: 2000 },
-          { x: 'Aug', y: 1750 },
-          { x: 'Sep', y: 2400 },
-          { x: 'Oct', y: 2350 },
-          { x: 'Nov', y: 2600 },
-          { x: 'Dec', y: 1700 },
+          { x: 'Jan', y: 50 },
+          { x: 'Feb', y: 100 },
+          { x: 'Mar', y: 175 },
+          { x: 'Apr', y: 180 },
+          { x: 'May', y: 160 },
+          { x: 'Jun', y: 225 },
+          { x: 'Jul', y: 400 },
+          { x: 'Aug', y: 750 },
+          { x: 'Sep', y: 950 },
+          { x: 'Oct', y: 1000 },
+          { x: 'Nov', y: 1250 },
+          { x: 'Dec', y: 1750 },
       ];
     }
   
@@ -224,4 +224,4 @@ const Chart = () => {
     )
 }
 
-export default Chart;
+export default ChartInteractions;
