@@ -44,7 +44,7 @@ function App() {
             <skillwallet-auth 
               id="walletButton"
               className="connect-wallet"
-              partner-key="6a918cdf9ae3d32131c779c22ae30290a2e729c3"
+              partner-key="39d395d1549f50bdd864957ca34d93205bc27a50"
             ></skillwallet-auth>
           </div>
 
