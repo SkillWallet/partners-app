@@ -177,6 +177,7 @@ a {
 .disabled:hover, .disabled:active {
   background-color: white !important;
   color: grey !important;
+  box-shadow: 0.6px 0.6px #080808;
 }
 
 .landing-button-container img, .top-card img {

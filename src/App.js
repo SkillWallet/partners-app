@@ -5,7 +5,8 @@ import logo from './assets/sw-logo.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
 // import analyticsLightIcon from "./assets/analytics.svg";
-import analyticsIcon from "./assets/analytics-dark.svg";
+import analyticsGreyIcon from "./assets/analytics-grey.svg";
+// import analyticsIcon from "./assets/analytics-dark.svg";
 
 
 function App() {
@@ -50,15 +51,15 @@ function App() {
                 </div>
               </Link>
 
-              <Link to="/analytics">
-                <div className="landing-button-container">
+              {/* <Link to="/analytics"> */}
+                <div className="landing-button-container disabled" >
                   <div className="landing-button-text">
                       <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Analytics</h2>
                       <p>Token Metrics</p>
                   </div>
-                  <img src={analyticsIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
+                  <img src={analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
                 </div>
-              </Link>
+              {/* </Link> */}
             </div>
           </div>
         </div>
