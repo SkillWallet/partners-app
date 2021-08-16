@@ -27,7 +27,6 @@ const IntegrateUserDetails = (props) => {
     }
 
     const { TextArea } = Input;
-    let userContractAddress = '';
 
     const MAX_UPLOAD_SIZE = 1024; // bytes
     const ALLOWED_FILE_TYPES = 'image.*';
@@ -40,7 +39,6 @@ const IntegrateUserDetails = (props) => {
 
     const toggleModal = (address) => {
         localStorage.setItem('contractAddress', address);
-        userContractAddress = address;
         setShowModal(!showModal)
     };
 

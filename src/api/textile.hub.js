@@ -8,7 +8,7 @@ const keyInfo = {
 
 export async function pushJSONDocument(json) {
   const buckets = await Buckets.withKeyInfo(keyInfo)
-  const { root, threadID } = await buckets.getOrCreate(process.env.REACT_APP_BUCKET_NAME)
+  const { root } = await buckets.getOrCreate(process.env.REACT_APP_BUCKET_NAME)
   if (!root) throw new Error('bucket not created')
   const buf = Buffer.from(JSON.stringify(json, null, 2))
   const path = `metadata.json`
