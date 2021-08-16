@@ -46,7 +46,6 @@ export const createPartnersAgreement = async (
   };
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const network = await provider.getNetwork();
   const signer = provider.getSigner();
 
   console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
