@@ -4,7 +4,8 @@ import nodes from './assets/nodes.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import lightbulb from './assets/lightbulb.svg';
 import graph from './assets/person-and-graph.svg';
-import paper from './assets/paper.svg';
+// import paper from './assets/paper.svg';
+import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
 
 const IntegrateWelcomeScreen = (props) => {
@@ -84,17 +85,21 @@ const IntegrateWelcomeScreen = (props) => {
                             </div>
 
                             <div className="integrate-button-panel">
-                                <button>
-                                    <p>Start from Scratch</p>
-                                    <img src={paper} alt="white sheet of paper"/>
+                                <button className="disabled">
+                                    <div>
+                                        <p>Start from Scratch</p>
+                                        <img src={paper} alt="white sheet of paper"/>
+                                    </div>
                                 </button>
 
                                 <button
                                     // onClick={toggleModal} 
                                     type='button'
                                     className="importYourContract">
-                                    <p>Import your Contract</p>
-                                    <img src={importContract} alt="black sheet of paper"/>
+                                    <div>
+                                        <p>Import your Contract</p>
+                                        <img src={importContract} alt="black sheet of paper"/>
+                                    </div>
                                 </button>
                             </div>
 

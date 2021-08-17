@@ -167,19 +167,6 @@ a {
   color: white;
 }
 
-.disabled {
-  cursor: auto !important;
-  background-color: white !important;
-  color: grey;
-  border: 2px solid grey;
-}
-
-.disabled:hover, .disabled:active {
-  background-color: white !important;
-  color: grey !important;
-  box-shadow: 0.6px 0.6px #080808;
-}
-
 .landing-button-container img, .top-card img {
   max-width: 40px;
   max-height: 40px;
@@ -471,10 +458,11 @@ a {
 .user-details-fields > div > div > h4 {
   text-decoration: underline;
   font-weight: bold;
+  margin: 10px 0;
 }
 
 .user-details-fields > div > div > p {
-  font-size: xx-small;
+  font-size: x-small;
 }
 
 .user-details-fields > div > div > textarea {
@@ -486,11 +474,23 @@ a {
   margin-bottom: 10px;
 }
 
+/* .community-name-field > h4 {
+  margin: 10px 0;
+} */
+
+.community-name-field > textarea {
+  height: 30px !important;
+}
+
 .avatar-field {
   display: flex;
   flex-direction: row !important;
   align-items: center;
   padding: 5px 10px;
+}
+
+.avatar-field > div:first-child {
+  margin-top: -20px !important;
 }
 
 .avatar-field > div:last-child {
@@ -511,7 +511,17 @@ a {
 .avatar-field > * {
   margin-left: 5px;
   margin-right: 5px;
+  
 }
+
+.avatar-field > div > p {
+  margin: 0;
+}
+.avatar-field > div > h4 {
+  margin: 10px 0 !important;
+  margin-top: 20px;
+} 
+
 
 #file {
   display: none;
@@ -738,17 +748,17 @@ a {
   margin: 15px;
   width: 40%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.integrate-button-panel button > * {
-  padding: 0 6%;
+.integrate-button-panel > button > div {
+  display: flex;
+  align-items: center;
 }
 
-.integrate-button-panel button > p {
-  margin-bottom: 0;
+.integrate-button-panel > button > div > * {
+  padding: 2px 10px;
 }
 
 .integrate-deploy {
@@ -1291,5 +1301,21 @@ a {
   }
 }
 
+.disabled {
+  cursor: auto !important;
+  background-color: white !important;
+  color: grey;
+  border: 2px solid grey !important;
+}
+
+.disabled:hover, .disabled:active {
+  background-color: white !important;
+  color: grey !important;
+  box-shadow: 0.6px 0.6px #080808;
+}
+
+.integrate-button-panel > button:hover {
+  box-shadow: none;
+}
 
 /*****************************************************************/

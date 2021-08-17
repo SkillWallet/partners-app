@@ -4,7 +4,8 @@ import { Formik } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';
 import { pushImage } from './api/textile.hub';
-import paper from './assets/paper.svg';
+// import paper from './assets/paper.svg';
+import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
 import logo from './assets/sw-logo.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
@@ -33,8 +34,8 @@ const IntegrateUserDetails = (props) => {
 
     const userClickedUndo = () => {
         console.log(props.templateOptions.imageSrc)
-        props.undoTemplateOption(true)
-        return;
+        props.setTemplateOptions(null);
+        props.setSelectedTemplate(null);
     };
 
     const toggleModal = (address) => {
@@ -140,7 +141,7 @@ const IntegrateUserDetails = (props) => {
                             <div className="user-details-fields">
 
                                 <div>
-                                    <div>
+                                    <div className="community-name-field">
                                         <h4>Name</h4>
                                         <TextArea
                                             id="name"
@@ -277,14 +278,18 @@ const IntegrateUserDetails = (props) => {
                                     </div>
 
                                     <div className="integrate-button-panel">
-                                        <button type="button">
-                                            <p>Start from Scratch</p>
-                                            <img src={paper} alt="white sheet of paper" />
+                                        <button type="button" className="disabled">
+                                            <div>
+                                                <p>Start from Scratch</p>
+                                                <img src={paper} alt="white sheet of paper" />
+                                            </div>
                                         </button>
 
                                         <button onClick={toggleModal} className="importYourContract" type='button'>
-                                            <p>Import your Contract</p>
-                                            <img src={importContract} alt="black sheet of paper" />
+                                            <div>
+                                                <p>Import your Contract</p>
+                                                <img src={importContract} alt="black sheet of paper" />
+                                            </div>
                                         </button>
                                     </div>
 

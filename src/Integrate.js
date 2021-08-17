@@ -7,10 +7,8 @@ import IntegrateWelcomeScreen from './IntegrateWelcomeScreen';
 const Integrate = () => {
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [templateOptions, setTemplateOptions] = useState(null);
-    const [userUnselectedTemplate, setUserUnselectedTemplate] = useState(false);
 
     useEffect(() => {
-
         const openSource = {
             imageSrc: './assets/opensource-defi-white.png',
             header: 'Open-Source & DeFi',
@@ -26,8 +24,6 @@ const Integrate = () => {
             header: 'Local Projects & DAOs',
             description: 'From support for people in need, to innovative local hubs to get together & create something greater than oneself.'
         }
-  
-        setUserUnselectedTemplate(false);
   
         if (selectedTemplate === 0) {
             setTemplateOptions(openSource);
@@ -47,14 +43,15 @@ const Integrate = () => {
 
     return (
         <main className="integrate-main">
-            {templateOptions === null || userUnselectedTemplate ?
+            {templateOptions === null ?
                 <IntegrateWelcomeScreen 
                     setSelectedTemplate={setSelectedTemplate}/> :
 
                 <IntegrateUserDetails 
                     selectedTemplate={selectedTemplate}
                     templateOptions={templateOptions}
-                    undoTemplateOption={setUserUnselectedTemplate}/> 
+                    setTemplateOptions={setTemplateOptions}
+                    setSelectedTemplate={setSelectedTemplate}/> 
             }
         </main>
     )
