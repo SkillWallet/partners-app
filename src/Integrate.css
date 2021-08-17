@@ -136,6 +136,7 @@ a {
 
 #role {
   color: white;
+  margin-top: 10px;
 }
 .heavy {
   font-style: italic;
@@ -774,6 +775,7 @@ a {
 
 .integrate-deploy:hover {
   cursor: pointer;
+  margin-bottom: 1px;
 }
 
   /**** INTEGRATE PAGE *****/

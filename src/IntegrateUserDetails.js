@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input } from "formik-antd";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';
 import { pushImage } from './api/textile.hub';
@@ -17,6 +17,7 @@ const IntegrateUserDetails = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [key, setKey] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
+    const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
             return 'openSource';
@@ -84,6 +85,11 @@ const IntegrateUserDetails = (props) => {
         return type.match(ALLOWED_FILE_TYPES).length > 0;
     }
 
+    const isFormValid = (errors) => {
+        setSubmitButtonClass(Object.keys(errors).length === 0 ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
+        return errors === {};
+    }
+
     return (
         <>
             <Formik
@@ -99,13 +105,31 @@ const IntegrateUserDetails = (props) => {
 
                 validate={(values) => {
                     const errors = {};
+
                     if (!values.skillOne) {
                         errors.skillOne = "Required";
-                    } else if (!values.skillTwo) {
+                    } 
+                    if (!values.skillTwo) {
                         errors.skillTwo = "Required";
-                    } else if (!values.skillThree) {
+                    } 
+                    if (!values.skillThree) {
                         errors.skillThree = "Required";
+                    } 
+
+                    if (values.name.length === 0) {
+                        errors.name = "Please enter a community name."
+                    } else if (values.name.match(/\S+/g).length > 3) {
+                        errors.name = 'Community name must be 3 words or less.'
                     }
+
+                    if (values.description.length === 0) {
+                        errors.description = "Please enter a community description."
+                    } else if (values.description.length < 24) {
+                        errors.description = "Description must be more than 24 characters."
+                    } else if (values.description.length > 280) {
+                        errors.description = "Description must be less than 280 characters."
+                    }
+                    isFormValid(errors);
                     return errors;
                 }}
 
@@ -150,11 +174,11 @@ const IntegrateUserDetails = (props) => {
                                             // onChange={handleChange}
                                             placeholder="Show off with a great Community Name!"
                                             value={values.name}
-                                            required
                                         ></TextArea>
+                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="name" />
                                     </div>
 
-                                    <p>4 characters left</p>
+                                    <p>{values.name ? values.name.match(/\S+/g).length : 0} words</p>
                                 </div>
 
 
@@ -187,10 +211,10 @@ const IntegrateUserDetails = (props) => {
                                             // onChange={handleChange}
                                             placeholder="Introduce your community to the world. It can be your one-liner, its values, its goals, or even the story behind it!"
                                             value={values.description}
-                                            required
                                         ></TextArea>
+                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="description" />
                                     </div>
-                                    <p>280 characters left</p>
+                                    <p>(maximum 280 characters)</p>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +255,8 @@ const IntegrateUserDetails = (props) => {
                                             placeholder="Role/Skill 1"
                                             value={values.skillOne}
                                             style={{ text: 'white' }}
-                                            required />
+                                            />
+                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillOne" />
                                         <Input
                                             id="role"
                                             name="skillTwo"
@@ -240,7 +265,8 @@ const IntegrateUserDetails = (props) => {
                                             placeholder="Role/Skill 2"
                                             value={values.skillTwo}
                                             style={{ text: 'white' }}
-                                            required />
+                                            />
+                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillTwo" />
                                         <Input
                                             id="role"
                                             name="skillThree"
@@ -249,7 +275,8 @@ const IntegrateUserDetails = (props) => {
                                             placeholder="Role/Skill 3"
                                             value={values.skillThree}
                                             style={{ text: 'white' }}
-                                            required />
+                                            />
+                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" />
                                     </div>
 
                                     <div className='template-card card-white'>
@@ -293,7 +320,7 @@ const IntegrateUserDetails = (props) => {
                                         </button>
                                     </div>
 
-                                    <button className="integrate-deploy" id="integrate-deploy" type="submit"
+                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors)}
                                     // 'window' is undefined when I call Mumbai
                                     >
                                         Sign & Deploy 🚀
