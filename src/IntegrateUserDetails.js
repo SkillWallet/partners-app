@@ -145,6 +145,7 @@ const IntegrateUserDetails = (props) => {
                         [values.skillOne, values.skillTwo, values.skillThree],
                         values.numberOfActions
                     );
+                    setIsLoading(false);
                     setKey(partnersKey);
                 }}
             >
@@ -342,7 +343,7 @@ const IntegrateUserDetails = (props) => {
                                             <div className="wallet-header">
                                                 <h2 style={{ textDecoration: "underline" }}>Welcome, Partner! </h2>
                                             </div>
-                                            <div className="wallet-header" style={{ display: 'block', 'text-align': 'center' }}>
+                                            <div className="wallet-header" style={{ display: 'block', 'textAlign': 'center' }}>
                                                 <strong style={{ color: 'white' }}>As a final step, install the <a style={{ textDecoration: "underline", color: '#919BE5'}} href='https://www.npmjs.com/package/@skill-wallet/auth'>SW library</a></strong><br/>
                                                 <strong style={{ color: 'white' }}>- and use your Partner's Key.</strong><br/>
                                                 <strong style={{ color: 'white' }}>Use it wisely (or not) 😎 </strong>
