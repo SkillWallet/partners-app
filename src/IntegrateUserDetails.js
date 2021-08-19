@@ -17,6 +17,7 @@ const IntegrateUserDetails = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [key, setKey] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
@@ -136,7 +137,7 @@ const IntegrateUserDetails = (props) => {
                 onSubmit={async (values) => {
                     if (!values.numberOfActions)
                         values.numberOfActions = 10;
-
+                    setIsLoading(true);
                     const partnersKey = await createPartnersAgreement(
                         props.selectedTemplate,
                         values.name,
@@ -157,6 +158,11 @@ const IntegrateUserDetails = (props) => {
                     isSubmitting,
                 }) => (
                     <Form onSubmit={handleSubmit}>
+                            {isLoading ? 
+                                <div className="item">
+                                <h2>Loading</h2>  
+                                <i className="loader two"></i>
+                                </div> : <div></div>}
                         <div className="integrate-user-sidebar">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
 
