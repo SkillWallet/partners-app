@@ -302,3 +302,13 @@
 #chartType:hover {
   cursor: pointer;
 }
+
+.error-msg {
+  font-size: 12px;
+  color: red;
+}
+
+.deploy-disabled {
+  cursor: default !important;
+  margin-bottom: 0px !important;
+}
