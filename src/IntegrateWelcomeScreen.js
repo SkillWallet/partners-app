@@ -103,7 +103,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 </button>
                             </div>
 
-                            <button className="integrate-deploy" id="integrate-deploy" type='button'
+                            <button className="integrate-deploy deploy-disabled" id="integrate-deploy" type='button'
                                 onClick={props.signAndDeploy}
                             >
                                 Sign & Deploy 🚀
