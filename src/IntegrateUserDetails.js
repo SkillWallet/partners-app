@@ -19,6 +19,7 @@ const IntegrateUserDetails = (props) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
+    
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
             return 'openSource';
@@ -87,7 +88,7 @@ const IntegrateUserDetails = (props) => {
     }
 
     const isFormValid = (errors) => {
-        setSubmitButtonClass(Object.keys(errors).length === 0 ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
+        setSubmitButtonClass(Object.keys(errors).length === 0 && !isLoading ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
         return errors === {};
     }
 
@@ -138,6 +139,8 @@ const IntegrateUserDetails = (props) => {
                     if (!values.numberOfActions)
                         values.numberOfActions = 10;
                     setIsLoading(true);
+                    setSubmitButtonClass('integrate-deploy deploy-disabled');
+
                     const partnersKey = await createPartnersAgreement(
                         props.selectedTemplate,
                         values.name,
@@ -145,7 +148,9 @@ const IntegrateUserDetails = (props) => {
                         [values.skillOne, values.skillTwo, values.skillThree],
                         values.numberOfActions
                     );
+
                     setIsLoading(false);
+                    setSubmitButtonClass('integrate-deploy');
                     setKey(partnersKey);
                 }}
             >
@@ -327,7 +332,7 @@ const IntegrateUserDetails = (props) => {
                                         </button>
                                     </div>
 
-                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors)}
+                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors) || isLoading}
                                     // 'window' is undefined when I call Mumbai
                                     >
                                         Sign & Deploy 🚀
