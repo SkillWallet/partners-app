@@ -17,7 +17,9 @@ const IntegrateUserDetails = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [key, setKey] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
+    
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
             return 'openSource';
@@ -86,7 +88,7 @@ const IntegrateUserDetails = (props) => {
     }
 
     const isFormValid = (errors) => {
-        setSubmitButtonClass(Object.keys(errors).length === 0 ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
+        setSubmitButtonClass(Object.keys(errors).length === 0 && !isLoading ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
         return errors === {};
     }
 
@@ -136,6 +138,8 @@ const IntegrateUserDetails = (props) => {
                 onSubmit={async (values) => {
                     if (!values.numberOfActions)
                         values.numberOfActions = 10;
+                    setIsLoading(true);
+                    setSubmitButtonClass('integrate-deploy deploy-disabled');
 
                     const partnersKey = await createPartnersAgreement(
                         props.selectedTemplate,
@@ -144,6 +148,9 @@ const IntegrateUserDetails = (props) => {
                         [values.skillOne, values.skillTwo, values.skillThree],
                         values.numberOfActions
                     );
+
+                    setIsLoading(false);
+                    setSubmitButtonClass('integrate-deploy');
                     setKey(partnersKey);
                 }}
             >
@@ -157,6 +164,11 @@ const IntegrateUserDetails = (props) => {
                     isSubmitting,
                 }) => (
                     <Form onSubmit={handleSubmit}>
+                            {isLoading ? 
+                                <div className="item">
+                                <h2>Loading</h2>  
+                                <i className="loader two"></i>
+                                </div> : <div></div>}
                         <div className="integrate-user-sidebar">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
 
@@ -320,7 +332,7 @@ const IntegrateUserDetails = (props) => {
                                         </button>
                                     </div>
 
-                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors)}
+                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors) || isLoading}
                                     // 'window' is undefined when I call Mumbai
                                     >
                                         Sign & Deploy 🚀
@@ -336,7 +348,7 @@ const IntegrateUserDetails = (props) => {
                                             <div className="wallet-header">
                                                 <h2 style={{ textDecoration: "underline" }}>Welcome, Partner! </h2>
                                             </div>
-                                            <div className="wallet-header" style={{ display: 'block', 'text-align': 'center' }}>
+                                            <div className="wallet-header" style={{ display: 'block', 'textAlign': 'center' }}>
                                                 <strong style={{ color: 'white' }}>As a final step, install the <a style={{ textDecoration: "underline", color: '#919BE5'}} href='https://www.npmjs.com/package/@skill-wallet/auth'>SW library</a></strong><br/>
                                                 <strong style={{ color: 'white' }}>- and use your Partner's Key.</strong><br/>
                                                 <strong style={{ color: 'white' }}>Use it wisely (or not) 😎 </strong>
