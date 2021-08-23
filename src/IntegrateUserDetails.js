@@ -7,6 +7,8 @@ import { pushImage } from './api/textile.hub';
 // import paper from './assets/paper.svg';
 import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
+import importLightContract from './assets/import-contract-white.svg';
+import copyIcon from './assets/copy-icon.svg';
 import logo from './assets/sw-logo.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import openSource from './assets/opensource-defi-white.png';
@@ -19,6 +21,7 @@ const IntegrateUserDetails = (props) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
+    const [isActiveId, setIsActiveId] = useState(null)
     
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
@@ -36,7 +39,6 @@ const IntegrateUserDetails = (props) => {
     const ALLOWED_FILE_TYPES = 'image.*';
 
     const userClickedUndo = () => {
-        console.log(props.templateOptions.imageSrc)
         props.setTemplateOptions(null);
         props.setSelectedTemplate(null);
     };
@@ -47,6 +49,7 @@ const IntegrateUserDetails = (props) => {
     };
 
     const onInputChange = async (files) => {
+        setIsLoading(true);
         if (files.length === 1) {
             const imageFile = files[0];
             if (!checkFileSize(imageFile.size)) {
@@ -70,13 +73,14 @@ const IntegrateUserDetails = (props) => {
         const reader = new FileReader();
 
         reader.onload = () => {
-            setAvatarUrl(reader.result)
+            setAvatarUrl(localStorage.getItem('imageUrl'));
         };
 
         reader.onerror = (err) => {
             console.error('something went wrong...', err);
         };
         reader.readAsDataURL(files);
+        setIsLoading(false);
     }
 
     const checkFileSize = (size) => {
@@ -90,6 +94,10 @@ const IntegrateUserDetails = (props) => {
     const isFormValid = (errors) => {
         setSubmitButtonClass(Object.keys(errors).length === 0 && !isLoading ? 'integrate-deploy' : 'integrate-deploy deploy-disabled')
         return errors === {};
+    }
+
+    const highlightInput = () =>{
+        setIsActiveId('activeContract');
     }
 
     return (
@@ -114,9 +122,9 @@ const IntegrateUserDetails = (props) => {
                     if (!values.skillTwo) {
                         errors.skillTwo = "Required";
                     } 
-                    if (!values.skillThree) {
-                        errors.skillThree = "Required";
-                    } 
+                    // if (!values.skillThree) {
+                    //     errors.skillThree = "Required";
+                    // } 
 
                     if (values.name.length === 0) {
                         errors.name = "Please enter a community name."
@@ -130,6 +138,10 @@ const IntegrateUserDetails = (props) => {
                         errors.description = "Description must be more than 24 characters."
                     } else if (values.description.length > 280) {
                         errors.description = "Description must be less than 280 characters."
+                    }
+
+                    if (values.name && localStorage.getItem('imageUrl') && values.description && values.skillOne && values.skillTwo) {
+                        highlightInput();
                     }
                     isFormValid(errors);
                     return errors;
@@ -170,7 +182,7 @@ const IntegrateUserDetails = (props) => {
                                 <i className="loader two"></i>
                                 </div> : <div></div>}
                         <div className="integrate-user-sidebar">
-                            <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it 🙌</h2>
+                            <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it</h2>
 
                             <img src={logo} className="logo-img" alt="skillwallet logo"></img>
 
@@ -190,20 +202,20 @@ const IntegrateUserDetails = (props) => {
                                         <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="name" />
                                     </div>
 
-                                    <p>{values.name ? values.name.match(/\S+/g).length : 0} words</p>
+                                    <p className="char-count">{values.name ? values.name.match(/\S+/g).length : 0} words</p>
                                 </div>
 
 
                                 <div className="avatar-field">
                                     <div>
                                         <h4>Avatar</h4>
-                                        <p>{"Your public Logo - that's how others will know it's really you"}</p>
+                                        <p>Your public Logo - that's how others will know it's really you</p>
                                     </div>
 
                                     {!avatarUrl ? <label htmlFor="file" >
                                         <div className="avatar-upload-div">
                                             <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" />
-                                            <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
+                                            <input type="file" name="files[]" id="file"  accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
                                             <p>.svg , .png, or .jpg</p>
                                         </div>
                                     </label> :
@@ -226,7 +238,7 @@ const IntegrateUserDetails = (props) => {
                                         ></TextArea>
                                         <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="description" />
                                     </div>
-                                    <p>(maximum 280 characters)</p>
+                                    <p className="char-count">(maximum 280 characters)</p>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +276,7 @@ const IntegrateUserDetails = (props) => {
                                             name="skillOne"
                                             type="text"
                                             onChange={handleChange}
-                                            placeholder="Role/Skill 1"
+                                            placeholder="Role/Skill 1 *"
                                             value={values.skillOne}
                                             style={{ text: 'white' }}
                                             />
@@ -274,7 +286,7 @@ const IntegrateUserDetails = (props) => {
                                             name="skillTwo"
                                             type="text"
                                             onChange={handleChange}
-                                            placeholder="Role/Skill 2"
+                                            placeholder="Role/Skill 2 *"
                                             value={values.skillTwo}
                                             style={{ text: 'white' }}
                                             />
@@ -288,7 +300,7 @@ const IntegrateUserDetails = (props) => {
                                             value={values.skillThree}
                                             style={{ text: 'white' }}
                                             />
-                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" />
+                                            {/* <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" /> */}
                                     </div>
 
                                     <div className='template-card card-white'>
@@ -324,10 +336,10 @@ const IntegrateUserDetails = (props) => {
                                             </div>
                                         </button>
 
-                                        <button onClick={toggleModal} className="importYourContract" type='button'>
+                                        <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button'>
                                             <div>
                                                 <p>Import your Contract</p>
-                                                <img src={importContract} alt="black sheet of paper" />
+                                                <img src={isActiveId ? importLightContract : importContract} alt="black sheet of paper" />
                                             </div>
                                         </button>
                                     </div>
@@ -342,20 +354,28 @@ const IntegrateUserDetails = (props) => {
 
 
 
-                                {key ? <div id="topDiv">
+                                {key ? 
+                                <div id="topDiv">
                                     <div id="modalWindow">
-                                        <div className="modal-window-child">
+                                        <div className="modal-window-child partner-key-content">
                                             <div className="wallet-header">
-                                                <h2 style={{ textDecoration: "underline" }}>Welcome, Partner! </h2>
+                                                <h2 style={{ textDecoration: "underline" }}>Congrats, Partner!</h2>
                                             </div>
-                                            <div className="wallet-header" style={{ display: 'block', 'textAlign': 'center' }}>
-                                                <strong style={{ color: 'white' }}>As a final step, install the <a style={{ textDecoration: "underline", color: '#919BE5'}} href='https://www.npmjs.com/package/@skill-wallet/auth'>SW library</a></strong><br/>
-                                                <strong style={{ color: 'white' }}>- and use your Partner's Key.</strong><br/>
-                                                <strong style={{ color: 'white' }}>Use it wisely (or not) 😎 </strong>
+
+                                            <div className="verify-p">
+                                                <p>You've successfully integrated the SkillWallet.</p>
+                                                <p>As promised, here is your Access Key. Copy it & keep it safe:</p>
                                             </div>
-                                            <div className="wallet-header">
-                                                <strong style={{ textDecoration: "underline", color: 'white' }}>{key} </strong>
+                                            <div className="partner-key">
+                                                <h4>{key}</h4>
+                                                <img src={copyIcon}/>
                                             </div>
+
+                                            <div>
+                                                <p>Last but not least, activate Community Name by picking your SkillWallet Role:</p>
+                                            </div>
+
+                                            <button>Activate!</button>
                                         </div>
                                     </div>
                                 </div> : undefined}
