@@ -1,8 +1,8 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import './Integrate.css';
 import roleActivity from './assets/role-activity.svg';
 import checkups from './assets/checkups-dark.svg';
-// import checkupsLight from './assets/checkups.svg';
+import { useHistory } from 'react-router-dom';
 import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
@@ -21,9 +21,23 @@ import ChartRoles from './ChartRoles';
 
 const AnalyticsDashboard = () => {
     const [currentChart, updateCurrentChart] = useState('interactions');
+    const history = useHistory();
+    const [loggingOff, setLoggingOff] = useState(false);
+
     const updateChart = (event) => {
         updateCurrentChart(event.target.value);
     };
+
+    useEffect(() => {
+        if (loggingOff) {
+            const keys = ['header', 'imageUrl', 'header', 'contractAddress', 'username', 'tokenId', 'skillWallet'];
+            keys.forEach(k => {
+                localStorage.removeItem(k);
+            });
+            
+            history.push("/");
+    }
+    }, [loggingOff, history]);
 
     return (
         <main className="analytics-main">
@@ -65,7 +79,7 @@ const AnalyticsDashboard = () => {
                     <h4>Add Contract</h4>
                 </div>
 
-                <div className="pill">
+                <div className="pill" onClick={() => setLoggingOff(true)}>
                     <img src={logOff} alt="d-pad logo"/>
                     <h4>Log off</h4>
                 </div>
