@@ -2179,10 +2179,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^0.0.38-alpha":
-  "integrity" "sha512-udbM/97jVxIK6Hgn7G/bFJVFIBVDatTe82l6u6Md3/DlL9TnBh8/uv2VpA/ihKjT6iIiSVpc6406lzq3KEkBsw=="
-  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.38-alpha.tgz"
-  "version" "0.0.38-alpha"
+"@skill-wallet/auth@^0.0.39-alpha":
+  "integrity" "sha512-hcDtt1vgbXCeN7/rFYZpwcEd+T/eEq++Ggey//L4AxOWQJOCVUku0cb1JWzsr/+V3nXS1BX1R10WnKdMUAgmiQ=="
+  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.39-alpha.tgz"
+  "version" "0.0.39-alpha"
   dependencies:
     "@stencil/core" "2.6.0"
     "@textile/hub" "^6.2.0"

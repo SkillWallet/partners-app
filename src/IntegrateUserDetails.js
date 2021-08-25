@@ -21,7 +21,8 @@ const IntegrateUserDetails = (props) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
-    const [isActiveId, setIsActiveId] = useState(null)
+    const [isActiveId, setIsActiveId] = useState(null);
+    const [isCommunityInactive, setIsCommunityInactive] = useState(true);
     
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
@@ -98,6 +99,12 @@ const IntegrateUserDetails = (props) => {
 
     const highlightInput = () =>{
         setIsActiveId('activeContract');
+    }
+
+    const onActivateCommunity = () => {
+        const input = document.querySelector("skillwallet-auth")
+        input.dispatchEvent(new CustomEvent("activateSkillwalletCommunity"))
+        setIsCommunityInactive(false);
     }
 
     return (
@@ -352,9 +359,7 @@ const IntegrateUserDetails = (props) => {
 
                                 </div>
 
-
-
-                                {key ? 
+                                {key && isCommunityInactive ? 
                                 <div id="topDiv">
                                     <div id="modalWindow">
                                         <div className="modal-window-child partner-key-content">
@@ -375,7 +380,7 @@ const IntegrateUserDetails = (props) => {
                                                 <p>Last but not least, activate Community Name by picking your SkillWallet Role:</p>
                                             </div>
 
-                                            <button>Activate!</button>
+                                            <button type="button" onClick={() => onActivateCommunity()}>Activate!</button>
                                         </div>
                                     </div>
                                 </div> : undefined}
