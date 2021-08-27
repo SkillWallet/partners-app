@@ -64,7 +64,7 @@ export const createPartnersAgreement = async (
   console.log(url);
 
   console.log('calling the SC')
-  console.log(url, template, numberOfActions, localStorage.getItem('contractAddress'))
+  console.log('contract stalling after this line: ', url, template, roles.length, numberOfActions, localStorage.getItem('contractAddress'))
   const createTx = await contract.create(
     url,
     template,
@@ -91,7 +91,11 @@ export const createPartnersAgreement = async (
   console.log('communityAddress', communityAddress)
   const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
   console.log('key', key);
-  return key;
+  return {
+    key: key,
+    communityAddr: communityAddress,
+    partnersAddr: partnersAgreementAddress
+  };
 }
 
 export const createNewUser = async () => {
