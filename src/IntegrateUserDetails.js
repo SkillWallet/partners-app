@@ -23,6 +23,7 @@ const IntegrateUserDetails = (props) => {
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
     const [isActiveId, setIsActiveId] = useState(null);
     const [isCommunityInactive, setIsCommunityInactive] = useState(true);
+    const [partnersDetails, setPartnersDetails] = useState({});
     
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
@@ -103,7 +104,11 @@ const IntegrateUserDetails = (props) => {
 
     const onActivateCommunity = () => {
         const input = document.querySelector("skillwallet-auth")
-        input.dispatchEvent(new CustomEvent("activateSkillwalletCommunity"))
+        const event = new CustomEvent("activateSkillwalletCommunity", {'detail': {
+            communityAddr: partnersDetails.communityAddr,
+            partnersAddr: partnersDetails.partnersAddr
+        }})
+        input.dispatchEvent(event)
         setIsCommunityInactive(false);
     }
 
@@ -160,7 +165,7 @@ const IntegrateUserDetails = (props) => {
                     setIsLoading(true);
                     setSubmitButtonClass('integrate-deploy deploy-disabled');
 
-                    const partnersKey = await createPartnersAgreement(
+                    const partnersDetails = await createPartnersAgreement(
                         props.selectedTemplate,
                         values.name,
                         values.description,
@@ -170,7 +175,8 @@ const IntegrateUserDetails = (props) => {
 
                     setIsLoading(false);
                     setSubmitButtonClass('integrate-deploy');
-                    setKey(partnersKey);
+                    setKey(partnersDetails.key);
+                    setPartnersDetails(partnersDetails);
                 }}
             >
                 {({
