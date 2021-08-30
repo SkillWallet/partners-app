@@ -64,7 +64,6 @@ export const createPartnersAgreement = async (
   console.log(url);
 
   console.log('calling the SC')
-  console.log('contract stalling after this line: ', url, template, roles.length, numberOfActions, localStorage.getItem('contractAddress'))
   const createTx = await contract.create(
     url,
     template,

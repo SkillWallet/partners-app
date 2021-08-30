@@ -102,7 +102,6 @@ const IntegrateUserDetails = (props) => {
         setIsActiveId('activeContract');
     }
 
-    // monitorEvents(window, 'activateSkillwalletCommunity')
     const onActivateCommunity = () => {
         const input = document.querySelector("skillwallet-auth")
         const event = new CustomEvent("activateSkillwalletCommunity", {'detail': {
