@@ -20,7 +20,7 @@ const VerifyOwnershipModal = (props) => {
 
     return (
         <div id="topDiv">
-            <div id="modalWindow">
+            <div id="modalWindow" className="verify-ownership-modal">
                 <div className="modal-window-child">
                     <div className="wallet-header">
                         <h2 style={{textDecoration: "underline"}}>Verify Ownership</h2>

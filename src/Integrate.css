@@ -107,6 +107,11 @@ a {
   font-size: large;
 }
 
+.hidden-wallet {
+  position: absolute;
+  top: -2000px;
+}
+
 .buttons {
   width: 100%;
   margin-top: 25%; 
@@ -116,7 +121,7 @@ a {
   display: flex;
   justify-content: center;
   text-align: center;
-  margin-bottom: 3px;
+  margin-bottom: 40px !important;
 }
 
 .sw-description {
@@ -134,10 +139,16 @@ a {
   margin: 0 auto;
 }
 
+#role::placeholder, #role:-ms-input-placeholder, #role::-ms-input-placeholder{
+  color: white;
+  
+}
+
 #role {
   color: white;
   margin-top: 10px;
 }
+
 .heavy {
   font-style: italic;
   font-weight: bold;
@@ -183,19 +194,23 @@ a {
 .landing-button-text {
   display: flex;
   flex-direction: column;
+  align-items:flex-start;
   margin-right: 5px;
 }
 
 .landing-button-text h2 {
   text-decoration: underline;
   font-size: 40px;
-  /* margin-bottom: -2px; */
   line-height: 0.8;
 }
 
 .landing-button-text h2, .landing-button-text p {
   margin: 5px;
   margin-right: 12px;
+}
+
+.landing-button-text p {
+  font-size: 18px;
 }
 
 .landing-button-img {
@@ -269,9 +284,31 @@ a {
 .wallet-modal-button > button > *:first-child {
   width: 70px;
 }
-.wallet-modal-content p {
-  color: white;
+
+.verify-ownership-modal {
+  width: 35%;
 }
+
+.wallet-modal-content > p, .wallet-modal-content > form {
+  color: white;
+  margin: 10px 0 ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 3px auto;
+}
+
+.wallet-modal-content > form > * {
+  margin: 8px 0;
+}
+
+.wallet-modal-content > form > input {
+  width: 100%;
+}
+
+
+
 .wallet-modal-button button {
   display: flex;
   justify-content: flex-start;
@@ -430,6 +467,10 @@ a {
   margin: 15% auto;
 }
 
+.integrate-content {
+  background-image:url('./assets/sidebar-background.svg');
+}
+
 .user-details-fields {
   margin-top: 20px;
 }
@@ -462,12 +503,8 @@ a {
   margin: 10px 0;
 }
 
-.user-details-fields > div > div > p {
-  font-size: x-small;
-}
-
 .user-details-fields > div > div > textarea {
-  width: 100%;
+  width: 90%;
   height: 70px; 
   border: none;
   margin: 0 auto;
@@ -475,12 +512,18 @@ a {
   margin-bottom: 10px;
 }
 
-/* .community-name-field > h4 {
-  margin: 10px 0;
-} */
+.char-count {
+  font-size: small;
+  font-family: 'Raleway', sans-serif;
+}
 
 .community-name-field > textarea {
   height: 30px !important;
+}
+
+textarea {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
 }
 
 .avatar-field {
@@ -517,6 +560,11 @@ a {
 
 .avatar-field > div > p {
   margin: 0;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: small;
+  color: grey;
+  text-align: left;
 }
 .avatar-field > div > h4 {
   margin: 10px 0 !important;
@@ -537,9 +585,14 @@ a {
 }
 
 .avatar-div {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
   cursor: default;
+}
+
+.avatar-div > img {
+  width: 40px !important;
+  height: 40px !important;
 }
 
 #avatar-img {
@@ -733,7 +786,17 @@ a {
 
 .importYourContract:hover {
   cursor: pointer;
+  box-shadow: 1.2px 1.8px #696969 !important;
 } 
+
+#activeContract {
+  background-color: black;
+  color: white;
+}
+
+#activeContract:active {
+  background-color: grey;
+}
 
 .integrate-button-panel {
   display: flex;

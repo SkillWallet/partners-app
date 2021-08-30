@@ -61,8 +61,8 @@ function App() {
               <Link to={isUserLoggedIn ? '/analytics' : '#'}>
                 <div className={analyticsClass} >
                   <div className="landing-button-text">
-                      <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Analytics</h2>
-                      <p>Token Metrics</p>
+                      <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Partners</h2>
+                      <p>Analytics</p>
                   </div>
                   <img src={isUserLoggedIn ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
                 </div>

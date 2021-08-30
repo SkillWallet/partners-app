@@ -43,6 +43,13 @@ const Integrate = () => {
 
     return (
         <main className="integrate-main">
+            <div className="connect-wallet-container hidden-wallet">
+                <skillwallet-auth 
+                id="walletButton"
+                className="connect-wallet"
+                partner-key="c1a69a207a6cb441014afea7f7c8abdde1d2abe9"
+                ></skillwallet-auth>
+          </div>
             {templateOptions === null ?
                 <IntegrateWelcomeScreen 
                     setSelectedTemplate={setSelectedTemplate}/> :

@@ -64,6 +64,7 @@
 
 .sw-description > p {
   color: white;
+  font-size: 20px;
 }
 
 .header-row, .content-row {
@@ -394,4 +395,56 @@
 
 .item h2 {
   margin-right: 45px;
+}
+
+.partner-key-content {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.partner-key-content > div {
+  margin: 10px 0;
+}
+
+.partner-key-content > div > p, .partner-key-content > div > h2 {
+  color: white;
+  text-align: center;
+}
+
+.verify-p {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-key {
+  background-color: grey;
+  border-radius: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.partner-key-content > button {
+  background-color: grey;
+  color: black;
+  border: 1px solid black;
+  border-radius: 40px;
+  width: 80%;
+  height: 50px;
+  margin: 0 auto;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: default;
+}
+
+.partner-key-content > button:hover {
+  cursor: pointer;
+  box-shadow: 0.6px 0.5px #BEBEBE;
+}
+
+.partner-key-content > button:active {
+  background-color: black;
+  color: white;
 }

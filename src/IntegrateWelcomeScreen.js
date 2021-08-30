@@ -17,7 +17,7 @@ const IntegrateWelcomeScreen = (props) => {
                 <img src={logo} className="logo-img" alt="skillwallet logo"></img>
 
                 <p>In just two steps, you will integrate a <b>universal, sybil-resistant login </b>
-                    for your users - and automate <b>an internal, mathematically-fair Tokenomics </b>
+                    for your users - and automate a <b>role-based Governance</b>
                     for your community.
                 </p>
             </div>
