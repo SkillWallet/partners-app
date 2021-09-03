@@ -7,6 +7,7 @@ const VerifyOwnershipModal = (props) => {
     const closeQR = () => {
         const address = document.getElementById('address').value;
         console.log(address);
+        localStorage.setItem('contractAddress', address);
         props.toggleModal(address);
     }
 
