@@ -25,13 +25,6 @@ a {
 
 .landing-main {
   display: flex;
-  /* Background pattern from Toptal Subtle Patterns */
-  /* background-image: linear-gradient(to right, #37373C, #86868B); */
-  /* background-image:url('./assets/black-background.svg');
-  background-repeat: no-repeat;
-  background-size: cover; */
-  /* background-image:url('../public/prism.png'); */
-  /* background-repeat: space; */
   height: 100%;
   width: 100%;
   min-height: 100vh;
@@ -1354,6 +1347,25 @@ textarea {
   line-height: 1.5;
 }
 
+.logo-div {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  justify-content: space-evenly;
+}
+
+.logo-div > div {
+  display: flex;
+  flex-direction: column;
+  font-size: larger;
+  text-align: left;
+}
+
+.logo-div > div > h2 {
+  margin: 2px 0;
+}
+
 .logo {
   height: 1em;
   margin-left: 0.5rem;
@@ -1384,3 +1396,46 @@ textarea {
 }
 
 /*****************************************************************/
+
+
+@media only screen and (max-width: 640px) {
+  .landing-main {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .landing-sidebar {
+    margin-top: 120px;
+    background-image: none;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .landing-sidebar div p {
+    display: none;
+  }
+
+  .landing-content {
+    background-image: none;
+    width: 100%;
+  }
+
+  #landingButtons {
+    margin-top: 20px;
+  }
+
+  .buttons-top-row {
+    /* display: none; */
+  }
+
+  .buttons-top-row > p {
+    display: block;
+    color: black;
+    font-size: 12px;
+  }
+
+  .buttons-bottom-row {
+    display: flex;
+    flex-direction: column;
+  }
+}

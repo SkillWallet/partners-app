@@ -1,3 +1,12 @@
+/** BREAKPOINTS
+  Small screens:  max-width 640px
+
+  Medium screens: max-width 1024px
+
+  Large screens:  max-width none (all others)
+
+**/
+
 .App {
   text-align: center;
 }

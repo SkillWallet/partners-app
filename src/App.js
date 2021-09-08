@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import logo from './assets/sw-logo.svg';
+import logo from './assets/sw-favicon.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
@@ -23,9 +23,15 @@ function App() {
       <main className="landing-main">
         <div className="landing-sidebar">
           <div>
-              <h1><b>SkillWallet v.0.1</b></h1>
+              <div className="logo-div">
+                <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+                <div>
+                  <h2>SKILL</h2>
+                  <h2>WALLET</h2>
+                </div>
+              </div>
 
-              <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+              
 
               <p><b>Welcome, Partner!</b></p>
           </div>
