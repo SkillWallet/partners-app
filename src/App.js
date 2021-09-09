@@ -2,6 +2,7 @@ import './App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import logo from './assets/sw-favicon.svg';
+import logoBlack from './assets/sw-logo-black.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
@@ -23,17 +24,17 @@ function App() {
       <main className="landing-main">
         <div className="landing-sidebar">
           <div>
-              <div className="logo-div">
-                <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+               <div className="logo-div">
+              {/*  <img src={logo} className="logo-img" alt="skillwallet logo"></img>
                 <div>
                   <h2>SKILL</h2>
                   <h2>WALLET</h2>
-                </div>
+                </div> */}
+                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
+                <p><b>Welcome, Partner!</b></p>
               </div>
 
-              
 
-              <p><b>Welcome, Partner!</b></p>
           </div>
         </div>
 
@@ -49,10 +50,19 @@ function App() {
 
 
           <div className="buttons" id="landingButtons">
-            <div className="buttons-top-row sw-description">
+            
+            {/* <div className="buttons-top-row sw-description">
             <p>SkillWallet lets any Community Member create a <b><i>Self-Sovereign NFT ID</i></b>. In 2 easy steps, our Partners can 
             bootstrap a <b>role-based membership</b> with <b><i>Native Governance & On-Chain Analytics</i></b> for their Web3 Community!</p>
+            </div> */}
+
+            <div className="buttons-top-row new-sw-description">
+                <h2><b><u>Do more with your DAO</u></b></h2>
+                <p>SkillWallets are individual NFT ID's that unlock the true potential of Web3 Communities.</p>
+                <br />
+                <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
             </div>
+
             <div className="buttons-bottom-row">
               <Link to="/integrate">
                 <div className="landing-button-container">

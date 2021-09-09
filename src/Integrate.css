@@ -122,6 +122,14 @@ a {
   width: 80%;
 }
 
+.new-sw-description {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 75%;
+  margin: 0 auto;
+}
+
 .buttons-bottom-row {
   display: flex;
   justify-content: center;
@@ -422,9 +430,13 @@ a {
 
   /**** INTEGRATE PAGE *****/
 
-  .integrate-main, .integrate-main > form {
+  .integrate-main, .integrate-main > div > form {
     display: flex;
     height:100%;
+  }
+
+  .welcome-screen, .user-details-screen {
+    display: flex;
   }
 
 .integrate-sidebar, .integrate-user-sidebar {
@@ -1349,10 +1361,16 @@ textarea {
 
 .logo-div {
   display: flex;
-  align-items: center;
-  width: 80%;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 75%;
   margin: 0 auto;
+  margin-top: 200px;
   justify-content: space-evenly;
+}
+
+.logo-div > img {
+  margin-bottom: 30px;
 }
 
 .logo-div > div {
@@ -1395,7 +1413,168 @@ textarea {
   box-shadow: none;
 }
 
-/*****************************************************************/
+/******************************  RESPONSIVENESS  ***********************************/
+
+@media only screen and (min-width: 641px) and (max-width: 1024px) {
+
+  /***** LANDING PAGE ******/
+  .landing-main {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .landing-sidebar {
+    margin-top: 100px;
+    background-image: none;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .landing-sidebar div p {
+    display: none;
+  }
+
+  .landing-sidebar > p {
+    text-align: left;
+  }
+
+  .landing-content {
+    background-image: none;
+    width: 100%;
+  }
+
+  .logo-div {
+    margin-top: 0px;
+  }
+
+  .logo-div > img {
+    margin: 0 auto;
+  }
+
+  #landingButtons {
+    margin-top: 20px;
+  }
+
+  .buttons-top-row > p {
+    display: block;
+    color: black;
+    font-size: 12px;
+  }
+
+  .buttons-bottom-row {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+  }
+
+  /***** LANDING PAGE ******/
+
+
+  /**** INTEGRATE SCREEN ****/
+
+        /**** (WELCOME) SCREEN ****/
+
+  /* .details-integrate-header {
+    margin-bottom: 300px;
+  }
+
+  .integrate-header > h2 {
+    margin-bottom: 120px;
+  }
+
+  .integrate-sidebar {
+    background-image: none;
+    background-color: white;
+  }
+
+  .integrate-sidebar > h2, .integrate-sidebar > img, 
+  .integrate-user-sidebar > h2, .integrate-user-sidebar > img {
+    display: none;
+  }
+
+  .integrate-sidebar > p {
+    font-size: 12px;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+
+  .integrate-main > .welcome-screen {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .welcome-screen {
+    width: 100%;
+  }
+
+  .welcome-screen > .integrate-sidebar {
+    min-height: 0vh;
+  }
+
+  .integrate-template-content {
+    border: 0px;
+  }
+  
+  .integrate-header > h4 {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .integrate-project-types, .details-project-types {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .template-card {
+    max-width: 100%;
+    border: 1px solid black;
+    margin-top: 15px;
+  }
+
+  .integrate-button-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .integrate-button-panel > button {
+    width: 80%;
+  }
+
+  .integrate-deploy {
+    margin-bottom: 40px !important;
+  } */
+
+      /**** (USER DETAILS) SCREEN ****/
+
+  /* .user-details-screen {
+    display: flex;
+    flex-direction: column !important;
+  }
+
+  .integrate-user-sidebar {
+    background-image: none;
+    background-color: rgba(100, 100, 100, 0);
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    position: absolute;
+    top: 100px;
+  }
+
+  .integrate-content {
+    background-image: none;
+  } */
+
+  /**** INTEGRATE SCREEN ****/
+}
+
+
 
 
 @media only screen and (max-width: 640px) {
@@ -1407,7 +1586,7 @@ textarea {
   }
   
   .landing-sidebar {
-    margin-top: 120px;
+    margin-top: 100px;
     background-image: none;
     min-width: 100%;
     max-width: 100%;
@@ -1417,9 +1596,17 @@ textarea {
     display: none;
   }
 
+  .landing-sidebar > p {
+    text-align: left;
+  }
+
   .landing-content {
     background-image: none;
     width: 100%;
+  }
+
+  .logo-div {
+    margin-top: 0px;
   }
 
   #landingButtons {

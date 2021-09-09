@@ -50,6 +50,10 @@
   width: 40%;
 }
 
+.new-logo-img {
+  width: 100%;
+}
+
 .analytics-sidebar {
   background-color: white;
   background-image:url('./assets/sidebar-background.svg');
