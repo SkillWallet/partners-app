@@ -3,6 +3,7 @@ import logo from './assets/sw-logo.svg';
 import nodes from './assets/nodes.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import lightbulb from './assets/lightbulb.svg';
+import logoBlack from './assets/sw-logo-black.svg';
 import graph from './assets/person-and-graph.svg';
 // import paper from './assets/paper.svg';
 import paper from './assets/grey-paper.svg';
@@ -12,17 +13,21 @@ const IntegrateWelcomeScreen = (props) => {
     return (
         <>
             <div className="integrate-sidebar">
+                <div className="integrate-sidebar-design">
                 <h2>Welcome to your <br></br><span style={{ fontWeight: 'bold' }}> Partner Agreement!</span></h2>
 
-                <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
+                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
                 <p>In just two steps, you will integrate a <b>universal, sybil-resistant login </b>
                     for your users - and automate a <b>role-based Governance</b>
                     for your community.
                 </p>
+                </div>
             </div>
 
             <div className="integrate-content">
+            <div className="integrate-content-design">
                 <div className="integrate-header">
                     <h2 style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Partner&#39;s Agreement</h2>
                     <h4>Select the template that best represents your project / protocol.</h4>
@@ -110,6 +115,7 @@ const IntegrateWelcomeScreen = (props) => {
                             </button>
                         </div>
                     </>
+                </div>
                 </div>
             </div>
         </>
