@@ -91,7 +91,7 @@ const AnalyticsDashboard = () => {
                     <div className="community-div dashboard-container">
                         <img className="logo-img" src={dPad} alt="D Pad logo" />
                         <h2>The Dark Dito</h2>
-                        </div>
+                    </div>  
                     <div className="description-div dashboard-container">The greatest Description you could think of. A story about passion, cooperation, 
                     conflict & chaos - unveiling, word by word, a deeper truth about humankind. The greatest Description you could think
                      of. A story about passion, cooperation, conflict & chaos - unveiling, word by word, a deeper truth about humankind. </div>

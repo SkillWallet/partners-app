@@ -10,7 +10,7 @@ import importContract from './assets/import-contract.svg';
 
 const IntegrateWelcomeScreen = (props) => {
     return (
-        <>
+        <div className="welcome-screen">
             <div className="integrate-sidebar">
                 <h2>Welcome to your <br></br><span style={{ fontWeight: 'bold' }}> Partner Agreement!</span></h2>
 
@@ -31,7 +31,7 @@ const IntegrateWelcomeScreen = (props) => {
                 <div className="integrate-template-content">
                     <>
                         <div className="integrate-project-types">
-                            <div className='template-card card-white' onClick={() => props.setSelectedTemplate(0)}>
+                            <div className='template-card card-white welcome-screen-card' onClick={() => props.setSelectedTemplate(0)}>
                                 <div className="top-card">
                                     <img className="image-7" src={nodes} alt="cluster of network nodes"/>
 
@@ -47,7 +47,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 <img className="line-26" src={lineBreak} alt="line"/>
                             </div>
 
-                            <div className="template-card card-white" onClick={() => props.setSelectedTemplate(1)}>
+                            <div className="template-card card-white welcome-screen-card" onClick={() => props.setSelectedTemplate(1)}>
                                 <div className="top-card">
                                     <img className="image-7" src={lightbulb} alt="white lightbulb over a black background"/>
 
@@ -63,7 +63,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 <img className="line-26" src={lineBreak} alt="line"/>
                             </div>
 
-                            <div className="template-card card-white" onClick={() => props.setSelectedTemplate(2)}>
+                            <div className="template-card card-white welcome-screen-card" onClick={() => props.setSelectedTemplate(2)}>
                                 <div className="top-card">
                                     <img className="image-7" src={graph} alt="Person standing next to a bar graph"/>
 
@@ -112,7 +112,7 @@ const IntegrateWelcomeScreen = (props) => {
                     </>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

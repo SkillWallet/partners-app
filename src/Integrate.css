@@ -1399,6 +1399,8 @@ textarea {
 
 
 @media only screen and (max-width: 640px) {
+
+  /***** LANDING PAGE ******/
   .landing-main {
     display: flex;
     flex-direction: column;
@@ -1424,10 +1426,6 @@ textarea {
     margin-top: 20px;
   }
 
-  .buttons-top-row {
-    /* display: none; */
-  }
-
   .buttons-top-row > p {
     display: block;
     color: black;
@@ -1438,4 +1436,109 @@ textarea {
     display: flex;
     flex-direction: column;
   }
+
+  /***** LANDING PAGE ******/
+
+
+  /**** INTEGRATE SCREEN ****/
+
+        /**** (WELCOME) SCREEN ****/
+
+  .details-integrate-header {
+    margin-bottom: 300px;
+  }
+
+  .integrate-header > h2 {
+    margin-bottom: 120px;
+  }
+
+  .integrate-sidebar {
+    background-image: none;
+    background-color: white;
+  }
+
+  .integrate-sidebar > h2, .integrate-sidebar > img, 
+  .integrate-user-sidebar > h2, .integrate-user-sidebar > img {
+    display: none;
+  }
+
+  .integrate-sidebar > p {
+    font-size: 12px;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+
+  .integrate-main > .welcome-screen {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .welcome-screen {
+    width: 100%;
+  }
+
+  .welcome-screen > .integrate-sidebar {
+    min-height: 0vh;
+  }
+
+  .integrate-template-content {
+    border: 0px;
+  }
+  
+  .integrate-header > h4 {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .integrate-project-types, .details-project-types {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .template-card {
+    max-width: 100%;
+    border: 1px solid black;
+    margin-top: 15px;
+  }
+
+  .integrate-button-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .integrate-button-panel > button {
+    width: 80%;
+  }
+
+  .integrate-deploy {
+    margin-bottom: 40px !important;
+  }
+
+      /**** (USER DETAILS) SCREEN ****/
+
+  .user-details-screen {
+    display: flex;
+    flex-direction: column !important;
+  }
+
+  .integrate-user-sidebar {
+    background-image: none;
+    background-color: rgba(100, 100, 100, 0);
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    position: absolute;
+    top: 100px;
+  }
+
+  .integrate-content {
+    background-image: none;
+  }
+
+  /**** INTEGRATE SCREEN ****/
 }

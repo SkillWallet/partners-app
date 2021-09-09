@@ -188,7 +188,7 @@ const IntegrateUserDetails = (props) => {
                     handleSubmit,
                     isSubmitting,
                 }) => (
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit} className="user-details-screen">
                             {isLoading ? 
                                 <div className="item">
                                 <h2>Loading</h2>  
@@ -257,14 +257,14 @@ const IntegrateUserDetails = (props) => {
                         </div>
 
                         <div className="integrate-content">
-                            <div className="integrate-header">
+                            <div className="integrate-header details-integrate-header">
                                 <h2 style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Partner&#39;s Agreement</h2>
                                 <h4>Select the template that best represents your project / protocol.</h4>
                             </div>
 
                             <div className="integrate-template-content">
-                                <div className="top-row">
-                                    <div className='template-card card-black'
+                                <div className="top-row details-project-types">
+                                    <div className='template-card card-black details-screen-card'
                                         onClick={userClickedUndo}>
                                         <div className="top-card">
                                             <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
@@ -281,7 +281,7 @@ const IntegrateUserDetails = (props) => {
                                         <img className="line-26" src={lineBreak} alt="line" />
                                     </div>
 
-                                    <div className='template-card card-white'>
+                                    <div className='template-card card-white details-screen-card'>
                                         <h3>Name 2/3 Roles/Skills</h3>
                                         <p>The Roles you envision in your community (i.e. dev, validator, etc.)</p>
                                         <Input
@@ -316,7 +316,7 @@ const IntegrateUserDetails = (props) => {
                                             {/* <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" /> */}
                                     </div>
 
-                                    <div className='template-card card-white'>
+                                    <div className='template-card card-white details-screen-card'>
                                         <h3>Nr. of Actions</h3>
                                         <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
 
