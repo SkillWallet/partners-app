@@ -7,6 +7,7 @@ import { pushImage } from './api/textile.hub';
 // import paper from './assets/paper.svg';
 import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
+import logoBlack from './assets/sw-logo-black.svg';
 import importLightContract from './assets/import-contract-white.svg';
 import copyIcon from './assets/copy-icon.svg';
 import logo from './assets/sw-logo.svg';
@@ -195,9 +196,11 @@ const IntegrateUserDetails = (props) => {
                                 <i className="loader two"></i>
                                 </div> : <div></div>}
                         <div className="integrate-user-sidebar">
+                            <div className="integrate-sidebar-design">
                             <h2>This is your <u>Community.</u> Tell <u>your</u> people all about it</h2>
 
-                            <img src={logo} className="logo-img" alt="skillwallet logo"></img>
+                            {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
+                            <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
                             <div className="user-details-fields">
 
@@ -254,9 +257,11 @@ const IntegrateUserDetails = (props) => {
                                     <p className="char-count">(maximum 280 characters)</p>
                                 </div>
                             </div>
+                            </div>
                         </div>
 
                         <div className="integrate-content">
+                        <div className="integrate-content-design">
                             <div className="integrate-header">
                                 <h2 style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Partner&#39;s Agreement</h2>
                                 <h4>Select the template that best represents your project / protocol.</h4>
@@ -390,6 +395,7 @@ const IntegrateUserDetails = (props) => {
                                         </div>
                                     </div>
                                 </div> : undefined}
+                            </div>
                             </div>
                         </div>
                     </Form>

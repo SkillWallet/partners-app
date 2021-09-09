@@ -2,6 +2,7 @@ import './App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import logo from './assets/sw-logo.svg';
+import logoBlack from './assets/sw-logo-black.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
@@ -22,16 +23,20 @@ function App() {
     <div className="container">
       <main className="landing-main">
         <div className="landing-sidebar">
-          <div>
-              <h1><b>SkillWallet v.0.1</b></h1>
+          <div className="landing-sidebar-design">
+            <div>
+                {/* <h1><b>SkillWallet v.0.1</b></h1> */}
 
-              <img src={logo} className="logo-img" alt="skillwallet logo"></img>
-
-              <p><b>Welcome, Partner!</b></p>
+                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
+                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
+                <p><b>Welcome, Partner!</b></p>
+                
+            </div>
           </div>
         </div>
 
         <div className="landing-content">
+        <div className="landing-content-design">
           <div className="connect-wallet-container">
             <skillwallet-auth 
               id="walletButton"
@@ -68,6 +73,7 @@ function App() {
                 </div>
               </Link>
             </div>
+          </div>
           </div>
         </div>
       </main>
