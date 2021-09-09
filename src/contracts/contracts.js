@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { pushJSONDocument }  from '../api/textile.hub';
 import { generatePartnersKey } from './api';
 
-var communityABI = require('../contracts/abi/ICommunity.abi.json').abi;
 var partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
 
 const metadata = [
@@ -95,32 +94,4 @@ export const createPartnersAgreement = async (
     communityAddr: communityAddress,
     partnersAddr: partnersAgreementAddress
   };
-}
-
-export const createNewUser = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const network = await provider.getNetwork();
-  if (network.name !== 'mumbai') {
-    return false;
-  }
-  const signer = provider.getSigner();
-
-  const contract = new ethers.Contract(
-    '',
-    communityABI,
-    signer,
-  );
-
-  const newUser = await contract.joinNewMember(
-    1,
-    10,
-    0,
-    0,
-    0,
-    0,
-    '', //uri... again - leave empty, don't have the textle part
-    240
-  );
-
-  return newUser;
 }

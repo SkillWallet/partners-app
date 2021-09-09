@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import logo from './assets/sw-favicon.svg';
+import logo from './assets/sw-logo.svg';
 import logoBlack from './assets/sw-logo-black.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
@@ -23,44 +23,39 @@ function App() {
     <div className="container">
       <main className="landing-main">
         <div className="landing-sidebar">
-          <div>
-               <div className="logo-div">
-              {/*  <img src={logo} className="logo-img" alt="skillwallet logo"></img>
-                <div>
-                  <h2>SKILL</h2>
-                  <h2>WALLET</h2>
-                </div> */}
+          <div className="landing-sidebar-design">
+            <div className="logo-div">
+                {/* <h1><b>SkillWallet v.0.1</b></h1> */}
+
+                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
                 <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
                 <p><b>Welcome, Partner!</b></p>
-              </div>
-
-
+                
+            </div>
           </div>
         </div>
 
         <div className="landing-content">
+        <div className="landing-content-design">
           <div className="connect-wallet-container">
             <skillwallet-auth 
               id="walletButton"
               className="connect-wallet"
-              partner-key="c1a69a207a6cb441014afea7f7c8abdde1d2abe9"
+              partner-key="f58fbd644b942ce6eb00acda18857774191513c3"
             ></skillwallet-auth>
           </div>
 
 
 
           <div className="buttons" id="landingButtons">
-            
-            {/* <div className="buttons-top-row sw-description">
-            <p>SkillWallet lets any Community Member create a <b><i>Self-Sovereign NFT ID</i></b>. In 2 easy steps, our Partners can 
-            bootstrap a <b>role-based membership</b> with <b><i>Native Governance & On-Chain Analytics</i></b> for their Web3 Community!</p>
-            </div> */}
+            <div className="buttons-top-row sw-description">
+            {/* <p>SkillWallet lets any Community Member create a <b><i>Self-Sovereign NFT ID</i></b>. In 2 easy steps, our Partners can 
+            bootstrap a <b>role-based membership</b> with <b><i>Native Governance & On-Chain Analytics</i></b> for their Web3 Community!</p> */}
+            <h2><b><ul>Do more with your DAO</ul></b></h2>
 
-            <div className="buttons-top-row new-sw-description">
-                <h2><b><u>Do more with your DAO</u></b></h2>
-                <p>SkillWallets are individual NFT ID's that unlock the true potential of Web3 Communities.</p>
-                <br />
-                <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
+            <p>SkillWallets are individual NFT IFs that unlock the true potential of Web3 Communities.</p>
+            <br /><br />
+            <p>Our Partners can bootstrap a role-based membership - with Native Goverrnance & On-Chain Analytics for their DAO.</p>
             </div>
 
             <div className="buttons-bottom-row">
@@ -84,6 +79,7 @@ function App() {
                 </div>
               </Link>
             </div>
+          </div>
           </div>
         </div>
       </main>

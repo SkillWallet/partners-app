@@ -1,10 +1,20 @@
 {
-  "abi": [
+ "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "distributedTownAddress",
+          "name": "_distributedTownAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_oracle",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_linkToken",
           "type": "address"
         }
       ],
@@ -66,6 +76,19 @@
       "name": "create",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPartnerAgreementAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     }
   ]

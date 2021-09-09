@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="477.5" height="783" viewBox="0 0 477.5 783">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-4 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        filter: url(#Rectangle_41);
+      }
+
+      .cls-6 {
+        filter: url(#Rectangle_14);
+      }
+    </style>
+    <filter id="Rectangle_14" x="0" y="0" width="477.5" height="783" filterUnits="userSpaceOnUse">
+      <feOffset dx="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feFlood flood-opacity="0.349"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_41">
+      <feOffset dx="2" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-color="#fff" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-2"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_1843" data-name="Group 1843" transform="translate(0 7.5)">
+    <g class="cls-6" transform="matrix(1, 0, 0, 1, 0, -7.5)">
+      <rect id="Rectangle_14-2" data-name="Rectangle 14" width="462" height="768" transform="translate(0 7.5)"/>
+    </g>
+    <g data-type="innerShadowGroup">
+      <g class="cls-5" transform="matrix(1, 0, 0, 1, 0, -7.5)">
+        <rect id="Rectangle_41-2" data-name="Rectangle 41" class="cls-1" width="408" height="709" transform="translate(25 32.5)"/>
+      </g>
+      <g id="Rectangle_41-3" data-name="Rectangle 41" class="cls-2" transform="translate(25 25)">
+        <rect class="cls-3" width="408" height="709"/>
+        <rect class="cls-4" x="0.5" y="0.5" width="407" height="708"/>
+      </g>
+    </g>
+  </g>
+</svg>
