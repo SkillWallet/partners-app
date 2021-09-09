@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
-// import overviewStats from './assets/overview-stats.svg';
 import overviewStatsWhite from './assets/overview-stats-white.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';

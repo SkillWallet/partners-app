@@ -51,7 +51,7 @@ a {
 }
 
 .landing-sidebar-design > div {
-  margin-top: 180px !important;
+  margin-top: 180px;
 }
 
 .landing-sidebar > div > div > p, .landing-sidebar > div > div > h1 {
@@ -1492,6 +1492,14 @@ textarea {
     max-width: 100%;
   }
 
+  .landing-sidebar-design, .landing-content-design {
+    min-height: 0 !important;
+  }
+
+  .landing-sidebar-design, .landing-content-design {
+    border: 0;
+  }
+
   .landing-sidebar div p {
     display: none;
   }
@@ -1537,21 +1545,53 @@ textarea {
 
         /**** (WELCOME) SCREEN ****/
 
-  /* .details-integrate-header {
+  .details-integrate-header {
     margin-bottom: 300px;
   }
 
-  .integrate-header > h2 {
-    margin-bottom: 120px;
-  }
-
-  .integrate-sidebar {
+  .integrate-sidebar, .integrate-user-sidebar {
     background-image: none;
-    background-color: white;
+    background-color: #161616;
+    max-width: 100%;
+    padding-bottom: 80px;
   }
 
-  .integrate-sidebar > h2, .integrate-sidebar > img, 
-  .integrate-user-sidebar > h2, .integrate-user-sidebar > img {
+  .integrate-user-sidebar {
+    background-image: none;
+    /* background-color: rgba(100, 100, 100, 0); */
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    /* position: absolute; */
+    top: 100px;
+    /* margin-bottom: 150px; */
+    max-height: 600px;
+    margin-bottom: 30px;
+  }
+
+  .integrate-sidebar-design {
+    border: none;
+    margin: 0 5px;
+  }
+
+  .integrate-user-sidebar > div > p,
+  .integrate-sidebar > div > p {
+    color: white;
+    margin: 0 5px;
+    padding-left: 45px;
+    padding-bottom: 10%;
+  }
+
+  .new-logo-img {
+    width: 40%;
+  }
+
+  /* .integrate-sidebar > img, 
+  .integrate-user-sidebar > img , */
+  /* .integrate-sidebar > div > p,
+  .integrate-user-sidebar > div > p, */
+  .integrate-sidebar > div > h2, 
+  .integrate-user-sidebar > div > h2 {
     display: none;
   }
 
@@ -1571,6 +1611,10 @@ textarea {
 
   .welcome-screen {
     width: 100%;
+  }
+
+  .integrate-sidebar {
+    max-height: 25vh;
   }
 
   .welcome-screen > .integrate-sidebar {
@@ -1610,28 +1654,26 @@ textarea {
 
   .integrate-deploy {
     margin-bottom: 40px !important;
-  } */
+  }
+
+  .details-screen-card {
+    width: 70%;
+    margin: 7px auto;
+  }
 
       /**** (USER DETAILS) SCREEN ****/
 
-  /* .user-details-screen {
+  .user-details-screen {
     display: flex;
     flex-direction: column !important;
+    width: 100%;
   }
 
-  .integrate-user-sidebar {
-    background-image: none;
-    background-color: rgba(100, 100, 100, 0);
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 0;
-    position: absolute;
-    top: 100px;
-  }
+
 
   .integrate-content {
     background-image: none;
-  } */
+  }
 
   /**** INTEGRATE SCREEN ****/
 }
@@ -1654,6 +1696,38 @@ textarea {
     max-width: 100%;
   }
 
+  .integrate-sidebar, .integrate-user-sidebar {
+    background-image: none;
+    background-color: #161616 !important;
+    max-width: 100%;
+    /* padding-bottom: 80px; */
+  }
+
+  .integrate-user-sidebar {
+    /* background-color: rgba(100, 100, 100, 0); */
+    min-width: 100%;
+    min-height: 0;
+    top: 100px;
+  }
+
+  .integrate-sidebar-design {
+    border: none;
+    min-height: 20vh;
+    padding-bottom: 15px;
+  }
+
+  .integrate-sidebar-design > h2 {
+    display: none;
+  }
+
+  .landing-sidebar-design, .landing-content-design {
+    min-height: 0 !important;
+  }
+
+  .landing-sidebar-design, .landing-content-design {
+    border: 0;
+  }
+
   .landing-sidebar div p {
     display: none;
   }
@@ -1668,7 +1742,7 @@ textarea {
   }
 
   .logo-div {
-    margin-top: 0px;
+    margin-top: 0px !important;
   }
 
   #landingButtons {
@@ -1697,9 +1771,6 @@ textarea {
     margin-bottom: 300px;
   }
 
-  .integrate-header > h2 {
-    margin-bottom: 120px;
-  }
 
   .integrate-sidebar {
     background-image: none;
@@ -1775,15 +1846,7 @@ textarea {
     flex-direction: column !important;
   }
 
-  .integrate-user-sidebar {
-    background-image: none;
-    background-color: rgba(100, 100, 100, 0);
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 0;
-    position: absolute;
-    top: 100px;
-  }
+
 
   .integrate-content {
     background-image: none;
