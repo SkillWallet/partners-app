@@ -14,14 +14,13 @@ const IntegrateWelcomeScreen = (props) => {
         <>
             <div className="integrate-sidebar">
                 <div className="integrate-sidebar-design">
-                <h2>Welcome to your <br></br><span style={{ fontWeight: 'bold' }}> Partner Agreement!</span></h2>
+                <h2><span>This is your Partner's Agreement!</span></h2>
 
                 {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
                 <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
-                <p>In just two steps, you will integrate a <b>universal, sybil-resistant login </b>
-                    for your users - and automate a <b>role-based Governance</b>
-                    for your community.
+                <p>Here you can automate a role-based Governance for your DAO & integrate a 
+                    pseudonymous, Sybil-resistant login for your users.
                 </p>
                 </div>
             </div>
