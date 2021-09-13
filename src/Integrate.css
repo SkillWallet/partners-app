@@ -31,10 +31,6 @@ a {
 }
 
 .landing-sidebar {
-  /* background-image:url('./assets/sidebar-background.svg'); */
-  /* background-image:url('./assets/left-bg-black-complete.svg'); */
-  /* background-repeat: no-repeat; */
-  /* background-size: auto; */
   background-color: #161616;
   text-align: center;
   min-width: 30%;

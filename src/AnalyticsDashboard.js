@@ -56,51 +56,54 @@ const AnalyticsDashboard = () => {
     return (
         <main className="analytics-main">
             <div className="analytics-sidebar">
-            <div className="user-header">
-                <img src={logo} alt="d-pad logo" />
-                {/* <h4>{username ? username : "Please sign in..."}</h4> */}
-                <h4>Jabyl</h4>
-            </div>
+                <div className="analytics-sidebar-design" >
+                    <div className="user-header">
+                        <img src={logo} alt="d-pad logo" />
+                        {/* <h4>{username ? username : "Please sign in..."}</h4> */}
+                        <h4>Jabyl</h4>
+                    </div>
 
-            <img className="line-break header-line" src={geometricLine} alt="line"/>
+                    <img className="line-break header-line" src={geometricLine} alt="line"/>
 
-            <div className="profit-sidebar-buttons">
-                <div className="pill analytics-pill">
-                    <img src={overviewStatsWhite} alt="d-pad logo"/>
-                    <h4>Analytics</h4>
-                </div>
+                    <div className="profit-sidebar-buttons">
+                        <div className="pill analytics-pill">
+                            <img src={overviewStatsWhite} alt="d-pad logo"/>
+                            <h4>Analytics</h4>
+                        </div>
 
-                <div className="pill contracts-pill">
-                    <img src={listedContracts} alt="d-pad logo"/>
-                    <div className="listed-contracts">
-                        <h4>Listed Contracts</h4>
-                        {/* <form>
-                            <input placeholder="0x..." ></input>
+                        <div className="pill contracts-pill">
+                            <img src={listedContracts} alt="d-pad logo"/>
+                            <div className="listed-contracts">
+                                <h4>Listed Contracts</h4>
+                                {/* <form>
+                                    <input placeholder="0x..." ></input>
 
-                            <input placeholder="0x..." ></input>
+                                    <input placeholder="0x..." ></input>
 
-                            <input placeholder="0x..." ></input>
-                        </form> */}
-                        <div>
-                            <p>0x8761345...134</p>
-                            <p>0x0981934...357</p>
+                                    <input placeholder="0x..." ></input>
+                                </form> */}
+                                <div>
+                                    <p>0x8761345...134</p>
+                                    <p>0x0981934...357</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pill">
+                            <img src={addContract} alt="d-pad logo"/>
+                            <h4>Add Contract</h4>
+                        </div>
+
+                        <div className="pill" onClick={() => setLoggingOff(true)}>
+                            <img src={logOff} alt="d-pad logo"/>
+                            <h4>Log off</h4>
                         </div>
                     </div>
                 </div>
-
-                <div className="pill">
-                    <img src={addContract} alt="d-pad logo"/>
-                    <h4>Add Contract</h4>
-                </div>
-
-                <div className="pill" onClick={() => setLoggingOff(true)}>
-                    <img src={logOff} alt="d-pad logo"/>
-                    <h4>Log off</h4>
-                </div>
-            </div>
             </div>
             
             <div className="analytics-content">
+                <div className="analytics-content-design">
                 <div id="flyoutMenu" className="flyout-div" style={{transform: transformProp}}>
                     <div className="profit-sidebar-buttons">
                         <div className="pill analytics-pill">
@@ -232,6 +235,7 @@ const AnalyticsDashboard = () => {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </main>

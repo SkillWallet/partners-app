@@ -55,12 +55,18 @@
 }
 
 .analytics-sidebar {
-  background-color: white;
-  background-image:url('./assets/sidebar-background.svg');
+  background-color: #161616;
   max-width: 20%;
   display: flex;
   flex-direction: column;
+}
 
+.analytics-sidebar-design {
+  width: 90%;
+  border: 1px solid white;
+  min-height: 98vh;
+  margin: 0 auto;
+  margin-top: 8px;
 }
 
 .analytics-sidebar-buttons > * {
@@ -70,9 +76,17 @@
 .analytics-main {
   display: flex;
   height:100vh;
-  background-image:url('./assets/black-background.svg');
+  background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.analytics-content-design {
+  border: 1px solid black;
+  width: 95%;
+  min-height: 98vh;
+  margin: auto auto;
+  margin-top: 0.8%;
 }
 
 .sw-description > p {
@@ -193,6 +207,7 @@
 
 .user-header > h4 {
   margin-left: 0 !important;
+  color: white;
 }
 
 .user-header > img {
