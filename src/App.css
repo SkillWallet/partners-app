@@ -462,6 +462,15 @@
   color: white;
 }
 
+/***** DESKTOP ONLY ******/
+
+@media only screen and (min-width: 1025px) {
+  #flyoutMenu {
+    transform: translate3d(-120vw, 0, 0) !important;
+  }
+}
+
+
 /****** TABLET AND MOBILE ******/
 
 @media only screen and (max-width: 1024px) {
@@ -642,6 +651,10 @@
     margin-bottom: 20px;
   }
 
+  .analytics-content > .flyout-div > .profit-sidebar-buttons > .pill{
+    width: 50%;
+  }
+
   /**** ANALYTICS SCREEN ****/
 }
 
@@ -781,12 +794,16 @@
 #flyoutMenu {
   width: 100vw;
   height: 100vh;
-  background-color: #FFE600;
+  background-color: white;
+  background-image:url('./assets/sidebar-background.svg');
   position: fixed;
   top: 0;
   left: 0;
-  transform: translate3d(-100vw, 0, 0);
   transition: transform .3s cubic-bezier(0, .52, 0, 1);
+}
+
+.analytics-content > .flyout-div {
+  padding-top: 50px;
 }
 
 #flyoutMenu h2 a {
@@ -797,8 +814,4 @@
 
 #flyoutMenu h2 a:hover {
   text-decoration: underline;
-}    
-
-#flyoutMenu.show {
-  transform: translate3d(0vw, 0, 0);
-}  
+}

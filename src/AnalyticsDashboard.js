@@ -26,31 +26,19 @@ const AnalyticsDashboard = () => {
     const [loggingOff, setLoggingOff] = useState(false);
     let isTabletOrMobile = useMediaQuery({ maxWidth: 1024});
     const [settingsMenuHidden, setSettingsMenuHidden] =  useState(true);
+    const [transformProp, setTransformProp] = useState('translate3d(-120vw, 0, 0)');
 
     const updateChart = (event) => {
         updateCurrentChart(event.target.value);
     };
 
-    const toggleSettings = (e) => {
+    const toggleSettings = () => {
         setSettingsMenuHidden(!settingsMenuHidden);
-        updateMenu(e, !settingsMenuHidden);
+        updateMenu(!settingsMenuHidden);
     };
 
-    var roundButton = document.querySelector("#roundButton");
- 
-    var flyoutMenu = document.querySelector("#flyoutMenu");
-
-    const updateMenu = (e, isHidden) => {
-        console.log(isHidden);
-        if (isHidden  === true) {
-            console.log("don't come in here")
-            flyoutMenu.classList.remove("show");
-            e.stopPropagation();
-            document.body.style.overflow = "auto";
-        } else {
-            flyoutMenu.classList.add("show");
-            document.body.style.overflow = "hidden";
-        }
+    const updateMenu = (isHidden) => {
+        isHidden  === true ? setTransformProp('translate3d(-120vw, 0, 0)') : setTransformProp('translate3d(0vw, 0, 0)');
     };
 
     useEffect(() => {
@@ -113,17 +101,47 @@ const AnalyticsDashboard = () => {
             </div>
             
             <div className="analytics-content">
-                <div id="flyoutMenu">
-                    <h2><a href="#">Home</a></h2>
-                    <h2><a href="#">About</a></h2>
-                    <h2><a href="#">Contact</a></h2>
-                    <h2><a href="#">Search</a></h2>
+                <div id="flyoutMenu" className="flyout-div" style={{transform: transformProp}}>
+                    <div className="profit-sidebar-buttons">
+                        <div className="pill analytics-pill">
+                            <img src={overviewStatsWhite} alt="d-pad logo"/>
+                            <h4>Analytics</h4>
+                        </div>
+
+                        <div className="pill contracts-pill">
+                            <img src={listedContracts} alt="d-pad logo"/>
+                            <div className="listed-contracts">
+                                <h4>Listed Contracts</h4>
+                                {/* <form>
+                                    <input placeholder="0x..." ></input>
+
+                                    <input placeholder="0x..." ></input>
+
+                                    <input placeholder="0x..." ></input>
+                                </form> */}
+                                <div>
+                                    <p>0x8761345...134</p>
+                                    <p>0x0981934...357</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pill">
+                            <img src={addContract} alt="d-pad logo"/>
+                            <h4>Add Contract</h4>
+                        </div>
+
+                        <div className="pill" onClick={() => setLoggingOff(true)}>
+                            <img src={logOff} alt="d-pad logo"/>
+                            <h4>Log off</h4>
+                        </div>
+                    </div>
                 </div>
+
                 <div className="header-row">
-                    <div className="settings-icon">
+                    <div className="settings-icon" onClick={() => toggleSettings()}>
                 {isTabletOrMobile ? 
-                    <img src={dots} alt="three dots" onClick={() => toggleSettings()}
-                    /> : null}
+                    <img src={dots} alt="three dots" /> : null}
                 </div>
                     <div className="community-div dashboard-container">
                         <img className="logo-img" src={dPad} alt="D Pad logo" />
