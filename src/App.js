@@ -1,7 +1,6 @@
 import './App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import logo from './assets/sw-logo.svg';
 import logoBlack from './assets/sw-logo-black.svg';
 import './Integrate.css';
 import networkIcon from "./assets/network.svg";
@@ -25,9 +24,7 @@ function App() {
         <div className="landing-sidebar">
           <div className="landing-sidebar-design">
             <div className="logo-div">
-                {/* <h1><b>SkillWallet v.0.1</b></h1> */}
 
-                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
                 <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
                 <p><b>Welcome, Partner!</b></p>
                 
@@ -50,7 +47,7 @@ function App() {
 
             <p>SkillWallets are individual NFT IFs that unlock the true potential of Web3 Communities.</p>
             <br /><br />
-            <p>Our Partners can bootstrap a role-based membership - with Native Goverrnance & On-Chain Analytics for their DAO.</p>
+            <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
             </div>
 
             <div className="buttons-bottom-row">

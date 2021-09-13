@@ -1,11 +1,9 @@
 import React from 'react';
-import logo from './assets/sw-logo.svg';
 import nodes from './assets/nodes.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import lightbulb from './assets/lightbulb.svg';
 import logoBlack from './assets/sw-logo-black.svg';
 import graph from './assets/person-and-graph.svg';
-// import paper from './assets/paper.svg';
 import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
 
@@ -14,14 +12,15 @@ const IntegrateWelcomeScreen = (props) => {
         <div className="welcome-screen">
             <div className="integrate-sidebar">
                 <div className="integrate-sidebar-design">
-                <h2><span>This is your Partner's Agreement!</span></h2>
+                    <div>
+                        <h2><span>This is your Partner's Agreement!</span></h2>
 
-                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
-                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
+                        <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
-                <p>Here you can automate a role-based Governance for your DAO & integrate a 
-                    pseudonymous, Sybil-resistant login for your users.
-                </p>
+                        <p>Here you can automate a role-based Governance for your DAO & integrate a 
+                            pseudonymous, Sybil-resistant login for your users.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -49,6 +48,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 </div>
 
                                 <img className="line-26" src={lineBreak} alt="line"/>
+                                <br />
                             </div>
 
                             <div className="template-card card-white welcome-screen-card" onClick={() => props.setSelectedTemplate(1)}>
@@ -65,6 +65,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 </div>
 
                                 <img className="line-26" src={lineBreak} alt="line"/>
+                                <br />
                             </div>
 
                             <div className="template-card card-white welcome-screen-card" onClick={() => props.setSelectedTemplate(2)}>
@@ -81,6 +82,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 </div>
 
                                 <img className="line-26" src={lineBreak} alt="line"/>
+                                <br />
                             </div>
                         </div>
                         <div className="bottom-row">

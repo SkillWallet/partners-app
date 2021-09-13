@@ -10,7 +10,6 @@ import importContract from './assets/import-contract.svg';
 import logoBlack from './assets/sw-logo-black.svg';
 import importLightContract from './assets/import-contract-white.svg';
 import copyIcon from './assets/copy-icon.svg';
-import logo from './assets/sw-logo.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import openSource from './assets/opensource-defi-white.png';
 import art from './assets/art-nft-white.png';
@@ -199,7 +198,6 @@ const IntegrateUserDetails = (props) => {
                             <div className="integrate-sidebar-design">
                             <h2>This is your <u>DAO.</u> Tell <u>members</u> all about it 🙌</h2>
 
-                            {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
                             <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
                             <div className="user-details-fields">
