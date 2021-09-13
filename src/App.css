@@ -462,6 +462,41 @@
   color: white;
 }
 
+/****** TABLET AND MOBILE ******/
+
+@media only screen and (max-width: 1024px) {
+  .settings-icon {
+    border-radius: 100%;
+    border: 3px solid black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+  }
+
+  .settings-icon > img {
+    width:  80%;
+
+  }
+
+  .settings-icon:hover {
+    cursor: pointer;
+  }
+
+  .settings-icon:active {
+    margin-top: 1px;
+    border: 3px solid #505050;
+  }
+}
+
+
+
+/******** TABLET ONLY *******/
+
 @media only screen and (min-width: 641px) and (max-width: 1024px) {
   /**** ANALYTICS SCREEN ****/
   .analytics-content {
@@ -475,7 +510,7 @@
   .header-row {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 80px;
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -610,6 +645,7 @@
   /**** ANALYTICS SCREEN ****/
 }
 
+/******* MOBILE ONLY ****/
 
 @media only screen and (max-width: 640px) {
   
@@ -625,7 +661,7 @@
   .header-row {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 70px;
     justify-content: center;
     text-align: center;
     display: flex;
@@ -739,3 +775,30 @@
 
   /**** ANALYTICS SCREEN ****/
 }
+
+/* https://www.kirupa.com/html5/creating_a_smooth_sliding_menu.htm */
+
+#flyoutMenu {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFE600;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate3d(-100vw, 0, 0);
+  transition: transform .3s cubic-bezier(0, .52, 0, 1);
+}
+
+#flyoutMenu h2 a {
+  color: #333;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+#flyoutMenu h2 a:hover {
+  text-decoration: underline;
+}    
+
+#flyoutMenu.show {
+  transform: translate3d(0vw, 0, 0);
+}  

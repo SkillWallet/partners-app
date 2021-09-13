@@ -16,18 +16,45 @@ import ChartInteractions from './ChartInteractions';
 import ChartNewUsers from './ChartNewUsers';
 import ChartActiveUsers from './ChartActiveUsers';
 import ChartRoles from './ChartRoles';
+import dots from './assets/dots-icon.svg';
+import { useMediaQuery } from 'react-responsive';
 
 
 const AnalyticsDashboard = () => {
     const [currentChart, updateCurrentChart] = useState('interactions');
     const history = useHistory();
     const [loggingOff, setLoggingOff] = useState(false);
+    let isTabletOrMobile = useMediaQuery({ maxWidth: 1024});
+    const [settingsMenuHidden, setSettingsMenuHidden] =  useState(true);
 
     const updateChart = (event) => {
         updateCurrentChart(event.target.value);
     };
 
+    const toggleSettings = (e) => {
+        setSettingsMenuHidden(!settingsMenuHidden);
+        updateMenu(e, !settingsMenuHidden);
+    };
+
+    var roundButton = document.querySelector("#roundButton");
+ 
+    var flyoutMenu = document.querySelector("#flyoutMenu");
+
+    const updateMenu = (e, isHidden) => {
+        console.log(isHidden);
+        if (isHidden  === true) {
+            console.log("don't come in here")
+            flyoutMenu.classList.remove("show");
+            e.stopPropagation();
+            document.body.style.overflow = "auto";
+        } else {
+            flyoutMenu.classList.add("show");
+            document.body.style.overflow = "hidden";
+        }
+    };
+
     useEffect(() => {
+        console.log(isTabletOrMobile);
         if (loggingOff) {
             const keys = ['header', 'imageUrl', 'header', 'contractAddress', 'username', 'tokenId', 'skillWallet'];
             keys.forEach(k => {
@@ -86,7 +113,18 @@ const AnalyticsDashboard = () => {
             </div>
             
             <div className="analytics-content">
+                <div id="flyoutMenu">
+                    <h2><a href="#">Home</a></h2>
+                    <h2><a href="#">About</a></h2>
+                    <h2><a href="#">Contact</a></h2>
+                    <h2><a href="#">Search</a></h2>
+                </div>
                 <div className="header-row">
+                    <div className="settings-icon">
+                {isTabletOrMobile ? 
+                    <img src={dots} alt="three dots" onClick={() => toggleSettings()}
+                    /> : null}
+                </div>
                     <div className="community-div dashboard-container">
                         <img className="logo-img" src={dPad} alt="D Pad logo" />
                         <h2>The Dark Dito</h2>
