@@ -24,7 +24,7 @@ const IntegrateUserDetails = (props) => {
     const [isActiveId, setIsActiveId] = useState(null);
     const [isCommunityInactive, setIsCommunityInactive] = useState(true);
     const [partnersDetails, setPartnersDetails] = useState({});
-    
+
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
             return 'openSource';
@@ -98,16 +98,18 @@ const IntegrateUserDetails = (props) => {
         return errors === {};
     }
 
-    const highlightInput = () =>{
+    const highlightInput = () => {
         setIsActiveId('activeContract');
     }
 
     const onActivateCommunity = () => {
         const input = document.querySelector("skillwallet-auth")
-        const event = new CustomEvent("activateSkillwalletCommunity", {'detail': {
-            communityAddr: partnersDetails.communityAddr,
-            partnersAddr: partnersDetails.partnersAddr
-        }})
+        const event = new CustomEvent("activateSkillwalletCommunity", {
+            'detail': {
+                communityAddr: partnersDetails.communityAddr,
+                partnersAddr: partnersDetails.partnersAddr
+            }
+        })
         input.dispatchEvent(event)
         setIsCommunityInactive(false);
     }
@@ -130,10 +132,10 @@ const IntegrateUserDetails = (props) => {
 
                     if (!values.skillOne) {
                         errors.skillOne = "Required";
-                    } 
+                    }
                     if (!values.skillTwo) {
                         errors.skillTwo = "Required";
-                    } 
+                    }
                     // if (!values.skillThree) {
                     //     errors.skillThree = "Required";
                     // } 
@@ -188,82 +190,87 @@ const IntegrateUserDetails = (props) => {
                     handleSubmit,
                     isSubmitting,
                 }) => (
+
                     <Form onSubmit={handleSubmit} className="user-details-screen">
-                            {isLoading ? 
-                                <div className="item">
-                                <h2>Loading</h2>  
+                        {isLoading ?
+                            <div className="item">
+                                <h2>Loading</h2>
+
                                 <i className="loader two"></i>
-                                </div> : <div></div>}
+                            </div> : <div></div>}
                         <div className="integrate-user-sidebar">
                             <div className="integrate-sidebar-design">
-                            <h2>This is your <u>DAO.</u> Tell <u>members</u> all about it 🙌</h2>
 
-                            <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
+                                <h2>This is your <u>DAO.</u> Tell <u>members</u> all about it 🙌</h2>
 
-                            <div className="user-details-fields">
+                                {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
+                                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
-                                <div>
-                                    <div className="community-name-field">
-                                        <h4>Name</h4>
-                                        <TextArea
-                                            id="name"
-                                            name="name"
-                                            type="text"
-                                            // onChange={handleChange}
-                                            placeholder="Show off with a great Community Name!"
-                                            value={values.name}
-                                        ></TextArea>
-                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="name" />
-                                    </div>
+                                <div className="user-details-fields">
 
-                                    <p className="char-count">{values.name ? values.name.match(/\S+/g).length : 0} words</p>
-                                </div>
-
-
-                                <div className="avatar-field">
                                     <div>
-                                        <h4>Avatar</h4>
-                                        <p>Your public Logo - that's how others will know it's really you</p>
+                                        <div className="community-name-field">
+                                            <h4>Name</h4>
+                                            <TextArea
+                                                id="name"
+                                                name="name"
+                                                type="text"
+                                                // onChange={handleChange}
+                                                placeholder="Show off with a great Community Name!"
+                                                value={values.name}
+                                            ></TextArea>
+                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="name" />
+                                        </div>
+
+                                        <p className="char-count">{values.name ? values.name.match(/\S+/g).length : 0} words</p>
                                     </div>
 
-                                    {!avatarUrl ? <label htmlFor="file" >
-                                        <div className="avatar-upload-div">
-                                            <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" />
-                                            <input type="file" name="files[]" id="file"  accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
-                                            <p>.svg , .png, or .jpg</p>
-                                        </div>
-                                    </label> :
-                                        <div className="avatar-div">
-                                            <img className="line-26" src={avatarUrl} alt="line" />
-                                        </div>
-                                    }
-                                </div>
 
-                                <div>
+                                    <div className="avatar-field">
+                                        <div>
+                                            <h4>Avatar</h4>
+                                            <p>Your public Logo - that's how others will know it's really you</p>
+                                        </div>
+
+                                        {!avatarUrl ? <label htmlFor="file" >
+                                            <div className="avatar-upload-div">
+                                                <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" />
+                                                <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
+                                                <p>.svg , .png, or .jpg</p>
+                                            </div>
+                                        </label> :
+                                            <div className="avatar-div">
+                                                <img className="line-26" src={avatarUrl} alt="line" />
+                                            </div>
+                                        }
+                                    </div>
+
                                     <div>
-                                        <h4>Description</h4>
-                                        <TextArea
-                                            id="description"
-                                            name="description"
-                                            type="text"
-                                            // onChange={handleChange}
-                                            placeholder="Introduce your community to the world. It can be your one-liner, its values, its goals, or even the story behind it!"
-                                            value={values.description}
-                                        ></TextArea>
-                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="description" />
+                                        <div>
+                                            <h4>Description</h4>
+                                            <TextArea
+                                                id="description"
+                                                name="description"
+                                                type="text"
+                                                // onChange={handleChange}
+                                                placeholder="Introduce your community to the world. It can be your one-liner, its values, its goals, or even the story behind it!"
+                                                value={values.description}
+                                            ></TextArea>
+                                            <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="description" />
+                                        </div>
+                                        <p className="char-count">(maximum 280 characters)</p>
                                     </div>
-                                    <p className="char-count">(maximum 280 characters)</p>
                                 </div>
-                            </div>
                             </div>
                         </div>
 
                         <div className="integrate-content">
-                        <div className="integrate-content-design">
-                            <div className="integrate-header">
-                                <h2 style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Partner&#39;s Agreement</h2>
-                                <h4>Select the template that best represents your project / protocol.</h4>
-                            </div>
+                            <div className="integrate-content-design">
+                                <div className="integrate-header">
+                                    <h2 style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Partner&#39;s Agreement</h2>
+                                    <h4>Select the template that best represents your project / protocol.</h4>
+                                </div>
+
 
                             <div className="integrate-template-content">
                                 <div className="top-row details-project-types">
@@ -272,17 +279,17 @@ const IntegrateUserDetails = (props) => {
                                         <div className="top-card">
                                             <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
 
-                                            <div className="raleway-bold-alto-22px title-black-card">
-                                                {props.templateOptions.header}
+                                                <div className="raleway-bold-alto-22px title-black-card">
+                                                    {props.templateOptions.header}
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="description-black-card raleway-normal-alto-18px">
-                                            {props.templateOptions.description}
-                                        </div>
+                                            <div className="description-black-card raleway-normal-alto-18px">
+                                                {props.templateOptions.description}
+                                            </div>
 
-                                        <img className="line-26" src={lineBreak} alt="line" />
-                                    </div>
+                                            <img className="line-26" src={lineBreak} alt="line" />
+                                        </div>
 
                                     <div className='template-card card-white details-screen-card'>
                                         <h3>Name 2/3 Roles/Skills</h3>
@@ -297,103 +304,103 @@ const IntegrateUserDetails = (props) => {
                                             style={{ text: 'white' }}
                                             />
                                             <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillOne" />
-                                        <Input
-                                            id="role"
-                                            name="skillTwo"
-                                            type="text"
-                                            onChange={handleChange}
-                                            placeholder="Role/Skill 2 *"
-                                            value={values.skillTwo}
-                                            style={{ text: 'white' }}
+                                            <Input
+                                                id="role"
+                                                name="skillTwo"
+                                                type="text"
+                                                onChange={handleChange}
+                                                placeholder="Role/Skill 2 *"
+                                                value={values.skillTwo}
+                                                style={{ text: 'white' }}
                                             />
                                             <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillTwo" />
-                                        <Input
-                                            id="role"
-                                            name="skillThree"
-                                            type="text"
-                                            onChange={handleChange}
-                                            placeholder="Role/Skill 3"
-                                            value={values.skillThree}
-                                            style={{ text: 'white' }}
+                                            <Input
+                                                id="role"
+                                                name="skillThree"
+                                                type="text"
+                                                onChange={handleChange}
+                                                placeholder="Role/Skill 3"
+                                                value={values.skillThree}
+                                                style={{ text: 'white' }}
                                             />
                                             {/* <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" /> */}
-                                    </div>
+                                        </div>
 
                                     <div className='template-card card-white details-screen-card'>
                                         <h3>Nr. of Actions</h3>
                                         <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
 
-                                        <div className="auto-flex1">
+                                            <div className="auto-flex1">
 
-                                            <div className="bar-chart-first-container">
-                                                <input className="bar-chart-container" name="numberOfActions" onBlur={handleBlur}
-                                                    onChange={handleChange} type="range" id="numberOfActions" value={values.numberOfActions}
-                                                    min="10" max="100"></input>
-                                                <div className="bar-chart-metrics">
-                                                    <p>10</p>
-                                                    <p>100</p>
+                                                <div className="bar-chart-first-container">
+                                                    <input className="bar-chart-container" name="numberOfActions" onBlur={handleBlur}
+                                                        onChange={handleChange} type="range" id="numberOfActions" value={values.numberOfActions}
+                                                        min="10" max="100"></input>
+                                                    <div className="bar-chart-metrics">
+                                                        <p>10</p>
+                                                        <p>100</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="bottom-row">
+                                    <div className="bottom-row">
 
-                                    <div className="bootstrap-button">
-                                        <p>Bootstrap your Community Economy</p>
-                                    </div>
-
-                                    <div className="integrate-button-panel">
-                                        <button type="button" className="disabled">
-                                            <div>
-                                                <p>Start from Scratch</p>
-                                                <img src={paper} alt="white sheet of paper" />
-                                            </div>
-                                        </button>
-
-                                        <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button'>
-                                            <div>
-                                                <p>Import your Contract</p>
-                                                <img src={isActiveId ? importLightContract : importContract} alt="black sheet of paper" />
-                                            </div>
-                                        </button>
-                                    </div>
-
-                                    <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors) || isLoading}
-                                    // 'window' is undefined when I call Mumbai
-                                    >
-                                        Sign & Deploy 🚀
-                                    </button>
-
-                                </div>
-
-                                {key && isCommunityInactive ? 
-                                <div id="topDiv">
-                                    <div id="modalWindow">
-                                        <div className="modal-window-child partner-key-content">
-                                            <div className="wallet-header">
-                                                <h2 style={{ textDecoration: "underline" }}>Congrats, Partner!</h2>
-                                            </div>
-
-                                            <div className="verify-p">
-                                                <p>You've successfully integrated the SkillWallet.</p>
-                                                <p>As promised, here is your Access Key. Copy it & keep it safe:</p>
-                                            </div>
-                                            <div className="partner-key">
-                                                <h4>{key}</h4>
-                                                <img src={copyIcon}/>
-                                            </div>
-
-                                            <div>
-                                                <p>Last but not least, activate Community Name by picking your SkillWallet Role:</p>
-                                            </div>
-
-                                            <button type="button" onClick={() => onActivateCommunity()}>Activate!</button>
+                                        <div className="bootstrap-button">
+                                            <p>Bootstrap your Community Economy</p>
                                         </div>
+
+                                        <div className="integrate-button-panel">
+                                            <button type="button" className="disabled">
+                                                <div>
+                                                    <p>Start from Scratch</p>
+                                                    <img src={paper} alt="white sheet of paper" />
+                                                </div>
+                                            </button>
+
+                                            <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button'>
+                                                <div>
+                                                    <p>Import your Contract</p>
+                                                    <img src={isActiveId ? importLightContract : importContract} alt="black sheet of paper" />
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <button className={submitButtonClass} id="integrate-deploy" type="submit" disabled={isFormValid(errors) || isLoading}
+                                        // 'window' is undefined when I call Mumbai
+                                        >
+                                            Sign & Deploy 🚀
+                                        </button>
+
                                     </div>
-                                </div> : undefined}
-                            </div>
+
+                                    {key && isCommunityInactive ?
+                                        <div id="topDiv">
+                                            <div id="modalWindow">
+                                                <div className="modal-window-child partner-key-content">
+                                                    <div className="wallet-header">
+                                                        <h2 style={{ textDecoration: "underline" }}>Congrats, Partner!</h2>
+                                                    </div>
+
+                                                    <div className="verify-p">
+                                                        <p>You've successfully integrated the SkillWallet.</p>
+                                                        <p>As promised, here is your Access Key. Copy it & keep it safe:</p>
+                                                    </div>
+                                                    <div className="partner-key">
+                                                        <h4>{key}</h4>
+                                                        <img src={copyIcon} />
+                                                    </div>
+
+                                                    <div>
+                                                        <p>Last but not least, activate Community Name by picking your SkillWallet Role:</p>
+                                                    </div>
+
+                                                    <button type="button" onClick={() => onActivateCommunity()}>Activate!</button>
+                                                </div>
+                                            </div>
+                                        </div> : undefined}
+                                </div>
                             </div>
                         </div>
                     </Form>
