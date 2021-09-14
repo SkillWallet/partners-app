@@ -1465,7 +1465,7 @@ textarea {
 
 @media only screen and (min-width: 1025px) {
   .logo-div {
-    margin-top: 100% !important;
+    margin-top: 80% !important;
   }
 }
 /***** DESKTOP ONLY ******/
