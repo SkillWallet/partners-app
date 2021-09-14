@@ -10,7 +10,6 @@ import importContract from './assets/import-contract.svg';
 import logoBlack from './assets/sw-logo-black.svg';
 import importLightContract from './assets/import-contract-white.svg';
 import copyIcon from './assets/copy-icon.svg';
-import logo from './assets/sw-logo.svg';
 import lineBreak from './assets/geometric-card-line-break.png';
 import openSource from './assets/opensource-defi-white.png';
 import art from './assets/art-nft-white.png';
@@ -189,7 +188,7 @@ const IntegrateUserDetails = (props) => {
                     handleSubmit,
                     isSubmitting,
                 }) => (
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit} className="user-details-screen">
                             {isLoading ? 
                                 <div className="item">
                                 <h2>Loading</h2>  
@@ -199,7 +198,6 @@ const IntegrateUserDetails = (props) => {
                             <div className="integrate-sidebar-design">
                             <h2>This is your <u>DAO.</u> Tell <u>members</u> all about it 🙌</h2>
 
-                            {/* <img src={logo} className="logo-img" alt="skillwallet logo"></img> */}
                             <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
 
                             <div className="user-details-fields">
@@ -268,8 +266,8 @@ const IntegrateUserDetails = (props) => {
                             </div>
 
                             <div className="integrate-template-content">
-                                <div className="top-row">
-                                    <div className='template-card card-black'
+                                <div className="top-row details-project-types">
+                                    <div className='template-card card-black details-screen-card'
                                         onClick={userClickedUndo}>
                                         <div className="top-card">
                                             <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
@@ -286,7 +284,7 @@ const IntegrateUserDetails = (props) => {
                                         <img className="line-26" src={lineBreak} alt="line" />
                                     </div>
 
-                                    <div className='template-card card-white'>
+                                    <div className='template-card card-white details-screen-card'>
                                         <h3>Name 2/3 Roles/Skills</h3>
                                         <p>The Roles you envision in your community (i.e. dev, validator, etc.)</p>
                                         <Input
@@ -321,7 +319,7 @@ const IntegrateUserDetails = (props) => {
                                             {/* <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" /> */}
                                     </div>
 
-                                    <div className='template-card card-white'>
+                                    <div className='template-card card-white details-screen-card'>
                                         <h3>Nr. of Actions</h3>
                                         <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
 

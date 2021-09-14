@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import listedContracts from './assets/listed-contracts.svg';
 import addContract from './assets/add-contract.svg';
 import logOff from './assets/log-off.svg';
-// import overviewStats from './assets/overview-stats.svg';
 import overviewStatsWhite from './assets/overview-stats-white.svg';
 import logo from './assets/sw-logo.svg';
 import geometricLine from './assets/geometric-card-line-break.png';
@@ -17,18 +16,33 @@ import ChartInteractions from './ChartInteractions';
 import ChartNewUsers from './ChartNewUsers';
 import ChartActiveUsers from './ChartActiveUsers';
 import ChartRoles from './ChartRoles';
+import dots from './assets/dots-icon.svg';
+import { useMediaQuery } from 'react-responsive';
 
 
 const AnalyticsDashboard = () => {
     const [currentChart, updateCurrentChart] = useState('interactions');
     const history = useHistory();
     const [loggingOff, setLoggingOff] = useState(false);
+    let isTabletOrMobile = useMediaQuery({ maxWidth: 1024});
+    const [settingsMenuHidden, setSettingsMenuHidden] =  useState(true);
+    const [transformProp, setTransformProp] = useState('translate3d(-120vw, 0, 0)');
 
     const updateChart = (event) => {
         updateCurrentChart(event.target.value);
     };
 
+    const toggleSettings = () => {
+        setSettingsMenuHidden(!settingsMenuHidden);
+        updateMenu(!settingsMenuHidden);
+    };
+
+    const updateMenu = (isHidden) => {
+        isHidden  === true ? setTransformProp('translate3d(-120vw, 0, 0)') : setTransformProp('translate3d(0vw, 0, 0)');
+    };
+
     useEffect(() => {
+        console.log(isTabletOrMobile);
         if (loggingOff) {
             const keys = ['header', 'imageUrl', 'header', 'contractAddress', 'username', 'tokenId', 'skillWallet'];
             keys.forEach(k => {
@@ -42,56 +56,100 @@ const AnalyticsDashboard = () => {
     return (
         <main className="analytics-main">
             <div className="analytics-sidebar">
-            <div className="user-header">
-                <img src={logo} alt="d-pad logo" />
-                {/* <h4>{username ? username : "Please sign in..."}</h4> */}
-                <h4>Jabyl</h4>
-            </div>
+                <div className="analytics-sidebar-design" >
+                    <div className="user-header">
+                        <img src={logo} alt="d-pad logo" />
+                        {/* <h4>{username ? username : "Please sign in..."}</h4> */}
+                        <h4>Jabyl</h4>
+                    </div>
 
-            <img className="line-break header-line" src={geometricLine} alt="line"/>
+                    <img className="line-break header-line" src={geometricLine} alt="line"/>
 
-            <div className="profit-sidebar-buttons">
-                <div className="pill analytics-pill">
-                    <img src={overviewStatsWhite} alt="d-pad logo"/>
-                    <h4>Analytics</h4>
+                    <div className="profit-sidebar-buttons">
+                        <div className="pill analytics-pill">
+                            <img src={overviewStatsWhite} alt="d-pad logo"/>
+                            <h4>Analytics</h4>
+                        </div>
+
+                        <div className="pill contracts-pill">
+                            <img src={listedContracts} alt="d-pad logo"/>
+                            <div className="listed-contracts">
+                                <h4>Listed Contracts</h4>
+                                {/* <form>
+                                    <input placeholder="0x..." ></input>
+
+                                    <input placeholder="0x..." ></input>
+
+                                    <input placeholder="0x..." ></input>
+                                </form> */}
+                                <div>
+                                    <p>0x8761345...134</p>
+                                    <p>0x0981934...357</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pill">
+                            <img src={addContract} alt="d-pad logo"/>
+                            <h4>Add Contract</h4>
+                        </div>
+
+                        <div className="pill" onClick={() => setLoggingOff(true)}>
+                            <img src={logOff} alt="d-pad logo"/>
+                            <h4>Log off</h4>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            
+            <div className="analytics-content">
+                <div className="analytics-content-design">
+                <div id="flyoutMenu" className="flyout-div" style={{transform: transformProp}}>
+                    <div className="profit-sidebar-buttons">
+                        <div className="pill analytics-pill">
+                            <img src={overviewStatsWhite} alt="d-pad logo"/>
+                            <h4>Analytics</h4>
+                        </div>
 
-                <div className="pill contracts-pill">
-                    <img src={listedContracts} alt="d-pad logo"/>
-                    <div className="listed-contracts">
-                        <h4>Listed Contracts</h4>
-                        {/* <form>
-                            <input placeholder="0x..." ></input>
+                        <div className="pill contracts-pill">
+                            <img src={listedContracts} alt="d-pad logo"/>
+                            <div className="listed-contracts">
+                                <h4>Listed Contracts</h4>
+                                {/* <form>
+                                    <input placeholder="0x..." ></input>
 
-                            <input placeholder="0x..." ></input>
+                                    <input placeholder="0x..." ></input>
 
-                            <input placeholder="0x..." ></input>
-                        </form> */}
-                        <div>
-                            <p>0x8761345...134</p>
-                            <p>0x0981934...357</p>
+                                    <input placeholder="0x..." ></input>
+                                </form> */}
+                                <div>
+                                    <p>0x8761345...134</p>
+                                    <p>0x0981934...357</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pill">
+                            <img src={addContract} alt="d-pad logo"/>
+                            <h4>Add Contract</h4>
+                        </div>
+
+                        <div className="pill" onClick={() => setLoggingOff(true)}>
+                            <img src={logOff} alt="d-pad logo"/>
+                            <h4>Log off</h4>
                         </div>
                     </div>
                 </div>
 
-                <div className="pill">
-                    <img src={addContract} alt="d-pad logo"/>
-                    <h4>Add Contract</h4>
-                </div>
-
-                <div className="pill" onClick={() => setLoggingOff(true)}>
-                    <img src={logOff} alt="d-pad logo"/>
-                    <h4>Log off</h4>
-                </div>
-            </div>
-            </div>
-            
-            <div className="analytics-content">
                 <div className="header-row">
+                    <div className="settings-icon" onClick={() => toggleSettings()}>
+                {isTabletOrMobile ? 
+                    <img src={dots} alt="three dots" /> : null}
+                </div>
                     <div className="community-div dashboard-container">
                         <img className="logo-img" src={dPad} alt="D Pad logo" />
                         <h2>The Dark Dito</h2>
-                        </div>
+                    </div>  
                     <div className="description-div dashboard-container">The greatest Description you could think of. A story about passion, cooperation, 
                     conflict & chaos - unveiling, word by word, a deeper truth about humankind. The greatest Description you could think
                      of. A story about passion, cooperation, conflict & chaos - unveiling, word by word, a deeper truth about humankind. </div>
@@ -177,6 +235,7 @@ const AnalyticsDashboard = () => {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </main>
