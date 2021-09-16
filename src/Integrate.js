@@ -28,15 +28,15 @@ const Integrate = () => {
         if (selectedTemplate === 0) {
             setTemplateOptions(openSource);
             localStorage.setItem('header', 'Open-Source & DeFi');
-            // localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi');
+            localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreiaks3kjggtxqaj3ixk6ce2difaxj5r6lbemx5kcqdkdtub5vwv5mi');
         } else if (selectedTemplate === 1) {
             setTemplateOptions(art);
             localStorage.setItem('header', 'Art, Events & NFTs');
-            // localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreigxry2ojoqmfs5wo5ijyzkdsmsyb7yfcjokiegkkhokca2wiltsdu');
+            localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreigxry2ojoqmfs5wo5ijyzkdsmsyb7yfcjokiegkkhokca2wiltsdu');
         } else if (selectedTemplate === 2) {
             setTemplateOptions(local);
             localStorage.setItem('header', 'Local Projects & DAOs');
-            // localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreibaxbmskevzm6wk7gzmuahvzjghmal2lanlbjabnzn7i5posmehem');
+            localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreibaxbmskevzm6wk7gzmuahvzjghmal2lanlbjabnzn7i5posmehem');
         }
   
     }, [selectedTemplate]);
