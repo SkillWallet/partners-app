@@ -37,6 +37,9 @@ const Integrate = () => {
             setTemplateOptions(local);
             localStorage.setItem('header', 'Local Projects & DAOs');
             // localStorage.setItem('imageUrl', 'https://hub.textile.io/ipfs/bafkreibaxbmskevzm6wk7gzmuahvzjghmal2lanlbjabnzn7i5posmehem');
+        } else if (selectedTemplate !== null){
+            alert('Please select a valid template.')
+            setTemplateOptions(null);
         }
   
     }, [selectedTemplate]);

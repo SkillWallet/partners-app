@@ -120,7 +120,7 @@ const IntegrateUserDetails = (props) => {
                     skillOne: '',
                     skillTwo: '',
                     skillThree: '',
-                    numberOfActions: 10,
+                    numberOfActions: 1,
                     avatar: '',
                     description: '',
                     name: ''
@@ -151,6 +151,10 @@ const IntegrateUserDetails = (props) => {
                         errors.description = "Description must be more than 24 characters."
                     } else if (values.description.length > 280) {
                         errors.description = "Description must be less than 280 characters."
+                    }
+
+                    if (values.numberOfActions < 1 || values.numberOfActions > 100) {
+                        errors.numberOfActions = "Number of actions must be more than 10 and less than 100."
                     }
 
                     if (values.name && localStorage.getItem('imageUrl') && values.description && values.skillOne && values.skillTwo) {
@@ -326,17 +330,19 @@ const IntegrateUserDetails = (props) => {
                                         </div>
 
                                     <div className='template-card card-white details-screen-card'>
-                                        <h3>Nr. of Actions</h3>
+                                        <h3>Nr. of Actions</h3>                                        
+
+                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="numberOfActions" />
                                         <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
 
                                             <div className="auto-flex1">
-
+                                            
                                                 <div className="bar-chart-first-container">
                                                     <input className="bar-chart-container" name="numberOfActions" onBlur={handleBlur}
                                                         onChange={handleChange} type="range" id="numberOfActions" value={values.numberOfActions}
-                                                        min="10" max="100"></input>
+                                                        min="1" max="100"></input>
                                                     <div className="bar-chart-metrics">
-                                                        <p>10</p>
+                                                        <p>1</p>
                                                         <p>100</p>
                                                     </div>
                                                 </div>
