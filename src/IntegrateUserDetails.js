@@ -63,9 +63,13 @@ const IntegrateUserDetails = (props) => {
                 console.error('File type is not allowed');
                 return false;
             }
+            uploadImage(imageFile);    // moved this call before the await, and setAvatarUrl after (deleted it from uploadImg), so we won't setAvatarUrl with a missing URL
+            setIsLoading(false);
             const imageUrl = await pushImage(imageFile);
             localStorage.setItem('imageUrl', imageUrl);
-            uploadImage(imageFile);
+            setAvatarUrl(imageUrl);
+            
+            // uploadImage(imageFile);
         } else {
             console.error(files.length === 0 ? 'No image uploaded' : 'You can oonly upload one image at a time');
             return false;
@@ -75,15 +79,10 @@ const IntegrateUserDetails = (props) => {
     const uploadImage = (files) => {
         const reader = new FileReader();
 
-        reader.onload = () => {
-            setAvatarUrl(localStorage.getItem('imageUrl'));
-        };
-
         reader.onerror = (err) => {
             console.error('something went wrong...', err);
         };
         reader.readAsDataURL(files);
-        setIsLoading(false);
     }
 
     const checkFileSize = (size) => {
@@ -152,8 +151,7 @@ const IntegrateUserDetails = (props) => {
                     } else if (values.description.length > 280) {
                         errors.description = "Description must be less than 280 characters."
                     }
-
-                    if (values.name && localStorage.getItem('imageUrl') && values.description && values.skillOne && values.skillTwo) {
+                    if (values.name && localStorage.getItem('imageUrl') && values.description && values.skillOne && values.skillTwo ) {
                         highlightInput();
                     }
                     isFormValid(errors);
