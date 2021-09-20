@@ -60,7 +60,8 @@ export const createPartnersAgreement = async (
   title,
   description,
   roles,
-  numberOfActions
+  numberOfActions,
+  contractAddress
 ) => {
   console.log('createPartnersAgreement')
 
@@ -94,7 +95,7 @@ export const createPartnersAgreement = async (
     template,
     roles.length,
     numberOfActions, // number of Actions,
-    localStorage.getItem('contractAddress'), // contract address
+    contractAddress ?? ethers.constants.AddressZero, // contract address
     100 // members,
   );
 

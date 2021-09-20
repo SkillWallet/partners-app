@@ -2,7 +2,6 @@ import React from 'react';
 // import { generateNonce } from '../api/users'
 
 const VerifyOwnershipModal = (props) => {
-    // const [nonce, setNonce] = useState();
 
     const closeQR = () => {
         const address = document.getElementById('address').value;
@@ -10,14 +9,6 @@ const VerifyOwnershipModal = (props) => {
         localStorage.setItem('contractAddress', address);
         props.toggleModal(address);
     }
-
-    // useEffect(() => {
-    //     const getNonce = async () => {
-    //         const nonce = await generateNonce(1, -1);
-    //         setNonce(nonce);
-    //     }
-    //     getNonce();
-    // }, [])
 
     return (
         <div id="topDiv">
