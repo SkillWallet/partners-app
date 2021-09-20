@@ -24,7 +24,7 @@ const IntegrateUserDetails = (props) => {
     const [isActiveId, setIsActiveId] = useState(null);
     const [isCommunityInactive, setIsCommunityInactive] = useState(true);
     const [partnersDetails, setPartnersDetails] = useState({});
-
+    const [startFromScratchSelected, setStartFromScratchSelected] = useState(0);
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
             return 'openSource';
@@ -47,6 +47,7 @@ const IntegrateUserDetails = (props) => {
 
     const toggleModal = (address) => {
         localStorage.setItem('contractAddress', address);
+        setStartFromScratchSelected(1);
         setShowModal(!showModal)
     };
 
@@ -352,14 +353,14 @@ const IntegrateUserDetails = (props) => {
                                         </div>
 
                                         <div className="integrate-button-panel">
-                                            <button type="button" className="disabled">
+                                            <button type="button" className="importYourContract" disabled={startFromScratchSelected == 1} onClick={() => setStartFromScratchSelected(2)}>
                                                 <div>
                                                     <p>Start from Scratch</p>
                                                     <img src={paper} alt="white sheet of paper" />
                                                 </div>
                                             </button>
 
-                                            <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button'>
+                                            <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button' disabled={startFromScratchSelected == 2}>
                                                 <div>
                                                     <p>Import your Contract</p>
                                                     <img src={isActiveId ? importLightContract : importContract} alt="black sheet of paper" />
