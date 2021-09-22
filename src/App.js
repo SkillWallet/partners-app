@@ -45,7 +45,7 @@ function App() {
             bootstrap a <b>role-based membership</b> with <b><i>Native Governance & On-Chain Analytics</i></b> for their Web3 Community!</p> */}
             <h2><b><ul>Do more with your DAO</ul></b></h2>
 
-            <p>SkillWallets are individual NFT IFs that unlock the true potential of Web3 Communities.</p>
+            <p>SkillWallets are individual NFT IDs that unlock the true potential of Web3 Communities.</p>
             <br /><br />
             <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
             </div>
