@@ -412,7 +412,7 @@ const IntegrateUserDetails = (props) => {
                 )}
 
             </Formik>
-            {showModal ? <VerifyOwnershipModal key={'verify'} toggleModal={toggleModal} /> : null}
+            {showModal ? <VerifyOwnershipModal key={'verify'} toggleModal={toggleModal} setShowModal={setShowModal} /> : null}
         </>
     )
 }
