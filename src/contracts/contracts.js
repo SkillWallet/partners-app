@@ -62,62 +62,71 @@ export const createPartnersAgreement = async (
   roles,
   numberOfActions
 ) => {
-  console.log('createPartnersAgreement')
+    try {
+      console.log('createPartnersAgreement')
 
-  await changeNetwork();
+      await changeNetwork();
 
-  if (!window.ethereum.selectedAddress) {
-    await window.ethereum.enable()
-  };
+      if (!window.ethereum.selectedAddress) {
+        await window.ethereum.enable()
+      };
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
 
-  console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
-  const contract = new ethers.Contract(
-    process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
-    partnersRegistryABI,
-    signer,
-  );
+      console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
+      const contract = new ethers.Contract(
+        process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
+        partnersRegistryABI,
+        signer,
+      );
 
-  const jsonMetadata = metadata[template];
-  jsonMetadata.title = title;
-  jsonMetadata.description = description;
-  jsonMetadata.properties.roles = roles;
-  jsonMetadata.image = localStorage.getItem('imageUrl');
-  const url = await pushJSONDocument(jsonMetadata);
-  console.log(url);
+      const jsonMetadata = metadata[template];
+      jsonMetadata.title = title;
+      jsonMetadata.description = description;
+      jsonMetadata.properties.roles = roles;
+      jsonMetadata.image = localStorage.getItem('imageUrl');
+      const url = await pushJSONDocument(jsonMetadata);
+      console.log(url);
 
-  console.log('calling the SC')
-  const createTx = await contract.create(
-    url,
-    template,
-    roles.length,
-    numberOfActions, // number of Actions,
-    localStorage.getItem('contractAddress'), // contract address
-    100 // members,
-  );
+      console.log('calling the SC')
+      const createTx = await contract.create(
+        url,
+        template,
+        roles.length,
+        numberOfActions, // number of Actions,
+        localStorage.getItem('contractAddress'), // contract address
+        100 // members,
+      );
 
-  console.log(createTx);
+      console.log(createTx);
 
-  const result = await createTx.wait();
-  const { events } = result;
-  console.log(events);
-
-  const event = events.find(
-    e => e.event === 'PartnersAgreementCreated',
-  );
-
-  const partnersAgreementAddress = event.args[0].toString();
-  const communityAddress = event.args[1].toString();
-
-  console.log('partnersAgreementAddress', partnersAgreementAddress)
-  console.log('communityAddress', communityAddress)
-  const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
-  console.log('key', key);
-  return {
-    key: key,
-    communityAddr: communityAddress,
-    partnersAddr: partnersAgreementAddress
-  };
+      try {
+        const result = await createTx.wait();
+        const { events } = result;
+        console.log(events);
+      
+        const event = events.find(
+          e => e.event === 'PartnersAgreementCreated',
+        );
+      
+        const partnersAgreementAddress = event.args[0].toString();
+        const communityAddress = event.args[1].toString();
+      
+        console.log('partnersAgreementAddress', partnersAgreementAddress)
+        console.log('communityAddress', communityAddress)
+        const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
+        console.log('key', key);
+        return {
+          key: key,
+          communityAddr: communityAddress,
+          partnersAddr: partnersAgreementAddress
+        };
+      } catch (err) {
+        console.log(err);
+        alert('Failed to create the community!');
+      }
+  } catch (err) {
+    alert('Something went wrong, try again later');
+  }
 }

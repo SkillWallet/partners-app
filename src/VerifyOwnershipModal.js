@@ -4,11 +4,19 @@ import React from 'react';
 const VerifyOwnershipModal = (props) => {
     // const [nonce, setNonce] = useState();
 
-    const closeQR = () => {
-        const address = document.getElementById('address').value;
-        console.log(address);
-        localStorage.setItem('contractAddress', address);
-        props.toggleModal(address);
+    const closeQR = (submitted) => {
+        if (submitted) {
+            const address = document.getElementById('address').value;
+            console.log(address);
+            localStorage.setItem('contractAddress', address);
+            props.toggleModal(address);
+        } else {
+            props.setShowModal(false);
+        }
+    }
+
+    const handleClickPropagation = (e) => {
+        e.stopPropagation();
     }
 
     // useEffect(() => {
@@ -20,8 +28,8 @@ const VerifyOwnershipModal = (props) => {
     // }, [])
 
     return (
-        <div id="topDiv">
-            <div id="modalWindow" className="verify-ownership-modal">
+        <div id="topDiv" onClick={() => closeQR(false)}>
+            <div id="modalWindow" className="verify-ownership-modal" onClick={(e) => handleClickPropagation(e)}>
                 <div className="modal-window-child">
                     <div className="wallet-header">
                         <h2 style={{textDecoration: "underline"}}>Verify Ownership</h2>
@@ -31,7 +39,7 @@ const VerifyOwnershipModal = (props) => {
                         <p>Add the address of your Contract</p>
 
                         <form type="text" id="addressForm" name="address"
-                         onSubmit={closeQR}
+                         onSubmit={() => closeQR(true)}
                          >
                             <input placeholder="0x..." id="address"></input>
 
