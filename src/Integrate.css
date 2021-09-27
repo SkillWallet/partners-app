@@ -596,6 +596,7 @@ a {
 textarea {
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 600;
+  resize: vertical;
 }
 
 .avatar-field {
@@ -1014,16 +1015,18 @@ textarea {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  height: 25.5px; /* Slider handle height */
   background: white; /* Green background */
   cursor: pointer; /* Cursor on hover */
+  border: 1px solid black;
 }
 
 .bar-chart-container::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
+  height: 25.5px; /* Slider handle height */
   background: white; /* Green background */
   cursor: pointer; /* Cursor on hover */
+  border: 1px solid black;
 }
 
 
@@ -1038,7 +1041,6 @@ textarea {
 
 .bar-chart-container {  
   background-color: black;
-  border-radius: 40px;
 }
 
 .bar-chart-metrics {

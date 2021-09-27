@@ -392,7 +392,7 @@ const IntegrateUserDetails = (props) => {
                                                     </div>
                                                     <div className="partner-key">
                                                         <h4>{key}</h4>
-                                                        <img src={copyIcon} />
+                                                        <img src={copyIcon} alt="two rectangles, on on top of the other"/>
                                                     </div>
 
                                                     <div>
