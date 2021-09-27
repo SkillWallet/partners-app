@@ -4,7 +4,6 @@ import { Formik, ErrorMessage } from "formik";
 import VerifyOwnershipModal from "./VerifyOwnershipModal";
 import { createPartnersAgreement } from './contracts/contracts';
 import { pushImage } from './api/textile.hub';
-// import paper from './assets/paper.svg';
 import paper from './assets/grey-paper.svg';
 import importContract from './assets/import-contract.svg';
 import logoBlack from './assets/sw-logo-black.svg';
@@ -21,9 +20,11 @@ const IntegrateUserDetails = (props) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [submitButtonClass, setSubmitButtonClass] = useState('integrate-deploy deploy-disabled');
-    const [isActiveId, setIsActiveId] = useState(null);
+    const [isActiveIdImportContract, setIsActiveIdImportContract] = useState(null);
+    const [isActiveIdStartFromScratch, setIsActiveIdStartFromScratch] = useState(null);
     const [isCommunityInactive, setIsCommunityInactive] = useState(true);
     const [partnersDetails, setPartnersDetails] = useState({});
+    const [contractAddress, setContractAddress] = useState(undefined);
 
     const selectedImg = () => {
         if (props.templateOptions.imageSrc === './assets/opensource-defi-white.png') {
@@ -46,7 +47,11 @@ const IntegrateUserDetails = (props) => {
     };
 
     const toggleModal = (address) => {
-        localStorage.setItem('contractAddress', address);
+        console.log('toggleModal');
+        if (typeof (address) == 'string')
+            setContractAddress(address);
+        setIsActiveIdStartFromScratch(undefined);
+        setIsActiveIdImportContract('activeContract');
         setShowModal(!showModal)
     };
 
@@ -97,9 +102,6 @@ const IntegrateUserDetails = (props) => {
         return errors === {};
     }
 
-    const highlightInput = () => {
-        setIsActiveId('activeContract');
-    }
 
     const onActivateCommunity = () => {
         const input = document.querySelector("skillwallet-auth")
@@ -153,13 +155,6 @@ const IntegrateUserDetails = (props) => {
                         errors.description = "Description must be less than 280 characters."
                     }
 
-                    if (values.numberOfActions < 1 || values.numberOfActions > 100) {
-                        errors.numberOfActions = "Number of actions must be more than 10 and less than 100."
-                    }
-
-                    if (values.name && localStorage.getItem('imageUrl') && values.description && values.skillOne && values.skillTwo) {
-                        highlightInput();
-                    }
                     isFormValid(errors);
                     return errors;
                 }}
@@ -175,7 +170,8 @@ const IntegrateUserDetails = (props) => {
                         values.name,
                         values.description,
                         [values.skillOne, values.skillTwo, values.skillThree],
-                        values.numberOfActions
+                        values.numberOfActions,
+                        contractAddress
                     );
 
                     setIsLoading(false);
@@ -218,7 +214,6 @@ const IntegrateUserDetails = (props) => {
                                                 id="name"
                                                 name="name"
                                                 type="text"
-                                                // onChange={handleChange}
                                                 placeholder="Show off with a great Community Name!"
                                                 value={values.name}
                                             ></TextArea>
@@ -255,7 +250,6 @@ const IntegrateUserDetails = (props) => {
                                                 id="description"
                                                 name="description"
                                                 type="text"
-                                                // onChange={handleChange}
                                                 placeholder="Introduce your community to the world. It can be your one-liner, its values, its goals, or even the story behind it!"
                                                 value={values.description}
                                             ></TextArea>
@@ -275,12 +269,12 @@ const IntegrateUserDetails = (props) => {
                                 </div>
 
 
-                            <div className="integrate-template-content">
-                                <div className="top-row details-project-types">
-                                    <div className='template-card card-black details-screen-card'
-                                        onClick={userClickedUndo}>
-                                        <div className="top-card">
-                                            <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
+                                <div className="integrate-template-content">
+                                    <div className="top-row details-project-types">
+                                        <div className='template-card card-black details-screen-card'
+                                            onClick={userClickedUndo}>
+                                            <div className="top-card">
+                                                <img className="image-7" src={selectedImg() === 'local' ? local : selectedImg() === 'art' ? art : openSource} alt="card-logo" />
 
                                                 <div className="raleway-bold-alto-22px title-black-card">
                                                     {props.templateOptions.header}
@@ -294,17 +288,17 @@ const IntegrateUserDetails = (props) => {
                                             <img className="line-26" src={lineBreak} alt="line" />
                                         </div>
 
-                                    <div className='template-card card-white details-screen-card'>
-                                        <h3>Name 2/3 Roles/Skills</h3>
-                                        <p>The Roles you envision in your community (i.e. dev, validator, etc.)</p>
-                                        <Input
-                                            id="role"
-                                            name="skillOne"
-                                            type="text"
-                                            onChange={handleChange}
-                                            placeholder="Role/Skill 1 *"
-                                            value={values.skillOne}
-                                            style={{ text: 'white' }}
+                                        <div className='template-card card-white details-screen-card'>
+                                            <h3>Name 2/3 Roles/Skills</h3>
+                                            <p>The Roles you envision in your community (i.e. dev, validator, etc.)</p>
+                                            <Input
+                                                id="role"
+                                                name="skillOne"
+                                                type="text"
+                                                onChange={handleChange}
+                                                placeholder="Role/Skill 1 *"
+                                                value={values.skillOne}
+                                                style={{ text: 'white' }}
                                             />
                                             <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillOne" />
                                             <Input
@@ -357,17 +351,21 @@ const IntegrateUserDetails = (props) => {
                                         </div>
 
                                         <div className="integrate-button-panel">
-                                            <button type="button" className="disabled">
+                                            <button type="button" className="importYourContract" id={isActiveIdStartFromScratch} disabled={contractAddress} onClick={() => setIsActiveIdStartFromScratch('activeContract')}>
                                                 <div>
                                                     <p>Start from Scratch</p>
                                                     <img src={paper} alt="white sheet of paper" />
                                                 </div>
                                             </button>
 
-                                            <button onClick={toggleModal} className="importYourContract" id={isActiveId} type='button'>
-                                                <div>
-                                                    <p>Import your Contract</p>
-                                                    <img src={isActiveId ? importLightContract : importContract} alt="black sheet of paper" />
+                                            <button onClick={toggleModal} className="importYourContract" id={isActiveIdImportContract} disabled={isActiveIdStartFromScratch} type='button'>
+                                                <div className='object-cover'>
+                                                    <p style={contractAddress ? {
+                                                        "font-size": "x-small"
+                                                    } : undefined}>{contractAddress ?? 'Import your Contract'}</p>
+                                                    {!contractAddress &&
+                                                        <img src={isActiveIdImportContract ? importLightContract : importContract} alt="black sheet of paper" />
+                                                    }
                                                 </div>
                                             </button>
                                         </div>

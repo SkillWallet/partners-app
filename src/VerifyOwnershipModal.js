@@ -2,7 +2,6 @@ import React from 'react';
 // import { generateNonce } from '../api/users'
 
 const VerifyOwnershipModal = (props) => {
-    // const [nonce, setNonce] = useState();
 
     const closeQR = (submitted) => {
         if (submitted) {
@@ -18,14 +17,6 @@ const VerifyOwnershipModal = (props) => {
     const handleClickPropagation = (e) => {
         e.stopPropagation();
     }
-
-    // useEffect(() => {
-    //     const getNonce = async () => {
-    //         const nonce = await generateNonce(1, -1);
-    //         setNonce(nonce);
-    //     }
-    //     getNonce();
-    // }, [])
 
     return (
         <div id="topDiv" onClick={() => closeQR(false)}>
