@@ -42,7 +42,7 @@ const AnalyticsDashboard = () => {
     };
 
     useEffect(() => {
-        console.log(isTabletOrMobile);
+        // console.log(isTabletOrMobile);
         if (loggingOff) {
             const keys = ['header', 'imageUrl', 'header', 'contractAddress', 'username', 'tokenId', 'skillWallet'];
             keys.forEach(k => {
