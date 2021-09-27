@@ -67,9 +67,13 @@ const IntegrateUserDetails = (props) => {
                 console.error('File type is not allowed');
                 return false;
             }
+            uploadImage(imageFile);    // moved this call before the await, and setAvatarUrl after (deleted it from uploadImg), so we won't setAvatarUrl with a missing URL
+            setIsLoading(false);
             const imageUrl = await pushImage(imageFile);
             localStorage.setItem('imageUrl', imageUrl);
-            uploadImage(imageFile);
+            setAvatarUrl(imageUrl);
+
+            // uploadImage(imageFile);
         } else {
             console.error(files.length === 0 ? 'No image uploaded' : 'You can oonly upload one image at a time');
             return false;
@@ -79,15 +83,10 @@ const IntegrateUserDetails = (props) => {
     const uploadImage = (files) => {
         const reader = new FileReader();
 
-        reader.onload = () => {
-            setAvatarUrl(localStorage.getItem('imageUrl'));
-        };
-
         reader.onerror = (err) => {
             console.error('something went wrong...', err);
         };
         reader.readAsDataURL(files);
-        setIsLoading(false);
     }
 
     const checkFileSize = (size) => {
@@ -123,7 +122,7 @@ const IntegrateUserDetails = (props) => {
                     skillOne: '',
                     skillTwo: '',
                     skillThree: '',
-                    numberOfActions: 10,
+                    numberOfActions: 1,
                     avatar: '',
                     description: '',
                     name: ''
@@ -324,18 +323,20 @@ const IntegrateUserDetails = (props) => {
                                             {/* <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="skillThree" /> */}
                                         </div>
 
-                                        <div className='template-card card-white details-screen-card'>
-                                            <h3>Nr. of Actions</h3>
-                                            <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
+                                    <div className='template-card card-white details-screen-card'>
+                                        <h3>Nr. of Actions</h3>                                        
+
+                                        <ErrorMessage render={msg => <div className="error-msg">{msg}</div>} name="numberOfActions" />
+                                        <p>How many initial Actions you expect. No worries, you can always add more later :)</p>
 
                                             <div className="auto-flex1">
-
+                                            
                                                 <div className="bar-chart-first-container">
                                                     <input className="bar-chart-container" name="numberOfActions" onBlur={handleBlur}
                                                         onChange={handleChange} type="range" id="numberOfActions" value={values.numberOfActions}
-                                                        min="10" max="100"></input>
+                                                        min="1" max="100"></input>
                                                     <div className="bar-chart-metrics">
-                                                        <p>10</p>
+                                                        <p>1</p>
                                                         <p>100</p>
                                                     </div>
                                                 </div>
@@ -409,7 +410,7 @@ const IntegrateUserDetails = (props) => {
                 )}
 
             </Formik>
-            {showModal ? <VerifyOwnershipModal key={'verify'} toggleModal={toggleModal} /> : null}
+            {showModal ? <VerifyOwnershipModal key={'verify'} toggleModal={toggleModal} setShowModal={setShowModal} /> : null}
         </>
     )
 }
