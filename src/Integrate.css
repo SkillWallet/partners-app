@@ -1456,6 +1456,11 @@ textarea {
   box-shadow: 0.6px 0.6px #080808;
 }
 
+.integrate-button-panel > button:last-child:disabled:hover {
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
 .integrate-button-panel > button:hover {
   box-shadow: none;
 }
