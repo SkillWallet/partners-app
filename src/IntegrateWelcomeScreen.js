@@ -91,7 +91,7 @@ const IntegrateWelcomeScreen = (props) => {
                                 </div>
 
                                 <div className="integrate-button-panel">
-                                    <button className="importYourContract" disabled={true}>
+                                    <button className="startFromScratch" disabled={true}>
                                         <div>
                                             <p>Start from Scratch</p>
                                             <img src={paper} alt="white sheet of paper" />

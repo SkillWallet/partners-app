@@ -860,7 +860,7 @@ textarea {
   font-size: 18px;
 }
 
-.importYourContract:hover {
+.importYourContract:hover, .startFromScratch.detailsScreen:hover {
   cursor: pointer;
   box-shadow: 1.2px 1.8px #696969 !important;
 } 
