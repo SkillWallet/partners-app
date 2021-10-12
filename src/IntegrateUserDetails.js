@@ -351,7 +351,7 @@ const IntegrateUserDetails = (props) => {
                                         </div>
 
                                         <div className="integrate-button-panel">
-                                            <button type="button" className="importYourContract" id={isActiveIdStartFromScratch} disabled={contractAddress} onClick={() => setIsActiveIdStartFromScratch('activeContract')}>
+                                            <button type="button" className="startFromScratch detailsScreen" id={isActiveIdStartFromScratch} disabled={contractAddress} onClick={() => setIsActiveIdStartFromScratch('activeContract')}>
                                                 <div>
                                                     <p>Start from Scratch</p>
                                                     <img src={paper} alt="white sheet of paper" />
