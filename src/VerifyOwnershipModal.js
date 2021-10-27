@@ -7,7 +7,7 @@ const VerifyOwnershipModal = (props) => {
         if (submitted) {
             const address = document.getElementById('address').value;
             console.log(address);
-            localStorage.setItem('contractAddress', address);
+            window.sessionStorage.setItem('contractAddress', address);
             props.toggleModal(address);
         } else {
             props.setShowModal(false);
