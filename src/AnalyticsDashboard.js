@@ -46,7 +46,7 @@ const AnalyticsDashboard = () => {
         if (loggingOff) {
             const keys = ['header', 'imageUrl', 'header', 'contractAddress', 'username', 'tokenId', 'skillWallet'];
             keys.forEach(k => {
-                localStorage.removeItem(k);
+                window.sessionStorage.removeItem(k);
             });
             
             history.push("/");

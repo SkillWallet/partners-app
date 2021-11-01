@@ -70,7 +70,7 @@ const IntegrateUserDetails = (props) => {
             uploadImage(imageFile);    // moved this call before the await, and setAvatarUrl after (deleted it from uploadImg), so we won't setAvatarUrl with a missing URL
             setIsLoading(false);
             const imageUrl = await pushImage(imageFile);
-            localStorage.setItem('imageUrl', imageUrl);
+            window.sessionStorage.setItem('imageUrl', imageUrl);
             setAvatarUrl(imageUrl);
 
             // uploadImage(imageFile);

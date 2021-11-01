@@ -86,7 +86,7 @@ export const createPartnersAgreement = async (
       jsonMetadata.title = title;
       jsonMetadata.description = description;
       jsonMetadata.properties.roles = roles;
-      jsonMetadata.image = localStorage.getItem('imageUrl');
+      jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
       const url = await pushJSONDocument(jsonMetadata);
       console.log(url);
 
