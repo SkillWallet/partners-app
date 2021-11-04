@@ -10,6 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
+import Dashboard from './components/partnerDashboard/Dashboard';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,7 +23,7 @@ ReactDOM.render(
               <Integrate />
           </Route>
           <Route path="/analytics">
-              {/* <AnalyticsDashboard /> */}
+              <Dashboard />
           </Route>
         </Switch>
     </BrowserRouter>

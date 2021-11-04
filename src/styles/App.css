@@ -831,3 +831,120 @@
 #flyoutMenu h2 a:hover {
   text-decoration: underline;
 }
+
+
+
+/** PARTNER DASHBOARD **/
+
+.dashboard-main {
+  display: flex;
+  height:100%;
+}
+
+.dashboard-sidebar {
+  background-color: #161616;
+  text-align: center;
+  min-width: 20%;
+  max-width: 23.5%;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.dashboard-sidebar-design {
+  width: 90%;
+  border: 1px solid white;
+  min-height: 95vh;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.dashboard-content {
+  width: 80%;
+}
+
+.dashboard-content-design {
+  border: 1px solid black;
+  width: 98%;
+  min-height: 95vh;
+  margin: auto auto;
+  margin-top: 20px;
+  overflow: auto;
+}
+
+.partners-button-light {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important;
+}
+
+.partners-button-dark {
+  background-color: black;
+  color: white;
+}
+
+.partners-button {
+  font-weight: 300;
+  border: 0px;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 80%;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.partners-button > p {
+  max-height: 30px;
+  overflow: hidden;
+  max-height: 40px;
+  text-overflow: ellipsis;
+  font-size: 14px !important;
+}
+
+.partners-button:hover {
+  cursor: pointer;
+  background-color: #36454F;
+}
+
+.partners-button:active {
+  margin-top: 0.5px;
+}
+
+.dashboard-content-design > *:first-child {
+  margin-top: 10%;
+  text-align: center;
+}
+
+.dashboard-panel {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.dashboard-panel > *:last-child {
+  width: 50%;
+}
+
+
+
+@media only screen and (max-width: 640px) {
+
+  .dashboard-sidebar {
+    background-image: none;
+    background-color: #161616 !important;
+    min-height: 0vh;
+    max-width: 100%;
+  }
+
+  .dashboard-sidebar-design {
+    border: none;
+    min-height: 20vh;
+    padding-bottom: 15px;
+  }
+
+}
+
+/** PARTNER DASHBOARD **/

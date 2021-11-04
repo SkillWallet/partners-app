@@ -474,7 +474,6 @@ a {
 
 .integrate-sidebar, .integrate-user-sidebar {
   background-color: #161616;
-  /* background-image:url('./assets/sidebar-background.svg'); */
   text-align: center;
   min-width: 20%;
   max-width: 25%;
@@ -1601,10 +1600,6 @@ textarea {
     width: 40%;
   }
 
-  /* .integrate-sidebar > img, 
-  .integrate-user-sidebar > img , */
-  /* .integrate-sidebar > div > p,
-  .integrate-user-sidebar > div > p, */
   .integrate-sidebar > div > h2, 
   .integrate-user-sidebar > div > h2 {
     display: none;
