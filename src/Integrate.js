@@ -1,5 +1,5 @@
 import React from 'react';
-import './Integrate.css';
+import './styles/Integrate.css';
 import { useEffect, useState } from 'react';
 import IntegrateUserDetails from './IntegrateUserDetails';
 import IntegrateWelcomeScreen from './IntegrateWelcomeScreen';

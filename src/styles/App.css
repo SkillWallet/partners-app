@@ -107,7 +107,7 @@
 
 .dashboard-container {
   background-color: white;
-  background-image:url('./assets/sidebar-background.svg');
+  background-image:url('../assets/sidebar-background.svg');
   border: 1px outset black;
   box-shadow: inset 4px 2px 2px 1px rgba(0,0,0,0.3);
   border-radius: 20px;
@@ -186,7 +186,7 @@
 }
 
 .role-icon {
-  background-image:url('./assets/role-icon-green.svg');
+  background-image:url('../assets/role-icon-green.svg');
   background-repeat: no-repeat;
   background-size: cover;
   width: 50px;
@@ -811,7 +811,7 @@
   width: 100vw;
   height: 100vh;
   background-color: white;
-  background-image:url('./assets/sidebar-background.svg');
+  background-image:url('../assets/sidebar-background.svg');
   position: fixed;
   top: 0;
   left: 0;

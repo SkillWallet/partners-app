@@ -5,12 +5,11 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import './index.css';
+import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
-import AnalyticsDashboard from './AnalyticsDashboard';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,7 +22,7 @@ ReactDOM.render(
               <Integrate />
           </Route>
           <Route path="/analytics">
-              <AnalyticsDashboard />
+              {/* <AnalyticsDashboard /> */}
           </Route>
         </Switch>
     </BrowserRouter>

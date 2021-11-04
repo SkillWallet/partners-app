@@ -1,8 +1,8 @@
-import './App.css';
+import './styles/App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import logoBlack from './assets/sw-logo-black.svg';
-import './Integrate.css';
+import './styles/Integrate.css';
 import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
 import analyticsIcon from "./assets/analytics-dark.svg";
