@@ -11,6 +11,8 @@ import reportWebVitals from './reportWebVitals';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
 import Dashboard from './components/partnerDashboard/Dashboard';
+// import Members from './components/partnerDashboard/Members';
+// import Roles from './components/partnerDashboard/Roles';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +27,12 @@ ReactDOM.render(
           <Route path="/analytics">
               <Dashboard />
           </Route>
+          {/* <Route path="/analytics/members">
+              <Members />
+          </Route>
+          <Route path="/analytics/roles">
+              <Roles />
+          </Route> */}
         </Switch>
     </BrowserRouter>
   </React.StrictMode>,

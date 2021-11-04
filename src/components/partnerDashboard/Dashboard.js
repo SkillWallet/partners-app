@@ -1,7 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '../Button';
+import Members from './Members';
+import Roles from './Roles';
+import {Link} from "react-router-dom";
 
 const Dashboard = () => {
+    const [activeView, setActiveView] = useState('landing');
+
+    const changeView = (newView) => {
+        setActiveView(newView);
+    }
+
     return (
         <div className="dashboard-main">
             <div className="dashboard-sidebar">
@@ -30,7 +39,7 @@ const Dashboard = () => {
             </div>
 
             <div className="dashboard-content">
-                <div className="dashboard-content-design">
+                {activeView === 'landing' ? <div className="dashboard-content-design">
                     <div>
                         <h1>Welcome to your Partner Dashboard</h1>
                         <h2>where your Community happens.</h2>
@@ -38,9 +47,13 @@ const Dashboard = () => {
 
                     <div className="dashboard-panel">
                         <div>
-                            <Button text="Membership IDs" src={null} alt="null" dark={false}/>
+                            {/* <Link to="/members"> */}
+                                <Button text="Membership IDs" src={null} alt="null" dark={false} onClick={() => changeView('members')}/>
+                            {/* </Link> */}
 
-                            <Button text="Roles & Skills" src={null} alt="null" dark={false}/>
+                            {/* <Link to="/roles"> */}
+                                <Button text="Roles & Skills" src={null} alt="null" dark={false} onClick={() => changeView('roles')}/>
+                            {/* </Link> */}
 
                             <Button text="Profit-Sharing" src={null} alt="null" dark={false}/>
                         </div>
@@ -63,7 +76,9 @@ const Dashboard = () => {
                             <button>Local Community & DAO</button>
                         </div>
                     </div>
-                </div>
+                </div> : activeView === 'members' ? <Members />
+                
+                    : activeView === 'roles' ? <Roles /> : null}
                 
             </div>
         </div>

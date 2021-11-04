@@ -3,7 +3,9 @@ import '../styles/App.css';
 
 const Button = (props) => {
     return (
-        <button className={props.dark ? "partners-button partners-button-dark" : "partners-button partners-button-light"}>
+        <button 
+        className={props.dark ? "partners-button partners-button-dark" : "partners-button partners-button-light"}
+        onClick={props.onClick}>
             <img src={props.src} alt={props.alt}/>
             <p>{props.text}</p>
         </button>
