@@ -2,7 +2,16 @@ import React, {useState} from 'react';
 import Button from '../Button';
 import Members from './Members';
 import Roles from './Roles';
-import {Link} from "react-router-dom";
+import copyIcon from '../../assets/copy-icon.svg';
+import logOff from '../../assets/log-off.svg';
+import daoStats from '../../assets/dao-stats.svg';
+import dashboard from '../../assets/dashboard.svg';
+import eventBadge from '../../assets/event-badge.svg';
+import avatar from '../../assets/avatar.svg';
+import members from '../../assets/member-card.svg';
+import roles from '../../assets/roles.svg';
+import coins from '../../assets/coins.svg';
+// import {Link} from "react-router-dom";
 
 const Dashboard = () => {
     const [activeView, setActiveView] = useState('landing');
@@ -15,26 +24,26 @@ const Dashboard = () => {
         <div className="dashboard-main">
             <div className="dashboard-sidebar">
                 <div className="dashboard-sidebar-design">
-                    <div>
-                        <img src={null} alt="User avatar" />
+                    <div className="dashboard-sidebar-header">
+                        <img src={avatar} alt="User avatar" />
 
-                        <h2>Username here</h2>
+                        <h2>Username</h2>
                     </div>
 
                     <div className="dashboard-nav">
 
-                        <Button text="Dashboard" src={null} alt="null" dark={false}/>
+                        <Button text="Dashboard" src={dashboard} alt="null" dark={true}/>
 
-                        <Button text="Event Factory" src={null} alt="null" dark={false}/>
+                        <Button text="Event Factory" src={eventBadge} alt="null" dark={false}/>
 
-                        <Button text="DAO Stats" src={null} alt="null" dark={false}/>
+                        <Button text="DAO Stats" src={daoStats} alt="null" dark={false} disabled={true}/>
 
-                        <Button text="Your Contracts" src={null} alt="null" dark={false}/>
+                        <Button text="Your Contracts" src={copyIcon} alt="null" dark={false}/>
                     </div>
 
-                    <br></br>
+                    <div className="linebreak" ></div>
 
-                    <Button text="Disconnect" src={null} alt="null"/>
+                    <Button text="Disconnect" src={logOff} alt="null"/>
                 </div>
             </div>
 
@@ -46,31 +55,33 @@ const Dashboard = () => {
                     </div>
 
                     <div className="dashboard-panel">
-                        <div>
+                        <div className="dashboard-panel-buttons">
                             {/* <Link to="/members"> */}
-                                <Button text="Membership IDs" src={null} alt="null" dark={false} onClick={() => changeView('members')}/>
+                                <Button text="Membership IDs" src={members} alt="null" dark={false} onClick={() => changeView('members')}/>
                             {/* </Link> */}
 
                             {/* <Link to="/roles"> */}
-                                <Button text="Roles & Skills" src={null} alt="null" dark={false} onClick={() => changeView('roles')}/>
+                                <Button text="Roles & Skills" src={roles} alt="null" dark={false} onClick={() => changeView('roles')}/>
                             {/* </Link> */}
 
-                            <Button text="Profit-Sharing" src={null} alt="null" dark={false}/>
+                            <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
 
-                        <div>
-                            <div>
-                                <img src={null} alt="null"/>
+                        <div className="card-section">
+                            <div className="community-card">
+                                <div className="card-header">
+                                    <img src={avatar} alt="null"/>
 
-                                <h3><u>The DAOist</u></h3>
-                            </div>
+                                    <h3><u>The DAOist</u></h3>
+                                </div>
 
-                            <div>
-                                <p>Coordinating Space, Talent and Culture.</p>
+                                <div className="card-body">
+                                    <p>Coordinating Space, Talent and Culture.</p>
 
-                                <p>We want to build a project that doesn't have to win.</p>
+                                    <p>We want to build a project that doesn't have to win.</p>
 
-                                <p>We are also defined by what we don't do, and that belongs to anyone that's willing to make it theirs.</p>
+                                    <p>We are also defined by what we don't do, and that belongs to anyone that's willing to make it theirs.</p>
+                                </div>
                             </div>
 
                             <button>Local Community & DAO</button>

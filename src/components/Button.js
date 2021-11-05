@@ -5,7 +5,8 @@ const Button = (props) => {
     return (
         <button 
         className={props.dark ? "partners-button partners-button-dark" : "partners-button partners-button-light"}
-        onClick={props.onClick}>
+        onClick={props.onClick}
+        disabled={props.disabled}>
             <img src={props.src} alt={props.alt}/>
             <p>{props.text}</p>
         </button>
