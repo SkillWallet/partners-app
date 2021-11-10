@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+
+  partners-app:
+    container_name: partners-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '5001:80'
