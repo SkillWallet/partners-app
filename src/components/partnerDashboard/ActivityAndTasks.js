@@ -14,11 +14,12 @@ const ActivityAndTasks = (props) => {
             <div>
                 {props.data.members.map(m => {
                     return <div className="activity-row">
-                                <img src={avatar} />
+                                <img src={avatar} alt="avatar"/>
                                 <p>{m.name}</p>
                                 <p>@</p>
-                                <div>
-                                    16:32
+                                <div className="timestamp">
+                                    <p>16:32</p>
+                                    <p><u>see transaction</u></p>
                                 </div>
                            </div>
                 })}

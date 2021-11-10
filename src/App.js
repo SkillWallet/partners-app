@@ -35,6 +35,9 @@ function App() {
         <div className="landing-content">
         <div className="landing-content-design">
           <div className="connect-wallet-container">
+            <skillwallet-auth
+                partner-key="e045db0b7868a054e0e75b2013b0fc59f1fbe035">
+            </skillwallet-auth>
           </div>
 
 

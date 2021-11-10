@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@skill-wallet/auth": "^0.0.68-alpha",
+    "@skill-wallet/auth": "^0.0.72-alpha",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
     "@textile/hub": "^6.2.0",
     "antd": "4.16.11",
     "ethers": "^5.4.4",
