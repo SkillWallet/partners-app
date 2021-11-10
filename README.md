@@ -72,6 +72,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 1. Make sure there's docker & docker-compose installed
 2. Run 
+
 `docker-compose down`
 
 `docker-compose up -d`
