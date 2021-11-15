@@ -1,8 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import avatar from '../../assets/avatar.svg';
 import ActivityAndTasks from './ActivityAndTasks';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    // console.log('state? : ', state);
+    return ({
+    state: state.members
+  })};
 
 const Members = (props) => {
+    console.log('props: ', props);
     const [activeTab, setActiveTab] = useState('role1');
     const [isLoading, setIsLoading] = useState(false);
     const [role1, setRole1] = useState({roleType: '', members: []});
@@ -10,25 +18,25 @@ const Members = (props) => {
     const [role3, setRole3] = useState({roleType: '', members: []});
 
     useEffect(() => {
-        props.location.state.members.length > 0 ? setIsLoading(true) : setIsLoading(false);
+        props.state.members === null ? setIsLoading(true) : setIsLoading(false);
         
-        const roles = Object.keys(props.location.state.members);
+        const roles = Object.keys(props.state.members);
 
         setRole1({
             roleType: roles[0],
-            members: props.location.state.members[roles[0]]
+            members: props.state.members[roles[0]]
         });
 
         setRole2({
             roleType: roles[1],
-            members: props.location.state.members[roles[1]]
+            members: props.state.members[roles[1]]
         });
 
         setRole3({
             roleType: roles[2],
-            members: props.location.state.members[roles[2]]
+            members: props.state.members[roles[2]]
         });
-    }, [props.location.state])
+    }, [props.state.members])
 
     const changeTab = (newTab) => {
         setActiveTab(newTab);
@@ -117,4 +125,4 @@ const Members = (props) => {
     );
 }
 
-export default Members;
+export default connect(mapStateToProps)(Members);

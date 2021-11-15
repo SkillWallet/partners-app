@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { store, persistor } from './redux/store';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
 import Dashboard from './components/partnerDashboard/Dashboard';
@@ -14,32 +15,34 @@ import Roles from './components/partnerDashboard/Roles';
 
 ReactDOM.render(
   <Provider store={store}>
-  <React.StrictMode>
-    <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={App}>
-              {/* <App /> */}
-          </Route>
-          <Route path="/integrate" component={Integrate}>
-          </Route>
-          <Route exact path="/analytics/members" 
-          component={Members}
-          >
-              {/* <Members /> */}
-          </Route>
-          <Route exact path="/analytics/roles" 
-          component={Roles}
-          >
-              {/* <Roles /> */}
-          </Route>
-          <Route exact path="/analytics"
-          component={Dashboard}
-          >
-              {/* <Dashboard /> */}
-          </Route>
-        </Switch>
-    </BrowserRouter>
-  </React.StrictMode>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={App}>
+                  {/* <App /> */}
+              </Route>
+              <Route path="/integrate" component={Integrate}>
+              </Route>
+              <Route exact path="/analytics/members" 
+              component={Members}
+              >
+                  {/* <Members /> */}
+              </Route>
+              <Route exact path="/analytics/roles" 
+              component={Roles}
+              >
+                  {/* <Roles /> */}
+              </Route>
+              <Route exact path="/analytics"
+              component={Dashboard}
+              >
+                  {/* <Dashboard /> */}
+              </Route>
+            </Switch>
+        </BrowserRouter>
+      </React.StrictMode>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

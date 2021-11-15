@@ -7,24 +7,24 @@ import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
 import analyticsIcon from "./assets/analytics-dark.svg";
 
-import { connect } from 'react-redux';
-import { increaseCounter, decreaseCounter } from './redux/Counter/counter.actions';
+// import { connect } from 'react-redux';
+// import { increaseCounter, decreaseCounter } from './redux/Counter/counter.actions';
 
-const mapStateToProps = state => {
-  return {
-    count: state.counter.count,
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     count: state.counter.count,
+//   }
+// }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    increaseCounter: () => dispatch(increaseCounter()),
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     increaseCounter: () => dispatch(increaseCounter()),
 
-    decreaseCounter: () => dispatch(decreaseCounter()),
-  }
-}
+//     decreaseCounter: () => dispatch(decreaseCounter()),
+//   }
+// }
 
-function App(props) {
+function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
 
@@ -57,9 +57,9 @@ function App(props) {
           </div>
 
 
-          <button onClick={() => props.increaseCounter()}>Increase count</button>
+          {/* <button onClick={() => props.increaseCounter()}>Increase count</button>
           <button onClick={() => props.decreaseCounter()}>Decrease count</button>
-          <div>Count: {props.count}</div>
+          <div>Count: {props.count}</div> */}
 
           <div className="buttons" id="landingButtons">
             <div className="buttons-top-row sw-description">
@@ -102,4 +102,5 @@ function App(props) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

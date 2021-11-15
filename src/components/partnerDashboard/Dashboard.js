@@ -14,10 +14,28 @@ import coins from '../../assets/coins.svg';
 import { getMembers, getCommunity } from '../../contracts/api';
 import { Link } from "react-router-dom";
 
-const Dashboard = () => {
+import { connect } from 'react-redux';
+import { saveMembers } from '../../redux/Members/members.actions';
+import { saveCommunity } from '../../redux/Community/community.actions';
+
+const mapStateToProps = state => {
+    return {
+      state: state.members,
+      community: state.community.community
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+    }
+  }
+
+const Dashboard = (props) => {
     const [activeView, setActiveView] = useState('landing');
     const [members, setMembers] = useState([]);
-    const [community, setCommunity] = useState({name: '', description: '', image: ''});
+    // const [community, setCommunity] = useState({name: '', description: '', image: ''});
     const [roles, setRoles] = useState([]);
 
     const changeView = (newView) => {
@@ -25,11 +43,22 @@ const Dashboard = () => {
     }
 
     useEffect(async () => {
-        const allMembers = await getMembers();
-        const community = await getCommunity();
+        let allMembers = [];
+        let community = [];
+        console.log('useeffect...', props);
+        if (props.state.members === null) {
+            console.log('checking?');
+            allMembers = await getMembers();
+            console.log(allMembers);
+            props.dispatchSaveMembers(allMembers);
+        }
+        if (props.community === null) {
+            community = await getCommunity();
+            props.dispatchSaveCommunity(community)
+        }
         console.log(community);
         setMembers(allMembers);
-        setCommunity(community);
+        // setCommunity(community);
         setRoles(community.roles);
     }, [])
 
@@ -91,21 +120,21 @@ const Dashboard = () => {
                             <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
 
-                        <div className="card-section">
+            {props.community ?                         <div className="card-section">       {/*LOADING SPINNER */}
                             <div className="community-card">
                                 <div className="card-header">
-                                    <img src={community.image} alt="null"/>
+                                    <img src={props.community.image} alt="null"/>
 
-                                    <h3><u>{community.name}</u></h3>
+                                    <h3><u>{props.community.name}</u></h3>
                                 </div>
 
                                 <div className="card-body">
-                                    <p>{community.description}</p>
+                                    <p>{props.community.description}</p>
                                 </div>
                             </div>
 
-                            <button>{community.template}</button>
-                        </div>
+                            <button>{props.community.template}</button>
+                        </div> : null}
                     </div>
                 </div>
                 
@@ -114,4 +143,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
