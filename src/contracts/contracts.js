@@ -148,19 +148,3 @@ export const confirmAndAddSkills = async () => {
   //   signer,
   // );
 }
-
-// export const getCommunityMembers = async () => {
-
-//   if (!window.ethereum.selectedAddress) {
-//     await window.ethereum.enable()
-//   };
-
-//   const provider = new ethers.providers.Web3Provider(window.ethereum);
-//   const signer = provider.getSigner();
-
-//   const contract = new ethers.Contract(
-//     process.env.REACT_APP_COMMUNITY_ADDRESS,
-//     communityABI,
-//     signer,
-//   );
-// }

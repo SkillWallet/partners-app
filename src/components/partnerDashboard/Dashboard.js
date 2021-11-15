@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '../Button';
 import Members from './Members';
 import Roles from './Roles';
@@ -8,17 +8,30 @@ import daoStats from '../../assets/dao-stats.svg';
 import dashboard from '../../assets/dashboard.svg';
 import eventBadge from '../../assets/event-badge.svg';
 import avatar from '../../assets/avatar.svg';
-import members from '../../assets/member-card.svg';
-import roles from '../../assets/roles.svg';
+import membersCard from '../../assets/member-card.svg';
+import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
-// import {Link} from "react-router-dom";
+import { getMembers, getCommunity } from '../../contracts/api';
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
     const [activeView, setActiveView] = useState('landing');
+    const [members, setMembers] = useState([]);
+    const [community, setCommunity] = useState({name: '', description: '', image: ''});
+    const [roles, setRoles] = useState([]);
 
     const changeView = (newView) => {
         setActiveView(newView);
     }
+
+    useEffect(async () => {
+        const allMembers = await getMembers();
+        const community = await getCommunity();
+        console.log(community);
+        setMembers(allMembers);
+        setCommunity(community);
+        setRoles(community.roles);
+    }, [])
 
     return (
         <div className="dashboard-main">
@@ -48,7 +61,8 @@ const Dashboard = () => {
             </div>
 
             <div className="dashboard-content">
-                {activeView === 'landing' ? <div className="dashboard-content-design">
+                {/* {activeView === 'landing' ?  */}
+                <div className="dashboard-content-design">
                     <div>
                         <h1>Welcome to your Partner Dashboard</h1>
                         <h2>where your Community happens.</h2>
@@ -56,13 +70,23 @@ const Dashboard = () => {
 
                     <div className="dashboard-panel">
                         <div className="dashboard-panel-buttons">
-                            {/* <Link to="/members"> */}
-                                <Button text="Membership IDs" src={members} alt="null" dark={false} onClick={() => changeView('members')}/>
-                            {/* </Link> */}
+                            <Link to={{
+                                pathname: `/analytics/members`,   
+                                state: { members: members}
+                                }}>
+                                <Button text="Membership IDs" src={membersCard} alt="null" dark={false} 
+                                // onClick={() => changeView('members')}
+                                />
+                            </Link>
 
-                            {/* <Link to="/roles"> */}
-                                <Button text="Roles & Skills" src={roles} alt="null" dark={false} onClick={() => changeView('roles')}/>
-                            {/* </Link> */}
+                            <Link to={{
+                                pathname: `/analytics/roles`,   
+                                state: { members: members, roles: roles}
+                                }}>
+                                <Button text="Roles & Skills" src={rolesImg} alt="null" dark={false} 
+                                // onClick={() => changeView('roles')}
+                                />
+                            </Link>
 
                             <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
@@ -70,26 +94,20 @@ const Dashboard = () => {
                         <div className="card-section">
                             <div className="community-card">
                                 <div className="card-header">
-                                    <img src={avatar} alt="null"/>
+                                    <img src={community.image} alt="null"/>
 
-                                    <h3><u>The DAOist</u></h3>
+                                    <h3><u>{community.name}</u></h3>
                                 </div>
 
                                 <div className="card-body">
-                                    <p>Coordinating Space, Talent and Culture.</p>
-
-                                    <p>We want to build a project that doesn't have to win.</p>
-
-                                    <p>We are also defined by what we don't do, and that belongs to anyone that's willing to make it theirs.</p>
+                                    <p>{community.description}</p>
                                 </div>
                             </div>
 
-                            <button>Local Community & DAO</button>
+                            <button>{community.template}</button>
                         </div>
                     </div>
-                </div> : activeView === 'members' ? <Members />
-                
-                    : activeView === 'roles' ? <Roles /> : null}
+                </div>
                 
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter,
@@ -11,28 +11,47 @@ import reportWebVitals from './reportWebVitals';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
 import Dashboard from './components/partnerDashboard/Dashboard';
-// import Members from './components/partnerDashboard/Members';
-// import Roles from './components/partnerDashboard/Roles';
+import Members from './components/partnerDashboard/Members';
+import Roles from './components/partnerDashboard/Roles';
+// import { getMembers, getCommunity } from './contracts/api';
+
+// const [members, setMembers] = useState([]);
+// const [community, setCommunity] = useState({name: '', description: '', image: ''});
+// const [roles, setRoles] = useState([]);
+
+// useEffect(async () => {
+//   const allMembers = await getMembers();
+//   const community = await getCommunity();
+//   console.log(community);
+//   setMembers(allMembers);
+//   setCommunity(community);
+//   setRoles(community.roles);
+// }, [])
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
         <Switch>
-          <Route exact path="/">
-              <App />
+          <Route exact path="/" component={App}>
+              {/* <App /> */}
           </Route>
-          <Route path="/integrate">
-              <Integrate />
+          <Route path="/integrate" component={Integrate}>
           </Route>
-          <Route path="/analytics">
-              <Dashboard />
+          <Route exact path="/analytics/members" 
+          component={Members}
+          >
+              {/* <Members /> */}
           </Route>
-          {/* <Route path="/analytics/members">
-              <Members />
+          <Route exact path="/analytics/roles" 
+          component={Roles}
+          >
+              {/* <Roles /> */}
           </Route>
-          <Route path="/analytics/roles">
-              <Roles />
-          </Route> */}
+          <Route exact path="/analytics"
+          component={Dashboard}
+          >
+              {/* <Dashboard /> */}
+          </Route>
         </Switch>
     </BrowserRouter>
   </React.StrictMode>,

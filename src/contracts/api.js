@@ -22,3 +22,21 @@ export const getUsersData = () => {
         }
     }).then(res => res.json());
 }
+
+export const getMembers = () => {
+    return fetch('https://api.skillwallet.id/api/community/0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26/skillwallet', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json());
+}
+
+export const getCommunity = () => {
+    return fetch('https://api.distributed.town/api/community/0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json());
+}

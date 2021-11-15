@@ -7,7 +7,7 @@ const Button = (props) => {
         className={props.dark ? "partners-button partners-button-dark" : "partners-button partners-button-light"}
         onClick={props.onClick}
         disabled={props.disabled}>
-            <img src={props.src} alt={props.alt}/>
+            {props.src ? <img src={props.src} alt={props.alt}/> : null}
             <p>{props.text}</p>
         </button>
     );

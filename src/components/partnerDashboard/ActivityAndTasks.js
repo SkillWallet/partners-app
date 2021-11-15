@@ -12,8 +12,8 @@ const ActivityAndTasks = (props) => {
             </ul>
 
             <div>
-                {props.data.members.map(m => {
-                    return <div className="activity-row">
+                {props.data.members.map((m, i) => {
+                    return <div className="activity-row" key={i}>
                                 <img src={avatar} alt="avatar"/>
                                 <p>{m.name}</p>
                                 <p>@</p>

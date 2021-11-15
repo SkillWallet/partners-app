@@ -1,15 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '../Button';
 import { confirmAndAddSkills } from '../../contracts/contracts';
 
-const Roles = () => {
+const Roles = (props) => {
     const [activeRole, setActiveRole] = useState('Role 1');
     const [skills, setSkills] = useState([]);
+    const [roles, setRoles] = useState(['','','']);
 
     const changeRole = (newRole) => {
         setSkills([]);
         setActiveRole(newRole);
     }
+
+    useEffect(() => {
+        if (props.location.state.roles.length > 0) {
+            setRoles(props.location.state.roles);
+        }
+    }, [props.location.state]);
 
     const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
@@ -39,18 +46,18 @@ const Roles = () => {
 
                     <div className="dashboard-panel">
                         <div className="dashboard-buttons">
-                                <Button text="Role 1" src={null} alt="null" 
+                                <Button text={roles[0]} src={false} alt="null" 
                                 dark={activeRole === 'Role 1' ? true : false} 
                                 onClick={() => changeRole('Role 1')}
                                 className={activeRole === 'Role 1' ? "activeTab" : ""}
                                 />
 
-                                <Button text="Role 2" src={null} alt="null" 
+                                <Button text={roles[1]} src={false} alt="null" 
                                 dark={activeRole === 'Role 2' ? true : false} 
                                 onClick={() => changeRole('Role 2')}
                                 />
 
-                            <Button text="Role 3" src={null} alt="null" 
+                            <Button text={roles[2]} src={false} alt="null" 
                             dark={activeRole === 'Role 3' ? true : false} 
                             onClick={() => changeRole('Role 3')}
                             />

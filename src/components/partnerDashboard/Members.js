@@ -1,16 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import avatar from '../../assets/avatar.svg';
 import ActivityAndTasks from './ActivityAndTasks';
-// import { getCommunityMembers } from '../../contracts/contracts';
 
-const Members = () => {
+const Members = (props) => {
     const [activeTab, setActiveTab] = useState('role1');
-    const [members, setMembers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [role1, setRole1] = useState({roleType: '', members: []});
+    const [role2, setRole2] = useState({roleType: '', members: []});
+    const [role3, setRole3] = useState({roleType: '', members: []});
 
-    // useEffect(async () => {
-    //     // const members = await getCommunityMembers();
-    //     setMembers(members);
-    // }, []);
+    useEffect(() => {
+        props.location.state.members.length > 0 ? setIsLoading(true) : setIsLoading(false);
+        
+        const roles = Object.keys(props.location.state.members);
+
+        setRole1({
+            roleType: roles[0],
+            members: props.location.state.members[roles[0]]
+        });
+
+        setRole2({
+            roleType: roles[1],
+            members: props.location.state.members[roles[1]]
+        });
+
+        setRole3({
+            roleType: roles[2],
+            members: props.location.state.members[roles[2]]
+        });
+    }, [props.location.state])
 
     const changeTab = (newTab) => {
         setActiveTab(newTab);
@@ -44,44 +62,57 @@ const Members = () => {
     }
 
     const renderMembers = () => {
-        const users = [];
-        for (let i = 1; i < data[activeTab].currentMembers+1; i++) {
-            users.push(
+        let users = [];
+        let components = [];
+        
+        if (activeTab === 'role1') {
+            users = role1.members;
+        } else if (activeTab === 'role2') {
+            users = role2.members;
+        } else {
+            users = role3.members;
+        }
+
+        if (users) {
+        for (let i = 0; i < users.length; i++) {
+            components.push(
                    <div className="role-avatar-div" key={i}>
-                        <img src={avatar} />
-                        <p>SW {i}</p>
+                        <img src={users[i].imageUrl} />
+                        <p>{users[i].nickname}</p>
                    </div>
                    )
-        }
-        return users;
+        }}
+        return components;
     }
 
     return (
         <div className="members-content">
-            <div className="tabs">
-                <div className={activeTab === 'role1' ? "tab activeTab" : "tab"} onClick={() => changeTab('role1')}>Role 1</div>
-                <div className={activeTab === 'role2' ? "tab activeTab" : "tab"} onClick={() => changeTab('role2')}>Role 2</div>
-                <div className={activeTab === 'role3' ? "tab activeTab" : "tab"} onClick={() => changeTab('role3')}>Role 3</div>
-                <div className={activeTab === 'activity' ? "tab activeTab" : "tab"} onClick={() => changeTab('activity')}>Activity & Logs</div>
-            </div>
-
-            <div className="content-section">
-                {activeTab === 'activity' ? 
-                    <ActivityAndTasks data={data['activity']} />
-                : 
-                        <div className="role-container">
-                            <div className="role-header">
-                                <h4>{activeTab}</h4>
-                                <h4>{data[activeTab].currentMembers}/{data[activeTab].maxMembers}</h4>
-                            </div>
-
-                            <div className="avatar-container">
-                                {renderMembers()}
-                            </div>
-
-                        </div> 
-                        }
-            </div>
+            {isLoading ? <>'Loading!'</> :
+            <>
+                    <div className="tabs">
+                        <div className={activeTab === 'role1' ? "tab activeTab" : "tab"} onClick={() => changeTab('role1')}>{role1.roleType}</div>
+                        <div className={activeTab === 'role2' ? "tab activeTab" : "tab"} onClick={() => changeTab('role2')}>{role2.roleType}</div>
+                        <div className={activeTab === 'role3' ? "tab activeTab" : "tab"} onClick={() => changeTab('role3')}>{role3.roleType}</div>
+                        <div className={activeTab === 'activity' ? "tab activeTab" : "tab"} onClick={() => changeTab('activity')}>Activity & Logs</div>
+                    </div>
+        
+                    <div className="content-section">
+                        {activeTab === 'activity' ? 
+                            <ActivityAndTasks data={data['activity']} />
+                        : 
+                                <div className="role-container">
+                                    <div className="role-header">
+                                        {/* <h4>{data[activeTab].currentMembers}/{data[activeTab].maxMembers}</h4> */}
+                                    </div>
+        
+                                    <div className="avatar-container">
+                                        {renderMembers()}
+                                    </div>
+        
+                                </div> 
+                                }
+                    </div></>
+            }
         </div>
     );
 }
