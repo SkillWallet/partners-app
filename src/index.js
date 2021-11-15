@@ -1,34 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
 import Dashboard from './components/partnerDashboard/Dashboard';
 import Members from './components/partnerDashboard/Members';
 import Roles from './components/partnerDashboard/Roles';
-// import { getMembers, getCommunity } from './contracts/api';
-
-// const [members, setMembers] = useState([]);
-// const [community, setCommunity] = useState({name: '', description: '', image: ''});
-// const [roles, setRoles] = useState([]);
-
-// useEffect(async () => {
-//   const allMembers = await getMembers();
-//   const community = await getCommunity();
-//   console.log(community);
-//   setMembers(allMembers);
-//   setCommunity(community);
-//   setRoles(community.roles);
-// }, [])
 
 ReactDOM.render(
+  <Provider store={store}>
   <React.StrictMode>
     <BrowserRouter>
         <Switch>
@@ -54,7 +39,8 @@ ReactDOM.render(
           </Route>
         </Switch>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
