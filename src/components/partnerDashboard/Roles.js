@@ -1,6 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import Button from '../Button';
-import { confirmAndAddSkills } from '../../contracts/contracts';
+import copyIcon from '../../assets/copy-icon.svg';
+import logOff from '../../assets/log-off.svg';
+import daoStats from '../../assets/dao-stats.svg';
+import dashboard from '../../assets/dashboard.svg';
+import eventBadge from '../../assets/event-badge.svg';
+import avatar from '../../assets/avatar.svg';
+// import { confirmAndAddSkills } from '../../contracts/contracts';
+import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
+
+const mapStateToProps = state => {
+    return ({
+    state: {
+        roles: state.community.community.roles
+    }
+  })};
 
 const Roles = (props) => {
     const [activeRole, setActiveRole] = useState('Role 1');
@@ -13,10 +28,10 @@ const Roles = (props) => {
     }
 
     useEffect(() => {
-        if (props.location.state.roles.length > 0) {
-            setRoles(props.location.state.roles);
+        if (props.state.roles && props.state.roles.length > 0) {
+            setRoles(props.state.roles);
         }
-    }, [props.location.state]);
+    }, [props.state.roles]);
 
     const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
@@ -38,7 +53,34 @@ const Roles = (props) => {
     };
 
     return (
-        <div className="dashboard-roles-content">
+        <div className="dashboard-main">
+            <div className="dashboard-sidebar">
+                <div className="dashboard-sidebar-design">
+                    <div className="dashboard-sidebar-header">
+                        <img src={avatar} alt="User avatar" />
+
+                        <h2>Username</h2>
+                    </div>
+
+                    <div className="dashboard-nav">
+                        <Link to="/analytics">
+                            <Button text="Dashboard" src={dashboard} alt="null" dark={true}/>
+                        </Link>
+
+                        <Button text="Event Factory" src={eventBadge} alt="null" dark={false}/>
+
+                        <Button text="DAO Stats" src={daoStats} alt="null" dark={false} disabled={true}/>
+
+                        <Button text="Your Contracts" src={copyIcon} alt="null" dark={false}/>
+                    </div>
+
+                    <div className="linebreak" ></div>
+
+                    <Button text="Disconnect" src={logOff} alt="null"/>
+                </div>
+            </div>
+            
+            <div className="dashboard-roles-content">
                 <div className="dashboard-content-design">
                     <div>
                         <h3>Add Skills for each Role, and assign them to your Community Members</h3>
@@ -86,7 +128,8 @@ const Roles = (props) => {
                     </div>
                 </div>                
             </div>
+        </div>
     );
 }
 
-export default Roles;
+export default connect(mapStateToProps)(Roles);

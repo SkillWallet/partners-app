@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -20,24 +20,18 @@ ReactDOM.render(
         <BrowserRouter>
             <Switch>
               <Route exact path="/" component={App}>
-                  {/* <App /> */}
               </Route>
+              
               <Route path="/integrate" component={Integrate}>
               </Route>
-              <Route exact path="/analytics/members" 
-              component={Members}
-              >
-                  {/* <Members /> */}
+
+              <Route exact path="/analytics/members" component={Members}>
               </Route>
-              <Route exact path="/analytics/roles" 
-              component={Roles}
-              >
-                  {/* <Roles /> */}
+              
+              <Route exact path="/analytics/roles" component={Roles}>
               </Route>
-              <Route exact path="/analytics"
-              component={Dashboard}
-              >
-                  {/* <Dashboard /> */}
+
+              <Route exact path="/analytics" component={Dashboard}>
               </Route>
             </Switch>
         </BrowserRouter>

@@ -1081,6 +1081,10 @@
   margin: 10px 20%;
 }
 
+.dashboard-roles-content {
+  width: 80%;
+}
+
 .avatar-container {
   display: flex;
   flex-wrap: wrap;

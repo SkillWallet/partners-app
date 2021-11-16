@@ -1,16 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import avatar from '../../assets/avatar.svg';
+import copyIcon from '../../assets/copy-icon.svg';
+import logOff from '../../assets/log-off.svg';
+import daoStats from '../../assets/dao-stats.svg';
+import dashboard from '../../assets/dashboard.svg';
+import eventBadge from '../../assets/event-badge.svg';
+import Button from '../Button';
 import ActivityAndTasks from './ActivityAndTasks';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 
 const mapStateToProps = state => {
-    // console.log('state? : ', state);
     return ({
     state: state.members
   })};
 
 const Members = (props) => {
-    console.log('props: ', props);
     const [activeTab, setActiveTab] = useState('role1');
     const [isLoading, setIsLoading] = useState(false);
     const [role1, setRole1] = useState({roleType: '', members: []});
@@ -43,21 +48,6 @@ const Members = (props) => {
     }
 
     const data = {
-        role1: {
-            maxMembers: 57,
-            currentMembers: 30,
-            members: []
-        },
-        role2: {
-            maxMembers: 29,
-            currentMembers: 20,
-            members: []
-        },
-        role3: {
-            maxMembers: 14,
-            currentMembers: 10,
-            members: []
-        },
         activity: {
             maxMembers: 100,
             currentMembers: 10,
@@ -85,7 +75,7 @@ const Members = (props) => {
         for (let i = 0; i < users.length; i++) {
             components.push(
                    <div className="role-avatar-div" key={i}>
-                        <img src={users[i].imageUrl} />
+                        <img src={users[i].imageUrl} alt="user avater" />
                         <p>{users[i].nickname}</p>
                    </div>
                    )
@@ -94,7 +84,33 @@ const Members = (props) => {
     }
 
     return (
-        <div className="members-content">
+    <div className="dashboard-main">
+            <div className="dashboard-sidebar">
+                <div className="dashboard-sidebar-design">
+                    <div className="dashboard-sidebar-header">
+                        <img src={avatar} alt="User avatar" />
+
+                        <h2>Username</h2>
+                    </div>
+
+                    <div className="dashboard-nav">
+                        <Link to="/analytics">
+                            <Button text="Dashboard" src={dashboard} alt="null" dark={true}/>
+                        </Link>
+
+                        <Button text="Event Factory" src={eventBadge} alt="null" dark={false}/>
+
+                        <Button text="DAO Stats" src={daoStats} alt="null" dark={false} disabled={true}/>
+
+                        <Button text="Your Contracts" src={copyIcon} alt="null" dark={false}/>
+                    </div>
+
+                    <div className="linebreak" ></div>
+
+                    <Button text="Disconnect" src={logOff} alt="null"/>
+                </div>
+            </div>
+            <div className="members-content">
             {isLoading ? <>'Loading!'</> :
             <>
                     <div className="tabs">
@@ -121,6 +137,7 @@ const Members = (props) => {
                                 }
                     </div></>
             }
+        </div>
         </div>
     );
 }

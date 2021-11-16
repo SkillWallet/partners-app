@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Button from '../Button';
-import Members from './Members';
-import Roles from './Roles';
 import copyIcon from '../../assets/copy-icon.svg';
 import logOff from '../../assets/log-off.svg';
 import daoStats from '../../assets/dao-stats.svg';
@@ -13,54 +11,24 @@ import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
 import { getMembers, getCommunity } from '../../contracts/api';
 import { Link } from "react-router-dom";
-
 import { connect } from 'react-redux';
 import { saveMembers } from '../../redux/Members/members.actions';
 import { saveCommunity } from '../../redux/Community/community.actions';
 
-const mapStateToProps = state => {
-    return {
-      state: state.members,
-      community: state.community.community
-    }
-  }
-  
-  const mapDispatchToProps = dispatch => {
-    return {
-        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
-        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
-    }
-  }
-
 const Dashboard = (props) => {
-    const [activeView, setActiveView] = useState('landing');
-    const [members, setMembers] = useState([]);
-    // const [community, setCommunity] = useState({name: '', description: '', image: ''});
-    const [roles, setRoles] = useState([]);
-
-    const changeView = (newView) => {
-        setActiveView(newView);
-    }
-
-    useEffect(async () => {
-        let allMembers = [];
-        let community = [];
-        console.log('useeffect...', props);
-        if (props.state.members === null) {
-            console.log('checking?');
-            allMembers = await getMembers();
-            console.log(allMembers);
-            props.dispatchSaveMembers(allMembers);
+    useEffect(() => {
+        async function fetchData() {
+            if (props.state.members === null) {
+                const allMembers = await getMembers();
+                props.dispatchSaveMembers(allMembers);
+            }
+            if (props.state.community === null) {
+                const community = await getCommunity();
+                props.dispatchSaveCommunity(community)
+            }
         }
-        if (props.community === null) {
-            community = await getCommunity();
-            props.dispatchSaveCommunity(community)
-        }
-        console.log(community);
-        setMembers(allMembers);
-        // setCommunity(community);
-        setRoles(community.roles);
-    }, [])
+        fetchData();
+    }, [props])
 
     return (
         <div className="dashboard-main">
@@ -90,7 +58,6 @@ const Dashboard = (props) => {
             </div>
 
             <div className="dashboard-content">
-                {/* {activeView === 'landing' ?  */}
                 <div className="dashboard-content-design">
                     <div>
                         <h1>Welcome to your Partner Dashboard</h1>
@@ -99,48 +66,54 @@ const Dashboard = (props) => {
 
                     <div className="dashboard-panel">
                         <div className="dashboard-panel-buttons">
-                            <Link to={{
-                                pathname: `/analytics/members`,   
-                                state: { members: members}
-                                }}>
-                                <Button text="Membership IDs" src={membersCard} alt="null" dark={false} 
-                                // onClick={() => changeView('members')}
-                                />
+                            <Link to={'/analytics/members'}>
+                                <Button text="Membership IDs" src={membersCard} alt="null" dark={false} />
                             </Link>
 
-                            <Link to={{
-                                pathname: `/analytics/roles`,   
-                                state: { members: members, roles: roles}
-                                }}>
-                                <Button text="Roles & Skills" src={rolesImg} alt="null" dark={false} 
-                                // onClick={() => changeView('roles')}
-                                />
+                            <Link to={'/analytics/roles'}>
+                                <Button text="Roles & Skills" src={rolesImg} alt="null" dark={false} />
                             </Link>
 
                             <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
 
-            {props.community ?                         <div className="card-section">       {/*LOADING SPINNER */}
+                    {props.state.community ?                         
+                        <div className="card-section">       {/*LOADING SPINNER */}
                             <div className="community-card">
                                 <div className="card-header">
-                                    <img src={props.community.image} alt="null"/>
+                                    <img src={props.state.community.image} alt="null"/>
 
-                                    <h3><u>{props.community.name}</u></h3>
+                                    <h3><u>{props.state.community.name}</u></h3>
                                 </div>
 
                                 <div className="card-body">
-                                    <p>{props.community.description}</p>
+                                    <p>{props.state.community.description}</p>
                                 </div>
                             </div>
 
-                            <button>{props.community.template}</button>
+                            <button>{props.state.community.template}</button>
                         </div> : null}
                     </div>
                 </div>
-                
             </div>
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+      state: {
+          members: state.members,
+          community: state.community.community
+      }
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+    }
+  }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

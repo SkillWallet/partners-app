@@ -3,7 +3,6 @@ import { pushJSONDocument } from '../api/textile.hub';
 import { generatePartnersKey } from './api';
 
 const partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
-const communityABI = require('../contracts/abi/ICommunity.abi.json').abi;
 
 const metadata = [
   {
@@ -133,18 +132,18 @@ export const createPartnersAgreement = async (
   }
 }
 
-export const confirmAndAddSkills = async () => {
+// export const confirmAndAddSkills = async () => {
 
-  if (!window.ethereum.selectedAddress) {
-    await window.ethereum.enable()
-  };
+//   if (!window.ethereum.selectedAddress) {
+//     await window.ethereum.enable()
+//   };
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
+//   const provider = new ethers.providers.Web3Provider(window.ethereum);
+//   const signer = provider.getSigner();
 
-  // const contract = new ethers.Contract(
-  //   process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
-  //   partnersRegistryABI,
-  //   signer,
-  // );
-}
+//   const contract = new ethers.Contract(
+//     process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
+//     partnersRegistryABI,
+//     signer,
+//   );
+// }
