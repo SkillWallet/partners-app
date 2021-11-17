@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from './Integrate';
+import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './components/partnerDashboard/Dashboard';
 import Members from './components/partnerDashboard/Members';
 import Roles from './components/partnerDashboard/Roles';
@@ -25,14 +26,14 @@ ReactDOM.render(
               <Route path="/integrate" component={Integrate}>
               </Route>
 
-              <Route exact path="/analytics/members" component={Members}>
-              </Route>
+              <ProtectedRoute exact path="/analytics/members" component={Members}>
+              </ProtectedRoute>
               
-              <Route exact path="/analytics/roles" component={Roles}>
-              </Route>
+              <ProtectedRoute exact path="/analytics/roles" component={Roles}>
+              </ProtectedRoute>
 
-              <Route exact path="/analytics" component={Dashboard}>
-              </Route>
+              <ProtectedRoute exact path="/analytics" component={Dashboard}>
+              </ProtectedRoute>
             </Switch>
         </BrowserRouter>
       </React.StrictMode>

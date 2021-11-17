@@ -1,9 +1,15 @@
-import { SAVEMEMBERS } from "./members.types";
+import { SAVEMEMBERS, AUTHUSER } from "./members.types";
 
 export const saveMembers = (members) => {
-    console.log('called in action?', members);
     return {
         type: SAVEMEMBERS,
         payload: members
+    };
+};
+
+export const isUserAuthenticated = (auth) => {
+    return {
+        type: AUTHUSER,
+        payload: auth
     };
 };

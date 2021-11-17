@@ -9,7 +9,7 @@ import avatar from '../../assets/avatar.svg';
 import membersCard from '../../assets/member-card.svg';
 import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
-import { getMembers, getCommunity } from '../../contracts/api';
+import { getMembers, getCommunity, fetchData } from '../../contracts/api';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { saveMembers } from '../../redux/Members/members.actions';
@@ -17,17 +17,8 @@ import { saveCommunity } from '../../redux/Community/community.actions';
 
 const Dashboard = (props) => {
     useEffect(() => {
-        async function fetchData() {
-            if (props.state.members === null) {
-                const allMembers = await getMembers();
-                props.dispatchSaveMembers(allMembers);
-            }
-            if (props.state.community === null) {
-                const community = await getCommunity();
-                props.dispatchSaveCommunity(community)
-            }
-        }
-        fetchData();
+        console.log('in Roles useEffect', props);
+        fetchData(props);
     }, [props])
 
     return (
@@ -101,6 +92,7 @@ const Dashboard = (props) => {
 }
 
 const mapStateToProps = state => {
+    // console.log('state: ', state);
     return {
       state: {
           members: state.members,

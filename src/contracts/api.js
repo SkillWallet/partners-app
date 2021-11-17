@@ -1,3 +1,7 @@
+import { connect } from 'react-redux';
+import { saveMembers } from '../redux/Members/members.actions';
+import { saveCommunity } from '../redux/Community/community.actions';
+
 export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community/key`, {
         method: 'POST',
@@ -40,3 +44,23 @@ export const getCommunity = () => {
         }
     }).then(res => res.json());
 }
+
+export const fetchData = async (props) => {
+    if (!props.state.members) {
+        const allMembers = await getMembers();
+        props.dispatchSaveMembers(allMembers);
+    }
+    if (!props.state.community) {
+        const community = await getCommunity();
+        props.dispatchSaveCommunity(community)
+    }
+}
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+    }
+  }
+
+export default connect(mapDispatchToProps)(fetchData);

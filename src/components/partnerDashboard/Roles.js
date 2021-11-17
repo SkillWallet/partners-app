@@ -6,32 +6,33 @@ import daoStats from '../../assets/dao-stats.svg';
 import dashboard from '../../assets/dashboard.svg';
 import eventBadge from '../../assets/event-badge.svg';
 import avatar from '../../assets/avatar.svg';
-// import { confirmAndAddSkills } from '../../contracts/contracts';
+import { fetchData } from '../../contracts/api';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-
-const mapStateToProps = state => {
-    return ({
-    state: {
-        roles: state.community.community.roles
-    }
-  })};
+import { saveMembers } from '../../redux/Members/members.actions';
+import { saveCommunity } from '../../redux/Community/community.actions';
 
 const Roles = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [activeRole, setActiveRole] = useState('Role 1');
     const [skills, setSkills] = useState([]);
     const [roles, setRoles] = useState(['','','']);
+
+    useEffect(() => {
+        if (props.state.community) {
+            setRoles(props.state.community.roles);
+            setIsLoading(false);
+        } else {
+            fetchData(props);
+            setIsLoading(true);
+        }
+    }, [props.state])
+
 
     const changeRole = (newRole) => {
         setSkills([]);
         setActiveRole(newRole);
     }
-
-    useEffect(() => {
-        if (props.state.roles && props.state.roles.length > 0) {
-            setRoles(props.state.roles);
-        }
-    }, [props.state.roles]);
 
     const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
@@ -48,12 +49,14 @@ const Roles = (props) => {
         }
     }
 
-    const handleAddSkills = () => {
-
-    };
-
     return (
         <div className="dashboard-main">
+            {isLoading ?
+                <div className="item">
+                    <h2>Loading</h2>
+
+                    <i className="loader two"></i>
+                </div> : <div></div>}
             <div className="dashboard-sidebar">
                 <div className="dashboard-sidebar-design">
                     <div className="dashboard-sidebar-header">
@@ -86,7 +89,7 @@ const Roles = (props) => {
                         <h3>Add Skills for each Role, and assign them to your Community Members</h3>
                     </div>
 
-                    <div className="dashboard-panel">
+                    {!isLoading ? <div className="dashboard-panel">
                         <div className="dashboard-buttons">
                                 <Button text={roles[0]} src={false} alt="null" 
                                 dark={activeRole === 'Role 1' ? true : false} 
@@ -123,13 +126,28 @@ const Roles = (props) => {
                                 </div>
 
                             </div>
-                            <button disabled={true} onClick={() => handleAddSkills()}>Confirm & Add Skills</button>
+                            <button disabled={true} >Confirm & Add Skills</button>
                         </div>
-                    </div>
-                </div>                
+                    </div> : null}
+                </div>               
             </div>
         </div>
     );
 }
 
-export default connect(mapStateToProps)(Roles);
+const mapStateToProps = state => {
+    return ({
+    state: {
+        community: state.community.community,
+        members: state.members.members
+    }
+  })};
+
+  const mapDispatchToProps = dispatch => {
+    return {
+        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Roles);

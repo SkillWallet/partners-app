@@ -7,41 +7,45 @@ import dashboard from '../../assets/dashboard.svg';
 import eventBadge from '../../assets/event-badge.svg';
 import Button from '../Button';
 import ActivityAndTasks from './ActivityAndTasks';
+import { fetchData } from '../../contracts/api';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { saveMembers } from '../../redux/Members/members.actions';
+import { saveCommunity } from '../../redux/Community/community.actions';
 
-const mapStateToProps = state => {
-    return ({
-    state: state.members
-  })};
-
-const Members = (props) => {
+const Members = (props) => {    
     const [activeTab, setActiveTab] = useState('role1');
     const [isLoading, setIsLoading] = useState(false);
+    const [roles, setRoles] = useState([]);
     const [role1, setRole1] = useState({roleType: '', members: []});
     const [role2, setRole2] = useState({roleType: '', members: []});
     const [role3, setRole3] = useState({roleType: '', members: []});
 
     useEffect(() => {
-        props.state.members === null ? setIsLoading(true) : setIsLoading(false);
-        
-        const roles = Object.keys(props.state.members);
+        if (props.state.members && roles.length === 0) {
+            const newRoles = Object.keys(props.state.members);
 
-        setRole1({
-            roleType: roles[0],
-            members: props.state.members[roles[0]]
-        });
+            setRoles(newRoles);
+            setRole1({
+                roleType: newRoles[0],
+                members: props.state.members[newRoles[0]]
+            });
+            setRole2({
+                roleType: newRoles[1],
+                members: props.state.members[newRoles[1]]
+            });
+            setRole3({
+                roleType: newRoles[2],
+                members: props.state.members[newRoles[2]]
+            });
 
-        setRole2({
-            roleType: roles[1],
-            members: props.state.members[roles[1]]
-        });
+            setIsLoading(false);
 
-        setRole3({
-            roleType: roles[2],
-            members: props.state.members[roles[2]]
-        });
-    }, [props.state.members])
+        } else if (!props.state.members) {
+            fetchData(props);
+            setIsLoading(true);
+        }
+    }, [props.state, roles, role1, role2, role3])
 
     const changeTab = (newTab) => {
         setActiveTab(newTab);
@@ -126,7 +130,7 @@ const Members = (props) => {
                         : 
                                 <div className="role-container">
                                     <div className="role-header">
-                                        {/* <h4>{data[activeTab].currentMembers}/{data[activeTab].maxMembers}</h4> */}
+                                        <h4>{10}/{100}</h4>
                                     </div>
         
                                     <div className="avatar-container">
@@ -142,4 +146,18 @@ const Members = (props) => {
     );
 }
 
-export default connect(mapStateToProps)(Members);
+const mapStateToProps = state => {
+    return ({
+        state: {
+            members: state.members.members
+        }
+  })};
+
+  const mapDispatchToProps = dispatch => {
+    return {
+        dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Members);

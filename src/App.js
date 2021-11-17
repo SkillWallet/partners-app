@@ -6,13 +6,14 @@ import './styles/Integrate.css';
 import networkIcon from "./assets/network.svg";
 import analyticsGreyIcon from "./assets/analytics-grey.svg";
 import analyticsIcon from "./assets/analytics-dark.svg";
+import { connect } from 'react-redux';
+import { isUserAuthenticated } from './redux/Members/members.actions';
 
-function App() {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+function App(props) {
   const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
 
   window.addEventListener('onSkillwalletLogin', () => {
-    setIsUserLoggedIn(true);
+    props.dispatchAuthenticateUser(true);
     setAnalyticsClass('landing-button-container');
   });
 
@@ -60,13 +61,13 @@ function App() {
                   </div>
                 </Link>
 
-                <Link to={isUserLoggedIn ? '/analytics' : '#'}>
+                <Link to={'/analytics'}>
                   <div className={analyticsClass} >
                     <div className="landing-button-text">
                         <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Partners</h2>
                         <p>Analytics</p>
                     </div>
-                    <img src={isUserLoggedIn ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
+                    <img src={props.state.members.auth ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
                   </div>
                 </Link>
               </div>
@@ -79,4 +80,18 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    state: {
+        members: state.members
+    }
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      dispatchAuthenticateUser: (auth) => dispatch(isUserAuthenticated(auth))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
