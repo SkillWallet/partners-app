@@ -10,6 +10,7 @@ import membersCard from '../../assets/member-card.svg';
 import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
 import { getMembers, getCommunity, fetchData } from '../../contracts/api';
+import { getSkills } from '../../contracts/contracts';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { saveMembers } from '../../redux/Members/members.actions';
@@ -19,7 +20,12 @@ const Dashboard = (props) => {
     useEffect(() => {
         console.log('in Roles useEffect', props);
         fetchData(props);
-    }, [props])
+    }, [props]);
+
+    const callGetSkills = async () => {
+        const skills = await getSkills();
+        console.log('sk: ', skills);
+    }
 
     return (
         <div className="dashboard-main">
@@ -67,6 +73,8 @@ const Dashboard = (props) => {
 
                             <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
+
+                        <button onClick={() => callGetSkills()}>Get Skills</button>
 
                     {props.state.community ?                         
                         <div className="card-section">       {/*LOADING SPINNER */}

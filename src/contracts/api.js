@@ -27,8 +27,17 @@ export const getUsersData = () => {
     }).then(res => res.json());
 }
 
-export const getMembers = () => {
-    return fetch('https://api.skillwallet.id/api/community/0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26/skillwallet', {
+export const getMembersByCommunityAddress = (communityAddress) => {
+    return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json());
+}
+
+export const getCommunityByPartnerKey = (partnerKey) => {
+    return fetch(`https://api.distributed.town/api/community/key/${partnerKey}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -45,9 +54,18 @@ export const getCommunity = () => {
     }).then(res => res.json());
 }
 
+export const getSkillwalletAddress = () => {
+    fetch('https://api.skillwallet.id/api/skillwallet/config', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json());
+}
+
 export const fetchData = async (props) => {
     if (!props.state.members) {
-        const allMembers = await getMembers();
+        const allMembers = await getMembersByCommunityAddress('0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26');
         props.dispatchSaveMembers(allMembers);
     }
     if (!props.state.community) {
