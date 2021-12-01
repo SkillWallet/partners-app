@@ -22,10 +22,10 @@ const Dashboard = (props) => {
         fetchData(props);
     }, [props]);
 
-    const callGetSkills = async () => {
-        const skills = await getSkills();
-        console.log('sk: ', skills);
-    }
+    // const callGetSkills = async () => {
+    //     const skills = await getSkills();
+    //     console.log('sk: ', skills);
+    // }
 
     return (
         <div className="dashboard-main">
@@ -73,8 +73,6 @@ const Dashboard = (props) => {
 
                             <Button text="Profit-Sharing" src={coins} alt="null" dark={false}/>
                         </div>
-
-                        <button onClick={() => callGetSkills()}>Get Skills</button>
 
                     {props.state.community ?                         
                         <div className="card-section">       {/*LOADING SPINNER */}

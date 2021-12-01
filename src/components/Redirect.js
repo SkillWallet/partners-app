@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ethers } from 'ethers';
-import skillWalletAbi from './SkillWallet.json';
+import skillWalletAbi from '../contracts/abi/SkillWallet.json';
 
 const Redirect = () => {
     const skillWalletAddress = '0xC048276176B8D6541ac0b39B853067202b571E08';
@@ -137,3 +137,5 @@ const Redirect = () => {
         </div>
     );
 }
+
+export default Redirect;
