@@ -1,8 +1,9 @@
 import { ethers } from 'ethers'
 import { pushJSONDocument } from '../api/textile.hub';
-import { generatePartnersKey } from './api';
+import { generatePartnersKey, getCommunityByPartnerKey } from './api';
 
-var partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
+const partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
+const communityABI = require('../contracts/abi/ICommunity.abi.json').abi;
 
 const metadata = [
   {
@@ -82,12 +83,41 @@ export const createPartnersAgreement = async (
         signer,
       );
 
+      // here's where my metadata is set.
       const jsonMetadata = metadata[template];
       jsonMetadata.title = title;
       jsonMetadata.description = description;
-      jsonMetadata.properties.roles = roles;
+      console.log('roles setter: ', roles);
+      jsonMetadata.communityRoles = {
+        1: {
+          roleName: roles[0],
+          skills: []
+        },
+        2: {
+          roleName: roles[1],
+          skills: []
+        },
+        3: {
+          roleName: roles[2],
+          skills: []
+        }
+      }
+      jsonMetadata.coreTeamMemberRoles = {
+        1: {
+          roleName: 'Founder',
+          skills: []
+        },
+        2: {
+          roleName: 'Investor',
+          skills: []
+        },
+        3: {
+          roleName: 'Contributor',
+          skills: []
+        }
+      }
       jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
-      const url = await pushJSONDocument(jsonMetadata);
+      const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
       console.log(url);
 
       console.log('calling the SC')
@@ -131,3 +161,45 @@ export const createPartnersAgreement = async (
     alert('Something went wrong, try again later');
   }
 }
+
+// export const confirmAndAddSkills = async () => {
+
+//   if (!window.ethereum.selectedAddress) {
+//     await window.ethereum.enable()
+//   };
+
+//   const provider = new ethers.providers.Web3Provider(window.ethereum);
+//   const signer = provider.getSigner();
+
+//   const contract = new ethers.Contract(
+//     process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
+//     partnersRegistryABI,
+//     signer,
+//   );
+// }
+
+  export const getSkills = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+      // call getCommunity (with PK) to get address
+    const community = await getCommunityByPartnerKey("7558d2094290013c527d4bab9a80bd9dd24c74e0");
+
+    const contract = new ethers.Contract(
+      community.address,
+      communityABI,
+      signer,
+    );
+    const metadataURL = await contract.metadataUri();
+
+    return fetch(metadataURL, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+  }).then(async (res) => {
+    const community = await res.json();
+
+    return community.communityRoles;
+  });
+};

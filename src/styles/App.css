@@ -107,7 +107,7 @@
 
 .dashboard-container {
   background-color: white;
-  background-image:url('./assets/sidebar-background.svg');
+  background-image:url('../assets/sidebar-background.svg');
   border: 1px outset black;
   box-shadow: inset 4px 2px 2px 1px rgba(0,0,0,0.3);
   border-radius: 20px;
@@ -186,7 +186,7 @@
 }
 
 .role-icon {
-  background-image:url('./assets/role-icon-green.svg');
+  background-image:url('../assets/role-icon-green.svg');
   background-repeat: no-repeat;
   background-size: cover;
   width: 50px;
@@ -811,7 +811,7 @@
   width: 100vw;
   height: 100vh;
   background-color: white;
-  background-image:url('./assets/sidebar-background.svg');
+  background-image:url('../assets/sidebar-background.svg');
   position: fixed;
   top: 0;
   left: 0;
@@ -831,3 +831,344 @@
 #flyoutMenu h2 a:hover {
   text-decoration: underline;
 }
+
+
+
+/** PARTNER DASHBOARD **/
+
+.dashboard-main {
+  display: flex;
+  height:100%;
+}
+
+.dashboard-sidebar {
+  background-color: #161616;
+  text-align: center;
+  min-width: 20%;
+  max-width: 23.5%;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.dashboard-sidebar-design {
+  width: 90%;
+  border: 1px solid white;
+  min-height: 95vh;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.dashboard-sidebar-header {
+  width: 75%;
+  margin: 15% auto 20px auto;
+  text-align: center;
+  color: white;
+}
+
+.dashboard-sidebar-header > img {
+  border-radius: 100%;
+  border: 1px solid white;
+  margin: 0 auto;
+}
+
+.linebreak {
+  width: 80%;
+  border: 1px solid white;
+  margin: 0 auto;
+}
+
+.dashboard-content {
+  width: 80%;
+}
+
+.dashboard-content-design, .members-content {
+  border: 1px solid black;
+  width: 98%;
+  min-height: 95vh;
+  margin: auto auto;
+  margin-top: 20px;
+  overflow: auto;
+}
+
+.members-content {
+  border: none;
+}
+
+.partners-button-light {
+  background-color: white;
+  color: black;
+  border: 2px solid black !important;
+}
+
+.partners-button-dark {
+  background-color: black;
+  color: white;
+  border: 1px solid white !important;
+}
+
+.partners-button {
+  font-weight: 300;
+  border: 0px;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 80%;
+  height: 50px;
+  white-space: nowrap;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.partners-button > p {
+  max-height: 30px;
+  overflow: hidden;
+  max-height: 40px;
+  text-overflow: ellipsis;
+  font-size: 14px !important;
+}
+
+.partners-button:hover {
+  cursor: pointer;
+  background-color: #36454F;
+}
+
+.activeTab, .activeTab > button {
+  background-color: black !important;
+  color: white !important;
+}
+
+
+.dashboard-content-design > *:first-child {
+  margin-top: 10%;
+  margin-bottom: 40px !important;
+  text-align: center;
+}
+
+.dashboard-panel {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+  min-height: 60vh;
+  margin: 0 auto;
+}
+
+.dashboard-buttons {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-panel-buttons, .card-section {
+  width: 45%;
+}
+
+.skillpicker-container {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.skillpicker {
+  border: 1px solid black;
+  background-color: #dcdcdd;
+  padding: 25px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.skillpicker > div:first-child > p {
+  margin-bottom: 20px;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.skillButton {
+  border: 1px solid black;
+  padding: 15px;
+  width: 30%;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.skillButton:hover {
+  cursor: pointer;
+}
+
+.skillButton:active {
+  background-color: #dcdcdd;
+}
+
+.skillpicker-container > button, .card-section > button {
+  height: 45px;
+  border: 2px solid black;
+  width: 100%;
+  background-color: white;
+}
+
+.card-section > button:hover {
+  cursor: pointer;
+  background-color: grey;
+}
+
+.community-card {
+  border: 2px solid black;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header > img {
+  max-width: 85px;
+}
+
+.card-body > p {
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.tabs {
+  margin-top: 10%;
+  margin-bottom: 50px;
+  display: flex;
+}
+
+.tab {
+  padding: 20px 0;
+  border: 1px solid black;
+  width: 25%;
+  text-align: center;
+}
+
+.tab:hover {
+  cursor: pointer;
+}
+
+.members-content {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.content-section {
+  border: 2px solid black;
+  min-height: 50vh;
+}
+
+.role-container {
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+.role-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 20%;
+}
+
+.dashboard-roles-content {
+  width: 80%;
+}
+
+.avatar-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.role-avatar-div {
+  margin-bottom: 15px !important;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.role-avatar-div > img {
+  margin-bottom: 10px;
+  width: 100px;
+}
+
+.activity-content > ul {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px !important;
+  margin-bottom: 40px !important;
+  width: 35%;
+  margin: 0 auto;
+}
+
+.activity-content > ul > li {
+  list-style-type: none;
+  margin-right: 20px;
+  border-right: 1px solid black;
+  padding-right: 10px;
+}
+
+.activity-content > ul > li:last-child {
+  border-right: none;
+}
+
+.activity-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 15px 5%;
+  border: 1px solid black;
+}
+
+.activity-row > img {
+  width: 8%;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 100%;
+}
+
+.timestamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timestamp > p:first-child {
+  margin-bottom: 5px;
+}
+
+
+@media only screen and (max-width: 640px) {
+
+  .dashboard-sidebar {
+    background-image: none;
+    background-color: #161616 !important;
+    min-height: 0vh;
+    max-width: 100%;
+  }
+
+  .dashboard-sidebar-design {
+    border: none;
+    min-height: 20vh;
+    padding-bottom: 15px;
+  }
+
+}
+
+/** PARTNER DASHBOARD **/

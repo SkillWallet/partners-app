@@ -358,7 +358,7 @@ const IntegrateUserDetails = (props) => {
                                                 </div>
                                             </button>
 
-                                            <button onClick={toggleModal} className="importYourContract" id={isActiveIdImportContract} disabled={isActiveIdStartFromScratch} type='button'>
+                                            <button onClick={toggleModal} className="importYourContract" id={isActiveIdImportContract} disabled={true} type='button'>
                                                 <div className='object-cover'>
                                                     <p style={contractAddress ? {
                                                         "font-size": "x-small"

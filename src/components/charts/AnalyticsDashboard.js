@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import './Integrate.css';
+import './styles/Integrate.css';
 import roleActivity from './assets/role-activity.svg';
 import checkups from './assets/checkups-dark.svg';
 import { useHistory } from 'react-router-dom';
