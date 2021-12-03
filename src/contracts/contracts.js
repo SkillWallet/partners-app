@@ -88,35 +88,59 @@ export const createPartnersAgreement = async (
       jsonMetadata.title = title;
       jsonMetadata.description = description;
       console.log('roles setter: ', roles);
-      jsonMetadata.communityRoles = {
-        1: {
-          roleName: roles[0],
-          skills: []
-        },
-        2: {
-          roleName: roles[1],
-          skills: []
-        },
-        3: {
-          roleName: roles[2],
-          skills: []
-        }
-      }
-      jsonMetadata.coreTeamMemberRoles = {
-        1: {
-          roleName: 'Founder',
-          skills: []
-        },
-        2: {
-          roleName: 'Investor',
-          skills: []
-        },
-        3: {
-          roleName: 'Contributor',
-          skills: []
-        }
+      jsonMetadata.skills = {
+        roles: [
+          {
+            credits: 24,
+            roleName: roles[0],
+            skills: []
+          },
+          {
+            credits: 12,
+            roleName: roles[1],
+            skills: []
+          },
+          {
+            credits: 6,
+            roleName: roles[2],
+            skills: []
+          },
+          {
+            credits: 12,
+            roleName: "Founder",
+            skills: [
+              "DeFi",
+              "Blockchain infrastructure",
+              "Architecture",
+              "Smart Contracts"
+            ]
+          },
+          {
+            credits: 12,
+            roleName: "Investor",
+            skills: [
+              "DeFi",
+              "Blockchain infrastructure",
+              "Architecture",
+              "Smart Contracts"
+            ]
+          },
+          {
+            credits: 12,
+            roleName: "Contributor",
+            skills: [
+              "DeFi",
+              "Blockchain infrastructure",
+              "Architecture",
+              "Smart Contracts"
+            ]
+          }
+        ]
       }
       jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
+      
+      console.log('metadata: ', jsonMetadata);
+
       const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
       console.log(url);
 
