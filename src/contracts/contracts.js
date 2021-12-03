@@ -127,7 +127,8 @@ export const createPartnersAgreement = async (
         roles.length,
         numberOfActions, // number of Actions,
         contractAddress ?? ethers.constants.AddressZero, // contract address
-        100 // members,
+        100, // members
+        10 // coreTeamMembers
       );
 
       console.log(createTx);
