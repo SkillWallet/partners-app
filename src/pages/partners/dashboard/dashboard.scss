@@ -1,0 +1,61 @@
+@import 'sw-web-shared/lib/styles/variables';
+@import 'sw-web-shared/lib/styles/breakpoints';
+
+.sw-dashboard-container {
+  display: flex !important;
+  height: 100%;
+  position: relative;
+
+  .sw-btn-icon {
+    margin-right: 20px;
+  }
+
+  .sw-btn-label {
+    min-width: 160px;
+  }
+
+  .sw-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &:first-child {
+      flex: 1;
+    }
+
+    &:last-child {
+      flex: 1;
+    }
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+  .fade-exit {
+    opacity: 1;
+  }
+  .fade-enter-active {
+    opacity: 1;
+  }
+  .fade-exit-active {
+    opacity: 0;
+  }
+  .fade-enter-active,
+  .fade-exit-active {
+    transition: $transition;
+  }
+
+  @include media-breakpoint('lt-lg') {
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+
+    & > .sw-box {
+      grid-gap: 10px !important;
+
+      &:first-child {
+        // flex-direction: row;
+      }
+    }
+  }
+}
