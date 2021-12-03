@@ -2201,10 +2201,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^0.0.79-alpha":
-  "integrity" "sha512-aPw4hqbzF1Bde3KqGVab+iwIhAqx94+wBoy+cx/sKo/mey/kCuZwYI6fNMBqwUt9OhsDIO+tNkx43l3iAzzIzg=="
-  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.79-alpha.tgz"
-  "version" "0.0.79-alpha"
+"@skill-wallet/auth@^0.0.80-alpha":
+  "integrity" "sha512-Ltc3BNTYKl7DkEahEaDpqHgOm7JLZ4biXH/Xl+fEI7OHXsMNLPyMEbN3UcQNzpKlZsviRYYnhafaYpPafn2fzA=="
+  "resolved" "https://registry.npmjs.org/@skill-wallet/auth/-/auth-0.0.80-alpha.tgz"
+  "version" "0.0.80-alpha"
   dependencies:
     "@portis/web3" "^4.0.5"
     "@stencil/core" "2.6.0"
