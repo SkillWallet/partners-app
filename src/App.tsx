@@ -44,8 +44,7 @@ const App = (props: any) => {
       const isLoggedIn = !!detail;
       const sw = JSON.parse(sessionStorage.getItem('skillWallet') || '{}');
 
-      // && sw.isCoreTeamMember
-      if (isLoggedIn && sw) {
+      if (isLoggedIn && sw?.isCoreTeamMember) {
         dispatch(
           setAuthenticated({
             isAuthenticated: isLoggedIn,

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@partners-assets/*": ["src@partners-assets/*"],
+      "@partners-assets/*": ["src/assets/*"],
       "@partners-store/*": ["src/store/*"],
       "@partners-utils/*": ["src/utils/*"],
       "@partners-auth/*": ["src/auth/*"],

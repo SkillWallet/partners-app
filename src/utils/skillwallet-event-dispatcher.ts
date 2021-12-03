@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-shadow
 export enum SwAuthEventTypes {
   ActivateSwCommunity = 'activateSkillwalletCommunity',
-  OnSwLogin = 'showLoginMenu',
+  OnSwLogin = 'onLogin',
+  OnSwLogout = 'onLogout',
 }
 
 let swAuthElement = document.querySelector('skillwallet-auth');

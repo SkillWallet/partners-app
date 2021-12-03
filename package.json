@@ -2,6 +2,7 @@
   "name": "partners-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://skillwallet.github.io/partners-app/",
   "scripts": {
     "build": "react-app-rewired build",
     "deploy": "gh-pages -d build",
@@ -35,7 +36,7 @@
     "@mui/icons-material": "~5.0.1",
     "@mui/material": "~5.0.2",
     "@reduxjs/toolkit": "~1.6.2",
-    "@skill-wallet/auth": "0.0.72-alpha",
+    "@skill-wallet/auth": "0.0.84-alpha",
     "@textile/hub": "^6.2.0",
     "antd": "4.16.11",
     "ethers": "^5.4.4",
@@ -81,6 +82,7 @@
     "react-app-rewire-svgr": "^1.2.0",
     "react-app-rewired": "~2.1.8",
     "react-scripts": "^4.0.3",
+    "redux-logger": "^3.0.6",
     "typescript": "~4.4.3",
     "web-vitals": "~1.1.2"
   }

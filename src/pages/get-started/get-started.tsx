@@ -1,6 +1,5 @@
-import { Badge, Box, Tooltip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import InfoIcon from '@mui/icons-material/Info';
 import './get-started.scss';
 
 import logoBlack from '@partners-assets/sw-logo-black.svg';
