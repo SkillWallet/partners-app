@@ -1,6 +1,7 @@
 import './styles/App.css';
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import logoBlack from './assets/sw-logo-black.svg';
 import './styles/Integrate.css';
 import networkIcon from "./assets/network.svg";
@@ -11,11 +12,15 @@ import { isUserAuthenticated } from './redux/Members/members.actions';
 
 function App(props) {
   const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
+  const history = useHistory();
 
   window.addEventListener('onSkillwalletLogin', () => {
-    const sw = window.sessionStorage.getItem('skillWallet');
+    console.log('when?');
+    const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
+
     if (sw && sw.isCoreTeamMember) {
       props.dispatchAuthenticateUser(true);
+      history.push("/analytics");
     }
     setAnalyticsClass('landing-button-container');
   });
