@@ -51,6 +51,7 @@ const App = (props: any) => {
             userInfo: sw,
           })
         );
+        props.history.push('/analytics');
       } else {
         dispatch(resetAuthState());
         props.history.push('/');
