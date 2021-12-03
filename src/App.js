@@ -14,7 +14,7 @@ function App(props) {
 
   window.addEventListener('onSkillwalletLogin', () => {
     const sw = window.sessionStorage.getItem('skillWallet');
-    if (sw.isCoreTeamMember) {
+    if (sw && sw.isCoreTeamMember) {
       props.dispatchAuthenticateUser(true);
     }
     setAnalyticsClass('landing-button-container');
