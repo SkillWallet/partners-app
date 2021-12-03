@@ -108,7 +108,8 @@ const IntegrateUserDetails = (props) => {
         const event = new CustomEvent("activateSkillwalletCommunity", {
             'detail': {
                 communityAddr: partnersDetails.communityAddr,
-                partnersAddr: partnersDetails.partnersAddr
+                partnersAddr: partnersDetails.partnersAddr,
+                partnerKey: key,
             }
         })
         input.dispatchEvent(event)

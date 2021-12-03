@@ -13,7 +13,10 @@ function App(props) {
   const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
 
   window.addEventListener('onSkillwalletLogin', () => {
-    props.dispatchAuthenticateUser(true);
+    const sw = window.sessionStorage.getItem('skillWallet');
+    if (sw.isCoreTeamMember) {
+      props.dispatchAuthenticateUser(true);
+    }
     setAnalyticsClass('landing-button-container');
   });
 
@@ -36,7 +39,9 @@ function App(props) {
           <div className="landing-content-design">
             <div className="connect-wallet-container">
               <skillwallet-auth
-                  partner-key="e045db0b7868a054e0e75b2013b0fc59f1fbe035">
+              // partner-key="43290393d7798c840ecdbdf421c73ba6a5534bed">
+                >
+                  
               </skillwallet-auth>
             </div>
 
