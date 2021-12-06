@@ -19,6 +19,7 @@ import SwEditToolbar from "../../datatable/DatatableToolbar";
 import {
   GetDatatableItems,
   LockDatatableItems,
+  GetDatatableChangedItems,
 } from "../../datatable/DatatableHelpers";
 import "./contracts.scss";
 
@@ -28,7 +29,7 @@ function AlertDialog({ handleClose, open }) {
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <Typography variant="h2" component="span" color="red">
-            No new Contract were added to whitelist!
+            No changes were made!
           </Typography>
         </DialogContentText>
       </DialogContent>
@@ -69,7 +70,6 @@ const tableColumns = (getRef) => {
   const handleDeleteClick = (id) => (event) => {
     const apiRef = getRef();
     event.stopPropagation();
-
     apiRef.current.setRowMode(id, "view");
     apiRef.current.updateRows([{ id, _action: "delete" }]);
   };
@@ -176,13 +176,28 @@ const fetchData = async (allContract) => {
   });
 };
 
-// @TODO: Milena to implement smart contract call
-const addNewContract = async (newContract, allContract) => {
+const asyncCall = async (data) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(allContract);
+      resolve(data);
     }, 2000);
-  }).then(() => fetchData(allContract));
+  }).then(() => data);
+};
+
+const createContracts = async (newItems) => {
+  for (const item of newItems) {
+    // @TODO Milena to call smart contract
+    await asyncCall(item);
+  }
+  return newItems;
+};
+
+const removeContracts = async (removedContract) => {
+  for (const item of removedContract) {
+    // @TODO Milena to call smart contract
+    await asyncCall(item);
+  }
+  return removedContract;
 };
 
 const Contracts = () => {
@@ -198,41 +213,61 @@ const Contracts = () => {
   };
 
   const submit = async () => {
-    const state = apiRef.current.state;
+    const state = apiRef?.current?.state;
 
-    const { newItems, allItems } = GetDatatableItems(state);
-    const removedItems = initialData.filter((item) => {
-      const found = allItems.some((i) => i.id === item.id);
-      return !found;
-    });
-
-    if (!newItems.length) {
-      setOpen(true);
+    if (!state) {
       return;
     }
 
     try {
+      const { newItems, allItems } = GetDatatableItems(state);
+      const { removedItems, noChangedItems } = GetDatatableChangedItems(
+        allItems,
+        initialData
+      );
+
+      if (!newItems.length && !removedItems.length) {
+        setOpen(true);
+        return;
+      }
+
       setLoading(true);
-      const updatedContract = await addNewContract(newItems, allItems);
+      console.log("allItems: ", allItems);
+      console.log("newItems: ", newItems);
+      console.log("removedItems: ", removedItems);
+      console.log("noChangedItems: ", noChangedItems);
+
+      const createdContract = await createContracts(newItems);
+      await removeContracts(removedItems);
+      const newData = LockDatatableItems([
+        ...createdContract,
+        ...noChangedItems,
+      ]);
+      console.log(newData, "newItems");
       setLoading(false);
-      setData(LockDatatableItems(updatedContract));
+      setData(newData);
+      setInitialData(newData);
     } catch (error) {
+      console.log(error, "error");
       setLoading(false);
     }
   };
 
   useEffect(() => {
     setLoading(true);
-    fetchData([
-      {
-        use: "DAO Contract",
-        addedBy: "Signing Partner",
-        address: "0xcD3942171C362448cBD4FAeA6b2B71c8cCe40BF3",
-      },
-    ])
+    fetchData([])
       .then((list) => {
-        const lockedData = LockDatatableItems(list);
-        setInitialData(lockedData);
+        let lockedData = LockDatatableItems(list);
+        if (!lockedData.length) {
+          lockedData = [{ id: 0, isNew: true, locked: false }];
+          setTimeout(() => {
+            if (apiRef.current) {
+              apiRef.current.setRowMode(0, "edit");
+            }
+          });
+        } else {
+          setInitialData(lockedData);
+        }
         setData(lockedData);
         setLoading(false);
       })
@@ -257,7 +292,9 @@ const Contracts = () => {
         columns={columns}
         data={data}
         loading={loading}
+        isCellEditable={(params) => !params.row.locked}
         onStateChange={(state) => {
+          console.log(state);
           const rowsToEdit = Object.keys(state.editRows || {}).length;
           setIsDisabled(rowsToEdit > 0);
         }}

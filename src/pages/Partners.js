@@ -10,14 +10,16 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-import { ReactComponent as CopyIcon } from "../assets/copy-icon.svg";
 import { ReactComponent as DaoStatsIcon } from "../assets/dao-stats.svg";
 import { ReactComponent as DashboardIcon } from "../assets/dashboard.svg";
-import { ReactComponent as EventBadgeIcon } from "../assets/event-badge.svg";
+import { ReactComponent as IntegrationIcon } from "../assets/integration.svg";
+import { ReactComponent as EventFactoryIcon } from "../assets/event-badge.svg";
 import CoreTeam from "../components/core-team/CoreTeam";
 import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
 import Dashboard from "./deshboard/Dashboard";
+import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
+import IntegrationDashboard from "../components/integrations-and-contracts/dashboard/IntegrationDashboard";
 
 function NoMatch() {
   return (
@@ -61,7 +63,13 @@ const Partners = (props) => {
       type: "href",
       label: "Integrations & Contracts",
       href: "/partner/integrations-and-contracts",
-      icon: <SvgIcon component={EventBadgeIcon} />,
+      icon: <SvgIcon component={IntegrationIcon} />,
+    },
+    {
+      type: "href",
+      label: "Event Factory",
+      href: "/core-team",
+      icon: <SvgIcon component={EventFactoryIcon} />,
     },
     {
       type: "href",
@@ -70,13 +78,7 @@ const Partners = (props) => {
       disabled: true,
       icon: <SvgIcon component={DaoStatsIcon} />,
     },
-    {
-      type: "href",
-      label: "Your Contracts",
-      href: "/core-team",
-      disabled: true,
-      icon: <SvgIcon component={CopyIcon} />,
-    },
+    
   ];
 
   return (
@@ -162,8 +164,10 @@ const Partners = (props) => {
                 switch (e.location.pathname) {
                   case "/partner/integrations-and-contracts/contracts":
                     return <Contracts {...props} />;
+                  case "/partner/integrations-and-contracts/dao-integration":
+                    return <DaoIntegration {...props} />;
                   default:
-                    return <NoMatch {...props} />;
+                    return <IntegrationDashboard {...props} />;
                 }
               }}
             />

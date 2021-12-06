@@ -17,6 +17,23 @@ import Members from "./components/partnerDashboard/Members";
 import Roles from "./components/partnerDashboard/Roles";
 import { SwTheme } from "./theme";
 import Partners from "./pages/Partners";
+import { Typography } from "@mui/material";
+
+function NoMatch() {
+  return (
+    <Typography
+      sx={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      variant="h1"
+    >
+      No found!
+    </Typography>
+  );
+}
 
 ReactDOM.render(
   <StyledEngineProvider injectFirst>
@@ -53,6 +70,7 @@ ReactDOM.render(
                 path="/partner"
                 component={Partners}
               ></Route>
+              <Route path="*" component={NoMatch}></Route>
             </Switch>
           </BrowserRouter>
         </PersistGate>

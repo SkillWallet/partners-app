@@ -63,9 +63,9 @@ export const getSkillwalletAddress = () => {
     }).then(res => res.json());
 }
 
-export const fetchData = async (props) => {
+export const fetchData = async (props, communityAddress) => {
     if (!props.state.members) {
-        const allMembers = await getMembersByCommunityAddress('0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26');
+        const allMembers = await getMembersByCommunityAddress(communityAddress);
         props.dispatchSaveMembers(allMembers);
     }
     if (!props.state.community) {

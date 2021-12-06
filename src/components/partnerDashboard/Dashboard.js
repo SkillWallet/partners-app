@@ -19,7 +19,7 @@ import { saveCommunity } from '../../redux/Community/community.actions';
 const Dashboard = (props) => {
     useEffect(() => {
         console.log('in Roles useEffect', props);
-        fetchData(props);
+        fetchData(props, window.sessionStorage.getItem('commAddress'));
     }, [props]);
 
     // const callGetSkills = async () => {

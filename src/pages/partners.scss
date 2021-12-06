@@ -6,20 +6,30 @@
 }
 
 .sw-sidebar-content {
-    border: 1px solid;
-    padding: 15px;
-    margin-top: 48px;
-
+  border: 1px solid;
+  padding: 15px;
+  margin-top: 48px;
 }
 
-.sw-main-sidebar .MuiListItem-root .MuiListItemText-root {
-  white-space: pre-wrap !important;
+.sw-main-sidebar {
+  .MuiListItem-root {
+    width: 145px;
+    padding: 0 10px 0 10px !important;
+
+    .MuiListItemText-root {
+      white-space: pre-wrap !important;
+    }
+  }
+
+  .sw-sidebar-menu-icon {
+    margin: 0 5px 0 0 !important;
+  }
 }
 
 .sw-user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sw-menu-icon {
