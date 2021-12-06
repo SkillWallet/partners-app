@@ -88,35 +88,50 @@ export const createPartnersAgreement = async (
       jsonMetadata.title = title;
       jsonMetadata.description = description;
       console.log('roles setter: ', roles);
-      jsonMetadata.communityRoles = {
-        1: {
-          roleName: roles[0],
-          skills: []
-        },
-        2: {
-          roleName: roles[1],
-          skills: []
-        },
-        3: {
-          roleName: roles[2],
-          skills: []
-        }
-      }
-      jsonMetadata.coreTeamMemberRoles = {
-        1: {
-          roleName: 'Founder',
-          skills: []
-        },
-        2: {
-          roleName: 'Investor',
-          skills: []
-        },
-        3: {
-          roleName: 'Contributor',
-          skills: []
-        }
+      jsonMetadata.skills = {
+        roles: [
+          {
+            credits: 24,
+            roleName: roles[0],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 12,
+            roleName: roles[1],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 6,
+            roleName: roles[2],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 24,
+            roleName: "Founder",
+            skills: [],
+            isCoreTeamMember: true
+          },
+          {
+            credits: 12,
+            roleName: "Investor",
+            skills: [],
+            isCoreTeamMember: true
+          },
+          {
+            credits: 6,
+            roleName: "Contributor",
+            skills: [],
+            isCoreTeamMember: true
+          }
+        ]
       }
       jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
+      
+      console.log('metadata: ', jsonMetadata);
+
       const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
       console.log(url);
 
@@ -163,28 +178,40 @@ export const createPartnersAgreement = async (
   }
 }
 
-// export const confirmAndAddSkills = async () => {
+export const confirmAndAddSkills = async (partnerKey) => {
 
-//   if (!window.ethereum.selectedAddress) {
-//     await window.ethereum.enable()
-//   };
+  if (!window.ethereum.selectedAddress) {
+    await window.ethereum.enable()
+  };
 
-//   const provider = new ethers.providers.Web3Provider(window.ethereum);
-//   const signer = provider.getSigner();
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
 
-//   const contract = new ethers.Contract(
-//     process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
-//     partnersRegistryABI,
-//     signer,
-//   );
-// }
+  const community = await getCommunityByPartnerKey(partnerKey);
 
-  export const getSkills = async () => {
+  // const contract = new ethers.Contract(
+  //   process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
+  //   partnersRegistryABI,
+  //   signer,
+  // );
+  const contract = new ethers.Contract(
+    community.address,
+    communityABI,
+    signer,
+  );
+
+  //push in Textile
+  // const url = ;
+
+  // contract.setMetadataUri(url);
+}
+
+  export const getSkills = async (partnerKey) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
       // call getCommunity (with PK) to get address
-    const community = await getCommunityByPartnerKey("7558d2094290013c527d4bab9a80bd9dd24c74e0");
+    const community = await getCommunityByPartnerKey(partnerKey);
 
     const contract = new ethers.Contract(
       community.address,
