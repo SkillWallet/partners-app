@@ -1,0 +1,31 @@
+.simplebar-content-wrapper {
+  margin: 24px;
+  padding: 90px;
+  border: 2px solid;
+  height: calc(100% - 48px) !important;
+}
+
+.sw-sidebar-content {
+    border: 1px solid;
+    padding: 15px;
+    margin-top: 48px;
+
+}
+
+.sw-main-sidebar .MuiListItem-root .MuiListItemText-root {
+  white-space: pre-wrap !important;
+}
+
+.sw-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sw-menu-icon {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  background: black;
+}
