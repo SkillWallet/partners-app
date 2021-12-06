@@ -13,10 +13,11 @@ import {
 import { ReactComponent as CopyIcon } from "../assets/copy-icon.svg";
 import { ReactComponent as DaoStatsIcon } from "../assets/dao-stats.svg";
 import { ReactComponent as DashboardIcon } from "../assets/dashboard.svg";
-import { ReactComponent as EventBadgeIcon } from "../assets/event-badge.svg";
+import { ReactComponent as IntegrationIcon } from "../assets/integration.svg";
 import CoreTeam from "../components/core-team/CoreTeam";
 import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
+import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
 
 function NoMatch() {
   return (
@@ -60,7 +61,7 @@ const Partners = (props) => {
       type: "href",
       label: "Integrations & Contracts",
       href: "/partner/integrations-and-contracts",
-      icon: <SvgIcon component={EventBadgeIcon} />,
+      icon: <SvgIcon component={IntegrationIcon} />,
     },
     {
       type: "href",
@@ -161,6 +162,8 @@ const Partners = (props) => {
                 switch (e.location.pathname) {
                   case "/partner/integrations-and-contracts/contracts":
                     return <Contracts {...props} />;
+                  case "/partner/integrations-and-contracts/dao-integration":
+                    return <DaoIntegration {...props} />;
                   default:
                     return <NoMatch {...props} />;
                 }
