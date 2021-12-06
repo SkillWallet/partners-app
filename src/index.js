@@ -49,10 +49,10 @@ ReactDOM.render(
                 component={Dashboard}
               ></ProtectedRoute>
 
-              <ProtectedRoute
+              <Route
                 path="/partner"
                 component={Partners}
-              ></ProtectedRoute>
+              ></Route>
             </Switch>
           </BrowserRouter>
         </PersistGate>

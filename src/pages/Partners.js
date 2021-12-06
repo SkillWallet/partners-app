@@ -17,6 +17,7 @@ import { ReactComponent as EventBadgeIcon } from "../assets/event-badge.svg";
 import CoreTeam from "../components/core-team/CoreTeam";
 import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
+import Dashboard from "./deshboard/Dashboard";
 
 function NoMatch() {
   return (
@@ -148,7 +149,7 @@ const Partners = (props) => {
                   case "/partner/dashboard/core-team":
                     return <CoreTeam {...props} />;
                   default:
-                    return <NoMatch {...props} />;
+                    return <Dashboard {...props} />;
                 }
               }}
             />
