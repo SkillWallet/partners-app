@@ -29,7 +29,7 @@ function AlertDialog({ handleClose, open }) {
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <Typography variant="h2" component="span" color="red">
-            No new Contract were added to whitelist!
+            No changes were made!
           </Typography>
         </DialogContentText>
       </DialogContent>
@@ -261,7 +261,9 @@ const Contracts = () => {
         if (!lockedData.length) {
           lockedData = [{ id: 0, isNew: true, locked: false }];
           setTimeout(() => {
-            apiRef.current.setRowMode(0, "edit");
+            if (apiRef.current) {
+              apiRef.current.setRowMode(0, "edit");
+            }
           });
         } else {
           setInitialData(lockedData);

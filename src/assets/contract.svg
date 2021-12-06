@@ -1,0 +1,5 @@
+<svg id="stacked-scrolling-1" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <path id="Path_1512" data-name="Path 1512" d="M22.821,36.643h-18A2.571,2.571,0,0,1,2.25,34.071v-18A2.571,2.571,0,0,1,4.821,13.5h18a2.571,2.571,0,0,1,2.571,2.571v18A2.571,2.571,0,0,1,22.821,36.643Zm-18-20.571v18h18v-18Z" transform="translate(-2.25 -0.643)"/>
+  <path id="Path_1513" data-name="Path 1513" d="M30.7,28.446H28.125v-18h-18V7.875h18A2.571,2.571,0,0,1,30.7,10.446Z" transform="translate(-1.125 -1.446)"/>
+  <path id="Path_1514" data-name="Path 1514" d="M36,20.25H33.429V4.821H18V2.25H33.429A2.571,2.571,0,0,1,36,4.821Z" transform="translate(0 -2.25)"/>
+</svg>
