@@ -93,47 +93,38 @@ export const createPartnersAgreement = async (
           {
             credits: 24,
             roleName: roles[0],
-            skills: []
+            skills: [],
+            isCoreTeamMember: false
           },
           {
             credits: 12,
             roleName: roles[1],
-            skills: []
+            skills: [],
+            isCoreTeamMember: false
           },
           {
             credits: 6,
             roleName: roles[2],
-            skills: []
+            skills: [],
+            isCoreTeamMember: false
           },
           {
-            credits: 12,
+            credits: 24,
             roleName: "Founder",
-            skills: [
-              "DeFi",
-              "Blockchain infrastructure",
-              "Architecture",
-              "Smart Contracts"
-            ]
+            skills: [],
+            isCoreTeamMember: true
           },
           {
             credits: 12,
             roleName: "Investor",
-            skills: [
-              "DeFi",
-              "Blockchain infrastructure",
-              "Architecture",
-              "Smart Contracts"
-            ]
+            skills: [],
+            isCoreTeamMember: true
           },
           {
-            credits: 12,
+            credits: 6,
             roleName: "Contributor",
-            skills: [
-              "DeFi",
-              "Blockchain infrastructure",
-              "Architecture",
-              "Smart Contracts"
-            ]
+            skills: [],
+            isCoreTeamMember: true
           }
         ]
       }
