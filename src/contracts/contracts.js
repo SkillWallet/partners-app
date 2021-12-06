@@ -4,6 +4,7 @@ import { generatePartnersKey, getCommunityByPartnerKey } from './api';
 
 const partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
 const communityABI = require('../contracts/abi/ICommunity.abi.json').abi;
+const partnersAgreementABI = require('../contracts/abi/PartnersAgreement.abi.json').abi;
 
 const metadata = [
   {
@@ -64,140 +65,182 @@ export const createPartnersAgreement = async (
   numberOfActions,
   contractAddress
 ) => {
+  try {
+    console.log('createPartnersAgreement')
+
+    await changeNetwork();
+
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
+    };
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
+    const contract = new ethers.Contract(
+      process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
+      partnersRegistryABI,
+      signer,
+    );
+
+    // here's where my metadata is set.
+    const jsonMetadata = metadata[template];
+    jsonMetadata.title = title;
+    jsonMetadata.description = description;
+    console.log('roles setter: ', roles);
+    jsonMetadata.communityRoles = {
+      1: {
+        roleName: roles[0],
+        skills: []
+      },
+      2: {
+        roleName: roles[1],
+        skills: []
+      },
+      3: {
+        roleName: roles[2],
+        skills: []
+      }
+    }
+    jsonMetadata.coreTeamMemberRoles = {
+      1: {
+        roleName: 'Founder',
+        skills: []
+      },
+      2: {
+        roleName: 'Investor',
+        skills: []
+      },
+      3: {
+        roleName: 'Contributor',
+        skills: []
+      }
+    }
+    jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
+    const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
+    console.log(url);
+
+    console.log('calling the SC')
+    const createTx = await contract.create(
+      url,
+      template,
+      roles.length,
+      numberOfActions, // number of Actions,
+      contractAddress ?? ethers.constants.AddressZero, // contract address
+      100, // members
+      10 // coreTeamMembers
+    );
+
+    console.log(createTx);
+
     try {
-      console.log('createPartnersAgreement')
+      const result = await createTx.wait();
+      const { events } = result;
+      console.log(events);
 
-      await changeNetwork();
+      const event = events.find(
+        e => e.event === 'PartnersAgreementCreated',
+      );
 
-      if (!window.ethereum.selectedAddress) {
-        await window.ethereum.enable()
+      const partnersAgreementAddress = event.args[0].toString();
+      const communityAddress = event.args[1].toString();
+
+      console.log('partnersAgreementAddress', partnersAgreementAddress)
+      console.log('communityAddress', communityAddress)
+      const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
+      console.log('key', key);
+      return {
+        key: key,
+        communityAddr: communityAddress,
+        partnersAddr: partnersAgreementAddress
       };
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-
-      console.log(process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS);
-      const contract = new ethers.Contract(
-        process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
-        partnersRegistryABI,
-        signer,
-      );
-
-      // here's where my metadata is set.
-      const jsonMetadata = metadata[template];
-      jsonMetadata.title = title;
-      jsonMetadata.description = description;
-      console.log('roles setter: ', roles);
-      jsonMetadata.communityRoles = {
-        1: {
-          roleName: roles[0],
-          skills: []
-        },
-        2: {
-          roleName: roles[1],
-          skills: []
-        },
-        3: {
-          roleName: roles[2],
-          skills: []
-        }
-      }
-      jsonMetadata.coreTeamMemberRoles = {
-        1: {
-          roleName: 'Founder',
-          skills: []
-        },
-        2: {
-          roleName: 'Investor',
-          skills: []
-        },
-        3: {
-          roleName: 'Contributor',
-          skills: []
-        }
-      }
-      jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
-      const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
-      console.log(url);
-
-      console.log('calling the SC')
-      const createTx = await contract.create(
-        url,
-        template,
-        roles.length,
-        numberOfActions, // number of Actions,
-        contractAddress ?? ethers.constants.AddressZero, // contract address
-        100, // members
-        10 // coreTeamMembers
-      );
-
-      console.log(createTx);
-
-      try {
-        const result = await createTx.wait();
-        const { events } = result;
-        console.log(events);
-      
-        const event = events.find(
-          e => e.event === 'PartnersAgreementCreated',
-        );
-      
-        const partnersAgreementAddress = event.args[0].toString();
-        const communityAddress = event.args[1].toString();
-      
-        console.log('partnersAgreementAddress', partnersAgreementAddress)
-        console.log('communityAddress', communityAddress)
-        const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
-        console.log('key', key);
-        return {
-          key: key,
-          communityAddr: communityAddress,
-          partnersAddr: partnersAgreementAddress
-        };
-      } catch (err) {
-        console.log(err);
-        alert('Failed to create the community!');
-      }
+    } catch (err) {
+      console.log(err);
+      alert('Failed to create the community!');
+    }
   } catch (err) {
     alert('Something went wrong, try again later');
   }
 }
 
-// export const confirmAndAddSkills = async () => {
 
-//   if (!window.ethereum.selectedAddress) {
-//     await window.ethereum.enable()
-//   };
+export const addAddressToWhitelist = async (
+  partnersAgreementAddress,
+  memberAddress,
+) => {
+  try {
 
-//   const provider = new ethers.providers.Web3Provider(window.ethereum);
-//   const signer = provider.getSigner();
+    await changeNetwork();
 
-//   const contract = new ethers.Contract(
-//     process.env.REACT_APP_PARTNERS_REGISTRY_ADDRESS,
-//     partnersRegistryABI,
-//     signer,
-//   );
-// }
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
+    };
 
-  export const getSkills = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
-      // call getCommunity (with PK) to get address
-    const community = await getCommunityByPartnerKey("7558d2094290013c527d4bab9a80bd9dd24c74e0");
-
     const contract = new ethers.Contract(
-      community.address,
-      communityABI,
+      partnersAgreementAddress,
+      partnersAgreementABI,
       signer,
     );
-    const metadataURL = await contract.metadataUri();
 
-    return fetch(metadataURL, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-      }
+
+    const createTx = await contract.addNewCoreTeamMembers(
+      memberAddress
+    );
+
+    console.log(createTx);
+
+    try {
+      const result = await createTx.wait();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+      alert('Failed to whitelist this address!');
+    }
+  } catch (err) {
+    console.log(err);
+    alert('Something went wrong, try again later');
+  }
+}
+
+
+export const getWhitelistedAddresses = async (partnersAgreementAddress) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
+  const contract = new ethers.Contract(
+    partnersAgreementAddress,
+    partnersAgreementABI,
+    signer,
+  );
+
+  const whitelist = await contract.getCoreTeamMembers();
+  return whitelist;
+};
+
+
+export const getSkills = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
+  // call getCommunity (with PK) to get address
+  const community = await getCommunityByPartnerKey("7558d2094290013c527d4bab9a80bd9dd24c74e0");
+
+  const contract = new ethers.Contract(
+    community.address,
+    communityABI,
+    signer,
+  );
+  const metadataURL = await contract.metadataUri();
+
+  return fetch(metadataURL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
   }).then(async (res) => {
     const community = await res.json();
 
