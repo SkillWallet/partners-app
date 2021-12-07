@@ -9,7 +9,7 @@ import avatar from '../../assets/avatar.svg';
 import membersCard from '../../assets/member-card.svg';
 import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
-import { getMembers, getCommunity, fetchData } from '../../contracts/api';
+import { getMembers, getCommunityByCommunityAddress, fetchData } from '../../contracts/api';
 import { getSkills } from '../../contracts/contracts';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';

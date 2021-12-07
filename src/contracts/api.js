@@ -27,8 +27,8 @@ export const getUsersData = () => {
     }).then(res => res.json());
 }
 
-export const getMembersByCommunityAddress = (communityAddress) => {
-    return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet`, {
+export const getMembersByCommunityAddress = (communityAddress, isCoreTeamMember) => {
+    return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet/${isCoreTeamMember}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -45,8 +45,8 @@ export const getCommunityByPartnerKey = (partnerKey) => {
     }).then(res => res.json());
 }
 
-export const getCommunity = () => {
-    return fetch('https://api.distributed.town/api/community/0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26', {
+export const getCommunityByCommunityAddress = (communityAddress) => {
+    return fetch(`https://api.distributed.town/api/community/${communityAddress}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export const fetchData = async (props, communityAddress) => {
         props.dispatchSaveMembers(allMembers);
     }
     if (!props.state.community) {
-        const community = await getCommunity();
+        const community = await getCommunityByCommunityAddress(communityAddress);
         props.dispatchSaveCommunity(community)
     }
 }
