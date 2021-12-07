@@ -236,6 +236,18 @@ const CoreTeam = () => {
         mode="light"
         url="https://skillwallet.id/"
         title="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
+        twitterProps={{
+          title: 'Message',
+          hashtags: ['test']
+        }}
+        linkedinProps={{
+          title: 'Message',
+          summary: "summary",
+          source: 'source'
+        }}
+        telegramProps={{
+          title: 'Message',
+        }}
         open={openShare}
         onClose={handleShareClose}
       />
