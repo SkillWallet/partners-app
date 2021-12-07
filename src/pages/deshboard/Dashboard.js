@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
-import { ReactComponent as Network } from '../../assets/network.svg';
+import { ReactComponent as Network } from '../../assets/dao-management.svg';
 import { ReactComponent as Coins } from '../../assets/coins.svg';
 import { fetchCommunity } from '../../contracts/api';
 import React, { useState, useEffect } from "react";
