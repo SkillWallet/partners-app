@@ -19,6 +19,7 @@ import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
 import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
 import IntegrationDashboard from "../components/integrations-and-contracts/dashboard/IntegrationDashboard";
+import MembersAndActivities from "../components/member-and-activities/MembersAndActivities";
 
 function NoMatch() {
   return (
@@ -149,6 +150,8 @@ const Partners = (props) => {
                 switch (e.location.pathname) {
                   case "/partner/dashboard/core-team":
                     return <CoreTeam {...props} />;
+                  case "/partner/dashboard/members": 
+                    return <MembersAndActivities {...props} isCoreTeamMembers/>
                   default:
                     return <NoMatch {...props} />;
                 }

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { saveMembers } from '../redux/Members/members.actions';
+import { saveLogs } from "../redux/Logs/logs.actions";
 import { saveCommunity } from '../redux/Community/community.actions';
 
 export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
@@ -28,7 +29,8 @@ export const getUsersData = () => {
 }
 
 export const getMembersByCommunityAddress = (communityAddress, isCoreTeamMember) => {
-    return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet/${isCoreTeamMember}`, {
+    console.log(communityAddress, isCoreTeamMember, 'communityAddress, isCoreTeamMember');
+    return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet?coreTeamMembers=${isCoreTeamMember}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -73,11 +75,69 @@ export const getSkillwalletAddress = () => {
     }).then(res => res.json());
 }
 
+
+// @OTOD: Milena to implement method for fetching logs
+export const getLogs = () => {
+    return new Promise((resolve) => {
+        resolve([
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              source: "",
+              role: "Role",
+              timestamp: new Date(),
+            },
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              source: "",
+              role: "Role",
+              timestamp: new Date(),
+            },
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              role: "Role",
+              source: "",
+              timestamp: new Date(),
+            },
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              source: "",
+              role: "Role",
+              timestamp: new Date(),
+            },
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              source: "",
+              role: "Role",
+              timestamp: new Date(),
+            },
+            {
+              img: "",
+              title: "SW 1",
+              sign: "@",
+              source: "",
+              role: "Role",
+              timestamp: new Date(),
+            },
+          ])
+    })
+}
+
 export const fetchData = async (props) => {
     const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
     const communityAddress = sw.community;
-    if (!props.state.members) {
-        const allMembers = await getMembersByCommunityAddress(communityAddress);
+    const isCoreTeam = props.isCoreTeamMembers;
+    if (!props.state.members?.length) {
+        const allMembers = await getMembersByCommunityAddress("0x446f5728Bd526A15Cc26Ea2574BE5122E840478b", isCoreTeam);
         props.dispatchSaveMembers(allMembers);
     }
     if (!props.state.community) {
@@ -85,10 +145,21 @@ export const fetchData = async (props) => {
         props.dispatchSaveCommunity(community)
     }
 }
+
+export const fetchMembersAndActivityData = async (props) => {
+    const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
+    const communityAddress = sw.community;
+    const isCoreTeam = props.isCoreTeamMembers;
+    const allMembers = await getMembersByCommunityAddress(communityAddress, isCoreTeam);
+    const allLogs = await getLogs();
+    props.dispatchSaveMembers(allMembers);
+    props.dispatchSaveLogs(allLogs);
+}
   
   const mapDispatchToProps = dispatch => {
     return {
         dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
+        dispatchSaveLogs: (res) => dispatch(saveLogs(res)),
         dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
     }
   }

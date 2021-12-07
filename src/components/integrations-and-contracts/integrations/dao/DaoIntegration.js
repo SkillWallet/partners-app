@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Typography, TextField } from "@mui/material";
 import debounce from "lodash.debounce";
 import { ReactComponent as EditIcon } from "../../../../assets/actions/edit.svg";
@@ -70,6 +70,7 @@ const DaoIntegration = () => {
   const [daoUrl, setDaoUrl] = useState("");
   const [open, setOpen] = useState(false);
   const [partnersAgreementAddress, setPartnersAgreementAddress] = useState('');
+  const input = useRef();
 
   const handleClose = () => {
     setOpen(false);
@@ -77,20 +78,20 @@ const DaoIntegration = () => {
 
   const submit = async () => {
     setLoading(true);
+    setDisabled(true);
     try {
       await createDaoIntegration(partnersAgreementAddress, daoUrl);
       setOpen(true);
       setLoading(false);
+      setDisabled(true);
     } catch (error) {
       setLoading(false);
+      setDisabled(false);
     }
   };
 
   const debouncedChangeHandler = useMemo(() => {
-
     const changeHandler = (e) => {
-      console.log('inside the handler');
-      console.log(e);
       setDaoUrl(e.target.value);
     };
     return debounce(changeHandler, 10);
@@ -104,16 +105,16 @@ const DaoIntegration = () => {
   useEffect(() => {
     const setPAData = async () => {
       setLoading(true);
-      console.log('setpadata')
+      setDisabled(true);
       const sw = JSON.parse(window.sessionStorage.getItem("skillWallet") || "{}");
       const pa = await getPartnersAgreementByCommunity(sw.community);
       setPartnersAgreementAddress(pa.partnersAgreementAddress);
       const paUrl = await getPAUrl(pa.partnersAgreementAddress);
-      console.log(paUrl);
+      console.log('paUrl: ', paUrl);
       if(paUrl){ 
-        setDaoUrl(paUrl);
-        setDisabled(true);
+        input.current.value = paUrl;
       }
+      setDisabled(!!paUrl);
       setLoading(false);
     }
     setPAData();
@@ -151,7 +152,7 @@ const DaoIntegration = () => {
                   color: "primary.main",
                 },
               }}
-              defaultValue={daoUrl}
+              inputRef={input}
               inputProps={{
                 color: "primary.main",
                 sx: {

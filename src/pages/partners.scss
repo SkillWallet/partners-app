@@ -1,8 +1,12 @@
-.simplebar-content-wrapper {
+.sw-scrollbar
+  > .simplebar-wrapper
+  > .simplebar-mask
+  > .simplebar-offset
+  > .simplebar-content-wrapper {
   margin: 24px;
   padding: 90px;
   border: 2px solid;
-  height: calc(100% - 48px) !important;
+  height: calc(100% - 48px);
 }
 
 .sw-sidebar-content {
