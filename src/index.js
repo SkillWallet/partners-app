@@ -70,7 +70,6 @@ ReactDOM.render(
                 path="/partner"
                 component={Partners}
               ></ProtectedRoute>
-
               <Route path="*" component={NoMatch}></Route>
             </Switch>
           </BrowserRouter>
