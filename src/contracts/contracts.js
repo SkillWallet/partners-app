@@ -84,53 +84,68 @@ export const createPartnersAgreement = async (
       signer,
     );
 
-    // here's where my metadata is set.
-    const jsonMetadata = metadata[template];
-    jsonMetadata.title = title;
-    jsonMetadata.description = description;
-    console.log('roles setter: ', roles);
-    jsonMetadata.communityRoles = {
-      1: {
-        roleName: roles[0],
-        skills: []
-      },
-      2: {
-        roleName: roles[1],
-        skills: []
-      },
-      3: {
-        roleName: roles[2],
-        skills: []
+      // here's where my metadata is set.
+      const jsonMetadata = metadata[template];
+      jsonMetadata.title = title;
+      jsonMetadata.description = description;
+      console.log('roles setter: ', roles);
+      jsonMetadata.skills = {
+        roles: [
+          {
+            credits: 24,
+            roleName: roles[0],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 12,
+            roleName: roles[1],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 6,
+            roleName: roles[2],
+            skills: [],
+            isCoreTeamMember: false
+          },
+          {
+            credits: 24,
+            roleName: "Founder",
+            skills: [],
+            isCoreTeamMember: true
+          },
+          {
+            credits: 12,
+            roleName: "Investor",
+            skills: [],
+            isCoreTeamMember: true
+          },
+          {
+            credits: 6,
+            roleName: "Contributor",
+            skills: [],
+            isCoreTeamMember: true
+          }
+        ]
       }
-    }
-    jsonMetadata.coreTeamMemberRoles = {
-      1: {
-        roleName: 'Founder',
-        skills: []
-      },
-      2: {
-        roleName: 'Investor',
-        skills: []
-      },
-      3: {
-        roleName: 'Contributor',
-        skills: []
-      }
-    }
-    jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
-    const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
-    console.log(url);
+      jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
+      
+      console.log('metadata: ', jsonMetadata);
 
-    console.log('calling the SC')
-    const createTx = await contract.create(
-      url,
-      template,
-      roles.length,
-      numberOfActions, // number of Actions,
-      contractAddress ?? ethers.constants.AddressZero, // contract address
-      100, // members
-      10 // coreTeamMembers
-    );
+      const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
+      console.log(url);
+
+      console.log('calling the SC')
+      const createTx = await contract.create(
+        url,
+        template,
+        roles.length,
+        numberOfActions, // number of Actions,
+        contractAddress ?? ethers.constants.AddressZero, // contract address
+        100, // members
+        10 // coreTeamMembers
+      );
 
     console.log(createTx);
 

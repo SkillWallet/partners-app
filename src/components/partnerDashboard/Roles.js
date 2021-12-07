@@ -23,7 +23,7 @@ const Roles = (props) => {
             setRoles(props.state.community.roles);
             setIsLoading(false);
         } else {
-            fetchData(props);
+            fetchData(props, window.sessionStorage.getItem('commAddress'));
             setIsLoading(true);
         }
     }, [props.state])

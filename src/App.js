@@ -43,9 +43,8 @@ function App(props) {
           <div className="landing-content">
           <div className="landing-content-design">
             <div className="connect-wallet-container">
-              <skillwallet-auth
-              // partner-key="43290393d7798c840ecdbdf421c73ba6a5534bed">
-                >
+              <skillwallet-auth>
+              {/* partner-key="1b7c01d5eb4aa216b61c8d223bafb39897609e2b" */}
                   
               </skillwallet-auth>
             </div>

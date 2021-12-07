@@ -8,7 +8,7 @@ import { ReactComponent as PinIcon } from "../../assets/pin.svg";
 import { ReactComponent as ShareIcon } from "../../assets/share.svg";
 import "./core-team.scss";
 import SWDatatable from "../datatable/Datatable";
-import { SwButton } from "sw-web-shared";
+import { SwButton, SwShare } from "sw-web-shared";
 import { useDatatableApiRef } from "../datatable/DatatableRef";
 
 import Dialog from "@mui/material/Dialog";
@@ -192,9 +192,14 @@ const CoreTeam = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [open, setOpen] = useState(false);
   const [partnersAgreementAddress, setPartnersAgreementAddress] = useState('');
+  const [openShare, setOpenShare] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleShareClose = () => {
+    setOpenShare(false);
   };
 
   const submit = async () => {
@@ -237,6 +242,13 @@ const CoreTeam = () => {
   return (
     <div className="sw-core-team">
       <AlertDialog open={open} handleClose={handleClose} />
+      <SwShare
+        mode="light"
+        url="https://skillwallet.id/"
+        title="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
+        open={openShare}
+        onClose={handleShareClose}
+      />
       <Typography sx={{ my: 2 }} component="div" variant="h1">
         Core Team - Whitelist
       </Typography>
@@ -257,7 +269,12 @@ const CoreTeam = () => {
           Toolbar: SwEditToolbar,
         }}
         componentsProps={{
-          toolbar: { apiRef, maxSize: 10, title: 'Add new member', focusOn: 'name' },
+          toolbar: {
+            apiRef,
+            maxSize: 10,
+            title: "Add new member",
+            focusOn: "name",
+          },
         }}
       />
       <div className="sw-table-actions">
@@ -276,7 +293,7 @@ const CoreTeam = () => {
         </SwButton>
         <SwButton
           color="primary"
-          onClick={submit}
+          onClick={() => setOpenShare(true)}
           endIcon={<ShareIcon className="sw-btn-icon" />}
           sx={{
             borderColor: "primary.main",

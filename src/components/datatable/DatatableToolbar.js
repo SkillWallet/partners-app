@@ -8,11 +8,8 @@ const SwEditToolbar = (props) => {
   const { apiRef, maxSize, title, focusOn } = props;
 
   const handleClick = () => {
-    const ids = apiRef.current.getAllRowIds && apiRef.current.getAllRowIds();
-
-
-    console.log(ids, 'ids');
-    const id = ids.length;
+    const ids = apiRef?.current?.getAllRowIds && apiRef?.current?.getAllRowIds();
+    const id = ids?.length !== undefined ? ids?.length : 0;
     apiRef.current.updateRows([{ id, isNew: true }]);
     apiRef.current.setRowMode(id, "edit");
     setTimeout(() => {

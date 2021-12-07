@@ -1,0 +1,19 @@
+.sw-data-integration {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+
+    .sw-dao-url {
+        display: flex;
+        align-items: center;
+        grid-gap: 20px;
+    }
+
+    .sw-dao-form {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

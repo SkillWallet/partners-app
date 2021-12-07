@@ -42,7 +42,7 @@ const Members = (props) => {
             setIsLoading(false);
 
         } else if (!props.state.members) {
-            fetchData(props);
+            fetchData(props, window.sessionStorage.getItem('commAddress'));
             setIsLoading(true);
         }
     }, [props.state, roles, role1, role2, role3])
