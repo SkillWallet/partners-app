@@ -185,7 +185,7 @@ const addNewMembers = async (partnersAgreementAddress, newMembers, allMembers) =
     return await fetchData();
 };
 
-const CoreTeam = () => {
+const CoreTeamWhitelist = () => {
   const { apiRef, columns } = useDatatableApiRef(tableColumns);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -320,4 +320,4 @@ const CoreTeam = () => {
   );
 };
 
-export default CoreTeam;
+export default CoreTeamWhitelist;

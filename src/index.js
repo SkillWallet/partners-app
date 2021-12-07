@@ -66,10 +66,10 @@ ReactDOM.render(
                 component={Dashboard}
               ></ProtectedRoute>
 
-              <Route
+              <ProtectedRoute
                 path="/partner"
                 component={Partners}
-              ></Route>
+              ></ProtectedRoute>
               <Route path="*" component={NoMatch}></Route>
             </Switch>
           </BrowserRouter>

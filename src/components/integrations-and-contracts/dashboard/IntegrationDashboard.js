@@ -100,8 +100,8 @@ const IntegrationDashboard = () => {
           gridAutoRows: "minmax(380px, auto)",
         }}
       >
-        {IntegrationCards.map(({ title, icon, description, action }) => (
-          <div>
+        {IntegrationCards.map(({ title, icon, description, action }, n) => (
+          <div key={n}>
             <Card
               sx={{
                 height: "290px",

@@ -13,15 +13,15 @@ import {
 import { ReactComponent as DaoStatsIcon } from "../assets/dao-stats.svg";
 import { ReactComponent as DashboardIcon } from "../assets/dashboard.svg";
 import { ReactComponent as IntegrationIcon } from "../assets/integration.svg";
-import { ReactComponent as EventFactoryIcon } from "../assets/event-badge.svg";
-import CoreTeam from "../components/core-team/CoreTeam";
-import CoreTeamMenu from "../pages/core-team/CoreTeam";
+import { ReactComponent as EventFactoryIcon } from "../assets/event-badge.svg"; 
+import CoreTeam from "../pages/core-team/CoreTeam";
 import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
 import Dashboard from "./deshboard/Dashboard";
 import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
 import IntegrationDashboard from "../components/integrations-and-contracts/dashboard/IntegrationDashboard";
 import MembersAndActivities from "../components/member-and-activities/MembersAndActivities";
+import CoreTeamWhitelist from "../components/core-team/CoreTeamWhitelist";
 
 function NoMatch() {
   return (
@@ -150,10 +150,10 @@ const Partners = (props) => {
               path={`/`}
               render={(e) => {
                 switch (e.location.pathname) {
+                  case "/partner/dashboard/whitelist":
+                    return <CoreTeamWhitelist {...props} />;
                   case "/partner/dashboard/core-team":
                     return <CoreTeam {...props} />;
-                  case "/partner/dashboard/core":
-                    return <CoreTeamMenu {...props} />;
                   case "/partner/dashboard/members": 
                     return <MembersAndActivities {...props} isCoreTeamMembers/>
                   default:

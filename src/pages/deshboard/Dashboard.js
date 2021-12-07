@@ -1,29 +1,26 @@
+import { Box, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
 import { ReactComponent as Network } from '../../assets/network.svg';
 import { ReactComponent as Coins } from '../../assets/coins.svg';
-import React, { useState } from "react";
+import { fetchCommunity } from '../../contracts/api';
+import React, { useState, useEffect } from "react";
 import './dashboard.scss';
-import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-import { ReactComponent as Member } from '../../assets/member-card.svg';
-import { ReactComponent as Roles } from '../../assets/roles.svg';
-import { ReactComponent as Share } from '../../assets/share.svg';
+import DAOSummaryCard from './DAOSummaryCard';
+import DAOManagementCard from './DAOManagementCard';
+import { saveCommunity } from '../../redux/Community/community.actions';
+import { connect } from 'react-redux';
 
-const community = {
-  name: "SkillWallet @ Tachyon",
-  address: "0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26",
-  description: "This is the Tachyon Demo of SkillWallet - a role-based NFT ID that unlocks the true potential of Web3 Communities 🙌",
-  template: "Local Projects & DAOs",
-  image: "https://hub.textile.io/ipfs/bafkreigoiviheddeus2q4prbg26eiamz3aldxx3o44rhi5gw6iafvomate",
-  isDiToNativeCommunity: false
-}
+const Dashboard = (props) => {
 
-const Dashboard = () => {
+  const [showDAOManagement, setShowDAOManagement] = useState(false);
 
-  const [showDAOManagement, setSshowDAOManagement] = useState(false);
+  //TODO: Move this should happen once after login and maybe remove loading progress
+  useEffect(() => {
+    fetchCommunity(props);
+  }, []);
 
-  const DAOManagementClicked = () => {
-    console.log(!showDAOManagement)
-    setSshowDAOManagement(!showDAOManagement)
+  const toggleDAOManagement = () => {
+    setShowDAOManagement(!showDAOManagement)
   }
 
   return (
@@ -37,46 +34,16 @@ const Dashboard = () => {
     >
       <Box
         sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Avatar
-            sx={{
-              flex: 1,
-              height: "111px",
-              width: "111px"
-            }}
-            variant="square"
-            src={community.image}
-          /> 
-        <Box
-          sx={{
-            width: '100%',
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        > 
-            <Typography>
-              {community.name}
-            </Typography>
-            <Typography>
-              Core Team
-            </Typography> 
-        </Box>
-      </Box>
-      <Box
-        sx={{
           flex: 1
         }}
         className="sw-box"
       >
+        <Box sx={{ pb: 'auto', mb: '160px' }} >
+          <Typography textAlign='center' component="div" variant="h1">
+            Welcome to your Partner Dashboard <br />
+            <small> where your Community happens.</small>
+          </Typography>
+        </Box>
         <Box
           sx={{
             mx: 'auto',
@@ -91,34 +58,40 @@ const Dashboard = () => {
               height: '85px',
               mb: '48px'
             }}
-            endIcon={<Member className="sw-btn-icon" width="30px" />}
-            label="Members"
+            endIcon={<Network className="sw-btn-icon" width="30px" />}
+            label="DAO Management"
+            className={showDAOManagement ? 'active-link' : ''}
+            onClick={toggleDAOManagement}
           />
           <SwButton
-            sx={{
-              whiteSpace: 'nowrap',
-              width: 1,
-              borderColor: "primary.main",
-              height: '85px',
-              mb: '48px'
-            }}
-            endIcon={<Roles className="sw-btn-icon" width="30px" />}
-            label="Roles & Skills">
-          </SwButton>
-          <SwButton
+            disabled
             sx={{
               whiteSpace: 'nowrap',
               width: 1,
               borderColor: "primary.main",
               height: '85px'
             }}
-            endIcon={<Share className="sw-btn-icon" width="30px" />}
-            label="Invite & Share">
+            endIcon={<Coins className="sw-btn-icon" width="30px" />}
+            label="Rewards">
+            <Typography variant='h2' textAlign='center'>
+              Rewards <br />
+              <small> (coming soon)</small>
+            </Typography>
           </SwButton>
         </Box>
       </Box>
+      {showDAOManagement ?
+        <DAOManagementCard /> :
+        <DAOSummaryCard />
+      }
     </Box>
   );
 };
 
-export default Dashboard;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchSaveCommunity: (res) => dispatch(saveCommunity(res))
+  }
+}
+
+export default connect(undefined, mapDispatchToProps)(Dashboard);

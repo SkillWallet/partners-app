@@ -6,6 +6,7 @@ const palette = {
   background: {
     default: '#000000',
     paper: '#FFFFFF',
+    dark: '#f9f9f9',
   },
   text: {
     secondary: '#D8D8D8',

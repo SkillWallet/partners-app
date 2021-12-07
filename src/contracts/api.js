@@ -146,6 +146,14 @@ export const fetchData = async (props) => {
     }
 }
 
+export const fetchCommunity = async (props) => {
+    const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
+    const communityAddress = sw.community;  
+    const community = await getCommunityByCommunityAddress(communityAddress);
+    console.log(community)
+    props.dispatchSaveCommunity(community) 
+}
+
 export const fetchMembersAndActivityData = async (props) => {
     const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
     const communityAddress = sw.community;
