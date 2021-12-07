@@ -112,7 +112,6 @@ const IntegrateUserDetails = (props) => {
                 partnerKey: key,
             }
         })
-        window.sessionStorage.setItem('commAddress', partnersDetails.communityAddr);
         input.dispatchEvent(event)
         setIsCommunityInactive(false);
     }
