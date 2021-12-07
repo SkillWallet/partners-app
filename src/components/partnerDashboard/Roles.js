@@ -17,13 +17,14 @@ const Roles = (props) => {
     const [activeRole, setActiveRole] = useState('Role 1');
     const [skills, setSkills] = useState([]);
     const [roles, setRoles] = useState(['','','']);
+    const coreTeamMemberClick = false;
 
     useEffect(() => {
-        if (props.state.community) {
-            setRoles(props.state.community.roles);
+        if (!props.state.community.error) {
+            filterRoles(props.state.community.roles.roles);
             setIsLoading(false);
         } else {
-            fetchData(props, window.sessionStorage.getItem('commAddress'));
+            fetchData(props);
             setIsLoading(true);
         }
     }, [props.state])
@@ -34,9 +35,17 @@ const Roles = (props) => {
         setActiveRole(newRole);
     }
 
+    const filterRoles = (rolesFromState) => {
+        const newRoles = rolesFromState.filter(r => {
+            return r['isCoreTeamMember'] === coreTeamMemberClick
+        })
+        setRoles(newRoles);
+    }
+
     const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
     const addSelectedSkill = (skill) => {
+        console.log(roles);
         if (skills.includes(skill)) {
             const newArray = skills.filter(s => {
                 return s !== skill
@@ -91,18 +100,18 @@ const Roles = (props) => {
 
                     {!isLoading ? <div className="dashboard-panel">
                         <div className="dashboard-buttons">
-                                <Button text={roles[0]} src={false} alt="null" 
+                                <Button text={roles[0]['roleName']} src={false} alt="null" 
                                 dark={activeRole === 'Role 1' ? true : false} 
                                 onClick={() => changeRole('Role 1')}
                                 className={activeRole === 'Role 1' ? "activeTab" : ""}
                                 />
 
-                                <Button text={roles[1]} src={false} alt="null" 
+                                <Button text={roles[1]['roleName']} src={false} alt="null" 
                                 dark={activeRole === 'Role 2' ? true : false} 
                                 onClick={() => changeRole('Role 2')}
                                 />
 
-                            <Button text={roles[2]} src={false} alt="null" 
+                            <Button text={roles[2]['roleName']} src={false} alt="null" 
                             dark={activeRole === 'Role 3' ? true : false} 
                             onClick={() => changeRole('Role 3')}
                             />

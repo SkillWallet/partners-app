@@ -21,6 +21,7 @@ import Contracts from "../components/integrations-and-contracts/contracts/Contra
 import Dashboard from "./deshboard/Dashboard";
 import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
 import IntegrationDashboard from "../components/integrations-and-contracts/dashboard/IntegrationDashboard";
+import MembersAndActivities from "../components/member-and-activities/MembersAndActivities";
 
 function NoMatch() {
   return (
@@ -153,6 +154,8 @@ const Partners = (props) => {
                     return <CoreTeam {...props} />;
                   case "/partner/dashboard/core":
                     return <CoreTeamMenu {...props} />;
+                  case "/partner/dashboard/members": 
+                    return <MembersAndActivities {...props} isCoreTeamMembers/>
                   default:
                     return <Dashboard {...props} />;
                 }
