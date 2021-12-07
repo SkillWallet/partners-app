@@ -36,6 +36,16 @@ export const getMembersByCommunityAddress = (communityAddress, isCoreTeamMember)
     }).then(res => res.json());
 }
 
+
+export const getPartnersAgreementByCommunity = (communityAddress) => {
+    return fetch(`https://api.distributed.town/api/community/${communityAddress}/key`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(res => res.json());
+}
+
 export const getCommunityByPartnerKey = (partnerKey) => {
     return fetch(`https://api.distributed.town/api/community/key/${partnerKey}`, {
         method: 'GET',

@@ -8,7 +8,7 @@ import { ReactComponent as PinIcon } from "../../assets/pin.svg";
 import { ReactComponent as ShareIcon } from "../../assets/share.svg";
 import "./core-team.scss";
 import SWDatatable from "../datatable/Datatable";
-import { SwButton } from "sw-web-shared";
+import { SwButton, SwShare } from "sw-web-shared";
 import { useDatatableApiRef } from "../datatable/DatatableRef";
 
 import Dialog from "@mui/material/Dialog";
@@ -21,6 +21,13 @@ import {
   GetDatatableItems,
   LockDatatableItems,
 } from "../datatable/DatatableHelpers";
+import {
+  getPartnersAgreementByCommunity,
+} from "../../contracts/api";
+import {
+  getWhitelistedAddresses,
+  addAddressToWhitelist
+} from "../../contracts/contracts";
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -160,22 +167,22 @@ const tableColumns = (getRef) => {
   ];
 };
 
-// @TODO: Milena to implement smart contract call
-const fetchData = async (allMembers) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(allMembers);
-    }, 2000);
+
+const fetchData = async (partnersAgreementAddr) => {
+  const whitelist = await getWhitelistedAddresses(partnersAgreementAddr);
+  return whitelist.map(w => {
+    return {
+      name: 'No Name',
+      address: w
+    }
   });
 };
 
-// @TODO: Milena to implement smart contract call
-const addNewMembers = async (newMembers, allMembers) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(allMembers);
-    }, 2000);
-  }).then(() => fetchData(allMembers));
+const addNewMembers = async (partnersAgreementAddress, newMembers, allMembers) => {
+    newMembers.forEach(async newMember => {
+      await addAddressToWhitelist(partnersAgreementAddress, newMember.address);
+    });
+    return await fetchData();
 };
 
 const CoreTeam = () => {
@@ -184,9 +191,15 @@ const CoreTeam = () => {
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [partnersAgreementAddress, setPartnersAgreementAddress] = useState('');
+  const [openShare, setOpenShare] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleShareClose = () => {
+    setOpenShare(false);
   };
 
   const submit = async () => {
@@ -201,7 +214,7 @@ const CoreTeam = () => {
 
     try {
       setLoading(true);
-      const updatedMembers = await addNewMembers(newItems, allItems);
+      const updatedMembers = await addNewMembers(partnersAgreementAddress, newItems, allItems);
       setLoading(false);
       setData(LockDatatableItems(updatedMembers));
     } catch (error) {
@@ -210,23 +223,44 @@ const CoreTeam = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchData([
-      {
-        name: "Partner",
-        address: "0xcD3942171C362448cBD4FAeA6b2B71c8cCe40BF3",
-      },
-    ])
-      .then((members) => {
-        setData(LockDatatableItems(members));
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    const setPAData = async () => {
+      setLoading(true);
+      const sw = JSON.parse(window.sessionStorage.getItem("skillWallet") || "{}");
+      const pa = await getPartnersAgreementByCommunity(sw.community);
+      setPartnersAgreementAddress(pa.partnersAgreementAddress);
+      fetchData(pa.partnersAgreementAddress)
+        .then((members) => {
+          setData(LockDatatableItems(members));
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+    setPAData();
+   
   }, []);
 
   return (
     <div className="sw-core-team">
       <AlertDialog open={open} handleClose={handleClose} />
+      <SwShare
+        mode="light"
+        url="https://skillwallet.id/"
+        title="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
+        twitterProps={{
+          title: 'Message',
+          hashtags: ['test']
+        }}
+        linkedinProps={{
+          title: 'Message',
+          summary: "summary",
+          source: 'source'
+        }}
+        telegramProps={{
+          title: 'Message',
+        }}
+        open={openShare}
+        onClose={handleShareClose}
+      />
       <Typography sx={{ my: 2 }} component="div" variant="h1">
         Core Team - Whitelist
       </Typography>
@@ -247,7 +281,12 @@ const CoreTeam = () => {
           Toolbar: SwEditToolbar,
         }}
         componentsProps={{
-          toolbar: { apiRef, maxSize: 10, title: 'Add new member', focusOn: 'name' },
+          toolbar: {
+            apiRef,
+            maxSize: 10,
+            title: "Add new member",
+            focusOn: "name",
+          },
         }}
       />
       <div className="sw-table-actions">
@@ -266,7 +305,7 @@ const CoreTeam = () => {
         </SwButton>
         <SwButton
           color="primary"
-          onClick={submit}
+          onClick={() => setOpenShare(true)}
           endIcon={<ShareIcon className="sw-btn-icon" />}
           sx={{
             borderColor: "primary.main",
