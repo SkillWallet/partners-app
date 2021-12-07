@@ -15,6 +15,7 @@ import { ReactComponent as DashboardIcon } from "../assets/dashboard.svg";
 import { ReactComponent as IntegrationIcon } from "../assets/integration.svg";
 import { ReactComponent as EventFactoryIcon } from "../assets/event-badge.svg";
 import CoreTeam from "../components/core-team/CoreTeam";
+import CoreTeamMenu from "../pages/core-team/CoreTeam";
 import "./partners.scss";
 import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
 import Dashboard from "./deshboard/Dashboard";
@@ -150,6 +151,8 @@ const Partners = (props) => {
                 switch (e.location.pathname) {
                   case "/partner/dashboard/core-team":
                     return <CoreTeam {...props} />;
+                  case "/partner/dashboard/core":
+                    return <CoreTeamMenu {...props} />;
                   default:
                     return <Dashboard {...props} />;
                 }
