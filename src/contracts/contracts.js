@@ -84,68 +84,68 @@ export const createPartnersAgreement = async (
       signer,
     );
 
-      // here's where my metadata is set.
-      const jsonMetadata = metadata[template];
-      jsonMetadata.title = title;
-      jsonMetadata.description = description;
-      console.log('roles setter: ', roles);
-      jsonMetadata.skills = {
-        roles: [
-          {
-            credits: 24,
-            roleName: roles[0],
-            skills: [],
-            isCoreTeamMember: false
-          },
-          {
-            credits: 12,
-            roleName: roles[1],
-            skills: [],
-            isCoreTeamMember: false
-          },
-          {
-            credits: 6,
-            roleName: roles[2],
-            skills: [],
-            isCoreTeamMember: false
-          },
-          {
-            credits: 24,
-            roleName: "Founder",
-            skills: [],
-            isCoreTeamMember: true
-          },
-          {
-            credits: 12,
-            roleName: "Investor",
-            skills: [],
-            isCoreTeamMember: true
-          },
-          {
-            credits: 6,
-            roleName: "Contributor",
-            skills: [],
-            isCoreTeamMember: true
-          }
-        ]
-      }
-      jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
-      
-      console.log('metadata: ', jsonMetadata);
+    // here's where my metadata is set.
+    const jsonMetadata = metadata[template];
+    jsonMetadata.title = title;
+    jsonMetadata.description = description;
+    console.log('roles setter: ', roles);
+    jsonMetadata.skills = {
+      roles: [
+        {
+          credits: 24,
+          roleName: roles[0],
+          skills: [],
+          isCoreTeamMember: false
+        },
+        {
+          credits: 12,
+          roleName: roles[1],
+          skills: [],
+          isCoreTeamMember: false
+        },
+        {
+          credits: 6,
+          roleName: roles[2],
+          skills: [],
+          isCoreTeamMember: false
+        },
+        {
+          credits: 24,
+          roleName: "Founder",
+          skills: [],
+          isCoreTeamMember: true
+        },
+        {
+          credits: 12,
+          roleName: "Investor",
+          skills: [],
+          isCoreTeamMember: true
+        },
+        {
+          credits: 6,
+          roleName: "Contributor",
+          skills: [],
+          isCoreTeamMember: true
+        }
+      ]
+    }
+    jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
 
-      const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
-      console.log(url);
+    console.log('metadata: ', jsonMetadata);
 
-      console.log('calling the SC')
-      const createTx = await contract.create(
-        url,
-        template,
-        roles.length,
-        numberOfActions, // number of Actions,
-        contractAddress ?? ethers.constants.AddressZero, // contract address
-        100, // members
-        10 // coreTeamMembers
-      );
+    const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
+    console.log(url);
+
+    console.log('calling the SC')
+    const createTx = await contract.create(
+      url,
+      template,
+      roles.length,
+      numberOfActions, // number of Actions,
+      contractAddress ?? ethers.constants.AddressZero, // contract address
+      100, // members
+      10 // coreTeamMembers
+    );
 
     console.log(createTx);
 
@@ -221,6 +221,61 @@ export const addAddressToWhitelist = async (
   }
 }
 
+
+
+export const importContractToPA = async (
+  partnersAgreementAddress,
+  contractAddress,
+) => {
+  try {
+
+    await changeNetwork();
+
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
+    };
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      partnersAgreementAddress,
+      partnersAgreementABI,
+      signer,
+    );
+
+    const createTx = await contract.addNewContractAddressToAgreement(
+      contractAddress
+    );
+
+
+    try {
+      const result = await createTx.wait();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+      alert('Failed to import new address!');
+    }
+  } catch (err) {
+    alert('Something went wrong, try again later');
+  }
+}
+
+
+export const getImportedContracts = async (partnersAgreementAddress) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
+  const contract = new ethers.Contract(
+    partnersAgreementAddress,
+    partnersAgreementABI,
+    signer,
+  );
+
+  const importedContracts = await contract.getImportedAddresses();
+  console.log(importedContracts);
+  return importedContracts;
+};
 
 export const getWhitelistedAddresses = async (partnersAgreementAddress) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);

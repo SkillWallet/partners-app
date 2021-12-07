@@ -22,6 +22,14 @@ import {
   GetDatatableChangedItems,
 } from "../../datatable/DatatableHelpers";
 import "./contracts.scss";
+import {
+  importContractToPA,
+  getImportedContracts
+} from "../../../contracts/contracts";
+
+import {
+  getPartnersAgreementByCommunity,
+} from "../../../contracts/api";
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -168,34 +176,28 @@ const tableColumns = (getRef) => {
 };
 
 // @TODO: Milena to implement smart contract call
-const fetchData = async (allContract) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(allContract);
-    }, 2000);
-  });
+const fetchData = async (partnersAgreementAddress) => {
+  const contracts = await getImportedContracts(partnersAgreementAddress);
+  return contracts.map(c => {
+    return {
+      use: "N/A", 
+      address: c,
+      addedBy: "N/A"
+    }
+  })
 };
 
-const asyncCall = async (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data);
-    }, 2000);
-  }).then(() => data);
-};
-
-const createContracts = async (newItems) => {
+const createContracts = async (partnersAgreementAddress, newItems) => {
   for (const item of newItems) {
-    // @TODO Milena to call smart contract
-    await asyncCall(item);
+    await importContractToPA(partnersAgreementAddress, item.address)
   }
   return newItems;
 };
 
-const removeContracts = async (removedContract) => {
+const removeContracts = async (partnersAgreementAddress, removedContract) => {
   for (const item of removedContract) {
     // @TODO Milena to call smart contract
-    await asyncCall(item);
+    // await asyncCall(item);
   }
   return removedContract;
 };
@@ -207,6 +209,7 @@ const Contracts = () => {
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [partnersAgreementAddress, setPartnersAgreementAddress] = useState('');
 
   const handleClose = () => {
     setOpen(false);
@@ -237,8 +240,8 @@ const Contracts = () => {
       console.log("removedItems: ", removedItems);
       console.log("noChangedItems: ", noChangedItems);
 
-      const createdContract = await createContracts(newItems);
-      await removeContracts(removedItems);
+      const createdContract = await createContracts(partnersAgreementAddress, newItems);
+      await removeContracts(partnersAgreementAddress, removedItems);
       const newData = LockDatatableItems([
         ...createdContract,
         ...noChangedItems,
@@ -254,24 +257,30 @@ const Contracts = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchData([])
-      .then((list) => {
-        let lockedData = LockDatatableItems(list);
-        if (!lockedData.length) {
-          lockedData = [{ id: 0, isNew: true, locked: false }];
-          setTimeout(() => {
-            if (apiRef.current) {
-              apiRef.current.setRowMode(0, "edit");
-            }
-          });
-        } else {
-          setInitialData(lockedData);
-        }
-        setData(lockedData);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    const setPAData = async () => {
+      setLoading(true);
+      const sw = JSON.parse(window.sessionStorage.getItem("skillWallet") || "{}");
+      const pa = await getPartnersAgreementByCommunity(sw.community);
+      setPartnersAgreementAddress(pa.partnersAgreementAddress);
+      fetchData(pa.partnersAgreementAddress)
+        .then((list) => {
+          let lockedData = LockDatatableItems(list);
+          if (!lockedData.length) {
+            lockedData = [{ id: 0, isNew: true, locked: false }];
+            setTimeout(() => {
+              if (apiRef.current) {
+                apiRef.current.setRowMode(0, "edit");
+              }
+            });
+          } else {
+            setInitialData(lockedData);
+          }
+          setData(lockedData);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+    setPAData();
   }, []);
 
   return (

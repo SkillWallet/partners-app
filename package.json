@@ -8,7 +8,7 @@
     "@mui/icons-material": "~5.0.1",
     "@mui/material": "~5.0.2",
     "@mui/x-data-grid": "^5.1.0",
-    "@skill-wallet/auth": "^0.0.84-alpha",
+    "@skill-wallet/auth": "^0.0.91-alpha",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
