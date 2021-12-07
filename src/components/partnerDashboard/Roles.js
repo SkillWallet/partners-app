@@ -121,7 +121,7 @@ const Roles = (props) => {
                 <div className="dashboard-content-design">
                     <div className="dashboard-roles-header">
                         <h1>Roles & Skills</h1>
-                        <h3>Add Skills for each Role, and assign them to your Community Members</h3>
+                        <h3>Add Skills for each Role, and assign them to your {coreTeamMemberClick ? 'Core Team': 'Community Members'}</h3>
                     </div>
 
                     <div className="dashboard-panel">
