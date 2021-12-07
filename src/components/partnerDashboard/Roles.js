@@ -7,6 +7,7 @@ import dashboard from '../../assets/dashboard.svg';
 import eventBadge from '../../assets/event-badge.svg';
 import avatar from '../../assets/avatar.svg';
 import { fetchData } from '../../contracts/api';
+import { updateAndSaveSkills } from '../../contracts/contracts';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { saveMembers } from '../../redux/Members/members.actions';
@@ -14,7 +15,7 @@ import { saveCommunity } from '../../redux/Community/community.actions';
 
 const Roles = (props) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [activeRole, setActiveRole] = useState('Role 1');
+    const [activeRole, setActiveRole] = useState({rolename: ''});
     const [skills, setSkills] = useState([]);
     const [roles, setRoles] = useState(['','','']);
     const coreTeamMemberClick = false;
@@ -31,21 +32,45 @@ const Roles = (props) => {
 
 
     const changeRole = (newRole) => {
-        setSkills([]);
         setActiveRole(newRole);
+        setSkills(newRole['skills']);
+    }
+
+    const updateSkills = async (skills) => {
+        setIsLoading(true);
+        try {
+            
+        activeRole['skills'] = skills;
+        
+        const res = await updateAndSaveSkills(activeRole, props.state.community);
+
+        props.dispatchSaveCommunity(res);
+    } catch (err) {
+        alert(err);
+    }
+    setIsLoading(false);
     }
 
     const filterRoles = (rolesFromState) => {
-        const newRoles = rolesFromState.filter(r => {
-            return r['isCoreTeamMember'] === coreTeamMemberClick
+        let newRoles = [];
+        rolesFromState.forEach(r => {
+            if (r['isCoreTeamMember'] == coreTeamMemberClick) {
+                newRoles.push({
+                    credits: r['credits'],
+                    isCoreTeamMember: r['isCoreTeamMember'],
+                    roleName: r['roleName'],
+                    skills: r['skills']
+                })
+            }
         })
         setRoles(newRoles);
+        setActiveRole(newRoles[0]);
+        setSkills(newRoles[0]['skills']);
     }
 
     const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
     const addSelectedSkill = (skill) => {
-        console.log(roles);
         if (skills.includes(skill)) {
             const newArray = skills.filter(s => {
                 return s !== skill
@@ -94,33 +119,34 @@ const Roles = (props) => {
             
             <div className="dashboard-roles-content">
                 <div className="dashboard-content-design">
-                    <div>
+                    <div className="dashboard-roles-header">
+                        <h1>Roles & Skills</h1>
                         <h3>Add Skills for each Role, and assign them to your Community Members</h3>
                     </div>
 
-                    {!isLoading ? <div className="dashboard-panel">
+                    <div className="dashboard-panel">
                         <div className="dashboard-buttons">
                                 <Button text={roles[0]['roleName']} src={false} alt="null" 
-                                dark={activeRole === 'Role 1' ? true : false} 
-                                onClick={() => changeRole('Role 1')}
-                                className={activeRole === 'Role 1' ? "activeTab" : ""}
+                                dark={activeRole === roles[0] ? true : false} 
+                                onClick={() => changeRole(roles[0])}
+                                className={activeRole === roles[0] ? "activeTab" : ""}
                                 />
 
                                 <Button text={roles[1]['roleName']} src={false} alt="null" 
-                                dark={activeRole === 'Role 2' ? true : false} 
-                                onClick={() => changeRole('Role 2')}
+                                dark={activeRole === roles[1] ? true : false} 
+                                onClick={() => changeRole(roles[1])}
                                 />
 
                             <Button text={roles[2]['roleName']} src={false} alt="null" 
-                            dark={activeRole === 'Role 3' ? true : false} 
-                            onClick={() => changeRole('Role 3')}
+                            dark={activeRole === roles[2] ? true : false} 
+                            onClick={() => changeRole(roles[2])}
                             />
                         </div>
 
                         <div className="skillpicker-container">
                             <div className="skillpicker">
                                 <div>
-                                    <p>Select up to 4 skills for "{activeRole}"</p>
+                                    <p>Select up to 4 skills for "{activeRole['roleName']}"</p>
                                 </div>
 
                                 <div className="skills-container">
@@ -135,9 +161,9 @@ const Roles = (props) => {
                                 </div>
 
                             </div>
-                            <button disabled={true} >Confirm & Add Skills</button>
+                            <button disabled={false} onClick={() => updateSkills(skills)}>Confirm & Add Skills</button>
                         </div>
-                    </div> : null}
+                    </div>
                 </div>               
             </div>
         </div>

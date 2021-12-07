@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { pushJSONDocument } from '../api/textile.hub';
-import { generatePartnersKey, getCommunityByPartnerKey } from './api';
+import { generatePartnersKey, getCommunityByCommunityAddress } from './api';
 
 const partnersRegistryABI = require('../contracts/abi/PartnersRegistry.abi.json').abi;
 const communityABI = require('../contracts/abi/ICommunity.abi.json').abi;
@@ -345,28 +345,43 @@ export const getWhitelistedAddresses = async (partnersAgreementAddress) => {
 };
 
 
-export const getSkills = async () => {
+export const updateAndSaveSkills = async (editedRole, community) => {   
+  let updatedRoles = [];
+
+  community.roles.roles.forEach(r => {
+    if (r['roleName'] === editedRole['roleName']) {
+        updatedRoles.push(editedRole)
+    } else {
+      updatedRoles.push(r);
+    }
+  })
+
+  const jsonMetadata = {
+    properties: {
+      template: community.template
+    },
+    title: community.name,
+    description: community.description,
+    image: community.image,
+    skills: {
+      roles: updatedRoles
+    }
+  };
+  console.log('metadata: ', jsonMetadata);
+  
+  const uri = await pushJSONDocument(jsonMetadata, `metadata.json`);
+  console.log(uri);
+
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-
-  // call getCommunity (with PK) to get address
-  const community = await getCommunityByPartnerKey("7558d2094290013c527d4bab9a80bd9dd24c74e0");
 
   const contract = new ethers.Contract(
     community.address,
     communityABI,
     signer,
   );
-  const metadataURL = await contract.metadataUri();
-
-  return fetch(metadataURL, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  }).then(async (res) => {
-    const community = await res.json();
-
-    return community.communityRoles;
-  });
+  const tx = await contract.setMetadataUri(uri);
+  const metadataURI = await tx.wait();
+  console.log(metadataURI);
+  return await getCommunityByCommunityAddress(community.address);
 };

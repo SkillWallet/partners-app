@@ -10,7 +10,6 @@ import membersCard from '../../assets/member-card.svg';
 import rolesImg from '../../assets/roles.svg';
 import coins from '../../assets/coins.svg';
 import { getMembers, getCommunityByCommunityAddress, fetchData } from '../../contracts/api';
-import { getSkills } from '../../contracts/contracts';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { saveMembers } from '../../redux/Members/members.actions';
@@ -20,11 +19,6 @@ const Dashboard = (props) => {
     useEffect(() => {
         fetchData(props);
     }, [props]);
-
-    // const callGetSkills = async () => {
-    //     const skills = await getSkills();
-    //     console.log('sk: ', skills);
-    // }
 
     return (
         <div className="dashboard-main">

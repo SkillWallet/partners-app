@@ -817,7 +817,7 @@
 }
 .skillpicker {
   border: 1px solid black;
-  background-color: #dcdcdd;
+  /* background-color: #dcdcdd; */
   padding: 25px;
   text-align: center;
   margin-bottom: 40px;
@@ -853,6 +853,10 @@
 .card-section > button:hover {
   cursor: pointer;
   background-color: grey;
+}
+.skillpicker-container > button:hover {
+  background-color: #36454F;
+  cursor: pointer;
 }
 .community-card {
   border: 2px solid black;
@@ -905,6 +909,17 @@
 }
 .dashboard-roles-content {
   width: 80%;
+}
+.dashboard-roles-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 78%;
+  margin: 0 auto;
+  /* padding-left: 30px; */
+}
+.dashboard-roles-header > h1 {
+  margin-bottom: 15px;
 }
 .avatar-container {
   display: flex;
