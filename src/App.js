@@ -1,6 +1,6 @@
 import './styles/App.css';
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import logoBlack from './assets/sw-logo-black.svg';
 import './styles/Integrate.css';
@@ -33,54 +33,53 @@ function App(props) {
             <div className="landing-sidebar-design">
               <div className="logo-div">
 
-                  <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
-                  <p><b>Welcome, Partner!</b></p>
-                  
+                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
+                <p><b>Welcome, Partner!</b></p>
+
               </div>
             </div>
           </div>
 
           <div className="landing-content">
-          <div className="landing-content-design">
-            <div className="connect-wallet-container">
-              <skillwallet-auth>
-              {/* partner-key="1b7c01d5eb4aa216b61c8d223bafb39897609e2b" */}
-                  
-              </skillwallet-auth>
-            </div>
-
-
-            <div className="buttons" id="landingButtons">
-              <div className="buttons-top-row sw-description">
-              <h2><b><ul>Do more with your DAO</ul></b></h2>
-
-              <p>SkillWallets are individual NFT IDs that unlock the true potential of Web3 Communities.</p>
-              <br /><br />
-              <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
+            <div className="landing-content-design">
+              <div className="connect-wallet-container">
+                <skillwallet-auth
+                  partner-key="71baedc2ad092de8e55f915b6eca869bfebdfe53">
+                </skillwallet-auth>
               </div>
 
-              <div className="buttons-bottom-row">
-                <Link to="/integrate">
-                  <div className="landing-button-container">
-                    <div className="landing-button-text">
-                        <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Integrate</h2>
+
+              <div className="buttons" id="landingButtons">
+                <div className="buttons-top-row sw-description">
+                  <h2><b><ul>Do more with your DAO</ul></b></h2>
+
+                  <p>SkillWallets are individual NFT IDs that unlock the true potential of Web3 Communities.</p>
+                  <br /><br />
+                  <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
+                </div>
+
+                <div className="buttons-bottom-row">
+                  <Link to="/integrate">
+                    <div className="landing-button-container">
+                      <div className="landing-button-text">
+                        <h2 style={{ textDecoration: 'underline', fontWeight: "bold" }}>Integrate</h2>
                         <p>SkillWallet Auth</p>
+                      </div>
+                      <img src={networkIcon} className="landing-button-img" alt="4 small circles of network nodes connected together" />
                     </div>
-                    <img src={networkIcon} className="landing-button-img" alt="4 small circles of network nodes connected together"/>
-                  </div>
-                </Link>
+                  </Link>
 
-                <Link to={'/analytics'}>
-                  <div className={analyticsClass} >
-                    <div className="landing-button-text">
-                        <h2 style={{textDecoration: 'underline', fontWeight: "bold"}}>Partners</h2>
+                  <Link to={'/analytics'}>
+                    <div className={analyticsClass} >
+                      <div className="landing-button-text">
+                        <h2 style={{ textDecoration: 'underline', fontWeight: "bold" }}>Partners</h2>
                         <p>Analytics</p>
+                      </div>
+                      <img src={props.state.members.auth ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder" />
                     </div>
-                    <img src={props.state.members.auth ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder"/>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
-            </div>
             </div>
           </div>
         </main>
@@ -92,14 +91,14 @@ function App(props) {
 const mapStateToProps = state => {
   return {
     state: {
-        members: state.members
+      members: state.members
     }
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-      dispatchAuthenticateUser: (auth) => dispatch(isUserAuthenticated(auth))
+    dispatchAuthenticateUser: (auth) => dispatch(isUserAuthenticated(auth))
   }
 }
 

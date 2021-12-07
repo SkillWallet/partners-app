@@ -222,6 +222,43 @@ export const addAddressToWhitelist = async (
 }
 
 
+export const addUrlToPA = async (
+  partnersAgreementAddress,
+  url,
+) => {
+  try {
+
+    await changeNetwork();
+
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable()
+    };
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      partnersAgreementAddress,
+      partnersAgreementABI,
+      signer,
+    );
+
+    const createTx = await contract.addURL(
+      url
+    );
+
+    try {
+      const result = await createTx.wait();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+      alert('Failed to import new address!');
+    }
+
+  } catch (err) {
+    alert('Something went wrong, try again later');
+  }
+}
 
 export const importContractToPA = async (
   partnersAgreementAddress,
@@ -261,6 +298,22 @@ export const importContractToPA = async (
   }
 }
 
+
+
+export const getPAUrl = async (partnersAgreementAddress) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
+  const contract = new ethers.Contract(
+    partnersAgreementAddress,
+    partnersAgreementABI,
+    signer,
+  );
+
+  const urls = await contract.getURLs();
+  console.log('urls', urls)
+  return urls.length > 0 ? urls[urls.length - 1] : undefined;
+};
 
 export const getImportedContracts = async (partnersAgreementAddress) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);

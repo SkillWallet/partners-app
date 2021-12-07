@@ -175,7 +175,6 @@ const tableColumns = (getRef) => {
   ];
 };
 
-// @TODO: Milena to implement smart contract call
 const fetchData = async (partnersAgreementAddress) => {
   const contracts = await getImportedContracts(partnersAgreementAddress);
   return contracts.map(c => {
@@ -185,6 +184,7 @@ const fetchData = async (partnersAgreementAddress) => {
       addedBy: "N/A"
     }
   })
+
 };
 
 const createContracts = async (partnersAgreementAddress, newItems) => {
@@ -196,7 +196,6 @@ const createContracts = async (partnersAgreementAddress, newItems) => {
 
 const removeContracts = async (partnersAgreementAddress, removedContract) => {
   for (const item of removedContract) {
-    // @TODO Milena to call smart contract
     // await asyncCall(item);
   }
   return removedContract;

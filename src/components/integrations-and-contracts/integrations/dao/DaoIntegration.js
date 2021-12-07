@@ -10,6 +10,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import "./dao-integration.scss";
 
+import {
+  addUrlToPA,
+  getPAUrl
+} from "../../../../contracts/contracts";
+
+import {
+  getPartnersAgreementByCommunity,
+} from "../../../../contracts/api";
+
 function AlertDialog({ handleClose, open }) {
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -49,23 +58,18 @@ function AlertDialog({ handleClose, open }) {
   );
 }
 
-const asyncCall = async (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data);
-    }, 2000);
-  }).then(() => data);
-};
 
 // @TODO: Milena to implement smart contract call
-const createDaoIntegration = async (item) => {
-  await asyncCall(item);
+const createDaoIntegration = async (partnersAgreementAddress, item) => {
+  await addUrlToPA(partnersAgreementAddress, item);
 };
 
 const DaoIntegration = () => {
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [daoUrl, setDaoUrl] = useState("");
   const [open, setOpen] = useState(false);
+  const [partnersAgreementAddress, setPartnersAgreementAddress] = useState('');
 
   const handleClose = () => {
     setOpen(false);
@@ -74,7 +78,7 @@ const DaoIntegration = () => {
   const submit = async () => {
     setLoading(true);
     try {
-      await createDaoIntegration();
+      await createDaoIntegration(partnersAgreementAddress, daoUrl);
       setOpen(true);
       setLoading(false);
     } catch (error) {
@@ -83,7 +87,10 @@ const DaoIntegration = () => {
   };
 
   const debouncedChangeHandler = useMemo(() => {
+
     const changeHandler = (e) => {
+      console.log('inside the handler');
+      console.log(e);
       setDaoUrl(e.target.value);
     };
     return debounce(changeHandler, 10);
@@ -92,6 +99,25 @@ const DaoIntegration = () => {
   useEffect(() => {
     return () => debouncedChangeHandler.cancel();
   }, [debouncedChangeHandler]);
+
+
+  useEffect(() => {
+    const setPAData = async () => {
+      setLoading(true);
+      console.log('setpadata')
+      const sw = JSON.parse(window.sessionStorage.getItem("skillWallet") || "{}");
+      const pa = await getPartnersAgreementByCommunity(sw.community);
+      setPartnersAgreementAddress(pa.partnersAgreementAddress);
+      const paUrl = await getPAUrl(pa.partnersAgreementAddress);
+      console.log(paUrl);
+      if(paUrl){ 
+        setDaoUrl(paUrl);
+        setDisabled(true);
+      }
+      setLoading(false);
+    }
+    setPAData();
+  }, []);
 
   return (
     <>
@@ -115,6 +141,7 @@ const DaoIntegration = () => {
             </Typography>
             <TextField
               autoFocus
+              disabled={disabled}
               focused
               color="primary"
               placeholder="https://letsDAO.it"
@@ -139,7 +166,7 @@ const DaoIntegration = () => {
           </div>
           <SwButton
             color="primary"
-            disabled={!daoUrl?.length || loading}
+            disabled={!daoUrl?.length || loading || disabled}
             onClick={submit}
             endIcon={<EditIcon className="sw-btn-icon" />}
             sx={{

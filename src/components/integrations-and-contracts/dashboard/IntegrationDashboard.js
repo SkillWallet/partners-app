@@ -50,7 +50,7 @@ const IntegrationCards = [
         }}
         onClick={() => {
           // @TODO: Milena to change the url
-          window.open('https://skillwallet.github.io/landing-page/', '_blank');
+          window.open('https://discord.com/api/oauth2/authorize?client_id=898586559228551208&permissions=8&scope=bot', '_blank');
         }}
       >
         Integrate on Discord
