@@ -1,88 +1,92 @@
-import { Box, Card, CardContent, CardHeader } from '@mui/material'; 
-import { ReactComponent as CoreTeam } from '@assets/core-team.svg';
-import { ReactComponent as Community } from '@assets/community.svg';
-import { SwButton } from 'sw-web-shared';
+import { Box, Card, CardContent, CardHeader } from "@mui/material";
+import { ReactComponent as CoreTeam } from "@assets/core-team.svg";
+import { ReactComponent as Community } from "@assets/community.svg";
+import { SwButton } from "sw-web-shared";
 import { Link } from "react-router-dom";
-import React from "react"; 
- 
+import React from "react";
+
 const DAOManagementCard = () => {
- 
   return (
     <Box
-    sx={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      my: 'auto',
-      ms: '144px'
-    }}
-  >
-    <Card
       sx={{
-        width: 4 / 5,
-        mt: "40px",
-        mb: "20px",
-        p: "15px 34px",
-        border: "1px solid",
-        borderColor: "primary.main",
+        flex: 1,
         display: "flex",
         flexDirection: "column",
-        backgroundColor: 'background.dark'
+        justifyContent: "center",
+        alignItems: "center",
+        my: "auto",
+        ms: "144px",
       }}
     >
-      <CardHeader
-        title="Design Roles, Skills & Membership for your DAO"
-        titleTypographyProps={{
-          mx: "auto",
-          variant: "h3",
-          color: "primary.main"
-        }}
-      />
-      <CardContent
+      <Card
         sx={{
-          flex: 1,
+          width: 4 / 5,
+          mt: "40px",
+          mb: "20px",
+          p: "15px 34px",
+          border: "1px solid",
+          borderColor: "primary.main",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          backgroundColor: "background.dark",
         }}
       >
-        <Box
+        <CardHeader
+          title={
+            <span>
+              Design Roles, Skills & <br /> Membership for your DAO
+            </span>
+          }
+          titleTypographyProps={{
+            mx: "auto",
+            align: "center",
+            variant: "h3",
+            color: "primary.main",
+          }}
+        />
+        <CardContent
           sx={{
-            mx: 'auto',
-            width: 4 / 5
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
           }}
         >
-          <SwButton
+          <Box
             sx={{
-              whiteSpace: 'nowrap',
-              width: 1,
-              borderColor: "primary.main",
-              height: '85px',
-              mb: '48px'
+              mx: "auto",
             }}
-            component={Link}
-            to="/partner/dashboard/core-team"
-            endIcon={<CoreTeam className="sw-btn-icon" width="30px" />} 
-          >Core Team
-          </SwButton>
-          <SwButton
-            sx={{
-              whiteSpace: 'nowrap',
-              width: 1,
-              borderColor: "primary.main",
-              height: '85px'
-            }}
-            component={Link}
-            to="/partner/dashboard/community"
-            endIcon={<Community className="sw-btn-icon" width="30px" />}
-            label="Community"
-          />
-        </Box>
-      </CardContent>
-    </Card>
-  </Box>
+          >
+            <SwButton
+              sx={{
+                whiteSpace: "nowrap",
+                width: 1,
+                borderColor: "primary.main",
+                height: "85px",
+                mb: "48px",
+              }}
+              component={Link}
+              to="/partner/dashboard/core-team"
+              endIcon={<CoreTeam className="sw-btn-icon" width="30px" />}
+            >
+              Core Team
+            </SwButton>
+            <SwButton
+              sx={{
+                whiteSpace: "nowrap",
+                width: 1,
+                borderColor: "primary.main",
+                height: "85px",
+              }}
+              component={Link}
+              to="/partner/dashboard/community"
+              endIcon={<Community className="sw-btn-icon" width="30px" />}
+              label="Community"
+            />
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

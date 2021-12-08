@@ -45,7 +45,9 @@ const Integrate = () => {
     }, [selectedTemplate]);
 
     return (
-        <main className="integrate-main">
+        <main className="integrate-main" style={{
+            backgroundColor: 'white'
+        }}>
             <div className="connect-wallet-container hidden-wallet">
                 <skillwallet-auth 
                 id="walletButton"

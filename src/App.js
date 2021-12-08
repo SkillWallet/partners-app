@@ -1,109 +1,119 @@
-import './styles/App.css';
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import logoBlack from './assets/sw-logo-black.svg';
-import './styles/Integrate.css';
-import networkIcon from "@assets/network.svg";
-import analyticsGreyIcon from "@assets/analytics-grey.svg";
-import analyticsIcon from "@assets/analytics-dark.svg";
-import { connect } from 'react-redux';
-import { isUserAuthenticated } from '@store/Members/members.actions';
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+import "./styles/Integrate.css";
+import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
+import { isUserAuthenticated } from "@store/Members/members.actions";
+import { ReactComponent as SwLogo } from "@assets/sw-logo-icon.svg";
+import Partners from "./pages/Partners";
+import GetStarted from "./pages/get-started/get-started";
+import Integrate from "./Integrate";
+import Redirect from "@components/Redirect";
+import { Typography } from "@mui/material";
+import { compose } from "redux";
+import "./styles/App.css";
+
+const LoadingMessage = () => (
+  <div className="app-loading">
+    <SwLogo width="80" height="80" />
+  </div>
+);
+
+function NoMatch() {
+  return (
+    <Typography
+      sx={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      variant="h1"
+    >
+      No found!
+    </Typography>
+  );
+}
 
 function App(props) {
-  const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
-  const history = useHistory();
+  const [isLoading, setLoading] = useState(true);
 
-  window.addEventListener('onSkillwalletLogin', () => {
-    console.log('when?');
-    const sw = JSON.parse(window.sessionStorage.getItem('skillWallet'));
+  useEffect(() => {
+    const onSWLogin = async ({ detail }) => {
+      const isLoggedIn = !!detail;
+      const sw = JSON.parse(sessionStorage.getItem("skillWallet") || "{}");
+      if (isLoggedIn && sw?.isCoreTeamMember) {
+        props.dispatchAuthenticateUser(true);
+        props.history.push("/partner/dashboard");
+      } else {
+        props.history.push("/");
+      }
+    };
+    const onSWInit = async () => setLoading(false);
+    window.addEventListener("initSkillwalletAuth", onSWInit);
+    window.addEventListener("onSkillwalletLogin", onSWLogin);
 
-    if (sw && sw.isCoreTeamMember) {
-      props.dispatchAuthenticateUser(true);
-      setAnalyticsClass('landing-button-container');
-      history.push("/partner/dashboard");
-    }
-  });
+    return () => {
+      window.removeEventListener("initSkillwalletAuth", onSWInit);
+      window.removeEventListener("onSkillwalletLogin", onSWLogin);
+    };
+  }, []);
+
+  const isIntegrateFlow = props?.location?.pathname?.endsWith("integrate");
 
   return (
-    <div className="App">
-      <div className="container">
-        <main className="landing-main">
-          <div className="landing-sidebar">
-            <div className="landing-sidebar-design">
-              <div className="logo-div">
-
-                <img src={logoBlack} className="new-logo-img" alt="skillwallet logo"></img>
-                <p><b>Welcome, Partner!</b></p>
-
-              </div>
-            </div>
-          </div>
-
-          <div className="landing-content">
-            <div className="landing-content-design">
-              <div className="connect-wallet-container">
-                <skillwallet-auth
-                  allow-create-new-user="true"
-                  button-color="black"
-                  font-color="white"
-                  border-radius="0"
-                  partner-key="71baedc2ad092de8e55f915b6eca869bfebdfe53">
-                </skillwallet-auth>
-              </div>
-
-
-              <div className="buttons" id="landingButtons">
-                <div className="buttons-top-row sw-description">
-                  <h2><b><ul>Do more with your DAO</ul></b></h2>
-
-                  <p>SkillWallets are individual NFT IDs that unlock the true potential of Web3 Communities.</p>
-                  <br /><br />
-                  <p>Our Partners can bootstrap a role-based membership - with Native Governance & On-Chain Analytics for their DAO.</p>
-                </div>
-
-                <div className="buttons-bottom-row">
-                  <Link to="/integrate">
-                    <div className="landing-button-container">
-                      <div className="landing-button-text">
-                        <h2 style={{ textDecoration: 'underline', fontWeight: "bold" }}>Integrate</h2>
-                        <p>SkillWallet Auth</p>
-                      </div>
-                      <img src={networkIcon} className="landing-button-img" alt="4 small circles of network nodes connected together" />
-                    </div>
-                  </Link>
-
-                  <Link to={'/analytics'}>
-                    <div className={analyticsClass} >
-                      <div className="landing-button-text">
-                        <h2 style={{ textDecoration: 'underline', fontWeight: "bold" }}>Partners</h2>
-                        <p>Analytics</p>
-                      </div>
-                      <img src={props.state.members.auth ? analyticsIcon : analyticsGreyIcon} className="landing-button-img" alt="Grey outline of a cylinder" />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+    <div className={isLoading ? "sw-loading" : ""}>
+      <div
+        className="connect-wallet-container"
+        style={{
+          visibility: isIntegrateFlow ? "hidden" : "visible",
+        }}
+      >
+        <skillwallet-auth
+          allow-create-new-user="true"
+          button-color="black"
+          font-color="white"
+          border-radius="0"
+          partner-key="71baedc2ad092de8e55f915b6eca869bfebdfe53"
+        ></skillwallet-auth>
       </div>
+      {isLoading ? (
+        <LoadingMessage />
+      ) : (
+        <Switch>
+          <Route
+            exact
+            component={GetStarted}
+            path="/"
+            {...props}
+          />
+          <Route path="/integrate" component={Integrate} {...props} />
+          <Route path="/redirect" component={Redirect} {...props} />
+          {props.state.members.auth && (
+            <Route path="/partner" component={Partners} {...props} />
+          )}
+          <Route path="*" component={NoMatch} />
+        </Switch>
+      )}
     </div>
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     state: {
-      members: state.members
-    }
-  }
-}
+      members: state.members,
+    },
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchAuthenticateUser: (auth) => dispatch(isUserAuthenticated(auth))
-  }
-}
+    dispatchAuthenticateUser: (auth) => dispatch(isUserAuthenticated(auth)),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(App);

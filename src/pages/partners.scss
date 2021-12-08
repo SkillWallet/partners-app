@@ -4,6 +4,10 @@
   margin-top: 48px;
 }
 
+.sw-main-box {
+  background-color: white;
+}
+
 .back-button {
   position: absolute;
   top: 15px;
@@ -15,6 +19,10 @@
 }
 
 .sw-main-sidebar {
+  .MuiPaper-root {
+    padding-left: 43px !important;
+    padding-right: 43px !important;
+  }
   .MuiListItem-root {
     padding: 0 10px 0 10px !important;
 
