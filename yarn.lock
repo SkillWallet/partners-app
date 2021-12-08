@@ -2435,10 +2435,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^0.0.91-alpha":
-  version "0.0.91-alpha"
-  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-0.0.91-alpha.tgz#bb6fa0b287b546ffcec10d83e7a543fe6c236e34"
-  integrity sha512-XpMPXTEV0f4opiDV+oxnklm7Tfpt0nLcw+/jqkh2TU9vzXCm2mevi4ZNDSRH4kStJGp5CJCgWZ6JHoB49EN6Mg==
+"@skill-wallet/auth@^0.0.92-alpha":
+  version "0.0.92-alpha"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-0.0.92-alpha.tgz#b9f6514ea86f0fbe7ab38fa89cb118c082561c10"
+  integrity sha512-LzjrIH5lzuYdLX2AzpzlAuH0853BVb2zJWAZLoQZHtYWxl/z5KJdGBesws1Fw0gxZZ86HMyZzlvcu8tEcUnVZw==
   dependencies:
     "@portis/web3" "^4.0.5"
     "@stencil/core" "2.6.0"
@@ -13058,6 +13058,11 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
+
+react-app-rewire-alias@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-app-rewire-alias/-/react-app-rewire-alias-1.1.5.tgz#a764e9003cf0b8c6dc5d6b15d2b03b49b007b43e"
+  integrity sha512-jy4glytSWEJ3R+49aqwKEYn59bmwGI4DPqtZuJYEVc6FcqIFOjSqBiEuijsBF7INUmOeGWR7/DwUAyHqa81mgg==
 
 react-app-rewired@^2.1.8:
   version "2.1.8"
