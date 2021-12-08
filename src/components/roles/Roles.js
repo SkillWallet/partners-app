@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
-import Button from "../Button";
-import { fetchData } from "@contracts/api";
+import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { fetchCommunity } from "@contracts/api";
 import { updateAndSaveSkills } from "@contracts/contracts";
 import { connect } from "react-redux";
 import { saveMembers } from "@store/Members/members.actions";
 import { saveCommunity } from "@store/Community/community.actions";
 import "./roles.scss"
+import { SwButton } from "sw-web-shared";
 
 const Roles = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeRole, setActiveRole] = useState({ rolename: "" });
   const [skills, setSkills] = useState([]);
   const [roles, setRoles] = useState(["", "", ""]);
-  const coreTeamMemberClick = false;
 
   useEffect(() => {
-    if (!props.state.community.error) {
+    if (props?.state?.community?.roles) {
       filterRoles(props.state.community.roles.roles);
+      console.log(roles)
       setIsLoading(false);
     } else {
-      fetchData(props);
+      return;
+    }
+  }, [props.state.community]);
+
+  useEffect(() => {
+    if (!props?.state?.community?.roles?.roles) {
+      fetchCommunity(props);
       setIsLoading(true);
     }
-  }, [props.state]);
+  }, []);
 
   const changeRole = (newRole) => {
     setActiveRole(newRole);
@@ -44,9 +51,13 @@ const Roles = (props) => {
   };
 
   const filterRoles = (rolesFromState) => {
-    let newRoles = [];
-    rolesFromState.forEach((r) => {
-      if (r["isCoreTeamMember"] == coreTeamMemberClick) {
+    let newRoles = []; 
+    let isCoreTeam = false;
+    if(props.isCoreTeam){
+      isCoreTeam = true;
+    }
+    rolesFromState.forEach((r) => { 
+      if (r["isCoreTeamMember"] === isCoreTeam) {
         newRoles.push({
           credits: r["credits"],
           isCoreTeamMember: r["isCoreTeamMember"],
@@ -83,84 +94,125 @@ const Roles = (props) => {
   };
 
   return (
-    <div className="dashboard-main">
-      {isLoading ? (
-        <div className="item">
-          <h2>Loading</h2>
+    <Box>
 
-          <i className="loader two"></i>
-        </div>
-      ) : (
-        <div></div>
-      )}
-      <div className="roles-content-design">
-        <div className="roles-header">
-          <h1>Roles & Skills</h1>
-          <h3>
-            Add Skills for each Role, and assign them to your{" "}
-            {coreTeamMemberClick ? "Core Team" : "Community Members"}
-          </h3>
-        </div>
-
-        <div className="roles-panel">
-          <div className="roles-buttons">
-            <Button
-              text={roles[0]["roleName"]}
-              src={false}
-              alt="null"
-              dark={activeRole === roles[0] ? true : false}
-              onClick={() => changeRole(roles[0])}
-              className={activeRole === roles[0] ? "activeTab" : ""}
+      <Typography
+        sx={{
+          mb: '35px'
+        }} variant='h1'>Roles & Skills</Typography>
+      <Typography
+        sx={{
+          mb: '35px'
+        }}
+        variant='h2'>Add Skills for each Role, and assign them to your{" "}
+        {props.isCoreTeam ? "Core Team" : "Community Members"}</Typography>
+      <Box
+        sx={{
+          height: '100%',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: 'center',
+          overflow: "hidden",
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "column",
+            p: "24px 68px"
+          }}
+        >
+          {roles.map((role, n) => {
+            return <SwButton
+              key={n}
+              sx={{
+                whiteSpace: "nowrap",
+                width: 1,
+                borderColor: "primary.main",
+                height: "85px",
+                mb: '35px'
+              }}
+              className={activeRole === role ? "active-link" : ""}
+              label={role["roleName"]}
+              onClick={() => changeRole(role)
+              }>
+            </SwButton>
+          })}
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            p: "24px 68px"
+          }}
+        >
+          <Card
+            sx={{
+              mb: "20px",
+              border: "1px solid",
+              borderColor: "primary.main",
+              display: "flex",
+              flexDirection: "column",
+              backgroundColor: 'background.dark'
+            }}
+          >
+            <CardHeader
+              title={`Select up to 4 skills for "${activeRole["roleName"]}"`}
+              titleTypographyProps={{
+                mx: "auto",
+                variant: "h2",
+                align: 'center',
+                color: "primary.main",
+                mt: "6px"
+              }}
             />
-
-            <Button
-              text={roles[1]["roleName"]}
-              src={false}
-              alt="null"
-              dark={activeRole === roles[1] ? true : false}
-              onClick={() => changeRole(roles[1])}
-            />
-
-            <Button
-              text={roles[2]["roleName"]}
-              src={false}
-              alt="null"
-              dark={activeRole === roles[2] ? true : false}
-              onClick={() => changeRole(roles[2])}
-            />
-          </div>
-
-          <div className="skillpicker-container">
-            <div className="skillpicker">
-              <div>
-                <p>Select up to 4 skills for "{activeRole["roleName"]}"</p>
-              </div>
-
-              <div className="skills-container">
-                {skillData.map((skill, i) => {
-                  return (
-                    <button
-                      key={i}
-                      className={
-                        skills.includes(skill)
-                          ? "skillButton activeTab"
-                          : "skillButton"
-                      }
-                      onClick={() => addSelectedSkill(skill)}
-                    >
-                      {skill}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-            <button disabled={false} onClick={() => updateSkills(skills)}>
-              Confirm & Add Skills
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+            <CardContent
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexWrap: 'wrap',
+                flexDirection: "row",
+                justifyContent: "center",
+                p: '5px'
+              }}
+            >
+              {skillData.map((skill, i) => {
+                return (
+                  <SwButton
+                    sx={{
+                      height: '70px',
+                      flex: '0 0 30%',
+                      whiteSpace: "nowrap",
+                      borderColor: "primary.main",
+                      m: '5px'
+                    }}
+                    className={skills.includes(skill) ? "active-link" : ""}
+                    key={i}
+                    onClick={() => addSelectedSkill(skill)}
+                  >
+                    <Typography variant='h3'>{skill}</Typography>
+                  </SwButton>
+                );
+              })}
+            </CardContent>
+          </Card>
+          <SwButton
+            sx={{
+              whiteSpace: "nowrap",
+              borderColor: "primary.main",
+              height: "85px"
+            }}
+            label={'Confirm & Add Skills'}
+            onClick={() => updateSkills(skills)
+            }>
+          </SwButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
