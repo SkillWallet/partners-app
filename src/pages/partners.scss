@@ -4,6 +4,16 @@
   margin-top: 48px;
 }
 
+.back-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.MuiContainer-root:not(.sw-layout-top) {
+  position: unset !important;
+}
+
 .sw-main-sidebar {
   .MuiListItem-root {
     padding: 0 10px 0 10px !important;

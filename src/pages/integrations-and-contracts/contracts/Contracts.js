@@ -302,7 +302,6 @@ const Contracts = () => {
         loading={loading}
         isCellEditable={(params) => !params.row.locked}
         onStateChange={(state) => {
-          console.log(state);
           const rowsToEdit = Object.keys(state.editRows || {}).length;
           setIsDisabled(rowsToEdit > 0);
         }}

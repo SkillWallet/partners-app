@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import "./tabs.scss";
 import { SwScrollbar } from "sw-web-shared";
+import { Typography } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -16,7 +17,9 @@ function TabPanel(props) {
       aria-labelledby={`member-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: "30px" }}>{children}</Box>}
+      {value === index && (
+        <Box sx={{ p: "10px 30px 30px 30px" }}>{children}</Box>
+      )}
     </div>
   );
 }
@@ -64,10 +67,23 @@ export default function SwTabs({ tabs }) {
           p: 3,
         }}
       >
-        {tabs.map(({ props, component }, index) => {
+        {tabs.map(({ props, component, label }, index) => {
           const Component = component;
           return (
             <TabPanel key={index} value={value} index={index}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Typography sx={{ my: 2 }} component="div" variant="h2">
+                  {label}
+                </Typography>
+                <Typography sx={{ my: 2 }} component="div" variant="h2">
+                  Total - {props?.total || 0}
+                </Typography>
+              </div>
               <Component {...props} />
             </TabPanel>
           );

@@ -28,7 +28,7 @@ export const getUsersData = () => {
     }).then(res => res.json());
 }
 
-export const getMembersByCommunityAddress = (communityAddress, isCoreTeamMember) => {
+export const getMembersByCommunityAddress = (communityAddress, isCoreTeamMember = false) => {
     console.log(communityAddress, isCoreTeamMember, 'communityAddress, isCoreTeamMember');
     return fetch(`https://api.skillwallet.id/api/community/${communityAddress}/skillwallet?coreTeamMembers=${isCoreTeamMember}`, {
         method: 'GET',
