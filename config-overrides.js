@@ -3,7 +3,10 @@ const { override, addWebpackAlias } = require('customize-cra');
 
 module.exports = override(
   addWebpackAlias({
-    '@parners-assets': path.resolve(__dirname, './src/assets'),
+    '@assets': path.resolve(__dirname, './src/assets'),
+    '@store': path.resolve(__dirname, './src/redux'),
+    '@components': path.resolve(__dirname, './src/components'),
+    '@contracts': path.resolve(__dirname, './src/contracts'),
     react: path.resolve('./node_modules/react'),
     'react-dom': path.resolve('./node_modules/react-dom'),
     '@mui/material': path.resolve('./node_modules/@mui/material'),

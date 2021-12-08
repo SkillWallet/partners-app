@@ -1,5 +1,5 @@
 import React from 'react';
-import avatar from '../../assets/avatar.svg';
+import avatar from '@assets/avatar.svg';
 
 const ActivityAndTasks = (props) => {
     return (

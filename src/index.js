@@ -7,14 +7,11 @@ import "./styles/index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
+import { store, persistor } from "@store/store";
 import { defineCustomElements } from "@skill-wallet/auth/loader";
 import Integrate from "./Integrate";
-import Redirect from "./components/Redirect";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Dashboard from "./components/partnerDashboard/Dashboard";
-import Members from "./components/partnerDashboard/Members";
-import Roles from "./components/partnerDashboard/Roles";
+import Redirect from "@components/Redirect";
+import ProtectedRoute from "@components/ProtectedRoute";
 import { SwTheme } from "./theme";
 import Partners from "./pages/Partners";
 import { Typography } from "@mui/material";
@@ -43,29 +40,8 @@ ReactDOM.render(
           <BrowserRouter>
             <Switch>
               <Route exact path="/" component={App}></Route>
-
               <Route path="/integrate" component={Integrate}></Route>
-
               <Route path="/redirect" component={Redirect}></Route>
-
-              <ProtectedRoute
-                exact
-                path="/analytics/members"
-                component={Members}
-              ></ProtectedRoute>
-
-              <ProtectedRoute
-                exact
-                path="/analytics/roles"
-                component={Roles}
-              ></ProtectedRoute>
-
-              <ProtectedRoute
-                exact
-                path="/analytics"
-                component={Dashboard}
-              ></ProtectedRoute>
-
               <ProtectedRoute
                 path="/partner"
                 component={Partners}

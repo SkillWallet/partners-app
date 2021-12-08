@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { ReactComponent as EditIcon } from "../../assets/actions/edit.svg";
-import { ReactComponent as CancelIcon } from "../../assets/actions/cancel.svg";
-import { ReactComponent as SaveIcon } from "../../assets/actions/confirm.svg";
-import { ReactComponent as LockIcon } from "../../assets/actions/lock.svg";
-import { ReactComponent as PinIcon } from "../../assets/pin.svg";
-import { ReactComponent as ShareIcon } from "../../assets/share.svg";
+import { ReactComponent as EditIcon } from "@assets/actions/edit.svg";
+import { ReactComponent as CancelIcon } from "@assets/actions/cancel.svg";
+import { ReactComponent as SaveIcon } from "@assets/actions/confirm.svg";
+import { ReactComponent as LockIcon } from "@assets/actions/lock.svg";
+import { ReactComponent as PinIcon } from "@assets/pin.svg";
+import { ReactComponent as ShareIcon } from "@assets/share.svg";
 import "./core-team.scss";
-import SWDatatable from "../datatable/Datatable";
+import SWDatatable from "@components/datatable/Datatable";
 import { SwButton, SwShare } from "sw-web-shared";
-import { useDatatableApiRef } from "../datatable/DatatableRef";
+import { useDatatableApiRef } from "@components/datatable/DatatableRef";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { Typography } from "@mui/material";
-import SwEditToolbar from "../datatable/DatatableToolbar";
+import SwEditToolbar from "@components/datatable/DatatableToolbar";
 import {
   GetDatatableItems,
   LockDatatableItems,
-} from "../datatable/DatatableHelpers";
+} from "@components/datatable/DatatableHelpers";
 import {
   getPartnersAgreementByCommunity,
-} from "../../contracts/api";
+} from "@contracts/api";
 import {
   getWhitelistedAddresses,
   addAddressToWhitelist
-} from "../../contracts/contracts";
+} from "@contracts/contracts";
 
 function AlertDialog({ handleClose, open }) {
   return (

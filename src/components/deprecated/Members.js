@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import avatar from '../../assets/avatar.svg';
-import copyIcon from '../../assets/copy-icon.svg';
-import logOff from '../../assets/log-off.svg';
-import daoStats from '../../assets/dao-stats.svg';
-import dashboard from '../../assets/dashboard.svg';
-import eventBadge from '../../assets/event-badge.svg';
+import avatar from '@assets/avatar.svg';
+import copyIcon from '@assets/copy-icon.svg';
+import logOff from '@assets/log-off.svg';
+import daoStats from '@assets/dao-stats.svg';
+import dashboard from '@assets/dashboard.svg';
+import eventBadge from '@assets/event-badge.svg';
 import Button from '../Button';
 import ActivityAndTasks from './ActivityAndTasks';
-import { fetchData } from '../../contracts/api';
+import { fetchData } from '@contracts/api';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { saveMembers } from '../../redux/Members/members.actions';
-import { saveCommunity } from '../../redux/Community/community.actions';
+import { saveMembers } from '@store/Members/members.actions';
+import { saveCommunity } from '@store/Community/community.actions';
 
 const Members = (props) => {    
     const [activeTab, setActiveTab] = useState('role1');

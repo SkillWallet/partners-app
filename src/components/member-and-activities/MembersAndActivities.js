@@ -2,11 +2,11 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import SwTabs from "../tabs/SwTabs";
 
-import { fetchMembersAndActivityData } from "../../contracts/api";
+import { fetchMembersAndActivityData } from "@contracts/api";
 import { connect } from "react-redux";
-import { saveMembers } from "../../redux/Members/members.actions";
-import { saveLogs } from "../../redux/Logs/logs.actions";
-import { saveCommunity } from "../../redux/Community/community.actions";
+import { saveMembers } from "@store/Members/members.actions";
+import { saveLogs } from "@store/Logs/logs.actions";
+import { saveCommunity } from "@store/Community/community.actions";
 import Members from "./Members";
 import ActivityAndLogs from "./ActivityAndLogs";
 import "./member-and-activities.scss";
@@ -70,7 +70,7 @@ function MembersAndActivities(props) {
     }
 
     setTabs([
-      ...memberTabs,
+      ...(memberTabs || []),
       {
         label: "Activity & Logs",
         props: {
@@ -79,7 +79,7 @@ function MembersAndActivities(props) {
         component: ActivityAndLogs,
       },
     ]);
-  }, [props.state.members, props.state.logs]);
+  }, [props.state.members, props.state.logs, props.isCoreTeamMembers]);
 
   React.useEffect(() => {
     fetchMembersAndActivityData({

@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, CardHeader } from '@mui/material'; 
-import { ReactComponent as CoreTeam } from '../../assets/core-team.svg';
-import { ReactComponent as Community } from '../../assets/community.svg';
+import { ReactComponent as CoreTeam } from '@assets/core-team.svg';
+import { ReactComponent as Community } from '@assets/community.svg';
 import { SwButton } from 'sw-web-shared';
 import { Link } from "react-router-dom";
 import React from "react"; 
@@ -74,6 +74,8 @@ const DAOManagementCard = () => {
               borderColor: "primary.main",
               height: '85px'
             }}
+            component={Link}
+            to="/partner/dashboard/community"
             endIcon={<Community className="sw-btn-icon" width="30px" />}
             label="Community"
           />

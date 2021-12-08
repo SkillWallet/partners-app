@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Typography, TextField } from "@mui/material";
 import debounce from "lodash.debounce";
-import { ReactComponent as EditIcon } from "../../../../assets/actions/edit.svg";
+import { ReactComponent as EditIcon } from "@assets/actions/edit.svg";
 import { SwButton } from "sw-web-shared";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,11 +13,11 @@ import "./dao-integration.scss";
 import {
   addUrlToPA,
   getPAUrl
-} from "../../../../contracts/contracts";
+} from "@contracts/contracts";
 
 import {
   getPartnersAgreementByCommunity,
-} from "../../../../contracts/api";
+} from "@contracts/api";
 
 function AlertDialog({ handleClose, open }) {
   return (

@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import logoBlack from './assets/sw-logo-black.svg';
 import './styles/Integrate.css';
-import networkIcon from "./assets/network.svg";
-import analyticsGreyIcon from "./assets/analytics-grey.svg";
-import analyticsIcon from "./assets/analytics-dark.svg";
+import networkIcon from "@assets/network.svg";
+import analyticsGreyIcon from "@assets/analytics-grey.svg";
+import analyticsIcon from "@assets/analytics-dark.svg";
 import { connect } from 'react-redux';
-import { isUserAuthenticated } from './redux/Members/members.actions';
+import { isUserAuthenticated } from '@store/Members/members.actions';
 
 function App(props) {
   const [analyticsClass, setAnalyticsClass] = useState('landing-button-container disabled');
