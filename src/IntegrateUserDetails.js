@@ -233,7 +233,7 @@ const IntegrateUserDetails = (props) => {
 
                                         {!avatarUrl ? <label htmlFor="file" >
                                             <div className="avatar-upload-div">
-                                                <img src="https://skillwallet-demo-images.s3.us-east-2.amazonaws.com/upload_avatar.svg" alt="line" />
+                                                <img src="https://dito-assets.s3.eu-west-1.amazonaws.com/upload_avatar.svg" alt="line" />
                                                 <input type="file" name="files[]" id="file" accept="image/*" onChange={(event) => onInputChange(event.target.files)}></input>
                                                 <p>.svg , .png, or .jpg</p>
                                             </div>
