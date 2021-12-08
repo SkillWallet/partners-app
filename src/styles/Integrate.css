@@ -82,8 +82,8 @@ a {
 }
 
 .connect-wallet-container {
-  top: 20px;
-  right: 3%;
+  top: 45px;
+  right: 45px;
   height: 64px;
   position: absolute;
   z-index: 10;
@@ -129,6 +129,8 @@ a {
   width: 100%;
   margin-top: 25%; 
 }
+
+
 
 .buttons-top-row {
   display: flex;
