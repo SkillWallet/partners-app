@@ -114,10 +114,13 @@ const Partners = (props) => {
       <SwLayout
         hideTop
         disableGutters
+        sx={{
+          backgroundColor: 'background.paper'
+        }}
         scrollbarStyles={{
           margin: "24px",
           width: "auto",
-          padding: " 90px",
+          padding: "70px",
           border: "2px solid",
           height: "calc(100% - 48px)",
         }}

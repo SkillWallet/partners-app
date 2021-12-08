@@ -239,6 +239,7 @@ const CoreTeamWhitelist = () => {
               }
             });
           }
+          console.log(lockedData);
           setData(lockedData);
           setLoading(false);
         })
