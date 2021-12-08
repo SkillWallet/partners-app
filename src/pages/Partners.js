@@ -35,7 +35,7 @@ const CoreTeamRoutes = (e, props) => {
     case `${coreTeamPath}/members`:
       return <MembersAndActivities {...props} isCoreTeamMembers />;
     case `${coreTeamPath}/roles`:
-      return <Roles {...props} />;
+      return <Roles {...props} isCoreTeam/>;
     default:
       return <CoreTeam {...props} />;
   }
