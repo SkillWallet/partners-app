@@ -21,7 +21,7 @@ function App(props) {
     if (sw && sw.isCoreTeamMember) {
       props.dispatchAuthenticateUser(true);
       setAnalyticsClass('landing-button-container');
-      history.push("/analytics");
+      history.push("/partner/dashboard");
     }
   });
 
