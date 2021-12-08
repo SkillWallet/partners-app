@@ -1,19 +1,19 @@
 import React, {useEffect} from 'react';
 import Button from '../Button';
-import copyIcon from '../../assets/copy-icon.svg';
-import logOff from '../../assets/log-off.svg';
-import daoStats from '../../assets/dao-stats.svg';
-import dashboard from '../../assets/dashboard.svg';
-import eventBadge from '../../assets/event-badge.svg';
-import avatar from '../../assets/avatar.svg';
-import membersCard from '../../assets/member-card.svg';
-import rolesImg from '../../assets/roles.svg';
-import coins from '../../assets/coins.svg';
-import { getMembers, getCommunityByCommunityAddress, fetchData } from '../../contracts/api';
+import copyIcon from '@assets/copy-icon.svg';
+import logOff from '@assets/log-off.svg';
+import daoStats from '@assets/dao-stats.svg';
+import dashboard from '@assets/dashboard.svg';
+import eventBadge from '@assets/event-badge.svg';
+import avatar from '@assets/avatar.svg';
+import membersCard from '@assets/member-card.svg';
+import rolesImg from '@assets/roles.svg';
+import coins from '@assets/coins.svg';
+import { getMembers, getCommunityByCommunityAddress, fetchData } from '@contracts/api';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { saveMembers } from '../../redux/Members/members.actions';
-import { saveCommunity } from '../../redux/Community/community.actions';
+import { saveMembers } from '@store/Members/members.actions';
+import { saveCommunity } from '@store/Community/community.actions';
 
 const Dashboard = (props) => {
     useEffect(() => {

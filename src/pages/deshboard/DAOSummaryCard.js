@@ -1,6 +1,5 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-import { bgcolor } from '@mui/system';
-import React, { useState } from "react";
+import { Avatar, Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
+import React from "react";
 import { connect } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -104,7 +103,6 @@ const DAOSummaryCard = (props) => {
 };
 
 const mapStateToProps = state => {
-  console.log('state: ', state);
   return {
     state: {
       community: state.community.community

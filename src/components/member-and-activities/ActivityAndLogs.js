@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { List, ListItem, Avatar, SvgIcon } from "@mui/material";
 import Link from "@mui/material/Link";
-import { ReactComponent as TagIcon } from "../../assets/tag.svg";
+import { ReactComponent as TagIcon } from "@assets/tag.svg";
 
 const ActivityAndLogs = ({ logs }) => {
   return (
@@ -85,7 +85,7 @@ const ActivityAndLogs = ({ logs }) => {
                   }}
                   variant="body2"
                 >
-                  {timestamp?.toDateString()}
+                  {timestamp?.toDateString && timestamp?.toDateString()}
                 </Typography>
                 <Link
                   variant="body2"

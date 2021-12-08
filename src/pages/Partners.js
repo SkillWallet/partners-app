@@ -10,34 +10,58 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-import { ReactComponent as DaoStatsIcon } from "../assets/dao-stats.svg";
-import { ReactComponent as DashboardIcon } from "../assets/dashboard.svg";
-import { ReactComponent as IntegrationIcon } from "../assets/integration.svg";
-import { ReactComponent as EventFactoryIcon } from "../assets/event-badge.svg"; 
-import CoreTeam from "../pages/core-team/CoreTeam";
-import "./partners.scss";
-import Contracts from "../components/integrations-and-contracts/contracts/Contracts";
+import { ReactComponent as DaoStatsIcon } from "@assets/dao-stats.svg";
+import { ReactComponent as DashboardIcon } from "@assets/dashboard.svg";
+import { ReactComponent as IntegrationIcon } from "@assets/integration.svg";
+import { ReactComponent as EventFactoryIcon } from "@assets/event-badge.svg";
+import CoreTeam from "./core-team/CoreTeam";
+import Community from "./community/Community";
+import Contracts from "./integrations-and-contracts/contracts/Contracts";
 import Dashboard from "./deshboard/Dashboard";
-import DaoIntegration from "../components/integrations-and-contracts/integrations/dao/DaoIntegration";
-import IntegrationDashboard from "../components/integrations-and-contracts/dashboard/IntegrationDashboard";
-import MembersAndActivities from "../components/member-and-activities/MembersAndActivities";
-import CoreTeamWhitelist from "../components/core-team/CoreTeamWhitelist";
+import DaoIntegration from "./integrations-and-contracts/dao-integration/DaoIntegration";
+import IntegrationDashboard from "./integrations-and-contracts/dashboard/IntegrationDashboard";
+import MembersAndActivities from "@components/member-and-activities/MembersAndActivities";
+import CoreTeamWhitelist from "./core-team/core-team-whitelist/CoreTeamWhitelist";
+import Roles from "@components/roles/Roles";
+import "./partners.scss";
 
-function NoMatch() {
-  return (
-    <Typography
-      sx={{
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      variant="h1"
-    >
-      Comming soon!
-    </Typography>
-  );
-}
+const CoreTeamRoutes = (e, props) => {
+  const coreTeamPath = "/partner/dashboard/core-team";
+  switch (e.location.pathname) {
+    case `${coreTeamPath}/whitelist`:
+      return <CoreTeamWhitelist {...props} />;
+    case `${coreTeamPath}/members`:
+      return <MembersAndActivities {...props} isCoreTeamMembers />;
+    case `${coreTeamPath}/roles`:
+      return <Roles {...props} />;
+    default:
+      return <CoreTeam {...props} />;
+  }
+};
+
+const CommunityRoutes = (e, props) => {
+  const coreTeamPath = "/partner/dashboard/community";
+  switch (e.location.pathname) {
+    case `${coreTeamPath}/members`:
+      return <MembersAndActivities {...props} />;
+    case `${coreTeamPath}/roles`:
+      return <Roles {...props} />;
+    default:
+      return <Community {...props} />;
+  }
+};
+
+const IntegrationAndContractsRoutes = (e, props) => {
+  const coreTeamPath = "/partner/integrations-and-contracts";
+  switch (e.location.pathname) {
+    case `${coreTeamPath}/contracts`:
+      return <Contracts {...props} />;
+    case `${coreTeamPath}/dao-integration`:
+      return <DaoIntegration {...props} />;
+    default:
+      return <IntegrationDashboard {...props} />;
+  }
+};
 
 const Partners = (props) => {
   const [opened, setOpened] = useState(true);
@@ -80,7 +104,6 @@ const Partners = (props) => {
       disabled: true,
       icon: <SvgIcon component={DaoStatsIcon} />,
     },
-    
   ];
 
   return (
@@ -88,9 +111,16 @@ const Partners = (props) => {
       <SwLayout
         hideTop
         disableGutters
-        scrollbarStyles={{ height: "100%" }}
+        scrollbarStyles={{
+          margin: "24px",
+          width: 'auto',
+          padding: " 90px",
+          border: "2px solid",
+          height: "calc(100% - 48px)",
+        }}
         drawer={
           <SwSidebar
+            className="parner"
             handleToggle={handleToggle}
             sidebarTopIcon={null}
             mobile={small}
@@ -145,39 +175,23 @@ const Partners = (props) => {
           )}
         </div>
         <Switch>
-          <Route path="/partner/dashboard">
-            <Route
-              path={`/`}
-              render={(e) => {
-                switch (e.location.pathname) {
-                  case "/partner/dashboard/whitelist":
-                    return <CoreTeamWhitelist {...props} />;
-                  case "/partner/dashboard/core-team":
-                    return <CoreTeam {...props} />;
-                  case "/partner/dashboard/members": 
-                    return <MembersAndActivities {...props} isCoreTeamMembers/>
-                  default:
-                    return <Dashboard {...props} />;
-                }
-              }}
-            />
-          </Route>
+          <Route
+            path="/partner/dashboard"
+            render={(e) => {
+              if (e.location.pathname.includes("/dashboard/core-team")) {
+                return CoreTeamRoutes(e, props);
+              }
+              if (e.location.pathname.includes("/dashboard/community")) {
+                return CommunityRoutes(e, props);
+              }
+              return <Dashboard {...props} />;
+            }}
+          ></Route>
 
-          <Route path="/partner/integrations-and-contracts">
-            <Route
-              path={`/`}
-              render={(e) => {
-                switch (e.location.pathname) {
-                  case "/partner/integrations-and-contracts/contracts":
-                    return <Contracts {...props} />;
-                  case "/partner/integrations-and-contracts/dao-integration":
-                    return <DaoIntegration {...props} />;
-                  default:
-                    return <IntegrationDashboard {...props} />;
-                }
-              }}
-            />
-          </Route>
+          <Route
+            path="/partner/integrations-and-contracts"
+            render={(e) => IntegrationAndContractsRoutes(e, props)}
+          ></Route>
         </Switch>
       </SwLayout>
     </>

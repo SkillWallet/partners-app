@@ -6,30 +6,30 @@ import { ReactComponent as CancelIcon } from "../../../assets/actions/cancel.svg
 import { ReactComponent as SaveIcon } from "../../../assets/actions/confirm.svg";
 import { ReactComponent as PinIcon } from "../../../assets/pin.svg";
 
-import SWDatatable from "../../datatable/Datatable";
+import SWDatatable from "@components/datatable/Datatable";
 import { SwButton } from "sw-web-shared";
-import { useDatatableApiRef } from "../../datatable/DatatableRef";
+import { useDatatableApiRef } from "@components/datatable/DatatableRef";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { Typography } from "@mui/material";
-import SwEditToolbar from "../../datatable/DatatableToolbar";
+import SwEditToolbar from "@components/datatable/DatatableToolbar";
 import {
   GetDatatableItems,
   LockDatatableItems,
   GetDatatableChangedItems,
-} from "../../datatable/DatatableHelpers";
+} from "@components/datatable/DatatableHelpers";
 import "./contracts.scss";
 import {
   importContractToPA,
   getImportedContracts
-} from "../../../contracts/contracts";
+} from "@contracts/contracts";
 
 import {
   getPartnersAgreementByCommunity,
-} from "../../../contracts/api";
+} from "@contracts/api";
 
 function AlertDialog({ handleClose, open }) {
   return (

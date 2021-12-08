@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { saveMembers } from '../redux/Members/members.actions';
-import { saveLogs } from "../redux/Logs/logs.actions";
-import { saveCommunity } from '../redux/Community/community.actions';
+import { saveMembers } from '@store/Members/members.actions';
+import { saveLogs } from "@store/Logs/logs.actions";
+import { saveCommunity } from '@store/Community/community.actions';
 
 export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community/key`, {

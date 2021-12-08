@@ -1,0 +1,28 @@
+.roles-content-design {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .roles-header {
+  }
+
+  .roles-panel {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .roles-buttons {
+    flex: 1;
+    grid-gap: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .partners-button {
+    margin: 0;
+  }
+}
