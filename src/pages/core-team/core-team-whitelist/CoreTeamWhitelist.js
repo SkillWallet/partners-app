@@ -230,7 +230,16 @@ const CoreTeamWhitelist = () => {
       setPartnersAgreementAddress(pa.partnersAgreementAddress);
       fetchData(pa.partnersAgreementAddress)
         .then((members) => {
-          setData(LockDatatableItems(members));
+          let lockedData = LockDatatableItems(members);
+          if (!lockedData.length) {
+            lockedData = [{ id: 0, isNew: true, locked: false }];
+            setTimeout(() => {
+              if (apiRef.current) {
+                apiRef.current.setRowMode(0, "edit");
+              }
+            });
+          }
+          setData(lockedData);
           setLoading(false);
         })
         .catch(() => setLoading(false));

@@ -35,7 +35,7 @@ const Datatable = ({
       className="sw-datatable"
       style={{
         border: `3px solid ${theme.palette.primary.main}`,
-        padding: '35px'
+        padding: "35px",
       }}
     >
       <DataGrid

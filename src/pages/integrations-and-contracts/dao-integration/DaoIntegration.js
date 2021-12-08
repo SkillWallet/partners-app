@@ -111,7 +111,7 @@ const DaoIntegration = () => {
       setPartnersAgreementAddress(pa.partnersAgreementAddress);
       const paUrl = await getPAUrl(pa.partnersAgreementAddress);
       console.log('paUrl: ', paUrl);
-      if(paUrl){ 
+      if(paUrl && input.current){ 
         input.current.value = paUrl;
       }
       setDisabled(!!paUrl);

@@ -10,6 +10,7 @@ import { saveCommunity } from "@store/Community/community.actions";
 import Members from "./Members";
 import ActivityAndLogs from "./ActivityAndLogs";
 import "./member-and-activities.scss";
+import { CircularProgress } from "@mui/material";
 
 const getAllMembers = (members) => {
   return Object.keys(members).reduce((prev, curr) => {
@@ -22,7 +23,7 @@ const getAllMembers = (members) => {
 };
 
 const generateMemberTabs = (members) => {
-  Object.keys(members).reduce((prev, curr) => {
+  return Object.keys(members).reduce((prev, curr) => {
     const item = members[curr];
     if (Array.isArray(item)) {
       prev = [
@@ -30,6 +31,7 @@ const generateMemberTabs = (members) => {
         {
           label: curr,
           props: {
+            total: item?.length,
             members: item,
           },
           component: Members,
@@ -42,6 +44,7 @@ const generateMemberTabs = (members) => {
 
 function MembersAndActivities(props) {
   const [tabs, setTabs] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     // @TODO: Make more reusable in case in the future there are more view that will have
@@ -55,18 +58,24 @@ function MembersAndActivities(props) {
       return;
     }
 
+    setLoading(false);
+
     if (isCoreTeamMembers) {
+      const allMembers = getAllMembers(members);
       memberTabs = [
         {
           label: "All",
           props: {
-            members: getAllMembers(members),
+            total: allMembers?.length,
+            members: allMembers,
           },
           component: Members,
         },
       ];
     } else {
       memberTabs = generateMemberTabs(members);
+
+      console.log(memberTabs)
     }
 
     setTabs([
@@ -74,6 +83,7 @@ function MembersAndActivities(props) {
       {
         label: "Activity & Logs",
         props: {
+          total: props.state?.logs?.length,
           logs: props.state.logs,
         },
         component: ActivityAndLogs,
@@ -82,6 +92,7 @@ function MembersAndActivities(props) {
   }, [props.state.members, props.state.logs, props.isCoreTeamMembers]);
 
   React.useEffect(() => {
+    setLoading(true);
     fetchMembersAndActivityData({
       ...props,
       isCoreTeamMembers: props.isCoreTeamMembers,
@@ -89,7 +100,18 @@ function MembersAndActivities(props) {
   }, []);
   return (
     <Box className="sw-members-and-activities" sx={{ width: "100%" }}>
-      <SwTabs tabs={tabs} />
+      {loading ? (
+        <div className="members-loading-spinner">
+          <CircularProgress
+            sx={{
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          />
+        </div>
+      ) : (
+        <SwTabs tabs={tabs} />
+      )}
     </Box>
   );
 }

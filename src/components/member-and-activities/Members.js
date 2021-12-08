@@ -11,7 +11,7 @@ const Members = ({ members }) => {
           display: "grid",
           width: "100%",
           gridGap: "20px",
-          gridTemplateColumns: "repeat(auto-fit, minmax(85px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(85px, 1fr))",
           gridAutoRows: "minmax(105px, auto)",
         }}
       >
@@ -23,19 +23,17 @@ const Members = ({ members }) => {
                 height: "85px",
                 display: "flex",
                 flexDirection: "column",
-                border: "1px solid",
-                borderColor: "primary.main",
-                boxSizing: "border-box",
-                backgroundColor: "primary.main",
               }}
               key={subIndex}
               disablePadding
             >
               <Avatar
                 sx={{
+                  border: "1px solid",
+                  borderColor: "primary.main",
+                  boxSizing: "border-box",
                   width: "85px",
                   height: "85px",
-                  backgroundColor: "primary.main",
                 }}
                 src={imageUrl}
                 variant="square"

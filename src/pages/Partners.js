@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SvgIcon from "@mui/material/SvgIcon";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { SwLayout, SwSidebar, SwMenuItems } from "sw-web-shared";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -9,11 +9,13 @@ import {
   Tooltip,
   Typography,
   Avatar,
+  Button,
 } from "@mui/material";
 import { ReactComponent as DaoStatsIcon } from "@assets/dao-stats.svg";
 import { ReactComponent as DashboardIcon } from "@assets/dashboard.svg";
 import { ReactComponent as IntegrationIcon } from "@assets/integration.svg";
 import { ReactComponent as EventFactoryIcon } from "@assets/event-badge.svg";
+import { KeyboardArrowLeft } from "@mui/icons-material";
 import CoreTeam from "./core-team/CoreTeam";
 import Community from "./community/Community";
 import Contracts from "./integrations-and-contracts/contracts/Contracts";
@@ -66,6 +68,7 @@ const IntegrationAndContractsRoutes = (e, props) => {
 const Partners = (props) => {
   const [opened, setOpened] = useState(true);
   const small = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const history = useHistory();
 
   const handleToggle = () => setOpened(!opened);
   const sw = JSON.parse(window.sessionStorage.getItem("skillWallet") || "{}");
@@ -113,7 +116,7 @@ const Partners = (props) => {
         disableGutters
         scrollbarStyles={{
           margin: "24px",
-          width: 'auto',
+          width: "auto",
           padding: " 90px",
           border: "2px solid",
           height: "calc(100% - 48px)",
@@ -174,6 +177,13 @@ const Partners = (props) => {
             </Tooltip>
           )}
         </div>
+        <div className="back-button">
+          <Button onClick={history.goBack} size="small" color="primary">
+            <KeyboardArrowLeft sx={{ marginTop: "-3px" }} />
+            Back
+          </Button>
+        </div>
+
         <Switch>
           <Route
             path="/partner/dashboard"
