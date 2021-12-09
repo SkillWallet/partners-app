@@ -66,14 +66,12 @@ function App(props) {
       <div
         className="connect-wallet-container"
         style={{
-          visibility: isIntegrateFlow ? "hidden" : "visible",
+          // visibility: isIntegrateFlow ? "hidden" : "visible",
+          top: isIntegrateFlow ? "-2000px" : "45px"
         }}
       >
         <skillwallet-auth
           allow-create-new-user="true"
-          button-color="black"
-          font-color="white"
-          border-radius="0"
           partner-key="71baedc2ad092de8e55f915b6eca869bfebdfe53"
         ></skillwallet-auth>
       </div>
