@@ -5,17 +5,7 @@ import { ReactComponent as Member } from "@assets/member-card.svg";
 import { ReactComponent as Roles } from "@assets/roles.svg";
 import { ReactComponent as Share } from "@assets/share.svg";
 import { Link } from "react-router-dom";
-
-const community = {
-  name: "SkillWallet @ Tachyon",
-  address: "0x2D1bf1e15F9B17DfA2067869833576a59Bbb0f26",
-  description:
-    "This is the Tachyon Demo of SkillWallet - a role-based NFT ID that unlocks the true potential of Web3 Communities 🙌",
-  template: "Local Projects & DAOs",
-  image:
-    "https://hub.textile.io/ipfs/bafkreigoiviheddeus2q4prbg26eiamz3aldxx3o44rhi5gw6iafvomate",
-  isDiToNativeCommunity: false,
-};
+import { connect } from "react-redux";
 
 const CoreTeam = (props) => {
   const basePath = props.location.pathname;
@@ -46,7 +36,7 @@ const CoreTeam = (props) => {
             width: "111px",
           }}
           variant="square"
-          src={community.image}
+          src={props.state?.community?.image}
         />
         <Box
           sx={{
@@ -57,7 +47,7 @@ const CoreTeam = (props) => {
             ml: "21px",
           }}
         >
-          <Typography variant="h1">{community.name}</Typography>
+          <Typography variant="h1">{props.state?.community?.name}</Typography>
           <Typography variant="h2">Core Team</Typography>
         </Box>
       </Box>
@@ -117,4 +107,12 @@ const CoreTeam = (props) => {
   );
 };
 
-export default CoreTeam;
+const mapStateToProps = state => {
+  return {
+    state: {
+      community: state.community.community
+    }
+  }
+}
+
+export default connect(mapStateToProps)(CoreTeam);

@@ -110,7 +110,6 @@ const DaoIntegration = () => {
       const pa = await getPartnersAgreementByCommunity(sw.community);
       setPartnersAgreementAddress(pa.partnersAgreementAddress);
       const paUrl = await getPAUrl(pa.partnersAgreementAddress);
-      console.log('paUrl: ', paUrl);
       if(paUrl && input.current){ 
         input.current.value = paUrl;
       }
