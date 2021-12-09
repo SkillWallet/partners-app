@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
-import { fetchCommunity } from "@contracts/api";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { updateAndSaveSkills } from "@contracts/contracts";
 import { connect } from "react-redux";
-import { saveMembers } from "@store/Members/members.actions";
 import { saveCommunity } from "@store/Community/community.actions";
-import "./roles.scss"
+import "./roles.scss";
 import { SwButton } from "sw-web-shared";
 
 const Roles = (props) => {
@@ -17,19 +15,12 @@ const Roles = (props) => {
   useEffect(() => {
     if (props?.state?.community?.roles) {
       filterRoles(props.state.community.roles.roles);
-      console.log(roles)
+      console.log(roles);
       setIsLoading(false);
     } else {
       return;
     }
   }, [props.state.community]);
-
-  useEffect(() => {
-    if (!props?.state?.community?.roles?.roles) {
-      fetchCommunity(props);
-      setIsLoading(true);
-    }
-  }, []);
 
   const changeRole = (newRole) => {
     setActiveRole(newRole);
@@ -51,12 +42,12 @@ const Roles = (props) => {
   };
 
   const filterRoles = (rolesFromState) => {
-    let newRoles = []; 
+    let newRoles = [];
     let isCoreTeam = false;
-    if(props.isCoreTeam){
+    if (props.isCoreTeam) {
       isCoreTeam = true;
     }
-    rolesFromState.forEach((r) => { 
+    rolesFromState.forEach((r) => {
       if (r["isCoreTeamMember"] === isCoreTeam) {
         newRoles.push({
           credits: r["credits"],
@@ -95,23 +86,29 @@ const Roles = (props) => {
 
   return (
     <Box>
-
       <Typography
         sx={{
-          mb: '35px'
-        }} variant='h1'>Roles & Skills</Typography>
-      <Typography
-        sx={{
-          mb: '35px'
+          mb: "35px",
         }}
-        variant='h2'>Add Skills for each Role, and assign them to your{" "}
-        {props.isCoreTeam ? "Core Team" : "Community Members"}</Typography>
+        variant="h1"
+      >
+        Roles & Skills
+      </Typography>
+      <Typography
+        sx={{
+          mb: "35px",
+        }}
+        variant="h3"
+      >
+        Add Skills for each Role, and assign them to your{" "}
+        {props.isCoreTeam ? "Core Team" : "Community Members"}
+      </Typography>
       <Box
         sx={{
-          height: '100%',
+          height: "100%",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: 'center',
+          alignItems: "center",
           overflow: "hidden",
         }}
       >
@@ -122,24 +119,25 @@ const Roles = (props) => {
             justifyContent: "space-between",
             alignItems: "center",
             flexDirection: "column",
-            p: "24px 68px"
+            p: "24px 68px",
           }}
         >
           {roles.map((role, n) => {
-            return <SwButton
-              key={n}
-              sx={{
-                whiteSpace: "nowrap",
-                width: 1,
-                borderColor: "primary.main",
-                height: "85px",
-                mb: '35px'
-              }}
-              className={activeRole === role ? "active-link" : ""}
-              label={role["roleName"]}
-              onClick={() => changeRole(role)
-              }>
-            </SwButton>
+            return (
+              <SwButton
+                key={n}
+                sx={{
+                  whiteSpace: "nowrap",
+                  width: 1,
+                  borderColor: "primary.main",
+                  height: "85px",
+                  mb: "35px",
+                }}
+                className={activeRole === role ? "active-link" : ""}
+                label={role["roleName"]}
+                onClick={() => changeRole(role)}
+              ></SwButton>
+            );
           })}
         </Box>
         <Box
@@ -147,7 +145,7 @@ const Roles = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            p: "24px 68px"
+            p: "24px 68px",
           }}
         >
           <Card
@@ -157,7 +155,7 @@ const Roles = (props) => {
               borderColor: "primary.main",
               display: "flex",
               flexDirection: "column",
-              backgroundColor: 'background.dark'
+              backgroundColor: "background.dark",
             }}
           >
             <CardHeader
@@ -165,36 +163,36 @@ const Roles = (props) => {
               titleTypographyProps={{
                 mx: "auto",
                 variant: "h2",
-                align: 'center',
+                align: "center",
                 color: "primary.main",
-                mt: "6px"
+                mt: "6px",
               }}
             />
             <CardContent
               sx={{
                 flex: 1,
                 display: "flex",
-                flexWrap: 'wrap',
+                flexWrap: "wrap",
                 flexDirection: "row",
                 justifyContent: "center",
-                p: '5px'
+                p: "5px",
               }}
             >
               {skillData.map((skill, i) => {
                 return (
                   <SwButton
                     sx={{
-                      height: '70px',
-                      flex: '0 0 30%',
+                      height: "70px",
+                      flex: "0 0 30%",
                       whiteSpace: "nowrap",
                       borderColor: "primary.main",
-                      m: '5px'
+                      m: "5px",
                     }}
                     className={skills.includes(skill) ? "active-link" : ""}
                     key={i}
                     onClick={() => addSelectedSkill(skill)}
                   >
-                    <Typography variant='h3'>{skill}</Typography>
+                    <Typography variant="h3">{skill}</Typography>
                   </SwButton>
                 );
               })}
@@ -204,12 +202,12 @@ const Roles = (props) => {
             sx={{
               whiteSpace: "nowrap",
               borderColor: "primary.main",
-              height: "85px"
+              height: "85px",
             }}
-            label={'Confirm & Add Skills'}
-            onClick={() => updateSkills(skills)
-            }>
-          </SwButton>
+            disabled={isLoading}
+            label={"Confirm & Add Skills"}
+            onClick={() => updateSkills(skills)}
+          ></SwButton>
         </Box>
       </Box>
     </Box>
@@ -220,14 +218,12 @@ const mapStateToProps = (state) => {
   return {
     state: {
       community: state.community.community,
-      members: state.members.members,
     },
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchSaveMembers: (res) => dispatch(saveMembers(res)),
     dispatchSaveCommunity: (res) => dispatch(saveCommunity(res)),
   };
 };

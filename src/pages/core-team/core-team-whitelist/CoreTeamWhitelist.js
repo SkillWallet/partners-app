@@ -28,6 +28,7 @@ import {
   getWhitelistedAddresses,
   addAddressToWhitelist
 } from "@contracts/contracts";
+import { connect } from "react-redux";
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -185,7 +186,7 @@ const addNewMembers = async (partnersAgreementAddress, newMembers, allMembers) =
     return await fetchData();
 };
 
-const CoreTeamWhitelist = () => {
+const CoreTeamWhitelist = (props) => {
   const { apiRef, columns } = useDatatableApiRef(tableColumns);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -239,7 +240,6 @@ const CoreTeamWhitelist = () => {
               }
             });
           }
-          console.log(lockedData);
           setData(lockedData);
           setLoading(false);
         })
@@ -249,24 +249,31 @@ const CoreTeamWhitelist = () => {
    
   }, []);
 
+  const shareMessage = `Hey there! We've just deployed ${props?.state?.community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;
+
   return (
     <div className="sw-core-team">
       <AlertDialog open={open} handleClose={handleClose} />
       <SwShare
         mode="light"
         url="https://skillwallet.id/"
-        title="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam"
+        title="with your team"
+        sx={{
+          '.MuiTypography-h2': {
+            mt: 0
+          }
+        }}
         twitterProps={{
-          title: 'Message',
-          hashtags: ['test']
+          title: shareMessage,
+          hashtags: ["SkillWallet", "DAO", "Blockchain"],
         }}
         linkedinProps={{
-          title: 'Message',
-          summary: "summary",
-          source: 'source'
+          title: shareMessage,
+          summary: "Do more with DAO",
+          source: "https://skillwallet.id",
         }}
         telegramProps={{
-          title: 'Message',
+          title: shareMessage,
         }}
         open={openShare}
         onClose={handleShareClose}
@@ -330,4 +337,13 @@ const CoreTeamWhitelist = () => {
   );
 };
 
-export default CoreTeamWhitelist;
+
+const mapStateToProps = state => {
+  return {
+    state: {
+      community: state.community.community
+    }
+  }
+}
+
+export default connect(mapStateToProps)(CoreTeamWhitelist);

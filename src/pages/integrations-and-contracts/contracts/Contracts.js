@@ -234,23 +234,16 @@ const Contracts = () => {
       }
 
       setLoading(true);
-      console.log("allItems: ", allItems);
-      console.log("newItems: ", newItems);
-      console.log("removedItems: ", removedItems);
-      console.log("noChangedItems: ", noChangedItems);
-
       const createdContract = await createContracts(partnersAgreementAddress, newItems);
       await removeContracts(partnersAgreementAddress, removedItems);
       const newData = LockDatatableItems([
         ...createdContract,
         ...noChangedItems,
       ]);
-      console.log(newData, "newItems");
       setLoading(false);
       setData(newData);
       setInitialData(newData);
     } catch (error) {
-      console.log(error, "error");
       setLoading(false);
     }
   };
