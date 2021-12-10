@@ -30,7 +30,7 @@ function NoMatch() {
       }}
       variant="h1"
     >
-      No found!
+      Not found!
     </Typography>
   );
 }
