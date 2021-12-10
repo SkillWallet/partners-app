@@ -72,7 +72,7 @@ function App(props) {
       >
         <skillwallet-auth
           allow-create-new-user="true"
-          partner-key="71baedc2ad092de8e55f915b6eca869bfebdfe53"
+          partner-key="685a1fd74240ae4216c4bd384dba56e498be8bc4"
         ></skillwallet-auth>
       </div>
       {isLoading ? (
