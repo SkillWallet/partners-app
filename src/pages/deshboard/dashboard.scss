@@ -1,11 +1,8 @@
 @import 'sw-web-shared/lib/styles/variables';
 @import 'sw-web-shared/lib/styles/breakpoints';
 
-.sw-dashboard-container {
-  display: flex !important;
-  height: 100%;
-  position: relative;
-
+.sw-main-dashboard-wrapper{
+  grid-gap: 40px;
   .sw-btn-icon {
     margin-right: 20px;
   }
@@ -47,15 +44,10 @@
 
   @include media-breakpoint('lt-lg') {
     flex-direction: column;
-    width: 80%;
-    margin: 0 auto;
+    height: auto;
 
-    & > .sw-box {
-      grid-gap: 10px !important;
-
-      &:first-child {
-        // flex-direction: row;
-      }
+    .sw-box {
+      grid-gap: 20px;
     }
   }
 }
