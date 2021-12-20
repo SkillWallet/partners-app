@@ -1,7 +1,10 @@
 .sw-sidebar-content {
-  border: 1px solid;
   padding: 15px;
   margin-top: 48px;
+
+  &.open {
+    border: 1px solid;
+  }
 }
 
 .sw-main-box {
@@ -23,17 +26,13 @@
     padding-left: 43px !important;
     padding-right: 43px !important;
   }
-  .MuiListItem-root {
-    padding: 0 10px 0 10px !important;
+  // .MuiListItem-root {
+  //   padding: 0 10px 0 10px !important;
 
-    .MuiListItemText-root {
-      white-space: pre-wrap !important;
-    }
-  }
-
-  .sw-sidebar-menu-icon {
-    margin: 0 5px 0 0 !important;
-  }
+  //   .MuiListItemText-root {
+  //     white-space: pre-wrap !important;
+  //   }
+  // }
 }
 
 .sw-user-info {

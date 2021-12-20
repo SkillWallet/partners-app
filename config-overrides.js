@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { override, addWebpackAlias } = require('customize-cra');
 
 module.exports = override(
   addWebpackAlias({
     '@assets': path.resolve(__dirname, './src/assets'),
+    '@auth': path.resolve(__dirname, './src/auth'),
+    '@api': path.resolve(__dirname, './src/api'),
+    '@utils': path.resolve(__dirname, './src/utils'),
     '@store': path.resolve(__dirname, './src/redux'),
     '@components': path.resolve(__dirname, './src/components'),
-    '@contracts': path.resolve(__dirname, './src/contracts'),
     react: path.resolve('./node_modules/react'),
     'react-dom': path.resolve('./node_modules/react-dom'),
     '@mui/material': path.resolve('./node_modules/@mui/material'),

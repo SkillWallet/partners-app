@@ -1,0 +1,13 @@
+@import 'sw-web-shared/lib/styles/variables';
+@import 'sw-web-shared/lib/styles/breakpoints';
+
+.sw-core-team-dashboard {
+  @include media-breakpoint('lt-lg') {
+    flex-direction: column;
+    height: auto;
+
+    .sw-box {
+      grid-gap: 20px;
+    }
+  }
+}
