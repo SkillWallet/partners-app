@@ -25,16 +25,26 @@ import LoadingDialog from '@components/LoadingPopup';
 
 function AlertDialog({ handleClose, open }) {
   return (
-    <Dialog sx={{ minHeight: 400 }} open={open} onClose={handleClose}>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent
+        sx={{
+          minHeight: 180,
+          height: 180,
+          width: 400,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <DialogContentText>
           <Typography variant="h2" component="span" color="red">
             No changes were made!
           </Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <SwButton onClick={handleClose} autoFocus>
+        <SwButton mode="light" onClick={handleClose} autoFocus>
           Dismiss
         </SwButton>
       </DialogActions>

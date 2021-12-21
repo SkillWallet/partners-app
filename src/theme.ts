@@ -53,7 +53,7 @@ export const SwTheme = createTheme({
         noSsr: true,
       },
     },
-    MuiDialogContent: {
+    MuiPaper: {
       styleOverrides: {
         root: {
           borderStyle: 'solid',

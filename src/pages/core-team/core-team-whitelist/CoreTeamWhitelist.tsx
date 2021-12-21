@@ -31,16 +31,26 @@ import LoadingDialog from '@components/LoadingPopup';
 
 function AlertDialog({ handleClose, open }) {
   return (
-    <Dialog sx={{ minHeight: 400 }} open={open} onClose={handleClose}>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          <Typography variant="h2" component="span" color="red">
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent
+        sx={{
+          minHeight: 180,
+          height: 180,
+          width: 400,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <DialogContentText textAlign="center">
+          <Typography textAlign="center" variant="h2" component="span" color="red">
             No new members were added to whitelist!
           </Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <SwButton onClick={handleClose} autoFocus>
+        <SwButton mode="light" onClick={handleClose} autoFocus>
           Dismiss
         </SwButton>
       </DialogActions>

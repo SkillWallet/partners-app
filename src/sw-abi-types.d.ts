@@ -14,6 +14,16 @@ declare module 'ethers' {
 
     claim: () => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
+    create: (
+      url: string,
+      template: string,
+      roles: number,
+      numberOfActions: number,
+      contractAddress: string,
+      members: number,
+      coreTeamMembers: number
+    ) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
     create: (skillWalletOwner: string, url: string, isClaimable: boolean) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
     getActiveCommunity: (skillWalletId: number) => Promise<{ community: string }>;

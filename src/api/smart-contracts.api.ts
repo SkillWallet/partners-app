@@ -85,14 +85,11 @@ export const createPartnersAgreement = async (template, title, description, role
     url,
     template,
     roles.length,
-    // @ts-ignore
     numberOfActions, // number of Actions,
     contractAddress ?? ethers.constants.AddressZero, // contract address
     100, // members
     10 // coreTeamMembers
   );
-
-  console.log(createTx);
 
   const result = await createTx.wait();
   const { events } = result;
