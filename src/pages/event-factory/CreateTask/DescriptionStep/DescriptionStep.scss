@@ -1,0 +1,38 @@
+@import 'sw-web-shared/lib/styles/breakpoints';
+@import 'sw-web-shared/lib/styles/variables';
+
+
+
+.sw-description-wrapper {
+  width: 100%;
+  max-width: 310px;
+
+  .sw-form-field {
+    width: 100%;
+  }
+
+  .sw-form-field-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 20px;
+
+    .MuiFormControl-root {
+      flex: 1;
+    }
+
+    .MuiFormHelperText-root {
+      text-align: end;
+      margin-right: 0;
+    }
+
+    .MuiInputBase-root {
+      color: $primary-color;
+
+      &::before,
+      &::after {
+        border-bottom: 2px solid $primary-color;
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ const initialState = {
     duration: 2000,
   },
   logs: [],
+  previousRoute: '/',
 };
 
 export const uiSlice = createSlice({
@@ -33,10 +34,13 @@ export const uiSlice = createSlice({
         open: false,
       };
     },
+    setPreviusRoute(state, action) {
+      state.previousRoute = action.payload;
+    },
     resetUIState: () => initialState,
   },
 });
 
-export const { openSnackbar, closeSnackbar, addLog } = uiSlice.actions;
+export const { openSnackbar, closeSnackbar, addLog, setPreviusRoute } = uiSlice.actions;
 
 export default uiSlice.reducer;

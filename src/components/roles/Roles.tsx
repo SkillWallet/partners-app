@@ -11,8 +11,9 @@ import {
   fetchCommunity,
 } from '@store/Community/community.reducer';
 import { ResultState } from '@store/result-status';
-import './roles.scss';
+import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
+import './roles.scss';
 
 const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
@@ -38,6 +39,11 @@ const Roles = (props) => {
   const addSelectedSkill = (selectedSkill: string) => {
     dispatch(toggleActiveRoleSkill(selectedSkill));
   };
+
+  useEffect(() => {
+    const url = props.isCoreTeam ? '/partner/dashboard/core-team' : '/partner/dashboard/community';
+    dispatch(setPreviusRoute(url));
+  }, [dispatch, props.isCoreTeam]);
 
   useEffect(() => {
     const [{ roleName }] = roles;

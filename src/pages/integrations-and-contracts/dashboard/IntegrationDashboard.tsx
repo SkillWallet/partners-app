@@ -3,10 +3,12 @@ import { Avatar, CardContent, CardHeader, Divider, Typography } from '@mui/mater
 
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
-import { memo } from 'react';
-import { ReactComponent as SwAuthIcon } from '../../../assets/sw-auth.svg';
-import { ReactComponent as DiscordBotIcon } from '../../../assets/discord-bot.svg';
-import { ReactComponent as ContractIcon } from '../../../assets/contract.svg';
+import { useAppDispatch } from '@store/store.model';
+import { setPreviusRoute } from '@store/ui-reducer';
+import { memo, useEffect } from 'react';
+import { ReactComponent as SwAuthIcon } from '@assets/sw-auth.svg';
+import { ReactComponent as DiscordBotIcon } from '@assets/discord-bot.svg';
+import { ReactComponent as ContractIcon } from '@assets/contract.svg';
 
 const IntegrationCards = [
   {
@@ -54,6 +56,12 @@ const IntegrationCards = [
 ];
 
 const IntegrationDashboard = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/'));
+  }, [dispatch]);
+
   return (
     <div className="sw-integration-dashboard">
       <Typography textAlign="center" variant="h1">

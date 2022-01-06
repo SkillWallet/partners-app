@@ -5,13 +5,19 @@ import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
 import { RootState } from '@store/store.model';
-import { useSelector } from 'react-redux';
+import { memo, useEffect } from 'react';
+import { setPreviusRoute } from '@store/ui-reducer';
+import { useDispatch, useSelector } from 'react-redux';
 import './core-team-dashboard.scss';
-import { memo } from 'react';
 
 const CoreTeam = (props) => {
+  const dispatch = useDispatch();
   const basePath = props.location.pathname;
   const { community } = useSelector((state: RootState) => state.community);
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/dashboard'));
+  }, [dispatch]);
 
   return (
     <Box

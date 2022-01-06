@@ -1,0 +1,44 @@
+@import 'sw-web-shared/lib/styles/variables';
+@import 'sw-web-shared/lib/styles/breakpoints';
+
+.sw-create-task-base-container {
+  position: relative;
+
+  .sw-box {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bottom-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+    .MuiButton-root {
+      height: 55px;
+      padding-left:  60px;
+      padding-right:  60px;
+      width: auto;
+    }
+  }
+
+  .sw-box-right-inner {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  .sw-box-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 12px;
+    grid-gap: 20px;
+  }
+}

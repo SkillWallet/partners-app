@@ -1,16 +1,18 @@
 /* eslint-disable max-len */
 import { SwButton, SwShare } from 'sw-web-shared';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import { ReactComponent as Member } from '@assets/member-card.svg';
 import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@store/store.model';
 import './community-dashboard.scss';
+import { setPreviusRoute } from '@store/ui-reducer';
 
 const Community = (props) => {
+  const dispatch = useDispatch();
   const basePath = props.location.pathname;
   const { community } = useSelector((state: RootState) => state.community);
 
@@ -19,6 +21,10 @@ const Community = (props) => {
   const handleShareClose = () => {
     setOpenShare(false);
   };
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/dashboard'));
+  }, [dispatch]);
 
   const shareMessage = `Hey there! We've just deployed ${community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;
 

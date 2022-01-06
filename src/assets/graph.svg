@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="poll" transform="translate(-3 -3)">
+    <path id="Path_1665" data-name="Path 1665" d="M28.5,6H7.5A1.5,1.5,0,0,0,6,7.5v21A1.5,1.5,0,0,0,7.5,30h21A1.5,1.5,0,0,0,30,28.5V7.5A1.5,1.5,0,0,0,28.5,6ZM7.5,3A4.5,4.5,0,0,0,3,7.5v21A4.5,4.5,0,0,0,7.5,33h21A4.5,4.5,0,0,0,33,28.5V7.5A4.5,4.5,0,0,0,28.5,3Z" fill-rule="evenodd"/>
+    <path id="Path_1666" data-name="Path 1666" d="M16.5,10.5h3v15h-3Z"/>
+    <path id="Path_1667" data-name="Path 1667" d="M22.5,19.5h3v6h-3Z"/>
+    <path id="Path_1668" data-name="Path 1668" d="M10.5,15h3V25.5h-3Z"/>
+  </g>
+</svg>

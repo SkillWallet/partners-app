@@ -5,17 +5,23 @@ import { ReactComponent as Coins } from '@assets/coins.svg';
 import { RootState } from '@store/store.model';
 import { setDashboardBtn } from '@store/Partner/partner.reducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { setPreviusRoute } from '@store/ui-reducer';
+import { useEffect } from 'react';
 import DAOSummaryCard from './DAOSummaryCard';
 import DAOManagementCard from './DAOManagementCard';
 import './dashboard.scss';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const dispatch = useDispatch();
   const { selectedDashboardBtn } = useSelector((state: RootState) => state.partner);
 
   const selectBtn = (btn: string) => {
     dispatch(setDashboardBtn(btn === selectedDashboardBtn ? null : btn));
   };
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/dashboard'));
+  }, [dispatch]);
 
   return (
     <Box

@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
-import { skillWalletABI } from '@api/abis/SkillWallet';
+import { SkillWalletAbi } from 'sw-abi-types';
 
 const Redirect = () => {
   const skillWalletAddress = '0xC048276176B8D6541ac0b39B853067202b571E08';
@@ -63,7 +63,7 @@ const Redirect = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
-    const contract = new ethers.Contract(skillWalletAddress, skillWalletABI, signer);
+    const contract = new ethers.Contract(skillWalletAddress, SkillWalletAbi, signer);
     console.log('cntrct: ', contract);
 
     const createTx = await contract.addDiscordIDToSkillWallet(discordId);

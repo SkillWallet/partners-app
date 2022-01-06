@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import { SwLayout, SwSidebar, SwMenuItems } from 'sw-web-shared';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useMediaQuery, IconButton, Tooltip, Typography, Avatar, Button, Theme } from '@mui/material';
@@ -13,6 +13,7 @@ import MembersAndActivities from '@components/member-and-activities/MembersAndAc
 import Roles from '@components/roles/Roles';
 import { useSelector } from 'react-redux';
 import { fetchCommunity } from '@store/Community/community.reducer';
+import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import CoreTeam from './core-team/CoreTeam';
 import Community from './community/Community';
@@ -21,6 +22,9 @@ import Dashboard from './deshboard/Dashboard';
 import DaoIntegration from './integrations-and-contracts/dao-integration/DaoIntegration';
 import IntegrationDashboard from './integrations-and-contracts/dashboard/IntegrationDashboard';
 import CoreTeamWhitelist from './core-team/core-team-whitelist/CoreTeamWhitelist';
+import EventFactoryDashboard from './event-factory/EventFactoryDashboard/EventFactoryDashboard';
+import CreateTask from './event-factory/CreateTask/CreateTask';
+import SuccessStep from './event-factory/CreateTask/SuccessStep/SuccessStep';
 import './partners.scss';
 
 const Partners = (props) => {
@@ -34,6 +38,11 @@ const Partners = (props) => {
   }, [opened]);
 
   const { userInfo } = useSelector((state: RootState) => state.auth);
+  const { previousRoute } = useSelector((state: RootState) => state.ui);
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/'));
+  }, [dispatch]);
 
   useEffect(() => {
     if (userInfo?.community) {
@@ -66,7 +75,7 @@ const Partners = (props) => {
     {
       type: 'href',
       label: 'Event Factory',
-      href: '/core-team',
+      href: '/partner/event-factory',
       icon: <SvgIcon component={EventFactoryIcon} />,
     },
     {
@@ -137,7 +146,7 @@ const Partners = (props) => {
           )}
         </div>
         <div className="back-button">
-          <Button onClick={history.goBack} size="small" color="primary">
+          <Button component={Link} to={previousRoute} size="small" color="primary">
             <KeyboardArrowLeft sx={{ marginTop: '-3px' }} />
             Back
           </Button>
@@ -164,6 +173,11 @@ const Partners = (props) => {
           <Route exact path="/partner/integrations-and-contracts" component={IntegrationDashboard} {...props} />
           <Route exact path="/partner/integrations-and-contracts/dao-integration" component={DaoIntegration} {...props} />
           <Route exact path="/partner/integrations-and-contracts/contracts" component={Contracts} {...props} />
+
+          {/* Event factory */}
+          <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
+          <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
+          <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
         </Switch>
       </SwLayout>
     </>

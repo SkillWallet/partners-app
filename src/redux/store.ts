@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { combineReducers } from 'redux';
 import { PersistConfig, persistReducer } from 'redux-persist';
+import activityTaskReducer from '@store/Activity/create-activity-task.reducer';
 import communityReducer from './Community/community.reducer';
 import authSliceReducer from '../auth/auth.reducer';
 import uiSliceReducer from './ui-reducer';
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   partner: partnerReducer,
   auth: authSliceReducer,
   ui: uiSliceReducer,
+  activityTask: activityTaskReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

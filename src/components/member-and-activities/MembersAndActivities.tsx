@@ -5,6 +5,7 @@ import { CircularProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fetchLogs, fetchMembers } from '@store/Community/community.reducer';
 import { ResultState } from '@store/result-status';
+import { setPreviusRoute } from '@store/ui-reducer';
 import Members from './Members';
 import ActivityAndLogs from './ActivityAndLogs';
 import './member-and-activities.scss';
@@ -46,6 +47,11 @@ function MembersAndActivities(props) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { members, logs, status } = useSelector((state: RootState) => state.community);
   const [tabs, setTabs] = useState([]);
+
+  useEffect(() => {
+    const url = props.isCoreTeamMembers ? '/partner/dashboard/core-team' : '/partner/dashboard/community';
+    dispatch(setPreviusRoute(url));
+  }, [dispatch, props.isCoreTeamMembers]);
 
   useEffect(() => {
     // @TODO: Make more reusable in case in the future there are more view that will have

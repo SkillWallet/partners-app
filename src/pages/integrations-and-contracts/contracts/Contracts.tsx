@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
+import { setPreviusRoute } from '@store/ui-reducer';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -189,6 +190,10 @@ const Contracts = () => {
 
     dispatch(addRemoveContracts({ removedItems, newItems }));
   };
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
+  }, [dispatch]);
 
   useEffect(() => {
     if (!lockedContracts.length) {

@@ -3,6 +3,7 @@ import { Typography, TextField } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
 import { SwButton } from 'sw-web-shared';
+import { setPreviusRoute } from '@store/ui-reducer';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -64,6 +65,10 @@ const DaoIntegration = () => {
   }, []);
 
   useEffect(() => {
+    dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
+  }, [dispatch]);
+
+  useEffect(() => {
     return () => debouncedChangeHandler.cancel();
   }, [debouncedChangeHandler]);
 
@@ -75,8 +80,10 @@ const DaoIntegration = () => {
   }, [input, paUrl]);
 
   useEffect(() => {
-    const promise = dispatch(fetchPaUrl(userInfo?.community));
-    return () => promise.abort();
+    if (!paUrl) {
+      const promise = dispatch(fetchPaUrl(userInfo?.community));
+      return () => promise.abort();
+    }
   }, [dispatch, userInfo, paCommunity, paUrl]);
 
   return (

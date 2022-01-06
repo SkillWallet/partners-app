@@ -60,7 +60,7 @@ const GetStarted = () => {
                 Partners
               </Typography>
               <Typography component="div" align="left" variant="h3">
-                Analytics
+                Dashboard
               </Typography>
             </>
           </SwButton>

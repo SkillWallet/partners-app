@@ -21,6 +21,7 @@ import SwEditToolbar from '@components/datatable/DatatableToolbar';
 import { GetDatatableItems } from '@components/datatable/DatatableHelpers';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
+import { setPreviusRoute } from '@store/ui-reducer';
 import {
   addNewWhitelistedAddresses,
   fetchPartnerWhitelistedAddresses,
@@ -166,7 +167,7 @@ const CoreTeamWhitelist = () => {
   const { apiRef, columns } = useDatatableApiRef(tableColumns);
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { community } = useSelector((state: RootState) => state.community);
-  const { paCommunity, status } = useSelector((state: RootState) => state.partner);
+  const { status } = useSelector((state: RootState) => state.partner);
   const whitelistedAddresses = useSelector(getLockedWhitelistedAddresses);
 
   const handleClose = () => {
@@ -191,6 +192,10 @@ const CoreTeamWhitelist = () => {
     const promise = dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
     return () => promise.abort();
   }, [dispatch, userInfo]);
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/dashboard/core-team'));
+  }, [dispatch]);
 
   useEffect(() => {
     if (!whitelistedAddresses.length) {

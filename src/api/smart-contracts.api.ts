@@ -1,11 +1,10 @@
 import { ethers } from 'ethers';
-import { communityABI } from './abis/ICommunity.abi';
-import { partnersAgreementABI } from './abis/PartnersAgreement.abi';
-import { partnersRegistryABI } from './abis/PartnersRegistry.abi';
+import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI } from 'sw-abi-types';
 import { environment } from './environment';
 import { Web3ContractProvider } from './web3.provider';
 import { generatePartnersKey } from './skillwallet.api';
 import { pushJSONDocument } from './textile.api';
+import { ActivityTask, ActivityTypes } from './api.model';
 
 const metadata = [
   {
@@ -26,7 +25,7 @@ const metadata = [
 ];
 
 export const createPartnersAgreement = async (template, title, description, roles, numberOfActions, contractAddress) => {
-  const contract = await Web3ContractProvider(environment.partnersRegistryAdress, partnersRegistryABI);
+  const contract = await Web3ContractProvider(environment.partnersRegistryAdress, PartnersRegistryABI);
 
   // here's where my metadata is set.
   const jsonMetadata: any = metadata[template];
@@ -113,39 +112,39 @@ export const createPartnersAgreement = async (template, title, description, role
 };
 
 export const addAddressToWhitelist = async (partnersAgreementAddress, memberAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
   console.log(createTx);
   return createTx.wait();
 };
 
 export const addUrlToPA = async (partnersAgreementAddress, url) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addURL(url);
   return createTx.wait();
 };
 
 export const importContractToPA = async (partnersAgreementAddress: string, contractAddress: string) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewContractAddressToAgreement(contractAddress);
 
   return createTx.wait();
 };
 
 export const getPAUrl = async (partnersAgreementAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const urls = await contract.getURLs();
   console.log('urls', urls);
   return urls?.length > 0 ? urls[urls.length - 1] : undefined;
 };
 
 export const getImportedContracts = async (partnersAgreementAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   return contract.getImportedAddresses();
 };
 
 export const getWhitelistedAddresses = async (partnersAgreementAddress: string) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementABI);
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   return contract.getCoreTeamMembers();
 };
 
@@ -173,7 +172,19 @@ export const updateAndSaveSkills = async (editedRole, community) => {
   const uri = await pushJSONDocument(jsonMetadata, `metadata.json`);
   console.log(uri);
 
-  const contract = await Web3ContractProvider(community.address, communityABI);
+  const contract = await Web3ContractProvider(community.address, DitoCommunityAbi);
   const tx = await contract.setMetadataUri(uri);
+  return tx.wait();
+};
+
+// Create Task
+export const createActivityTask = async (partnersAgreementAddress: string, requestData: ActivityTask) => {
+  console.log('CreateTask - metadata: ', requestData);
+
+  const uri = await pushJSONDocument(requestData, `metadata.json`);
+  console.log('CreateTask - uri: ', uri);
+
+  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+  const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
   return tx.wait();
 };
