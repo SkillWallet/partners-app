@@ -2,9 +2,9 @@ import { ethers } from 'ethers';
 import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI } from 'sw-abi-types';
 import { environment } from './environment';
 import { Web3ContractProvider } from './web3.provider';
-import { generatePartnersKey } from './skillwallet.api';
 import { pushJSONDocument } from './textile.api';
 import { ActivityTask, ActivityTypes } from './api.model';
+import { generatePartnersKey } from './dito.api';
 
 const metadata = [
   {

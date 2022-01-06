@@ -1,14 +1,6 @@
 import axios from 'axios';
 import { environment } from './environment';
 
-export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
-  const body = {
-    communityAddress,
-    partnersAgreementAddress,
-  };
-  return axios.post(`${environment.apiUrl}/community/key`, body).then((res) => res.data.key);
-};
-
 export const getUsersData = () => {
   const params = {
     startDate: '1622592571001',

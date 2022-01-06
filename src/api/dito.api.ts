@@ -5,6 +5,14 @@ export const getPartnersAgreementByCommunity = (communityAddress) => {
   return axios.get(`${environment.ditoApiUrl}/community/${communityAddress}/key`).then((res) => res.data);
 };
 
+export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
+  const body = {
+    communityAddress,
+    partnersAgreementAddress,
+  };
+  return axios.post(`${environment.ditoApiUrl}/community/key`, body).then((res) => res.data.key);
+};
+
 export const getCommunityByPartnerKey = (partnerKey) => {
   return axios.get(`${environment.ditoApiUrl}/community/key/${partnerKey}`).then((res) => res.data);
 };

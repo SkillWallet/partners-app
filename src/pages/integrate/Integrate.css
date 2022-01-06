@@ -6,6 +6,12 @@ body {
   font-family: 'Josefin Sans', sans-serif;
 }
 
+.user-details-screen .item {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
 h1, p {
   margin:0 0
 }
@@ -1679,6 +1685,7 @@ textarea {
     flex-direction: column !important;
     width: 100%;
   }
+
 
 
 
