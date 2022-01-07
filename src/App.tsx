@@ -82,7 +82,7 @@ function App(props) {
           }}
         >
           {/* @ts-ignore */}
-          <skillwallet-auth allow-create-new-user="true" partner-key="685a1fd74240ae4216c4bd384dba56e498be8bc4" />
+          <skillwallet-auth allow-create-new-user="true" partner-key="07bf1f947af8facd6c7a954b154998e895cd8682" />
         </div>
         {isLoading ? (
           <LoadingMessage />
