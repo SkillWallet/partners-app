@@ -10,6 +10,7 @@ import communityReducer from './Community/community.reducer';
 import authSliceReducer from '../auth/auth.reducer';
 import uiSliceReducer from './ui-reducer';
 import partnerReducer from './Partner/partner.reducer';
+import integrateReducer from './Integrate/integrate';
 
 const persistConfig: PersistConfig<any> = {
   key: 'partnersApp',
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   auth: authSliceReducer,
   ui: uiSliceReducer,
   activityTask: activityTaskReducer,
+  integrate: integrateReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

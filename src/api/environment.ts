@@ -1,6 +1,15 @@
+/* eslint-disable no-shadow */
 import { envionmentGenerator } from 'sw-web-shared';
 
+export enum EnvMode {
+  Production = 'production',
+  Development = 'development',
+}
+
 export const swEnvVariables = {
+  // env
+  env: 'NODE_ENV',
+
   // skillwallet
   apiUrl: 'REACT_APP_API_URL',
   partnersRegistryAdress: 'REACT_APP_PARTNERS_REGISTRY_ADDRESS',

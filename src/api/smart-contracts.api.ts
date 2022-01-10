@@ -1,109 +1,49 @@
 import { ethers } from 'ethers';
-import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI } from 'sw-abi-types';
-import { environment } from './environment';
+import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI, SWContractEventType } from 'sw-abi-types';
+import { base64toFile } from 'sw-web-shared';
 import { Web3ContractProvider } from './web3.provider';
-import { pushJSONDocument } from './textile.api';
-import { ActivityTask, ActivityTypes } from './api.model';
+import { pushImage, pushJSONDocument } from './textile.api';
+import { ActivityTask, ActivityTypes, CommunityIntegration } from './api.model';
 import { generatePartnersKey } from './dito.api';
 
-const metadata = [
-  {
-    properties: {
-      template: 'Open-Source & DeFi',
-    },
-  },
-  {
-    properties: {
-      template: 'Art, Events & NFTs',
-    },
-  },
-  {
-    properties: {
-      template: 'Local Projects & DAOs',
-    },
-  },
-];
+export const createPartnersAgreement = async (
+  partnersRegistryAdress: string,
+  metadata: CommunityIntegration,
+  numOfActions: number,
+  contractAddress: string,
+  selectedtemplate: number
+) => {
+  const contract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
+  // if (metadata.image) {
+  //   const file = base64toFile(metadata.image, 'avatar');
+  //   const arrayBuffer = await file.arrayBuffer();
+  //   metadata.image = await pushImage(arrayBuffer);
+  // }
+  const url = await pushJSONDocument(metadata, `metadata.json`);
+  console.log('Metadata url: ', url);
 
-export const createPartnersAgreement = async (template, title, description, roles, numberOfActions, contractAddress) => {
-  const contract = await Web3ContractProvider(environment.partnersRegistryAdress, PartnersRegistryABI);
+  const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
+    prev += curr.roleName ? 1 : 0;
+    return prev;
+  }, 0);
 
-  // here's where my metadata is set.
-  const jsonMetadata: any = metadata[template];
-  jsonMetadata.title = title;
-  jsonMetadata.description = description;
-  console.log('roles setter: ', roles);
-  jsonMetadata.skills = {
-    roles: [
-      {
-        credits: 24,
-        roleName: roles[0],
-        skills: [],
-        isCoreTeamMember: false,
-      },
-      {
-        credits: 12,
-        roleName: roles[1],
-        skills: [],
-        isCoreTeamMember: false,
-      },
-      {
-        credits: 6,
-        roleName: roles[2],
-        skills: [],
-        isCoreTeamMember: false,
-      },
-      {
-        credits: 24,
-        roleName: 'Founder',
-        skills: [],
-        isCoreTeamMember: true,
-      },
-      {
-        credits: 12,
-        roleName: 'Investor',
-        skills: [],
-        isCoreTeamMember: true,
-      },
-      {
-        credits: 6,
-        roleName: 'Contributor',
-        skills: [],
-        isCoreTeamMember: true,
-      },
-    ],
-  };
-  jsonMetadata.image = window.sessionStorage.getItem('imageUrl');
-
-  console.log('metadata: ', jsonMetadata);
-
-  const url = await pushJSONDocument(jsonMetadata, `metadata.json`);
-  console.log(url);
-
-  console.log('calling the SC');
   const createTx = await contract.create(
     url,
-    template,
-    roles.length,
-    numberOfActions, // number of Actions,
-    contractAddress ?? ethers.constants.AddressZero, // contract address
-    100, // members
-    10 // coreTeamMembers
+    selectedtemplate,
+    totalRoles,
+    numOfActions,
+    contractAddress ?? ethers.constants.AddressZero,
+    100,
+    10
   );
 
   const result = await createTx.wait();
   const { events } = result;
-  console.log(events);
-
-  // @ts-ignore
-  const event = events.find((e) => e.event === 'PartnersAgreementCreated');
+  const event = events.find((e) => e.event === SWContractEventType.PartnersAgreementCreated);
 
   const partnersAgreementAddress = event.args[0].toString();
   const communityAddress = event.args[1].toString();
-
-  console.log('partnersAgreementAddress', partnersAgreementAddress);
-  console.log('communityAddress', communityAddress);
   const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
-  console.log('key', key);
   return {
     key,
     communityAddr: communityAddress,

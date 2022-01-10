@@ -1,0 +1,82 @@
+@import 'sw-web-shared/lib/styles/variables';
+@import 'sw-web-shared/lib/styles/breakpoints';
+
+.sw-create-task-base-container {
+  height: 100%;
+  position: relative;
+
+  .sw-menu-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .sw-layout-top {
+    left: 0;
+    right: 0;
+    width: 100%;
+    position: absolute;
+    justify-content: space-between !important;
+
+    .sw-toolbar-button {
+      z-index: 1;
+    }
+  }
+
+  
+
+  .sw-box {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .MuiPaper-root .sw-sidebar-top {
+    padding: 0 36px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .bottom-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+    .MuiButton-root {
+      height: 55px;
+      padding-left:  60px;
+      padding-right:  60px;
+      width: auto;
+    }
+  }
+
+  .sw-box-right-inner {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    margin-top: 20px;
+
+    & > .MuiBox-root > .MuiPaper-root {
+      border-width: 0;
+    }
+  }
+
+  .sw-box-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 12px;
+    grid-gap: 20px;
+  }
+
+  .no-item-selected {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+  }
+}

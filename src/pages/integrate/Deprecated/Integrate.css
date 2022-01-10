@@ -87,7 +87,7 @@ a {
   margin: auto auto;
 }
 
-.connect-wallet-container {
+/* .connect-wallet-container {
   top: 45px;
   right: 45px;
   height: 64px;
@@ -95,7 +95,7 @@ a {
   z-index: 10;
   display: flex;
   justify-content: flex-end;
-}
+} */
 
 .connect-wallet  {
   height: 48px;
@@ -290,6 +290,8 @@ a {
   justify-content: center;
   padding-top: 14px;
   padding-bottom: 14px;
+  color: white;
+  text-align: center;
 }
 
 .wallet-header {
@@ -482,8 +484,8 @@ a {
 .integrate-sidebar, .integrate-user-sidebar {
   background-color: #161616;
   text-align: center;
-  min-width: 20%;
-  max-width: 25%;
+  min-width: 320px;
+  max-width: 320px;
   min-height: 100vh;
 }
 
@@ -541,13 +543,20 @@ a {
 }
 
 .integrate-content-design {
-  border: 1px solid black;
+  /* border: 1px solid black;
   width: 98%;
   min-height: 95vh;
-  /* position: absolute;
-  top: 2%; */
   margin: auto auto;
-  margin-top: 20px;
+  margin-top: 20px; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.integrate-wrapper {
+  margin: 20px;
+  border: 1px solid;
+  /* height: 100%; */
 }
 
 .user-details-fields {
@@ -683,7 +692,7 @@ textarea {
 .integrate-template-content {
   /* border: 2px solid black; */
   /* border-radius: 20px; */
-  margin: 0 15px;
+  margin: 0 15px 15px;
 }
 
 .template-card {

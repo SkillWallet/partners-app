@@ -4,13 +4,24 @@
 /* eslint-disable no-alert */
 
 import { useEffect, useState } from 'react';
+import { environment, EnvMode } from '@api/environment';
 import IntegrateUserDetails from './IntegrateUserDetails';
+import ValidatePAAccessKeyDialog from '../UpdatedIntegration/ValidatePAAccessKeyDialog';
 import IntegrateWelcomeScreen from './IntegrateWelcomeScreen';
 import './Integrate.css';
 
-const Integrate = () => {
+const Integrate = (props) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [templateOptions, setTemplateOptions] = useState(null);
+  const [isActivateKeyOpen, setIsActivateKeyOpen] = useState(true);
+
+  const handleDialogClose = () => {
+    props.history.push('/');
+  };
+
+  const handleActivation = (key: string) => {
+    setIsActivateKeyOpen(false);
+  };
 
   useEffect(() => {
     const openSource = {
@@ -59,7 +70,9 @@ const Integrate = () => {
         {/* @ts-ignore */}
         <skillwallet-auth id="walletButton" className="connect-wallet" />
       </div>
-      {templateOptions === null ? (
+      {isActivateKeyOpen && environment.env !== EnvMode.Production ? (
+        <ValidatePAAccessKeyDialog handleActivation={handleActivation} handleClose={handleDialogClose} open={isActivateKeyOpen} />
+      ) : templateOptions === null ? (
         <IntegrateWelcomeScreen setSelectedTemplate={setSelectedTemplate} />
       ) : (
         <IntegrateUserDetails

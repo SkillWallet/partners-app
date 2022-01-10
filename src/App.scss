@@ -1,3 +1,16 @@
+body,
+html {
+  margin: 0;
+  font-family: 'Josefin Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
 .logo-img {
   width: 40%;
 }
@@ -13,6 +26,19 @@
   transform: translateX(-50%) translateY(-50%);
   width: 80px;
   height: 80px;
+}
+
+.connect-wallet-container {
+  top: 45px;
+  right: 45px;
+  height: 64px;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  &.hidden-wallet {
+    top: -2000px;
+  }
 }
 
 .sw-auth-component {

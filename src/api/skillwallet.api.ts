@@ -25,7 +25,22 @@ export const getMembersByCommunityAddress = async (communityAddress, isCoreTeamM
 };
 
 export const getSkillwalletAddress = () => {
-  return axios.get(`${environment.apiUrl}skillwallet/config`, {}).then((res) => res.data);
+  return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data);
+};
+
+export const partnerAgreementAccess = (partnerKey: string): Promise<boolean> => {
+  return axios
+    .post(
+      `${environment.apiUrl}/skillwallet/access`,
+      {},
+      {
+        headers: {
+          authorization: partnerKey,
+        },
+      }
+    )
+    .then((res) => res.data)
+    .catch(() => false);
 };
 
 // @OTOD: Milena to implement method for fetching logs

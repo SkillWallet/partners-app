@@ -123,9 +123,7 @@ const RolesStep = () => {
                             type="button"
                             btnType="medium"
                             name={props.input.name}
-                            onClick={() => {
-                              return props.input.onChange(!allParticipants);
-                            }}
+                            onClick={() => props.input.onChange(!allParticipants)}
                             className={allParticipants ? 'active-link' : ''}
                             startIcon={<CoreTeam />}
                             label="All"

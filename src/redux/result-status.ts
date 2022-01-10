@@ -3,5 +3,6 @@ export enum ResultState {
   'Idle' = 'Idle',
   'Loading' = 'Loading',
   'Updating' = 'Updating',
-  'Failed' = 'failed',
+  'Failed' = 'Failed',
+  'Success' = 'Success',
 }

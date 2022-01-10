@@ -84,7 +84,7 @@ const DaoIntegration = () => {
       const promise = dispatch(fetchPaUrl(userInfo?.community));
       return () => promise.abort();
     }
-  }, [dispatch, userInfo, paCommunity, paUrl]);
+  }, [dispatch, userInfo, paUrl]);
 
   return (
     <>

@@ -41,8 +41,8 @@
     "@testing-library/react": "~11.2.7",
     "@testing-library/user-event": "~12.8.3",
     "@textile/hub": "~6.3.2",
-    "axios": "~0.24.0",
     "antd": "^4.18.2",
+    "axios": "~0.24.0",
     "buffer": "^6.0.3",
     "ethers": "~5.5.2",
     "final-form": "^4.20.0",
@@ -62,7 +62,7 @@
     "redux-persist": "~6.0.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
-    "sw-web-shared": "github:DistributedTown/sw-web-shared#master",
+    "sw-web-shared": "0.0.1",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {

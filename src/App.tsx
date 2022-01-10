@@ -8,8 +8,8 @@ import { Typography } from '@mui/material';
 import { RootState } from '@store/store.model';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
-import Integrate from './pages/integrate/Integrate';
 import SWSnackbar from './components/snackbar';
+import Integrate from './pages/integrate/Deprecated/Integrate';
 import './App.scss';
 
 const LoadingMessage = () => (
@@ -68,19 +68,15 @@ function App(props) {
     };
   }, [dispatch, props.history, props.location.pathname]);
 
-  const isIntegrateFlow = props?.location?.pathname?.endsWith('integrate');
+  const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
+
+  console.log(isIntegrateFlow, 'isIntegrateFlow');
 
   return (
     <>
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
-        <div
-          className="connect-wallet-container"
-          style={{
-            // visibility: isIntegrateFlow ? "hidden" : "visible",
-            top: isIntegrateFlow ? '-2000px' : '45px',
-          }}
-        >
+        <div className={`connect-wallet-container ${isIntegrateFlow ? 'hidden-wallet' : ''}`}>
           {/* @ts-ignore */}
           <skillwallet-auth allow-create-new-user="true" partner-key="07bf1f947af8facd6c7a954b154998e895cd8682" />
         </div>

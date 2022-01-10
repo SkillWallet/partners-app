@@ -1,9 +1,13 @@
+.partner-layout-wrapper {
+
+
 .sw-sidebar-content {
   padding: 15px;
   margin-top: 48px;
 
   &.open {
     border: 1px solid;
+    width: auto !important;
   }
 }
 
@@ -47,4 +51,6 @@
   top: 0;
   z-index: 9999;
   background: black;
+}
+
 }

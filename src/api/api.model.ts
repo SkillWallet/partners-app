@@ -21,3 +21,21 @@ export interface ActivityTask {
     isCoreTeamMembersOnly: boolean;
   };
 }
+
+export interface CommunityRole {
+  credits: number;
+  roleName: string;
+  skills: any[];
+  isCoreTeamMember: boolean;
+}
+export interface CommunityIntegration {
+  properties: {
+    template: string;
+  };
+  title: string;
+  description: string;
+  image: string;
+  skills: {
+    roles: CommunityRole[];
+  };
+}

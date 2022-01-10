@@ -90,6 +90,7 @@ const Partners = (props) => {
   return (
     <>
       <SwLayout
+        className="partner-layout-wrapper"
         hideTop
         disableGutters
         sx={{
