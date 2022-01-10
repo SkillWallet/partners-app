@@ -62,7 +62,7 @@
     "redux-persist": "~6.0.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
-    "sw-web-shared": "0.0.1",
+    "sw-web-shared": "github:DistributedTown/sw-web-shared#master",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {

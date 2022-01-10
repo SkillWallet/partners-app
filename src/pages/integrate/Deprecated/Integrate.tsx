@@ -70,7 +70,7 @@ const Integrate = (props) => {
         {/* @ts-ignore */}
         <skillwallet-auth id="walletButton" className="connect-wallet" />
       </div>
-      {isActivateKeyOpen && environment.env !== EnvMode.Production ? (
+      {isActivateKeyOpen && environment.env === EnvMode.Production ? (
         <ValidatePAAccessKeyDialog handleActivation={handleActivation} handleClose={handleDialogClose} open={isActivateKeyOpen} />
       ) : templateOptions === null ? (
         <IntegrateWelcomeScreen setSelectedTemplate={setSelectedTemplate} />
