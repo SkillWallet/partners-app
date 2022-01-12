@@ -51,6 +51,20 @@ export const createPartnersAgreement = async (
   };
 };
 
+export const createActivities = async () => {
+  const contract = await Web3ContractProvider('0xBb57A7dc55b729d0266a40DcD6dFdC24285052Db', PartnersAgreementABI);
+
+  console.log('calling the SC');
+  const createTx = await contract.deployActivities(
+    '0x3910b87241e7515350ffA3bE3D642d783A41C94f',
+    '0x8e2864Dc244511dc0d917A686A70f356539a1a87'
+  );
+
+  const result = await createTx.wait();
+  const { events } = result;
+  console.log(events);
+};
+
 export const addAddressToWhitelist = async (partnersAgreementAddress, memberAddress) => {
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
@@ -67,7 +81,6 @@ export const addUrlToPA = async (partnersAgreementAddress, url) => {
 export const importContractToPA = async (partnersAgreementAddress: string, contractAddress: string) => {
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewContractAddressToAgreement(contractAddress);
-
   return createTx.wait();
 };
 
@@ -125,7 +138,11 @@ export const createActivityTask = async (partnersAgreementAddress: string, reque
   console.log('CreateTask - uri: ', uri);
 
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+  console.log('contract', contract);
+  console.log('params', ActivityTypes.CoreTeamTask, uri);
   const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
+  console.log(tx);
+  console.log(tx.wait());
   return tx.wait();
 };
 

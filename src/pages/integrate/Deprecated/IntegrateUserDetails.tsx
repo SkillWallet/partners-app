@@ -17,10 +17,7 @@ import art from '@assets/art-nft-white.png';
 import local from '@assets/local-dao-white.png';
 import { pushImage } from '@api/textile.api';
 import VerifyOwnershipModal from './VerifyOwnershipModal';
-import { createPartnersAgreement } from '@api/smart-contracts.api';
-import { IntegrationTemplates } from '../UpdatedIntegration/TemplateStep/TemplateStep';
-import { CommunityIntegration } from '@api/api.model';
-import { environment } from '@api/environment';
+import { createActivities } from '@api/smart-contracts.api';
 
 const IntegrateUserDetails = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -171,66 +168,12 @@ const IntegrateUserDetails = (props) => {
           setIsLoading(true);
           setSubmitButtonClass('integrate-deploy deploy-disabled');
 
-          const metadata: CommunityIntegration = {
-            title: values.name,
-            description: values.description,
-            image: window.sessionStorage.getItem('imageUrl'),
-            properties: {
-              template: IntegrationTemplates[props.selectedTemplate].title,
-            },
-            skills: {
-              roles: [
-                {
-                  credits: 24,
-                  roleName: values.skillOne,
-                  skills: [],
-                  isCoreTeamMember: false,
-                },
-                {
-                  credits: 12,
-                  roleName: values.skillTwo,
-                  skills: [],
-                  isCoreTeamMember: false,
-                },
-                {
-                  credits: 6,
-                  roleName: values.skillThree,
-                  skills: [],
-                  isCoreTeamMember: false,
-                },
-                {
-                  credits: 24,
-                  roleName: 'Founder',
-                  skills: [],
-                  isCoreTeamMember: true,
-                },
-                {
-                  credits: 12,
-                  roleName: 'Investor',
-                  skills: [],
-                  isCoreTeamMember: true,
-                },
-                {
-                  credits: 6,
-                  roleName: 'Contributor',
-                  skills: [],
-                  isCoreTeamMember: true,
-                },
-              ],
-            },
-          };
-
-          const partnersDetails = await createPartnersAgreement(
-            environment.partnersRegistryAdress,
-            metadata,
-            values.numberOfActions,
-            contractAddress,
-            props.selectedTemplate
+          const partnersDetails = await createActivities(
           );
 
           setIsLoading(false);
           setSubmitButtonClass('integrate-deploy');
-          setKey(partnersDetails.key);
+          // setKey(partnersDetails.key);
           setPartnersDetails(partnersDetails);
         }}
       >
