@@ -39,3 +39,13 @@ export interface CommunityIntegration {
     roles: CommunityRole[];
   };
 }
+
+export interface CommunityContractError {
+  code: number;
+  message: string;
+  data: {
+    code: number;
+    data: any;
+    message: string;
+  };
+}

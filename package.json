@@ -90,7 +90,7 @@
     "react-app-rewire-alias": "~1.1.7",
     "react-app-rewired": "~2.1.8",
     "redux-logger": "~3.0.6",
-    "sw-abi-types": "github:SkillWallet/abi-types#main",
+    "@skill-wallet/sw-abi-types": "0.0.1",
     "typescript": "~4.5.3"
   }
 }

@@ -1,4 +1,4 @@
-import { SWContractFunctions, SWContractEvents } from 'sw-abi-types';
+import { SWContractFunctions, SWContractEvents } from '@skill-wallet/sw-abi-types';
 
 declare module 'ethers' {
   export class Contract extends BaseContract implements SWContractFunctions {

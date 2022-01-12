@@ -1,10 +1,19 @@
 import { ethers } from 'ethers';
-import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI, SWContractEventType } from 'sw-abi-types';
+import { DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI, SWContractEventType } from '@skill-wallet/sw-abi-types';
 import { base64toFile } from 'sw-web-shared';
 import { Web3ContractProvider } from './web3.provider';
 import { pushImage, pushJSONDocument } from './textile.api';
-import { ActivityTask, ActivityTypes, CommunityIntegration } from './api.model';
+import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
 import { generatePartnersKey } from './dito.api';
+
+function NoEventException(value: CommunityContractError) {
+  this.value = value;
+  this.message = 'No event found!';
+  // eslint-disable-next-line func-names
+  this.toString = function () {
+    return this.value + this.message;
+  };
+}
 
 export const createPartnersAgreement = async (
   partnersRegistryAdress: string,
@@ -54,21 +63,63 @@ export const createPartnersAgreement = async (
 export const addAddressToWhitelist = async (partnersAgreementAddress, memberAddress) => {
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
-  console.log(createTx);
-  return createTx.wait();
+  const result = await createTx.wait();
+  const event = result.events.find((e) => e.event === SWContractEventType.CoreTeamMemberAdded);
+  if (!event) {
+    throw new NoEventException({
+      code: -32603,
+      message: 'Internal JSON-RPC error.',
+      data: {
+        code: 3,
+        data: '',
+        message: 'SkillWallet:CoreTeamMemberAddedEventMissing',
+      },
+    });
+  }
+  return event.args;
 };
 
 export const addUrlToPA = async (partnersAgreementAddress, url) => {
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addURL(url);
-  return createTx.wait();
+  const result = await createTx.wait();
+  const { events } = result;
+  const event = events.find((e) => e.event === SWContractEventType.UrlAdded);
+
+  if (!event) {
+    throw new NoEventException({
+      code: -32603,
+      message: 'Internal JSON-RPC error.',
+      data: {
+        code: 3,
+        data: '',
+        message: 'SkillWallet:UrlAddedEventMissing',
+      },
+    });
+  }
+  return event.args;
 };
 
 export const importContractToPA = async (partnersAgreementAddress: string, contractAddress: string) => {
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const createTx = await contract.addNewContractAddressToAgreement(contractAddress);
 
-  return createTx.wait();
+  const result = await createTx.wait();
+  const { events } = result;
+  const event = events.find((e) => e.event === SWContractEventType.PartnersContractAdded);
+
+  if (!event) {
+    throw new NoEventException({
+      code: -32603,
+      message: 'Internal JSON-RPC error.',
+      data: {
+        code: 3,
+        data: '',
+        message: 'SkillWallet:PartnersContractAddedEventMissing',
+      },
+    });
+  }
+  return event.args;
 };
 
 export const getPAUrl = async (partnersAgreementAddress) => {
