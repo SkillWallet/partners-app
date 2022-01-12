@@ -128,3 +128,5 @@ export const createActivityTask = async (partnersAgreementAddress: string, reque
   const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
   return tx.wait();
 };
+
+console.log(DitoCommunityAbi, PartnersAgreementABI, PartnersRegistryABI, 'PartnersAgreementABI');
