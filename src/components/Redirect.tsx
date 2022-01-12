@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
-import { SkillWalletAbi } from 'sw-abi-types';
+import { SkillWalletAbi } from '@skill-wallet/sw-abi-types';
 
 const Redirect = () => {
   const skillWalletAddress = '0xC048276176B8D6541ac0b39B853067202b571E08';
