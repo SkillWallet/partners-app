@@ -51,6 +51,7 @@ function MembersAndActivities(props) {
   useEffect(() => {
     const url = props.isCoreTeamMembers ? '/partner/dashboard/core-team' : '/partner/dashboard/community';
     dispatch(setPreviusRoute(url));
+    console.log('Previous route from Members');
   }, [dispatch, props.isCoreTeamMembers]);
 
   useEffect(() => {

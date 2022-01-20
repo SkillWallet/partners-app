@@ -66,6 +66,7 @@ const DaoIntegration = () => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
+    console.log('Previous route from Integrations DAO');
   }, [dispatch]);
 
   useEffect(() => {

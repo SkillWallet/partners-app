@@ -13,12 +13,13 @@ const EventFactoryDashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/'));
+    dispatch(setPreviusRoute('/partner/dashboard'));
+    console.log('Previous route from Event Factory dashboard');
   }, [dispatch]);
 
   return (
     <Box
-      className="sw-main-dashboard-wrapper"
+      className="sw-factory-dashboard-wrapper"
       sx={{
         height: '100%',
         display: 'flex',

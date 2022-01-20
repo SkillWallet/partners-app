@@ -18,6 +18,7 @@ export interface ActivityTask {
     participants: number;
     allParticipants: boolean;
     description: string;
+    title: string;
     isCoreTeamMembersOnly: boolean;
   };
 }
@@ -34,8 +35,18 @@ export interface CommunityIntegration {
   };
   title: string;
   description: string;
-  image: string;
+  image: File | string;
   skills: {
     roles: CommunityRole[];
+  };
+}
+
+export interface CommunityContractError {
+  code: number;
+  message: string;
+  data: {
+    code: number;
+    data: any;
+    message: string;
   };
 }

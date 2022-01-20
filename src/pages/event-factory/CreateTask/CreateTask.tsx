@@ -2,32 +2,26 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SwStepper } from 'sw-web-shared';
 import { Route, Switch } from 'react-router-dom';
-import { RootState } from '@store/store.model';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetActivityTaskState } from '@store/Activity/create-activity-task.reducer';
+import { ActivityCurrentStep, resetActivityTaskState } from '@store/Activity/create-task.reducer';
 import { setPreviusRoute } from '@store/ui-reducer';
 import CategoryStep from './CategoryStep/CategoryStep';
 import DescriptionStep from './DescriptionStep/DescriptionStep';
 import RolesStep from './RolesStep/RolesStep';
 import './CreateTask.scss';
 
-const CreateTask = (props) => {
+const CreateTask = () => {
   const dispatch = useDispatch();
-  const { description, title, activeStep, descriptionTooltip, stepperText } = useSelector(
-    (state: RootState) => state.activityTask.currentStep
-  );
+  const { description, title, activeStep, descriptionTooltip, stepperText } = useSelector(ActivityCurrentStep);
   const [steps] = useState([...Array(3)]);
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/event-factory'));
-  }, [dispatch]);
-
-  useEffect(
-    () => () => {
+    console.log('Previous route from Activity Create task');
+    return () => {
       dispatch(resetActivityTaskState());
-    },
-    [dispatch]
-  );
+    };
+  }, [dispatch]);
 
   return (
     <div className="sw-create-task-base-container">
@@ -42,18 +36,23 @@ const CreateTask = (props) => {
         <Box sx={{ maxWidth: activeStep !== -1 ? '650px' : '100%', flexGrow: 1 }} className="sw-box-right-inner">
           <SwStepper
             mode="dark"
-            stepperText={stepperText}
             title={title}
+            stepperText={stepperText}
             steps={steps}
             description={description}
             activeStep={activeStep}
             descriptionTooltip={descriptionTooltip}
+            dotStyles={{
+              width: '45px',
+              height: '45px',
+            }}
+            maxWidth="580px"
           />
-          <Box className="sw-box" sx={{ maxWidth: activeStep === -1 ? '100%' : '450px', width: '100%', margin: '20px auto' }}>
+          <Box className="sw-box" sx={{ maxWidth: activeStep === -1 ? '100%' : '580px', width: '100%', margin: '20px auto' }}>
             <Switch>
-              <Route exact path="/partner/event-factory/create-task" component={CategoryStep} {...props} />
-              <Route path="/partner/event-factory/create-task/roles" component={RolesStep} {...props} />
-              <Route path="/partner/event-factory/create-task/description" component={DescriptionStep} {...props} />
+              <Route exact path="/partner/event-factory/create-task" component={CategoryStep} />
+              <Route path="/partner/event-factory/create-task/roles" component={RolesStep} />
+              <Route path="/partner/event-factory/create-task/description" component={DescriptionStep} />
             </Switch>
           </Box>
         </Box>

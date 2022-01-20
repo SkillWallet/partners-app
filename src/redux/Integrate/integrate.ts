@@ -8,14 +8,6 @@ import { partnerAgreementAccess } from '@api/skillwallet.api';
 import { environment } from '@api/environment';
 
 export interface IntegrateTaskState {
-  currentStep: {
-    activeStep: number;
-    title: string;
-    description: string;
-    toPrevBtnPath: string;
-    stepperText: string;
-    descriptionTooltip: string;
-  };
   communityInfo: {
     name: string;
     avatar: string;
@@ -27,6 +19,7 @@ export interface IntegrateTaskState {
   startFromScratch: boolean;
   importedContract: boolean;
   status: ResultState;
+  keyStatus: ResultState;
   agreement: {
     key: string;
     communityAddr: string;
@@ -37,7 +30,6 @@ export interface IntegrateTaskState {
 }
 
 const initialState: IntegrateTaskState = {
-  currentStep: {} as any,
   communityInfo: null,
   roles: [],
   selectedTemplate: null,
@@ -45,6 +37,7 @@ const initialState: IntegrateTaskState = {
   startFromScratch: true,
   importedContract: false,
   status: ResultState.Idle,
+  keyStatus: ResultState.Idle,
   agreement: null,
   isValidKey: null,
   agreementKey: null,
@@ -88,9 +81,6 @@ export const integrateSlice = createSlice({
   name: 'integrate',
   initialState,
   reducers: {
-    integrateSetCurrentStep(state, action) {
-      state.currentStep = action.payload;
-    },
     integrateUpdateCommunityInfo(state, action) {
       state.communityInfo = action.payload;
     },
@@ -130,18 +120,18 @@ export const integrateSlice = createSlice({
         state.status = ResultState.Failed;
       })
       .addCase(validatePartnerAgreementKey.pending, (state) => {
-        state.status = ResultState.Loading;
+        state.keyStatus = ResultState.Loading;
       })
       .addCase(validatePartnerAgreementKey.fulfilled, (state, action) => {
         if (action.payload) {
-          state.status = ResultState.Idle;
+          state.keyStatus = ResultState.Idle;
         } else {
-          state.status = ResultState.Success;
+          state.keyStatus = ResultState.Success;
         }
         state.isValidKey = action.payload;
       })
       .addCase(validatePartnerAgreementKey.rejected, (state) => {
-        state.status = ResultState.Failed;
+        state.keyStatus = ResultState.Failed;
         state.isValidKey = false;
       });
   },
@@ -155,10 +145,12 @@ export const {
   resetIntegrateState,
   integrateUpdateStartFromScratch,
   integrateCommunityInfo,
-  integrateSetCurrentStep,
 } = integrateSlice.actions;
 
 const roles = (state) => state.integrate.roles;
+export const IntegrateStatus = (state: any) => state.integrate.status as ResultState;
+export const IntegrateKeyStatus = (state: any) => state.integrate.keyStatus as ResultState;
+export const IntegrateAgreement = (state: any) => state.integrate.agreement as any;
 export const getRoles = createSelector(roles, (x1): CommunityRole[] => {
   const [role1, role2, role3] = x1;
   return [

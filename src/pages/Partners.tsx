@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
-import { Link, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { SwLayout, SwSidebar, SwMenuItems } from 'sw-web-shared';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useMediaQuery, IconButton, Tooltip, Typography, Avatar, Button, Theme } from '@mui/material';
+import { useMediaQuery, IconButton, Tooltip, Typography, Avatar, Button, Theme, Box } from '@mui/material';
 import { ReactComponent as DaoStatsIcon } from '@assets/dao-stats.svg';
 import { ReactComponent as DashboardIcon } from '@assets/dashboard.svg';
 import { ReactComponent as IntegrationIcon } from '@assets/integration.svg';
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { fetchCommunity } from '@store/Community/community.reducer';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
+import NotFound from '@components/NotFound';
 import CoreTeam from './core-team/CoreTeam';
 import Community from './community/Community';
 import Contracts from './integrations-and-contracts/contracts/Contracts';
@@ -25,13 +26,17 @@ import CoreTeamWhitelist from './core-team/core-team-whitelist/CoreTeamWhitelist
 import EventFactoryDashboard from './event-factory/EventFactoryDashboard/EventFactoryDashboard';
 import CreateTask from './event-factory/CreateTask/CreateTask';
 import SuccessStep from './event-factory/CreateTask/SuccessStep/SuccessStep';
+import Tasks from './event-factory/Tasks/Tasks';
+import TaskDetails from './event-factory/Tasks/TaskDetails';
+import TaskSubmit from './event-factory/Tasks/TaskSubmit';
+
 import './partners.scss';
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
   const [opened, setOpened] = useState(true);
   const small = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-  const history = useHistory();
+  const location = useLocation();
 
   const handleToggle = useCallback(() => {
     setOpened(!opened);
@@ -41,8 +46,11 @@ const Partners = (props) => {
   const { previousRoute } = useSelector((state: RootState) => state.ui);
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/'));
-  }, [dispatch]);
+    if (location.pathname === '/partner/dashboard') {
+      dispatch(setPreviusRoute('/'));
+    }
+    console.log('Previous route from Partners');
+  }, [dispatch, location]);
 
   useEffect(() => {
     if (userInfo?.community) {
@@ -93,13 +101,10 @@ const Partners = (props) => {
         className="partner-layout-wrapper"
         hideTop
         disableGutters
-        sx={{
-          backgroundColor: 'background.paper',
-        }}
         scrollbarStyles={{
           margin: '24px',
           width: 'auto',
-          padding: '90px 70px',
+          // padding: '90px 65px',
           border: '2px solid',
           height: 'calc(100% - 48px)',
         }}
@@ -137,49 +142,67 @@ const Partners = (props) => {
           </SwSidebar>
         }
       >
-        <div className="sw-menu-icon">
-          {small && (
-            <Tooltip title="Open sidebar" placement="right" color="white">
-              <IconButton className="sw-toolbar-button" color="info" onClick={handleToggle}>
-                <MenuIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
-        <div className="back-button">
-          <Button component={Link} to={previousRoute} size="small" color="primary">
-            <KeyboardArrowLeft sx={{ marginTop: '-3px' }} />
-            Back
-          </Button>
-        </div>
+        <>
+          <div className="sw-menu-icon">
+            {small && (
+              <Tooltip title="Open sidebar" placement="right" color="white">
+                <IconButton className="sw-toolbar-button" color="info" onClick={handleToggle}>
+                  <MenuIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+          <div className="back-button">
+            <Button component={Link} to={previousRoute} size="small" color="primary">
+              <KeyboardArrowLeft sx={{ marginTop: '-3px' }} />
+              Back
+            </Button>
+          </div>
 
-        <Switch>
-          {/* Partner */}
-          <Route exact path="/partner/dashboard" component={Dashboard} {...props} />
-          {/* Core Team Routes */}
-          <Route exact path="/partner/dashboard/core-team" component={CoreTeam} {...props} />
-          <Route exact path="/partner/dashboard/core-team/members" render={() => <MembersAndActivities {...props} isCoreTeamMembers />} />
-          <Route exact path="/partner/dashboard/core-team/whitelist" component={CoreTeamWhitelist} {...props} />
-          <Route exact path="/partner/dashboard/core-team/roles" render={() => <Roles {...props} isCoreTeam />} />
-          {/* Partner > Community */}
-          <Route exact path="/partner/dashboard/community" component={Community} {...props} />
-          <Route
-            exact
-            path="/partner/dashboard/community/members"
-            render={() => <MembersAndActivities {...props} isCoreTeamMembers={false} />}
-          />
-          <Route exact path="/partner/dashboard/community/roles" render={() => <Roles {...props} isCoreTeam={false} />} />
+          <Box
+            sx={{
+              padding: '90px 65px',
+              height: 'calc(100% - 180px)',
+            }}
+          >
+            <Switch>
+              {/* Partner */}
+              <Route exact path="/partner/dashboard" component={Dashboard} {...props} />
+              {/* Core Team Routes */}
+              <Route exact path="/partner/dashboard/core-team" component={CoreTeam} {...props} />
+              <Route
+                exact
+                path="/partner/dashboard/core-team/members"
+                render={() => <MembersAndActivities {...props} isCoreTeamMembers />}
+              />
+              <Route exact path="/partner/dashboard/core-team/whitelist" component={CoreTeamWhitelist} {...props} />
+              <Route exact path="/partner/dashboard/core-team/roles" render={() => <Roles {...props} isCoreTeam />} />
+              <Route path="/partner/dashboard/core-team/tasks" exact component={Tasks} {...props} />
+              <Route path="/partner/dashboard/core-team/tasks/:taskActivityId" exact component={TaskDetails} {...props} />
+              <Route path="/partner/dashboard/core-team/tasks/:taskActivityId/submit" component={TaskSubmit} {...props} />
+              {/* Partner > Community */}
+              <Route exact path="/partner/dashboard/community" component={Community} {...props} />
+              <Route
+                exact
+                path="/partner/dashboard/community/members"
+                render={() => <MembersAndActivities {...props} isCoreTeamMembers={false} />}
+              />
+              <Route exact path="/partner/dashboard/community/roles" render={() => <Roles {...props} isCoreTeam={false} />} />
 
-          {/* Partner> Integration and contracts */}
-          <Route exact path="/partner/integrations-and-contracts" component={IntegrationDashboard} {...props} />
-          <Route exact path="/partner/integrations-and-contracts/dao-integration" component={DaoIntegration} {...props} />
-          <Route exact path="/partner/integrations-and-contracts/contracts" component={Contracts} {...props} />
+              {/* Partner> Integration and contracts */}
+              <Route exact path="/partner/integrations-and-contracts" component={IntegrationDashboard} {...props} />
+              <Route exact path="/partner/integrations-and-contracts/dao-integration" component={DaoIntegration} {...props} />
+              <Route exact path="/partner/integrations-and-contracts/contracts" component={Contracts} {...props} />
 
-          {/* Event factory */}
-          <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
-          <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
-          <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
-        </Switch>
+              {/* Event factory */}
+              <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
+              <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
+              <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
+
+              <Route component={NotFound} />
+            </Switch>
+          </Box>
+        </>
       </SwLayout>
     </>
   );

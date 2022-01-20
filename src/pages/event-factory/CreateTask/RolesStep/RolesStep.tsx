@@ -1,50 +1,45 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { TextField, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
-import { ReactComponent as CoreTeam } from '@assets/core-team.svg';
-import { RootState } from '@store/store.model';
-import { Field } from 'react-final-form';
+import { ReactComponent as TagIcon } from '@assets/tag.svg';
 import { getCommunityRoles } from '@store/Community/community.reducer';
-import SwForm from '@components/form-components/SwForm';
-import {
-  activityTaskToggleAllParticipants,
-  activityTaskUpdateParticipants,
-  activityTaskSetCurrentStep,
-  activityTaskSelectRole,
-} from '@store/Activity/create-activity-task.reducer';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { ActivityCurrentStep, ActivityCurrentTask, activitySetCurrentStep, activityUpdateTask } from '@store/Activity/create-task.reducer';
 import './RolesStep.scss';
 
 const RolesStep = () => {
   const dispatch = useDispatch();
-  const {
-    currentStep: { activeStep },
-    role,
-    isCoreTeamMembersOnly,
-    allParticipants,
-    participants,
-  } = useSelector((state: RootState) => state.activityTask);
+  const history = useHistory();
+  const { activeStep } = useSelector(ActivityCurrentStep);
+  const { role, isCoreTeamMembersOnly, allParticipants, participants } = useSelector(ActivityCurrentTask);
   const [roles] = useState(useSelector(getCommunityRoles(isCoreTeamMembersOnly)));
 
-  const changeHandler = async ({ values }) => {
-    if (values.allParticipants !== allParticipants) {
-      dispatch(activityTaskToggleAllParticipants(values.allParticipants));
-    }
+  const { control, handleSubmit, watch } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      role,
+      participants,
+      allParticipants,
+    },
+  });
 
-    if (values.participants !== participants) {
-      dispatch(activityTaskUpdateParticipants(+(values.participants || 0)));
-    }
+  const values = watch();
+
+  const onSubmit = (data: any) => {
+    dispatch(activityUpdateTask(data));
+    history.push('/partner/event-factory/create-task/description');
   };
 
   useEffect(() => {
     if (activeStep !== 1) {
       dispatch(
-        activityTaskSetCurrentStep({
+        activitySetCurrentStep({
           activeStep: 1,
-          title: 'Step 2 - Assign role',
-          description: 'What Role would you like to assign this Task to?',
-          toPrevBtnPath: null,
+          title: null,
+          description: null,
+          toPrevBtnPath: '/partner/event-factory/create-task',
           left: null,
         })
       );
@@ -53,19 +48,52 @@ const RolesStep = () => {
 
   return (
     <>
-      <div className="sw-roles-wrapper">
+      <form className="sw-roles-wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <Typography
+          sx={{
+            color: 'primary.main',
+            textAlign: 'center',
+            mb: 4,
+          }}
+          component="div"
+          variant="h4"
+        >
+          What Role would you like to assign this Task to?
+        </Typography>
         <div className="sw-roles-options">
           {roles.map(({ roleName }) => {
             return (
-              <SwButton
-                key={roleName}
-                mode="light"
-                btnType="medium"
-                onClick={() => dispatch(activityTaskSelectRole(roleName))}
-                className={role === roleName ? 'active-link' : ''}
-                startIcon={<CoreTeam />}
-                label={roleName}
-              />
+              <Fragment key={roleName}>
+                <Controller
+                  rules={{
+                    required: true,
+                  }}
+                  name="role"
+                  control={control}
+                  render={({ field: { name, value, onChange } }) => {
+                    return (
+                      <SwButton
+                        mode="light"
+                        name={name}
+                        type="button"
+                        startIcon={<TagIcon />}
+                        sx={{
+                          width: '115px',
+                          height: '35px',
+                          '.MuiButton-startIcon svg': {
+                            width: '16px',
+                            height: '16px',
+                          },
+                        }}
+                        onClick={() => onChange(roleName)}
+                        className={value === roleName ? 'active-link' : ''}
+                      >
+                        <Typography variant="body2">{roleName}</Typography>
+                      </SwButton>
+                    );
+                  }}
+                />
+              </Fragment>
             );
           })}
         </div>
@@ -78,76 +106,75 @@ const RolesStep = () => {
             mt: 2,
           }}
           component="div"
-          variant="subtitle1"
+          variant="h4"
         >
           How many Members should participate?
         </Typography>
 
-        <SwForm changeHandler={changeHandler} initialValues={{ allParticipants, participants }}>
-          {({ values }) => {
-            return (
-              <div className="form-fields">
-                <div className="sw-form-field">
-                  <div className="sw-form-field-content">
-                    <Field
-                      name="participants"
-                      render={(props) => {
-                        return (
-                          <TextField
-                            name={props.input.name}
-                            value={props.input.value}
-                            onChange={props.input.onChange}
-                            type="number"
-                            autoFocus
-                            required
-                            disabled={allParticipants}
-                            focused
-                            inputProps={{ min: 0 }}
-                            error={props.meta.touched && props.meta.pristine && !props.input.value}
-                            color="primary"
-                            placeholder="Number"
-                          />
-                        );
-                      }}
+        <div className="form-fields">
+          <div className="sw-form-field">
+            <div className="sw-form-field-content">
+              <Controller
+                name="participants"
+                control={control}
+                rules={{ min: 0 }}
+                render={({ field: { name, value, onChange } }) => {
+                  return (
+                    <TextField
+                      type="number"
+                      autoFocus
+                      required
+                      disabled={values.allParticipants}
+                      focused
+                      id={name}
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                      inputProps={{ min: 0 }}
+                      color="primary"
+                      placeholder="Number"
                     />
-                  </div>
-                </div>
-                <div className="sw-form-field">
-                  <div className="sw-form-field-content">
-                    <Field
-                      name="allParticipants"
-                      render={(props) => {
-                        return (
-                          <SwButton
-                            mode="light"
-                            type="button"
-                            btnType="medium"
-                            name={props.input.name}
-                            onClick={() => props.input.onChange(!allParticipants)}
-                            className={allParticipants ? 'active-link' : ''}
-                            startIcon={<CoreTeam />}
-                            label="All"
-                          />
-                        );
+                  );
+                }}
+              />
+            </div>
+          </div>
+          <div className="sw-form-field">
+            <div className="sw-form-field-content">
+              <Controller
+                name="allParticipants"
+                control={control}
+                render={({ field: { name, value, onChange } }) => {
+                  return (
+                    <SwButton
+                      name={name}
+                      mode="light"
+                      type="button"
+                      sx={{
+                        width: '100px',
+                        height: '30px',
                       }}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          }}
-        </SwForm>
+                      onClick={() => onChange(!value)}
+                      className={value ? 'active-link' : ''}
+                    >
+                      <Typography variant="body2">All</Typography>
+                    </SwButton>
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
 
-        <div className="bottom-action">
+        <div className="bottom-action" style={{ marginTop: '80px' }}>
           <SwButton
+            disabled={!values.role || (values.allParticipants ? false : +values.participants === 0)}
             mode="light"
-            disabled={role === null || (allParticipants ? false : participants === 0)}
-            component={Link}
-            to="/partner/event-factory/create-task/description"
+            type="submit"
             label="Next: Describe the Task"
           />
         </div>
-      </div>
+      </form>
     </>
   );
 };
