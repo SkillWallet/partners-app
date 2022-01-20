@@ -32,15 +32,19 @@ const ValidatePAAccessKeyDialog = ({ open, handleClose, handleActivation, fullSc
       };
   return (
     <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
-      <DialogTitle>
-        <Typography sx={{ color: 'primary.main', textAlign: 'center' }} component="div" variant="h1">
+      <DialogTitle
+        sx={{
+          bgcolor: 'background.default',
+        }}
+      >
+        <Typography sx={{ color: 'text.primary', textAlign: 'center' }} component="div" variant="h1">
           Validate Access Key
         </Typography>
       </DialogTitle>
       <DialogContent
         sx={{
           ...dialogSize,
-          bgcolor: 'background.paper',
+          bgcolor: 'background.default',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -59,6 +63,23 @@ const ValidatePAAccessKeyDialog = ({ open, handleClose, handleActivation, fullSc
           <div className="sw-form-field">
             <div className="sw-form-field-content">
               <TextField
+                sx={{
+                  '.MuiInputBase-input': {
+                    color: 'black',
+                    '&::placeholder': {
+                      opacity: 1,
+                      color: '#707070',
+                    },
+                    '&::-webkit-input-placeholder': {
+                      color: '#707070',
+                      opacity: 1,
+                    },
+                    '&::-moz-placeholder': {
+                      color: '#707070',
+                      opacity: 1,
+                    },
+                  },
+                }}
                 autoFocus
                 disabled={status === ResultState.Loading}
                 required
@@ -78,8 +99,13 @@ const ValidatePAAccessKeyDialog = ({ open, handleClose, handleActivation, fullSc
           ) : null}
         </div>
       </DialogContent>
-      <DialogActions className="validate-actions">
-        <SwButton sx={{ height: '55px' }} type="button" disabled={!key || status === ResultState.Loading} mode="light" onClick={validate}>
+      <DialogActions
+        sx={{
+          bgcolor: 'background.default',
+        }}
+        className="validate-actions"
+      >
+        <SwButton mode="dark" sx={{ height: '55px' }} type="button" disabled={!key || status === ResultState.Loading} onClick={validate}>
           {status === ResultState.Loading ? <CircularProgress size="35px" /> : 'Validate'}
         </SwButton>
       </DialogActions>

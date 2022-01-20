@@ -5,10 +5,14 @@
 
 .sw-description-wrapper {
   width: 100%;
-  max-width: 310px;
+  max-width: 450px;
 
   .sw-form-field {
     width: 100%;
+
+    + .sw-form-field {
+      margin-top: 15px;
+    }
   }
 
   .sw-form-field-content {
@@ -28,6 +32,9 @@
 
     .MuiInputBase-root {
       color: $primary-color;
+      input {
+        text-align: center !important;
+      }
 
       &::before,
       &::after {

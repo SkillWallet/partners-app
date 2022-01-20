@@ -24,6 +24,7 @@ const Community = (props) => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard'));
+    console.log('Previous route from Community Dashboard');
   }, [dispatch]);
 
   const shareMessage = `Hey there! We've just deployed ${community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;

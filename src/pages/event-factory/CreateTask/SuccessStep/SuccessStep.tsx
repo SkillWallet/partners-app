@@ -1,9 +1,19 @@
-import { CardContent, Box, Card, Typography, Button, CardActions } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import { setPreviusRoute } from '@store/ui-reducer';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { SwButton } from 'sw-web-shared';
 import './SuccessStep.scss';
 
 const SuccessStep = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setPreviusRoute('/partner/event-factory'));
+    console.log('Previous route from Activity Create success');
+  }, [dispatch]);
+
   return (
     <>
       <div className="sw-success-wrapper">
@@ -17,57 +27,31 @@ const SuccessStep = () => {
             my: 'auto',
           }}
         >
-          <Card
+          <Typography align="center" color="primary.main" variant="h2" component="div">
+            Success! Your Task has been created, and deployed on the Blockchain 🎉
+          </Typography>
+          <Typography align="center" color="primary.main" variant="h2" component="div">
+            Now just share it with your [Team/Community] to get things started!
+          </Typography>
+
+          <Button
             sx={{
-              height: '313px',
-              width: '415px',
-              my: '20px',
-              p: '40px',
-              border: '1px solid',
-              borderColor: 'primary.main',
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: 'background.dark',
+              my: '40px',
             }}
+            component={Link}
+            to="/partner/dashboard/core-team/tasks"
+            size="small"
+            color="primary"
           >
-            <CardContent
-              sx={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-              }}
-            >
-              <Typography align="center" color="primary.main" variant="body1" component="div">
-                Success, the Event has been created, and deployed on the Blockchain 🎉
-              </Typography>
-              <Typography align="center" color="primary.main" variant="body1" component="div">
-                Now just share your Task on Discord, and get things started!
-              </Typography>
-            </CardContent>
-            <CardActions
-              sx={{
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                sx={{
-                  px: '20px',
-                }}
-                component={Link}
-                to="/partner/event-factory/create-task"
-                size="small"
-                color="primary"
-              >
-                Open new task
-              </Button>
-            </CardActions>
-          </Card>
+            See all Team Tasks
+          </Button>
+
           <SwButton
             sx={{
-              width: '415px',
+              width: '600px',
+              height: '70px',
             }}
-            mode="light"
+            mode="dark"
             label="Share on discord"
           />
         </Box>

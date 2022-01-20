@@ -59,7 +59,8 @@ const IntegrationDashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/'));
+    dispatch(setPreviusRoute('/partner/dashboard'));
+    console.log('Previous route from Integrations Dashboard');
   }, [dispatch]);
 
   return (

@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route, Redirect as RedirectRoute, useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactComponent as SwLogo } from '@assets/sw-logo-icon.svg';
 import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
-import { Typography } from '@mui/material';
 import { RootState } from '@store/store.model';
+import NotFound from '@components/NotFound';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
 import Integrate from './pages/integrate/Deprecated/Integrate';
 import './App.scss';
+import PartnerIntegration from './pages/integrate/UpdatedIntegration/PartnerIntegration';
 
 const LoadingMessage = () => (
   <div className="app-loading">
@@ -18,24 +19,10 @@ const LoadingMessage = () => (
   </div>
 );
 
-function NoMatch() {
-  return (
-    <Typography
-      sx={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      variant="h1"
-    >
-      Not found!
-    </Typography>
-  );
-}
-
 function App(props) {
   const dispatch = useDispatch();
+  const location = useLocation<any>();
+  const history = useHistory();
   const [isLoading, setLoading] = useState(true);
   const { isAutheticated } = useSelector((state: RootState) => state.auth);
 
@@ -51,14 +38,19 @@ function App(props) {
           })
         );
 
-        const goTo = props.location.pathname === '/' ? 'partner/dashboard' : props.location.pathname;
-        props.history.push(goTo);
+        const shouldGoToDashboard = location.pathname === '/' || location.pathname === '/integrate';
+        const goTo = shouldGoToDashboard ? 'partner/dashboard' : location.pathname;
+
+        const returnUrl = location.state?.from;
+        history.push(returnUrl || goTo);
       } else {
         dispatch(resetAuthState());
-        props.history.push('/');
+        history.push('/');
       }
     };
+
     const onSWInit = async () => setLoading(false);
+
     window.addEventListener('initSkillwalletAuth', onSWInit);
     window.addEventListener('onSkillwalletLogin', onSWLogin);
 
@@ -66,11 +58,9 @@ function App(props) {
       window.removeEventListener('initSkillwalletAuth', onSWInit);
       window.removeEventListener('onSkillwalletLogin', onSWLogin);
     };
-  }, [dispatch, props.history, props.location.pathname]);
+  }, [dispatch, history, location.pathname, location.state?.from]);
 
   const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
-
-  console.log(isIntegrateFlow, 'isIntegrateFlow');
 
   return (
     <>
@@ -85,10 +75,10 @@ function App(props) {
         ) : (
           <Switch>
             <Route exact component={GetStarted} path="/" {...props} />
-            <Route path="/integrate" component={Integrate} {...props} />
+            <Route path="/integrate" component={PartnerIntegration} {...props} />
             <Route path="/redirect" component={Redirect} {...props} />
             {isAutheticated && <Route path="/partner" component={Partners} {...props} />}
-            <Route path="*" component={NoMatch} />
+            {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
           </Switch>
         )}
       </div>

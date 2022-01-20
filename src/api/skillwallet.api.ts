@@ -17,6 +17,20 @@ export const getUsersData = () => {
     .then((res) => res.data);
 };
 
+export const getTasks = async (activitiesAddress: string, skillwalletId = 10) => {
+  const params = {
+    activitiesAddress,
+  };
+  return axios.get(`${environment.apiUrl}/skillwallet/${skillwalletId}/tasks`, { params }).then((res) => res.data);
+};
+
+export const getTask = async (activityId: string, activitiesAddress: string, skillwalletId = 10) => {
+  const params = {
+    activitiesAddress,
+  };
+  return axios.get(`${environment.apiUrl}/skillwallet/${skillwalletId}/tasks/${activityId}`, { params }).then((res) => res.data);
+};
+
 export const getMembersByCommunityAddress = async (communityAddress, isCoreTeamMember = false) => {
   const params = {
     coreTeamMembers: isCoreTeamMember,

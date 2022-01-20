@@ -21,6 +21,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard'));
+    console.log('Previous route from Partner Dashboard');
   }, [dispatch]);
 
   return (

@@ -3,12 +3,14 @@
 
 
 
-.sw-description-wrapper {
+.sw-community-description {
   width: 100%;
   max-width: 310px;
+  margin: 0 auto;
 
   .sw-form-field {
-    width: 100%;
+    background: white;
+    padding: 15px 15px 12px 15px;
   }
 
 
@@ -39,8 +41,18 @@
 
   }
 
+  .upload-field {
+    display: flex;
+  }
+
   .sw-image-upload {
-    min-height: 60px;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
   }
 
   .sw-form-field-content {
@@ -58,12 +70,17 @@
       margin-right: 0;
     }
 
+    fieldset {
+      border: none;
+    }
+
     .MuiInputBase-root {
-      color: $primary-color;
+      // color: $primary-color;
+      padding: 0px;
 
       &::before,
       &::after {
-        border-bottom: 2px solid $primary-color;
+        // border-bottom: 2px solid $primary-color;
       }
     }
   }

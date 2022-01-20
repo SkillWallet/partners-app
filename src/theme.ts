@@ -25,6 +25,10 @@ const palette = {
   },
 };
 
+const fontSize = 14; // px
+const htmlFontSize = 16;
+const coef = fontSize / 14;
+
 export const SwTheme = createTheme({
   components: {
     MuiCssBaseline: {
@@ -78,6 +82,12 @@ export const SwTheme = createTheme({
   },
   typography: {
     fontSize: 16,
+    // htmlFontSize: 16,
+    // // @ts-ignore
+    // pxToRem: (size: number) => {
+    //   console.log('size: ', size);
+    //   return `${(size / htmlFontSize) * coef}rem`;
+    // },
     button: {
       fontSize: '1.25rem', // 20px
     },
@@ -88,7 +98,7 @@ export const SwTheme = createTheme({
       fontSize: '0.75rem', // 12px
     },
     subtitle1: {
-      fontSize: '1rem', // 16px
+      fontSize: '1.5625rem', // 25px
     },
     subtitle2: {
       fontSize: '0.875rem', // 14px
@@ -103,7 +113,7 @@ export const SwTheme = createTheme({
       fontSize: '1.125rem', // 18px
     },
     h4: {
-      fontSize: '0.875rem', // 14px
+      fontSize: '1rem', // 16px
     },
     h5: {
       fontSize: '0.75rem', // 12px

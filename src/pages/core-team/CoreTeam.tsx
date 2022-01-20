@@ -3,6 +3,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { ReactComponent as Member } from '@assets/member-card.svg';
 import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
+import { ReactComponent as Tasks } from '@assets/tasks.svg';
 import { Link } from 'react-router-dom';
 import { RootState } from '@store/store.model';
 import { memo, useEffect } from 'react';
@@ -17,6 +18,7 @@ const CoreTeam = (props) => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard'));
+    console.log('Previous route from Core Team Dashboard');
   }, [dispatch]);
 
   return (
@@ -78,6 +80,14 @@ const CoreTeam = (props) => {
         >
           <SwButton mode="light" btnType="large" endIcon={<Member />} label="Members" component={Link} to={`${basePath}/members`} />
           <SwButton mode="light" btnType="large" endIcon={<Roles />} label="Roles & Skills" component={Link} to={`${basePath}/roles`} />
+          <SwButton
+            mode="light"
+            btnType="large"
+            endIcon={<Tasks />}
+            label="Team Tasks"
+            component={Link}
+            to="/partner/dashboard/core-team/tasks"
+          />
           <SwButton mode="light" btnType="large" endIcon={<Share />} label="Invite & Share" component={Link} to={`${basePath}/whitelist`} />
         </Box>
       </Box>

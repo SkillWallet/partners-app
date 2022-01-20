@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { defineCustomElements } from '@skill-wallet/auth/loader';
 import { persistStore } from 'redux-persist';
 import store from '@store/store';
-import { swEnvVariables } from '@api/environment';
+import { swEnvVariables, environment } from '@api/environment';
 import { ensureVariablesExist } from 'sw-web-shared';
 import { SwTheme } from './theme';
 import reportWebVitals from './reportWebVitals';
@@ -29,6 +29,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-ensureVariablesExist(swEnvVariables);
+ensureVariablesExist(environment, swEnvVariables);
 reportWebVitals(null);
 defineCustomElements(window);

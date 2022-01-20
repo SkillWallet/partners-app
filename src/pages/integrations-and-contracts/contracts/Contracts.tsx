@@ -193,6 +193,7 @@ const Contracts = () => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
+    console.log('Previous route from Rntegrations Contracts');
   }, [dispatch]);
 
   useEffect(() => {

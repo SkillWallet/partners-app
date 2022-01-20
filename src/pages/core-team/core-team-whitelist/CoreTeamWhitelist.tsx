@@ -195,6 +195,7 @@ const CoreTeamWhitelist = () => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard/core-team'));
+    console.log('Previous route from Core Team Whitelist');
   }, [dispatch]);
 
   useEffect(() => {

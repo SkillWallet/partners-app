@@ -43,6 +43,7 @@ const Roles = (props) => {
   useEffect(() => {
     const url = props.isCoreTeam ? '/partner/dashboard/core-team' : '/partner/dashboard/community';
     dispatch(setPreviusRoute(url));
+    console.log('Previous route from Roles');
   }, [dispatch, props.isCoreTeam]);
 
   useEffect(() => {

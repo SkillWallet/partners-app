@@ -1,26 +1,46 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SwButton } from 'sw-web-shared';
 import { ReactComponent as CoreTeam } from '@assets/core-team.svg';
 import { ReactComponent as Community } from '@assets/community.svg';
-import { RootState } from '@store/store.model';
+import { ActivityCurrentStep, ActivityCurrentTask, activitySetCurrentStep, activityUpdateTask } from '@store/Activity/create-task.reducer';
+import { Typography } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
 import './CategoryStep.scss';
-import { activityTaskSetCurrentStep, activityTaskToggleForCoreTeamMembers } from '@store/Activity/create-activity-task.reducer';
 
 const CategoryStep = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { activeStep } = useSelector((state: RootState) => state.activityTask.currentStep);
-  const isCoreTeamMembersOnly = useSelector((state: RootState) => state.activityTask.isCoreTeamMembersOnly);
+  const { activeStep } = useSelector(ActivityCurrentStep);
+  const { isCoreTeamMembersOnly, role } = useSelector(ActivityCurrentTask);
+
+  const { control, handleSubmit, watch } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      isCoreTeamMembersOnly,
+    },
+  });
+  const values = watch();
+
+  const onSubmit = (data: any) => {
+    const shouldResetRole = data?.isCoreTeamMembersOnly !== isCoreTeamMembersOnly;
+    dispatch(
+      activityUpdateTask({
+        ...data,
+        role: shouldResetRole ? null : role,
+      })
+    );
+    history.push('/partner/event-factory/create-task/roles');
+  };
 
   useEffect(() => {
     if (activeStep !== 0) {
       dispatch(
-        activityTaskSetCurrentStep({
+        activitySetCurrentStep({
           activeStep: 0,
-          title: 'Step 1 - Tell us who is this for',
-          description:
-            'This is an Open Task that lets you assign work, creative competitions and daily tasks to other Members of your DAO.',
+          title: null,
+          description: null,
           toPrevBtnPath: null,
           left: null,
         })
@@ -30,36 +50,70 @@ const CategoryStep = () => {
 
   return (
     <>
-      <div className="sw-category-wrapper">
+      <form className="sw-category-wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <Typography
+          sx={{
+            color: 'primary.main',
+            textAlign: 'center',
+            mb: 4,
+          }}
+          component="div"
+          variant="h4"
+        >
+          This is an Open Task that lets you assign work, creative competitions and daily tasks to other Members of your DAO.
+        </Typography>
+        <Typography
+          sx={{
+            color: 'primary.main',
+            textAlign: 'center',
+            mb: 4,
+          }}
+          component="div"
+          variant="h4"
+        >
+          First of all, tell us who is this for:
+        </Typography>
         <div className="sw-category-options">
-          <SwButton
-            mode="light"
-            btnType="medium"
-            onClick={() => dispatch(activityTaskToggleForCoreTeamMembers(true))}
-            className={isCoreTeamMembersOnly ? 'active-link' : ''}
-            startIcon={<CoreTeam />}
-            label="Core Team"
+          <Controller
+            name="isCoreTeamMembersOnly"
+            control={control}
+            render={({ field: { name, value, onChange } }) => {
+              return (
+                <SwButton
+                  name={name}
+                  mode="light"
+                  btnType="semi-large"
+                  onClick={() => onChange(true)}
+                  className={value ? 'active-link' : ''}
+                  endIcon={<CoreTeam />}
+                  label="Core Team"
+                />
+              );
+            }}
           />
-          <SwButton
-            mode="light"
-            btnType="medium"
-            onClick={() => dispatch(activityTaskToggleForCoreTeamMembers(false))}
-            className={!isCoreTeamMembersOnly ? 'active-link' : ''}
-            startIcon={<Community />}
-            label="Community"
+          <Controller
+            name="isCoreTeamMembersOnly"
+            control={control}
+            render={({ field: { name, value, onChange } }) => {
+              return (
+                <SwButton
+                  name={name}
+                  mode="light"
+                  btnType="semi-large"
+                  onClick={() => onChange(false)}
+                  className={!value ? 'active-link' : ''}
+                  endIcon={<Community />}
+                  label="Community"
+                />
+              );
+            }}
           />
         </div>
 
-        <div className="bottom-action">
-          <SwButton
-            disabled={isCoreTeamMembersOnly === null}
-            mode="light"
-            component={Link}
-            to="/partner/event-factory/create-task/roles"
-            label="Next: Assign Role"
-          />
+        <div className="bottom-action" style={{ marginTop: '80px' }}>
+          <SwButton type="submit" disabled={values.isCoreTeamMembersOnly === null} mode="light" label="Next: Assign Role" />
         </div>
-      </div>
+      </form>
     </>
   );
 };

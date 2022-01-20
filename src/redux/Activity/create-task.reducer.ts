@@ -1,42 +1,42 @@
 import { getPartnersAgreementByCommunity } from '@api/dito.api';
 import { createActivityTask } from '@api/smart-contracts.api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { CurrentStep } from '@store/model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
 import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export interface ActivityTaskState {
-  currentStep: {
-    activeStep: number;
-    title: string;
-    description: string;
-    toPrevBtnPath: string;
-    stepperText: string;
-    descriptionTooltip: string;
-  };
-  description: string;
-  isCoreTeamMembersOnly: boolean;
-  allParticipants: boolean;
-  role: string;
-  participants: number;
+  currentStep: CurrentStep;
   status: ResultState;
+  taskInfo: {
+    description: string;
+    isCoreTeamMembersOnly: boolean;
+    allParticipants: boolean;
+    role: string;
+    participants: number;
+    title: string;
+  };
 }
 
 const initialState: ActivityTaskState = {
-  currentStep: {} as any,
-  description: null,
-  isCoreTeamMembersOnly: false,
-  allParticipants: false,
-  participants: 1,
-  role: null,
   status: ResultState.Idle,
+  currentStep: {} as CurrentStep,
+  taskInfo: {
+    description: null,
+    isCoreTeamMembersOnly: true,
+    allParticipants: false,
+    participants: 1,
+    role: null,
+    title: '',
+  },
 };
 
 export const addActivityTask = createAsyncThunk('event-factory/acivity-task/create', async (task: any, { dispatch, getState }) => {
   try {
     const { community, auth }: any = getState();
     const { userInfo } = auth;
-    const { role, isCoreTeamMembersOnly, allParticipants, participants, description } = task;
+    const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
     const partner = await getPartnersAgreementByCommunity(community.community.address);
     const selectedRole = community.roles.find(({ roleName }) => roleName === role);
 
@@ -52,6 +52,7 @@ export const addActivityTask = createAsyncThunk('event-factory/acivity-task/crea
         participants,
         allParticipants,
         description,
+        title,
         isCoreTeamMembersOnly,
       },
     });
@@ -66,30 +67,17 @@ export const activityTaskSlice = createSlice({
   name: 'activityTask',
   initialState,
   reducers: {
-    activityTaskSetCurrentStep(state, action) {
+    activitySetCurrentStep(state, action) {
       state.currentStep = action.payload;
     },
-    activityTaskUpdateDescription(state, action) {
-      state.description = action.payload;
+    activityUpdateTask(state, action) {
+      state.taskInfo = {
+        ...state.taskInfo,
+        ...action.payload,
+      };
     },
-    activityTaskUpdateStatus(state, action) {
+    activityUpdateTaskStatus(state, action) {
       state.status = action.payload;
-    },
-    activityTaskUpdateParticipants(state, action) {
-      state.participants = action.payload;
-    },
-    activityTaskToggleForCoreTeamMembers(state, action) {
-      if (state.isCoreTeamMembersOnly !== action.payload) {
-        // reset role when category changes
-        state.role = null;
-      }
-      state.isCoreTeamMembersOnly = action.payload;
-    },
-    activityTaskToggleAllParticipants(state, action) {
-      state.allParticipants = action.payload;
-    },
-    activityTaskSelectRole(state, action) {
-      state.role = action.payload;
     },
     resetActivityTaskState: () => initialState,
   },
@@ -107,15 +95,10 @@ export const activityTaskSlice = createSlice({
   },
 });
 
-export const {
-  activityTaskToggleForCoreTeamMembers,
-  activityTaskUpdateParticipants,
-  activityTaskUpdateStatus,
-  activityTaskToggleAllParticipants,
-  resetActivityTaskState,
-  activityTaskUpdateDescription,
-  activityTaskSetCurrentStep,
-  activityTaskSelectRole,
-} = activityTaskSlice.actions;
+export const { activityUpdateTaskStatus, resetActivityTaskState, activityUpdateTask, activitySetCurrentStep } = activityTaskSlice.actions;
+
+export const ActivityCurrentStep = (state: any) => state.activityTask.currentStep as CurrentStep;
+export const ActivityStatus = (state: any) => state.activityTask.status as ResultState;
+export const ActivityCurrentTask = (state: any) => state.activityTask.taskInfo as typeof initialState.taskInfo;
 
 export default activityTaskSlice.reducer;

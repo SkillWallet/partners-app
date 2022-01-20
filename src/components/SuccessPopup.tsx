@@ -1,13 +1,13 @@
 import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
 
-const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, fullScreen = false }: any) => {
+const SuccessDialog = ({ mode = 'light', open, handleClose, subtitle, message, fullScreen = false }: any) => {
   const dialogSize = fullScreen
     ? {}
     : {
         maxWidth: '400px',
         minWidth: '400px',
-        minHeight: '200px',
+        minHeight: '300px',
       };
   return (
     <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
@@ -30,13 +30,17 @@ const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, ful
             justifyContent: 'center',
           }}
         >
-          <Typography sx={{ color: 'red', textAlign: 'center', mt: 2 }} component="div" variant="h2">
+          <Typography
+            sx={{ color: mode === 'light' ? 'primary.main' : 'text.primary', textAlign: 'center', mt: 2 }}
+            component="div"
+            variant="h1"
+          >
             {message}
           </Typography>
           <Typography
             sx={{ color: mode === 'light' ? 'primary.main' : 'text.primary', textAlign: 'center', mt: 2 }}
             component="div"
-            variant="body2"
+            variant="h2"
           >
             {subtitle}
           </Typography>
@@ -47,10 +51,10 @@ const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, ful
           backgroundColor: mode !== 'light' ? 'primary.main' : 'text.primary',
         }}
       >
-        <SwButton type="button" mode={mode} onClick={handleClose} label="Dismiss" />
+        <SwButton type="button" mode={mode} onClick={handleClose} label="Close" />
       </DialogActions>
     </Dialog>
   );
 };
 
-export default ErrorDialog;
+export default SuccessDialog;
