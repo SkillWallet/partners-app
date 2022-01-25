@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { DitoCommunityAbi, JsonFragment, PartnersRegistryABI, SWContractEventType } from '@skill-wallet/sw-abi-types';
-import { base64toFile } from 'sw-web-shared';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
 import { pushImage, pushJSONDocument } from './textile.api';
@@ -676,7 +675,8 @@ export const createPartnersAgreement = async (
     numOfActions,
     contractAddress ?? ethers.constants.AddressZero,
     100,
-    10
+    10,
+    true
   );
 
   const result = await createTx.wait();
