@@ -2106,10 +2106,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@0.0.100-alpha":
-  version "0.0.100-alpha"
-  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-0.0.100-alpha.tgz#4c001aae6d9a3c8c77222bd685ed96ee9fc6a5ab"
-  integrity sha512-A0B4PWzJzOTZh0ObmlY31vlVpBxP9iZWQJtHaBQhFzaNNBUW1RM2LFXVmYGPG7b5rqTO3QTOTSwHl/cKRpSRKg==
+"@skill-wallet/auth@0.0.103-alpha":
+  version "0.0.103-alpha"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-0.0.103-alpha.tgz#0059ecd746fc094e298a802c42041b4679bba3a6"
+  integrity sha512-0oE8KbrYTLfRziVdOCgNUuAm7bkgmYGP01emYmLM6970hvdABsAqk+1siuILpQRDY9Z/eZ5FMHlHU0Uf2+9BJQ==
   dependencies:
     "@portis/web3" "^4.0.5"
     "@stencil/core" "2.6.0"

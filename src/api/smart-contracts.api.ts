@@ -693,8 +693,8 @@ export const createPartnersAgreement = async (
   };
 };
 
-export const addAddressToWhitelist = async (partnersAgreementAddress, memberAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+export const addAddressToWhitelist = async (communityAddress, memberAddress) => {
+  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
   const result = await createTx.wait();
   const event = result.events.find((e) => e.event === SWContractEventType.CoreTeamMemberAdded);
