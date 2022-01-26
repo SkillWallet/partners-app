@@ -200,19 +200,19 @@ const IntegrateUserDetails = (props) => {
                 },
                 {
                   credits: 24,
-                  roleName: 'Founder',
+                  roleName: 'Advisor',
                   skills: [],
                   isCoreTeamMember: true,
                 },
                 {
                   credits: 12,
-                  roleName: 'Investor',
+                  roleName: 'Core Team',
                   skills: [],
                   isCoreTeamMember: true,
                 },
                 {
                   credits: 6,
-                  roleName: 'Contributor',
+                  roleName: 'Investor',
                   skills: [],
                   isCoreTeamMember: true,
                 },

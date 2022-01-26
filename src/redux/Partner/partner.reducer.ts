@@ -16,15 +16,9 @@ import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export const fetchPartnerWhitelistedAddresses = createAsyncThunk('partner/addresses', async (address: string, { dispatch, getState }) => {
   try {
-    const { partner }: any = getState();
-    let paCommunity = partner?.paCommunity;
-    if (paCommunity?.partnersAgreementAddress !== address) {
-      paCommunity = await getPartnersAgreementByCommunity(address);
-    }
-    const whitelistedAddresses = await getWhitelistedAddresses(paCommunity?.partnersAgreementAddress);
+    const whitelistedAddresses = await getWhitelistedAddresses(address);
 
     return {
-      paCommunity,
       whitelistedAddresses,
     };
   } catch (error) {
@@ -116,7 +110,7 @@ export const addNewWhitelistedAddresses = createAsyncThunk('partner/addresses/ad
       auth: { userInfo },
     }: any = getState();
     for (const newMember of newMembers) {
-      await addAddressToWhitelist(partner.paCommunity?.partnersAgreementAddress, newMember.address);
+      await addAddressToWhitelist(userInfo?.community, newMember.address);
     }
     return dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
   } catch (error) {
@@ -161,8 +155,7 @@ export const partnerSlice = createSlice({
         state.status = ResultState.Loading;
       })
       .addCase(fetchPartnerWhitelistedAddresses.fulfilled, (state, action) => {
-        const { paCommunity, whitelistedAddresses } = action.payload;
-        state.paCommunity = paCommunity;
+        const { whitelistedAddresses } = action.payload;
         state.whitelistedAddresses = whitelistedAddresses;
         state.status = ResultState.Idle;
       })
