@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { DitoCommunityAbi, JsonFragment, PartnersRegistryABI, SWContractEventType } from '@skill-wallet/sw-abi-types';
-import { base64toFile } from 'sw-web-shared';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
 import { pushImage, pushJSONDocument } from './textile.api';
@@ -676,7 +675,8 @@ export const createPartnersAgreement = async (
     numOfActions,
     contractAddress ?? ethers.constants.AddressZero,
     100,
-    10
+    10,
+    true
   );
 
   const result = await createTx.wait();
@@ -693,8 +693,8 @@ export const createPartnersAgreement = async (
   };
 };
 
-export const addAddressToWhitelist = async (partnersAgreementAddress, memberAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+export const addAddressToWhitelist = async (communityAddress, memberAddress) => {
+  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
   const result = await createTx.wait();
   const event = result.events.find((e) => e.event === SWContractEventType.CoreTeamMemberAdded);
