@@ -68,7 +68,7 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className={`connect-wallet-container ${isIntegrateFlow ? 'hidden-wallet' : ''}`}>
           {/* @ts-ignore */}
-          <skillwallet-auth allow-create-new-user="true" partner-key="07bf1f947af8facd6c7a954b154998e895cd8682" />
+          <skillwallet-auth allow-create-new-user="true" partner-key="733bc85f6bb79c5cacc6c9e3150e6ceed08e56cc" />
         </div>
         {isLoading ? (
           <LoadingMessage />
