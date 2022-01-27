@@ -668,6 +668,8 @@ export const createPartnersAgreement = async (
     return prev;
   }, 0);
 
+  const isPermissioned = process.env.REACT_APP_NODE_ENV === 'production';
+  console.log('isPermissioned', isPermissioned);
   const createTx = await contract.create(
     url,
     selectedtemplate,
@@ -676,7 +678,7 @@ export const createPartnersAgreement = async (
     contractAddress ?? ethers.constants.AddressZero,
     100,
     10,
-    true
+    isPermissioned
   );
 
   const result = await createTx.wait();
