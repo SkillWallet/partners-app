@@ -3,12 +3,12 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
-import { defineCustomElements } from '@skill-wallet/auth/loader';
 import { persistStore } from 'redux-persist';
 import store from '@store/store';
 import { swEnvVariables, environment } from '@api/environment';
 import { ensureVariablesExist } from 'sw-web-shared';
 import { SwTheme } from './theme';
+import 'sw-web-component-test4e';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 
@@ -31,4 +31,3 @@ ReactDOM.render(
 
 ensureVariablesExist(environment, swEnvVariables);
 reportWebVitals(null);
-defineCustomElements(window);

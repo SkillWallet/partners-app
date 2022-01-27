@@ -112,7 +112,9 @@ const IntegrateUserDetails = (props) => {
   };
 
   const onActivateCommunity = () => {
-    const input = document.querySelector('skillwallet-auth');
+    const showButtonEvent = new CustomEvent('showSwButton');
+    window.dispatchEvent(showButtonEvent);
+    const input = document.getElementById('walletButton');
     const event = new CustomEvent('activateSkillwalletCommunity', {
       detail: {
         communityAddr: partnersDetails.communityAddr,
