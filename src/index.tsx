@@ -8,7 +8,7 @@ import store from '@store/store';
 import { swEnvVariables, environment } from '@api/environment';
 import { ensureVariablesExist } from 'sw-web-shared';
 import { SwTheme } from './theme';
-import 'sw-web-component-test4e';
+import '@skill-wallet/auth';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 

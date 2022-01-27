@@ -37,7 +37,7 @@
     "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "~5.1.0",
     "@reduxjs/toolkit": "~1.7.0",
-    "@skill-wallet/auth": "0.0.103-alpha",
+    "@skill-wallet/auth": "^1.0.0",
     "@testing-library/jest-dom": "~5.14.1",
     "@testing-library/react": "~11.2.7",
     "@testing-library/user-event": "~12.8.3",
@@ -64,7 +64,6 @@
     "redux-persist": "~6.0.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
-    "sw-web-component-test4e": "^0.1.19",
     "sw-web-shared": "github:DistributedTown/sw-web-shared#master",
     "web-vitals": "^2.1.2"
   },
