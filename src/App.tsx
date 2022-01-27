@@ -60,15 +60,15 @@ function App(props) {
     };
   }, [dispatch, history, location.pathname, location.state?.from]);
 
-  const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
+  // const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
 
   return (
     <>
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
-        <div className={`connect-wallet-container ${isIntegrateFlow ? 'hidden-wallet' : ''}`}>
+        <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <skillwallet-auth allow-create-new-user="true" partner-key="733bc85f6bb79c5cacc6c9e3150e6ceed08e56cc" />
+          <sw-auth partner-key="07bf1f947af8facd6c7a954b154998e895cd8682" />
         </div>
         {isLoading ? (
           <LoadingMessage />

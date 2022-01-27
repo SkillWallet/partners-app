@@ -55,6 +55,11 @@ const PartnerIntegration = () => {
   const status = useSelector(IntegrateStatus);
   const agreement = useSelector(IntegrateAgreement);
 
+  useEffect(() => {
+    const event = new CustomEvent('hideSwButton');
+    window.dispatchEvent(event);
+  }, []);
+
   const {
     control,
     handleSubmit,
@@ -106,7 +111,6 @@ const PartnerIntegration = () => {
 
   const onActivateCommunity = () => {
     handleDialogClose();
-    const input = document.querySelector('skillwallet-auth');
     const { communityAddr, partnersAddr, key } = agreement;
     const event = new CustomEvent('activateSkillwalletCommunity', {
       detail: {
@@ -115,7 +119,7 @@ const PartnerIntegration = () => {
         partnerKey: key,
       },
     });
-    input.dispatchEvent(event);
+    window.dispatchEvent(event);
   };
 
   const createAgreement = () => {

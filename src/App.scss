@@ -37,7 +37,7 @@ code {
   display: flex;
   justify-content: flex-end;
   &.hidden-wallet {
-    top: -2000px;
+    display: none;
   }
 }
 
@@ -97,5 +97,3 @@ code {
     transform: scale(0.8);
   }
 }
-
-
