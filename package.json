@@ -8,7 +8,7 @@
     "eject": "react-app-rewired eject",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
-    "start": "react-app-rewired --max-old-space-size=8192 start",
+    "start": "react-app-rewired start",
     "test": "react-app-rewired test"
   },
   "browserslist": {
