@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
 
-  partners-app:
+  playground:
     container_name: playground
     build:
       context: .
