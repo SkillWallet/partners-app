@@ -28,13 +28,13 @@ import './PartnerIntegration.scss';
 const DefaultRoles = [
   {
     credits: 24,
-    roleName: 'Advisor',
+    roleName: 'Core Team',
     skills: [],
     isCoreTeamMember: true,
   },
   {
     credits: 12,
-    roleName: 'Core Team',
+    roleName: 'Advisor',
     skills: [],
     isCoreTeamMember: true,
   },
