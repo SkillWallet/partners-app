@@ -200,10 +200,10 @@ const TemplateStep = ({ values, control }) => {
             >
               <div className="sw-role-fields">
                 <Typography color="primary" sx={{ mb: '5px' }} component="div" variant="h3">
-                  Nr. of Actions
+                  Commitment Level
                 </Typography>
                 <Typography color="primary" sx={{ mb: '20px' }} component="div" variant="body2">
-                  How many initial Actions you expect. No worries, you can always add more later :)
+                  The Minimum Commitment for DAO Members to keep their Membership status. No worries, you can always change it later : )
                 </Typography>
                 <div className="num-of-actions">
                   <Controller
@@ -214,7 +214,7 @@ const TemplateStep = ({ values, control }) => {
                       return (
                         <div>
                           <div style={{ position: 'relative' }}>
-                            <SwSlider variant="filled" name={name} value={value || 0} onChange={onChange} min={0} max={100} />
+                            <SwSlider variant="filled" name={name} value={value || 0} onChange={onChange} min={0} max={10} />
                             <Typography
                               sx={{
                                 position: 'absolute',
@@ -233,7 +233,7 @@ const TemplateStep = ({ values, control }) => {
                               0
                             </Typography>
                             <Typography color="primary" variant="body1">
-                              100
+                              10
                             </Typography>
                           </div>
                         </div>
