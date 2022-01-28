@@ -80,7 +80,7 @@ const Redirect = () => {
   };
 
   const connectSWToDiscord = async (code) => {
-    await changeNetwork();
+    // await changeNetwork();
     const userID = await getUserID(code);
     if (userID) {
       await connectWallet();

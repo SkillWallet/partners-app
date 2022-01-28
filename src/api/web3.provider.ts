@@ -38,7 +38,7 @@ export const changeNetwork = async () => {
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 
 export const Web3ContractProvider = async (addressOrName: string, contractInterface: ContractInterface) => {
-  await changeNetwork();
+  // await changeNetwork();
 
   if (!window.ethereum.selectedAddress) {
     await window.ethereum.enable();
