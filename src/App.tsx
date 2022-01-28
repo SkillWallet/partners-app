@@ -9,9 +9,8 @@ import NotFound from '@components/NotFound';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
-import Integrate from './pages/integrate/Deprecated/Integrate';
+import PartnerIntegration from './pages/integrate/PartnerIntegration';
 import './App.scss';
-import PartnerIntegration from './pages/integrate/UpdatedIntegration/PartnerIntegration';
 
 const LoadingMessage = () => (
   <div className="app-loading">

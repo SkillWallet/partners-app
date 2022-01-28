@@ -164,7 +164,7 @@ const TemplateStep = ({ values, control }) => {
                     key={`roles.${index}.roleName`}
                     name={`roles.${index}.roleName`}
                     control={control}
-                    rules={{ min: 0 }}
+                    rules={{ min: 0, required: index !== 2 }}
                     render={({ field: { name, value, onChange } }) => {
                       return (
                         <TextField
@@ -209,7 +209,7 @@ const TemplateStep = ({ values, control }) => {
                   <Controller
                     name="numOfActions"
                     control={control}
-                    rules={{ min: 0 }}
+                    rules={{ min: 0, required: true }}
                     render={({ field: { name, value, onChange } }) => {
                       return (
                         <div>
@@ -263,6 +263,7 @@ const TemplateStep = ({ values, control }) => {
           <Controller
             name="startFromScratch"
             control={control}
+            rules={{ required: true }}
             render={({ field: { value, onChange } }) => {
               return (
                 <SwButton

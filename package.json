@@ -42,16 +42,11 @@
     "@testing-library/react": "~11.2.7",
     "@testing-library/user-event": "~12.8.3",
     "@textile/hub": "~6.3.2",
-    "antd": "^4.18.2",
     "axios": "~0.24.0",
     "buffer": "^6.0.3",
     "ethers": "~5.5.2",
-    "final-form": "^4.20.0",
-    "formik": "^2.2.9",
-    "formik-antd": "^2.0.3",
     "react": "~17.0.2",
     "react-dom": "~17.0.2",
-    "react-final-form": "^6.5.7",
     "react-hook-form": "^7.23.0",
     "react-qrcode-logo": "~2.5.0",
     "react-redux": "~7.2.6",
@@ -64,7 +59,7 @@
     "redux-persist": "~6.0.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
-    "sw-web-shared": "github:DistributedTown/sw-web-shared#master",
+    "sw-web-shared": "git@github.com:DistributedTown/sw-web-shared.git",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
@@ -90,9 +85,12 @@
     "eslint-webpack-plugin": "~3.1.1",
     "ethers-typescript-typings": "0.0.4",
     "prettier": "~2.5.1",
+    "process": "^0.11.10",
     "react-app-rewire-alias": "~1.1.7",
-    "react-app-rewired": "~2.1.8",
+    "react-app-rewired": "~2.1.11",
+    "react-dev-utils": "^12.0.0",
     "redux-logger": "~3.0.6",
-    "typescript": "~4.5.3"
+    "typescript": "~4.5.3",
+    "webpack": "~5.0.0"
   }
 }
