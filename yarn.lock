@@ -2037,15 +2037,15 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-1.0.16.tgz#a1143f085940dfaf43057f95211d89ddfd2fda77"
-  integrity sha512-BCszH3IZo6jN81aF5Z8SmVjQnhSwdB0x83MjOzRC8Ys0Ir8yR0J4d+zQuqpEKIk/Fyw5bLRb1CHpRTFgjifRNA==
+"@skill-wallet/auth@^1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-1.0.19.tgz#e98c49f7917811966d306c14469eac5e355157c1"
+  integrity sha512-cfLVQ4Y4D2HCRX1+VtAtCh1cb54eA+4WX/gxnMSz9jEn75sRc8aXLoR5wDVBXTw1dXJyzfgq51eZgI3B6rU/2g==
 
-"@skill-wallet/sw-abi-types@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/@skill-wallet/sw-abi-types/-/sw-abi-types-0.0.14.tgz"
-  integrity sha512-QZdh3pVIbxojfXt2O52fpq1gsluqrXZeqVPh19UnkdWlYLu16+UL2vL+ru4I58QJ5kUfALNuGm3Gl71xlnhUgg==
+"@skill-wallet/sw-abi-types@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/sw-abi-types/-/sw-abi-types-0.0.17.tgz#b55ed1f62993d864a8352a7823b084bf13ff6fc4"
+  integrity sha512-z7laJkWX2kVyWp6y37bQMMXTDLaAwzL547KhMOLqt1SCSoV6bJnpbi/inrJd87Hlpzxh3uiKiZg7u/9osUM/Rw==
   dependencies:
     "@types/prettier" "^2.4.1"
     json-schema-to-typescript "9.0.0"

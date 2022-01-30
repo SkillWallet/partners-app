@@ -13,6 +13,7 @@ export const swEnvVariables = {
   // skillwallet
   apiUrl: 'REACT_APP_API_URL',
   partnersRegistryAdress: 'REACT_APP_PARTNERS_REGISTRY_ADDRESS',
+  communityRegistryAddress: 'REACT_APP_COMMUNITY_REGISTRY_ADDRESS',
   rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
 
   // dito

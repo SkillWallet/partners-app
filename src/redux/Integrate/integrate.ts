@@ -51,7 +51,14 @@ export const integratePartnerAgreement = createAsyncThunk(
   ) => {
     try {
       const { metadata, numOfActions, contractAddress, selectedTemplate } = requestBody;
-      return createPartnersAgreement(environment.partnersRegistryAdress, metadata, numOfActions, contractAddress, selectedTemplate);
+      return createPartnersAgreement(
+        environment.communityRegistryAddress,
+        environment.partnersRegistryAdress,
+        metadata,
+        numOfActions,
+        contractAddress,
+        selectedTemplate
+      );
     } catch (error) {
       const message = ParseSWErrorMessage(error);
       dispatch(openSnackbar({ message, severity: 'error' }));

@@ -11,7 +11,6 @@ export type SWEvent = {
   args: any;
 }[];
 
-
 export interface SWContractFunctions {
   addNewCoreTeamMembers: (member: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   coreTeamMembersCount: () => Promise<number>;
@@ -19,10 +18,10 @@ export interface SWContractFunctions {
   getMemberAddresses: () => Promise<string[]>;
   getMembers: () => Promise<number[]>;
   getSkillWalletAddress: () => Promise<string>;
-  getTemplate: () => Promise<number>;
   isCoreTeamMember: (member: string) => Promise<boolean>;
   isMember: (member: string) => Promise<boolean>;
   joinNewMember: (uri: string, role: number) => Promise<{wait: () => Promise<SWContractEvents>}>;
+  owner: () => Promise<string>;
   setMetadataUri: (uri: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   setPermissionBadgeAddress: (_permissionBadgeAddr: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   activateSkillWallet: (skillWalletId: number) => Promise<{wait: () => Promise<SWContractEvents>}>;
@@ -33,14 +32,10 @@ export interface SWContractFunctions {
   baseURI: () => Promise<string>;
   claim: () => Promise<{wait: () => Promise<SWContractEvents>}>;
   create: (
-    metadata: string,
-    template: number,
+    communityAddress: string,
     rolesCount: number,
-    numberOfActions: number,
-    partnersContractAddress: string,
-    membersAllowed: number,
-    coreTeamMembers: number,
-    isPermissioned: boolean
+    commitmentLevel: number,
+    partnersContractAddress: string
   ) => Promise<{wait: () => Promise<SWContractEvents>}>;
   getActiveCommunity: (skillWalletId: number) => Promise<{community: string}>;
   getApproved: (tokenId: number) => Promise<string>;
@@ -53,8 +48,7 @@ export interface SWContractFunctions {
   getTotalSkillWalletsRegistered: () => Promise<number>;
   initialize: (
     _skillWalletAddress: string,
-    _partnersAgreementFactoryAddress: string,
-    _membershipFactory: string
+    _interactionNFTFactory: string
   ) => Promise<{wait: () => Promise<SWContractEvents>}>;
   isApprovedForAll: (owner: string, operator: string) => Promise<boolean>;
   isRequestIdValid: (requestId: string) => Promise<boolean>;
@@ -64,7 +58,6 @@ export interface SWContractFunctions {
   name: () => Promise<string>;
   onERC721Received: () => Promise<string>;
   osmAddress: () => Promise<string>;
-  owner: () => Promise<string>;
   ownerOf: (tokenId: number) => Promise<string>;
   renounceOwnership: () => Promise<{wait: () => Promise<SWContractEvents>}>;
   safeTransferFrom: (
@@ -85,24 +78,25 @@ export interface SWContractFunctions {
   totalSupply: () => Promise<number>;
   transferFrom: (from: string, to: string, tokenId: number) => Promise<{wait: () => Promise<SWContractEvents>}>;
   transferOwnership: (newOwner: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
-  activatePA: () => Promise<{wait: () => Promise<SWContractEvents>}>;
   activities: () => Promise<string>;
   addNewContractAddressToAgreement: (contractAddress: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   addURL: (_url: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
+  commitmentLevel: () => Promise<number>;
   communityAddress: () => Promise<string>;
   createActivity: (_type: number, _uri: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
-  deployActivities: (_factory: string, _bot: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
+  deployActivities: (_factory: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   finilizeTask: (_activityId: number) => Promise<{wait: () => Promise<SWContractEvents>}>;
   getActivitiesAddress: () => Promise<string>;
   getAgreementData: () => Promise<undefined>;
   getAllMembers: () => Promise<string[]>;
   getImportedAddresses: () => Promise<string[]>;
-  getInteractionNFT: (user: string) => Promise<number>;
-  getInteractionNFTContractAddress: () => Promise<string>;
   getURLs: () => Promise<string[]>;
+  interactionNFT: () => Promise<string>;
+  interactionNFTFactory: () => Promise<string>;
   isActive: () => Promise<boolean>;
   isURLListed: (_url: string) => Promise<boolean>;
-  membershipAddress: () => Promise<string>;
+  onERC1155BatchReceived: () => Promise<string>;
+  onERC1155Received: () => Promise<string>;
   partnersContracts: () => Promise<string>;
   removeURL: (_url: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   rolesCount: () => Promise<number>;
@@ -115,9 +109,11 @@ export interface SWContractFunctions {
   version: () => Promise<number>;
   agreementIds: () => Promise<number>;
   agreements: () => Promise<string>;
+  deployer: () => Promise<string>;
   getPartnerAgreementAddresses: () => Promise<string[]>;
   migrate: (_agreement: string) => Promise<{wait: () => Promise<SWContractEvents>}>;
   setVersion: (_version: number) => Promise<{wait: () => Promise<SWContractEvents>}>;
+  skillWalletAddress: () => Promise<string>;
 }
 export interface SWContractEvents {
   events: SWEvent;
