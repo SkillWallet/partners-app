@@ -9,6 +9,7 @@ export enum EnvMode {
 export const swEnvVariables = {
   // env
   env: 'REACT_APP_NODE_ENV',
+  hideDashboard: 'REACT_APP_HIDE_DASHBOARD',
 
   // skillwallet
   apiUrl: 'REACT_APP_API_URL',

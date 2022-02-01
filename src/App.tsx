@@ -6,6 +6,7 @@ import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
+import { environment } from '@api/environment';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -61,6 +62,10 @@ function App(props) {
 
   // const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
 
+  console.log(environment.hideDashboard, 'environment.hideDashboard');
+
+  const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
+
   return (
     <>
       <SWSnackbar />
@@ -76,7 +81,7 @@ function App(props) {
             <Route exact component={GetStarted} path="/" {...props} />
             <Route path="/integrate" component={PartnerIntegration} {...props} />
             <Route path="/redirect" component={Redirect} {...props} />
-            {isAutheticated && <Route path="/partner" component={Partners} {...props} />}
+            {isAutheticated && !hideDashboard && <Route path="/partner" component={Partners} {...props} />}
             {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
           </Switch>
         )}
