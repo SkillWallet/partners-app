@@ -37,9 +37,7 @@ export const createPartnersCommunity = async (
   const url = await pushJSONDocument(metadata, `metadata.json`);
   console.log('Metadata url: ', url);
 
-  const isPermissioned = process.env.REACT_APP_NODE_ENV === 'production';
-
-  console.log(environment, 'environment');
+  const isPermissioned = environment.env === 'production';
 
   const createTx = await communityRegistryContract.createCommunity(
     url,
@@ -59,7 +57,7 @@ export const createPartnersCommunity = async (
       data: {
         code: 3,
         data: '',
-        message: 'SkillWallet:CoreTeamMemberAddedEventMissing',
+        message: 'SkillWallet:CommunityCreatedEventMissing',
       },
     });
   }
@@ -80,7 +78,7 @@ export const createPartnersAgreement = async (
     return prev;
   }, 0);
 
-  console.log('hereeeeeeeeee', totalRoles);
+  console.log('hereeeeeeeeee', totalRoles, communityAddr, partnersRegistryAdress, metadata, numOfActions);
 
   const createTx = await partnersRegistryContract.create(
     communityAddr,

@@ -1,7 +1,7 @@
 import { Box, IconButton, ThemeOptions, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SwSidebar, SwLayout, SwButton } from 'sw-web-shared';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { environment, EnvMode } from '@api/environment';
 import {
   IntegrateAgreement,
@@ -60,11 +60,6 @@ const PartnerIntegration = () => {
   const agreement = useSelector(IntegrateAgreement);
   const communityAddress = useSelector(IntegrateAgreementCommunityAddr);
   const errorMessage = useSelector(IntegrateErrorMessage);
-
-  useEffect(() => {
-    const event = new CustomEvent('hideSwButton');
-    window.dispatchEvent(event);
-  }, []);
 
   const {
     control,

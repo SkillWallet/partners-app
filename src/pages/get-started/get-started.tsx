@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logoBlack from '@assets/sw-logo-black.svg';
 import { ReactComponent as NetworkIcon } from '@assets/network.svg';
 import { ReactComponent as AnalyticsIcon } from '@assets/analytics-dark.svg';
@@ -11,12 +11,6 @@ import { useEffect } from 'react';
 
 const GetStarted = () => {
   const { isAutheticated } = useSelector((state: RootState) => state.auth);
-  const history = useHistory();
-
-  useEffect(() => {
-    const event = new CustomEvent('showSwButton');
-    window.dispatchEvent(event);
-  }, []);
 
   return (
     <div className="sw-get-started-container">

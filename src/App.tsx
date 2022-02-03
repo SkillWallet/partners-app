@@ -60,7 +60,7 @@ function App(props) {
     };
   }, [dispatch, history, location.pathname, location.state?.from]);
 
-  // const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
+  const isIntegrateFlow = location?.pathname?.includes('integrate');
 
   const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
 
@@ -70,7 +70,7 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <sw-auth partner-key="c3842343a29eac6d37a23b060af31a8c8655271d" />
+          <sw-auth hide-button={isIntegrateFlow} partner-key="52eef26ebc47d7fa56b1bfd123c1a58376437d3c" />
         </div>
         {isLoading ? (
           <LoadingMessage />
