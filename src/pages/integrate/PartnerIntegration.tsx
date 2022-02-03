@@ -125,6 +125,7 @@ const PartnerIntegration = () => {
   const createAgreement = () => {
     const metadata: CommunityIntegration = {
       title: values.name,
+      name: values.name,
       description: values.description,
       image: values.avatar,
       properties: {

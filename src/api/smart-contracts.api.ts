@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+// import { ethers } from 'ethers';
 import {
   DitoCommunityAbi,
   PartnersRegistryABI,
@@ -8,9 +8,9 @@ import {
 } from '@skill-wallet/sw-abi-types';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
-import { pushImage, pushJSONDocument } from './textile.api';
 import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
-import { generatePartnersKey } from './dito.api';
+// import { generatePartnersKey } from './dito.api';
+import { storeMetadata } from './textile.api';
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -32,12 +32,7 @@ export const createPartnersAgreement = async (
   const partnersRegistryContract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
   const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
 
-  if (metadata.image) {
-    const arrayBuffer = await (metadata.image as File).arrayBuffer();
-    metadata.image = await pushImage(arrayBuffer);
-  }
-
-  const url = await pushJSONDocument(metadata, `metadata.json`);
+  const url = await storeMetadata(metadata);
   console.log('Metadata url: ', url);
 
   const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
@@ -47,36 +42,41 @@ export const createPartnersAgreement = async (
 
   const isPermissioned = process.env.REACT_APP_NODE_ENV === 'production';
 
-  const createCommunityTx = await communityRegistryContract.createCommunity(
-    url,
-    selectedtemplate,
-    100,
-    10,
-    isPermissioned,
-    ethers.constants.AddressZero
-  );
+  // const createCommunityTx = await communityRegistryContract.createCommunity(
+  //   url,
+  //   selectedtemplate,
+  //   100,
+  //   10,
+  //   isPermissioned,
+  //   ethers.constants.AddressZero
+  // );
 
-  const createComRes = await createCommunityTx.wait();
-  const createComEvent = createComRes.events.find((e) => e.event === 'CommunityCreated');
-  const communityAddress = createComEvent.args[0];
+  // const createComRes = await createCommunityTx.wait();
+  // const createComEvent = createComRes.events.find((e) => e.event === 'CommunityCreated');
+  // const communityAddress = createComEvent.args[0];
 
-  const createTx = await partnersRegistryContract.create(
-    communityAddress,
-    totalRoles,
-    numOfActions,
-    contractAddress ?? ethers.constants.AddressZero
-  );
+  // const createTx = await partnersRegistryContract.create(
+  //   communityAddress,
+  //   totalRoles,
+  //   numOfActions,
+  //   contractAddress ?? ethers.constants.AddressZero
+  // );
 
-  const result = await createTx.wait();
-  const { events } = result;
-  const event = events.find((e) => e.event === SWContractEventType.PartnersAgreementCreated);
+  // const result = await createTx.wait();
+  // const { events } = result;
+  // const event = events.find((e) => e.event === SWContractEventType.PartnersAgreementCreated);
 
-  const partnersAgreementAddress = event.args[0].toString();
-  const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
+  // const partnersAgreementAddress = event.args[0].toString();
+  // const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
+  // return {
+  //   key,
+  //   communityAddr: communityAddress,
+  //   partnersAddr: partnersAgreementAddress,
+  // };
   return {
-    key,
-    communityAddr: communityAddress,
-    partnersAddr: partnersAgreementAddress,
+    key: 'asd',
+    communityAddr: 'asd',
+    partnersAddr: 'partnersAgreementAddress',
   };
 };
 
@@ -185,7 +185,7 @@ export const updateAndSaveSkills = async (editedRole, community) => {
   };
   console.log('metadata: ', jsonMetadata);
 
-  const uri = await pushJSONDocument(jsonMetadata, `metadata.json`);
+  const uri = await storeMetadata(jsonMetadata);
   console.log(uri);
 
   const contract = await Web3ContractProvider(community.address, DitoCommunityAbi);
@@ -197,7 +197,7 @@ export const updateAndSaveSkills = async (editedRole, community) => {
 export const createActivityTask = async (partnersAgreementAddress: string, requestData: ActivityTask) => {
   console.log('CreateTask - metadata: ', requestData);
 
-  const uri = await pushJSONDocument(requestData, `metadata.json`);
+  const uri = await storeMetadata(requestData);
   console.log('CreateTask - uri: ', uri);
 
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
