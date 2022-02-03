@@ -12,7 +12,6 @@ import { makeStyles } from '@mui/styles';
 import './TemplateStep.scss';
 
 function FormHelperText({ errors, name, children = null, value }) {
-  console.log(errors);
   if (errors[name]) {
     let message = '';
     const { type } = errors[name];
