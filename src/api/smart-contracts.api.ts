@@ -32,6 +32,7 @@ export const createPartnersAgreement = async (
   const partnersRegistryContract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
   const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
 
+  console.log(metadata);
   const url = await storeMetadata(metadata);
   console.log('Metadata url: ', url);
 

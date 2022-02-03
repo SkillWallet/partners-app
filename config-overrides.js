@@ -12,12 +12,6 @@ module.exports = {
       buffer: require.resolve('buffer'),
     };
 
-    configuration.plugins.push(
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-        Buffer: ['buffer', 'Buffer'],
-      })
-    );
     const modifiedConfig = alias({
       '@assets': path.resolve(__dirname, './src/assets'),
       '@auth': path.resolve(__dirname, './src/auth'),
