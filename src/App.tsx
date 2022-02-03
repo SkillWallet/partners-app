@@ -72,7 +72,7 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <sw-auth partner-key="52eef26ebc47d7fa56b1bfd123c1a58376437d3c" />
+          <sw-auth partner-key="c3842343a29eac6d37a23b060af31a8c8655271d" />
         </div>
         {isLoading ? (
           <LoadingMessage />
