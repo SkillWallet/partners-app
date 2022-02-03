@@ -8,7 +8,7 @@
     "eject": "react-app-rewired eject",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
-    "start": "react-app-rewired start",
+    "start": "react-app-rewired --max_old_space_size=4096 start",
     "test": "react-app-rewired test"
   },
   "browserslist": {
@@ -37,7 +37,6 @@
     "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "~5.1.0",
     "@reduxjs/toolkit": "~1.7.0",
-    "@skill-wallet/auth": "^1.0.19",
     "@testing-library/jest-dom": "~5.14.1",
     "@testing-library/react": "~11.2.7",
     "@testing-library/user-event": "~12.8.3",
