@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { environment } from './environment';
 
+// TODO: move this endpoint in SkillWallet
 export const getPartnersAgreementByCommunity = (communityAddress) => {
   return axios.get(`${environment.ditoApiUrl}/community/${communityAddress}/key`).then((res) => res.data);
 };
 
+// TODO: move this endpoint in SkillWallet
 export const generatePartnersKey = async (communityAddress, partnersAgreementAddress) => {
   const body = {
     communityAddress,
@@ -13,12 +15,7 @@ export const generatePartnersKey = async (communityAddress, partnersAgreementAdd
   return axios.post(`${environment.ditoApiUrl}/community/key`, body).then((res) => res.data.key);
 };
 
+// TODO: move this endpoint in SkillWallet
 export const getCommunityByPartnerKey = (partnerKey) => {
-  console.log('aaaaa here');
-  console.log(environment.ditoApiUrl);
   return axios.get(`${process.env.REACT_APP_DITO_API_URL}/community/key/${partnerKey}`).then((res) => res.data);
-};
-
-export const getCommunityByCommunityAddress = (communityAddress) => {
-  return axios.get(`${process.env.REACT_APP_DITO_API_URL}/community/${communityAddress}`).then((res) => res.data);
 };

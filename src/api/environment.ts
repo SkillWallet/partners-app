@@ -17,10 +17,6 @@ export const swEnvVariables = {
   communityRegistryAddress: 'REACT_APP_COMMUNITY_REGISTRY_ADDRESS',
   rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
 
-  // dito
-  ditoApiUrl: 'REACT_APP_DITO_API_URL',
-  ditoBucketName: 'REACT_APP_DITO_BUCKET_NAME',
-
   // textile
   textileKey: 'REACT_APP_TEXTILE_KEY',
   textileSecret: 'REACT_APP_TEXTILE_SECRET',

@@ -257,7 +257,6 @@ const PartnerIntegration = () => {
                 Select the Market that best represents your Community / protocol.
               </Typography>
               <TemplateStep values={values} control={control} />
-              {console.log(process.env.REACT_APP_DITO_API_URL)}
               <div className="bottom-action">
                 <SwButton mode="light" type="submit" label="Sign & Deploy 🚀" />
               </div>
