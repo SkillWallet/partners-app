@@ -17,7 +17,7 @@ const persistConfig: PersistConfig<any> = {
   key: 'partnersApp',
   storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['auth'],
+  blacklist: ['auth', 'integrate'],
 };
 
 const reducers = combineReducers({

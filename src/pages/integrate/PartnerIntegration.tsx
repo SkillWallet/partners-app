@@ -5,12 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { environment, EnvMode } from '@api/environment';
 import {
   IntegrateAgreement,
+  IntegrateAgreementCommunityAddr,
+  IntegrateErrorMessage,
   integratePartnerAgreement,
+  integratePartnerCommunity,
   integrateSetAgreementKey,
   IntegrateStatus,
   integrateUpdateStatus,
   resetIntegrateState,
 } from '@store/Integrate/integrate';
+import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
@@ -47,13 +51,15 @@ const DefaultRoles = [
 ];
 
 const PartnerIntegration = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const small = useMediaQuery((theme: ThemeOptions) => theme.breakpoints.down('md'));
   const [opened, setOpened] = useState(true);
   const [isActivateKeyOpen, setIsActivateKeyOpen] = useState(true);
 
   const status = useSelector(IntegrateStatus);
   const agreement = useSelector(IntegrateAgreement);
+  const communityAddress = useSelector(IntegrateAgreementCommunityAddr);
+  const errorMessage = useSelector(IntegrateErrorMessage);
 
   useEffect(() => {
     const event = new CustomEvent('hideSwButton');
@@ -105,12 +111,8 @@ const PartnerIntegration = () => {
     dispatch(integrateSetAgreementKey(key));
   };
 
-  const handleDialogClose = () => {
-    dispatch(integrateUpdateStatus(ResultState.Idle));
-  };
-
   const onActivateCommunity = () => {
-    handleDialogClose();
+    dispatch(integrateUpdateStatus(ResultState.Idle));
     const { communityAddr, partnersAddr, key } = agreement;
     const event = new CustomEvent('activateSkillwalletCommunity', {
       detail: {
@@ -122,7 +124,7 @@ const PartnerIntegration = () => {
     window.dispatchEvent(event);
   };
 
-  const createAgreement = () => {
+  const createAgreement = async (closeStatus: 'close' | 'retry' = null) => {
     const metadata: CommunityIntegration = {
       title: values.name,
       description: values.description,
@@ -134,14 +136,29 @@ const PartnerIntegration = () => {
         roles: [...values.roles, ...DefaultRoles],
       },
     };
+
+    if (!communityAddress || closeStatus !== 'retry') {
+      await dispatch(
+        integratePartnerCommunity({
+          metadata,
+          selectedTemplate: values.template,
+        })
+      );
+    }
     dispatch(
       integratePartnerAgreement({
         metadata,
         numOfActions: values.numOfActions,
         contractAddress: null,
-        selectedTemplate: values.template,
       })
     );
+  };
+
+  const handleDialogClose = (closeStatus: 'close' | 'retry' = null) => {
+    dispatch(integrateUpdateStatus(ResultState.Idle));
+    if (closeStatus === 'retry') {
+      createAgreement(closeStatus);
+    }
   };
 
   const onSubmit = (data: any) => {
@@ -180,7 +197,13 @@ const PartnerIntegration = () => {
         handleClose={handleDialogClose}
         open={status === ResultState.Success}
       />
-      <ErrorDialog mode="dark" handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
+      <ErrorDialog
+        hasRetry
+        mode="dark"
+        handleClose={handleDialogClose}
+        open={status === ResultState.Failed}
+        message={errorMessage || 'Something went wrong'}
+      />
       <LoadingDialog mode="dark" handleClose={handleDialogClose} open={status === ResultState.Updating} message="Signing agreement..." />
       <form autoComplete="off" className="sw-integrate-base-container" onSubmit={handleSubmit(onSubmit, onError)}>
         <SwLayout
@@ -256,8 +279,7 @@ const PartnerIntegration = () => {
               <Typography color="primary" variant="h2" component="div">
                 Select the Market that best represents your Community / protocol.
               </Typography>
-              <TemplateStep values={values} control={control} />
-              {console.log(process.env.REACT_APP_DITO_API_URL)}
+              <TemplateStep values={values} control={control} errors={errors} />
               <div className="bottom-action">
                 <SwButton mode="light" type="submit" label="Sign & Deploy 🚀" />
               </div>

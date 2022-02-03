@@ -19,7 +19,7 @@ const ActivateCommunityDialog = ({ open, handleClose, onActivateCommunity, agree
         minHeight: '440px',
       };
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+    <Dialog open={open} fullScreen={fullScreen}>
       <DialogContent
         sx={{
           ...dialogSize,

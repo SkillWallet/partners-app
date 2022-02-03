@@ -25,13 +25,13 @@ function FormHelperText({ errors, name, children, value }) {
         return null;
     }
     return (
-      <Typography whiteSpace="nowrap" color="red" align="right" component="div" variant="body2">
+      <Typography whiteSpace="nowrap" color="red" align="right" component="span" variant="body2">
         {message}
       </Typography>
     );
   }
   return (
-    <Typography color="primary" align="right" component="div" variant="body2">
+    <Typography color="primary" align="right" component="span" variant="body2">
       {children}
     </Typography>
   );
@@ -169,7 +169,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
               return (
                 <TextField
                   name={name}
-                  value={value}
+                  value={value || ''}
                   onChange={onChange}
                   color="primary"
                   sx={{

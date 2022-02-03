@@ -2,10 +2,10 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import { CommunityIntegration, CommunityRole } from '@api/api.model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
-import { ParseSWErrorMessage } from 'sw-web-shared';
-import { createPartnersAgreement } from '@api/smart-contracts.api';
+import { createPartnersAgreement, createPartnersCommunity } from '@api/smart-contracts.api';
 import { partnerAgreementAccess } from '@api/skillwallet.api';
 import { environment } from '@api/environment';
+import { ParseSWErrorMessage } from '@utils/error-parser';
 
 export interface IntegrateTaskState {
   communityInfo: {
@@ -20,6 +20,8 @@ export interface IntegrateTaskState {
   importedContract: boolean;
   status: ResultState;
   keyStatus: ResultState;
+  communityAddr: string;
+  errorMessage: string;
   agreement: {
     key: string;
     communityAddr: string;
@@ -41,35 +43,51 @@ const initialState: IntegrateTaskState = {
   agreement: null,
   isValidKey: null,
   agreementKey: null,
+  communityAddr: null,
+  errorMessage: null,
 };
+
+export const integratePartnerCommunity = createAsyncThunk(
+  'integrate/partner-community/create',
+  async (requestBody: { metadata: CommunityIntegration; selectedTemplate: number }, { dispatch, rejectWithValue }) => {
+    try {
+      const { metadata, selectedTemplate } = requestBody;
+      return await createPartnersCommunity(environment.communityRegistryAddress, metadata, selectedTemplate);
+    } catch (error) {
+      const message = ParseSWErrorMessage(error);
+      dispatch(openSnackbar({ message, severity: 'error' }));
+      return rejectWithValue(message);
+    }
+  }
+);
 
 export const integratePartnerAgreement = createAsyncThunk(
   'integrate/partner-agreement/create',
   async (
-    requestBody: { metadata: CommunityIntegration; numOfActions: number; contractAddress: string; selectedTemplate: number },
-    { dispatch, getState, signal }
+    requestBody: {
+      metadata: CommunityIntegration;
+      numOfActions: number;
+      contractAddress: string;
+    },
+    { dispatch, getState, rejectWithValue }
   ) => {
     try {
-      const { metadata, numOfActions, contractAddress, selectedTemplate } = requestBody;
-      return createPartnersAgreement(
-        environment.communityRegistryAddress,
-        environment.partnersRegistryAdress,
-        metadata,
-        numOfActions,
-        contractAddress,
-        selectedTemplate
-      );
+      const {
+        integrate: { communityAddr },
+      } = getState() as any;
+      const { metadata, numOfActions, contractAddress } = requestBody;
+      return await createPartnersAgreement(communityAddr, environment.partnersRegistryAdress, metadata, numOfActions, contractAddress);
     } catch (error) {
       const message = ParseSWErrorMessage(error);
       dispatch(openSnackbar({ message, severity: 'error' }));
-      throw new Error(message);
+      return rejectWithValue(message);
     }
   }
 );
 
 export const validatePartnerAgreementKey = createAsyncThunk(
   'integrate/partner-agreement/validate-key',
-  async (key: string, { dispatch }) => {
+  async (key: string, { dispatch, rejectWithValue }) => {
     try {
       const isKeyValid = await partnerAgreementAccess(key);
       if (isKeyValid) {
@@ -79,7 +97,7 @@ export const validatePartnerAgreementKey = createAsyncThunk(
     } catch (error) {
       const message = ParseSWErrorMessage(error);
       dispatch(openSnackbar({ message, severity: 'error' }));
-      throw new Error(message);
+      return rejectWithValue(message);
     }
   }
 );
@@ -115,16 +133,27 @@ export const integrateSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(integratePartnerCommunity.pending, (state) => {
+        state.status = ResultState.Updating;
+      })
+      .addCase(integratePartnerCommunity.fulfilled, (state, action) => {
+        state.status = ResultState.Success;
+        state.communityAddr = action.payload;
+      })
+      .addCase(integratePartnerCommunity.rejected, (state, action) => {
+        state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
+      })
       .addCase(integratePartnerAgreement.pending, (state) => {
         state.status = ResultState.Updating;
       })
       .addCase(integratePartnerAgreement.fulfilled, (state, action) => {
         state.status = ResultState.Success;
-        console.log(action, 'action');
         state.agreement = action.payload;
       })
-      .addCase(integratePartnerAgreement.rejected, (state) => {
+      .addCase(integratePartnerAgreement.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
       .addCase(validatePartnerAgreementKey.pending, (state) => {
         state.keyStatus = ResultState.Loading;
@@ -156,8 +185,10 @@ export const {
 
 const roles = (state) => state.integrate.roles;
 export const IntegrateStatus = (state: any) => state.integrate.status as ResultState;
+export const IntegrateErrorMessage = (state: any) => state.integrate.errorMessage as string;
 export const IntegrateKeyStatus = (state: any) => state.integrate.keyStatus as ResultState;
 export const IntegrateAgreement = (state: any) => state.integrate.agreement as any;
+export const IntegrateAgreementCommunityAddr = (state: any) => state.integrate.communityAddr as string;
 export const getRoles = createSelector(roles, (x1): CommunityRole[] => {
   const [role1, role2, role3] = x1;
   return [
