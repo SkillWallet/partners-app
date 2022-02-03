@@ -11,6 +11,35 @@ import { Fragment } from 'react';
 import { makeStyles } from '@mui/styles';
 import './TemplateStep.scss';
 
+function FormHelperText({ errors, name, children = null, value }) {
+  if (errors[name]) {
+    let message = '';
+    const { type } = errors[name];
+    switch (type) {
+      case 'required':
+        message = 'Field is required!';
+        break;
+      case 'min':
+        message = 'Min 1 commitment level!';
+        break;
+      default:
+        return null;
+    }
+    return (
+      <Typography whiteSpace="nowrap" color="red" align="right" component="span" variant="body2">
+        {message}
+      </Typography>
+    );
+  }
+  return (
+    children && (
+      <Typography color="primary" align="right" component="span" variant="body2">
+        {children}
+      </Typography>
+    )
+  );
+}
+
 export const IntegrationTemplates = [
   {
     icon: OpenSourceIcon,
@@ -41,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TemplateStep = ({ values, control }) => {
+const TemplateStep = ({ values, control, errors }) => {
   const classes = useStyles();
   const { fields } = useFieldArray({
     control,
@@ -169,7 +198,6 @@ const TemplateStep = ({ values, control }) => {
                       return (
                         <TextField
                           placeholder={`Role/Skill ${index + 1}`}
-                          autoFocus={index === 0}
                           required={index !== 2}
                           focused
                           id={name}
@@ -177,6 +205,7 @@ const TemplateStep = ({ values, control }) => {
                           value={value}
                           onChange={onChange}
                           InputProps={{ classes: { input: classes.input } }}
+                          helperText={<FormHelperText value={value} name={name} errors={errors} />}
                         />
                       );
                     }}
@@ -209,7 +238,7 @@ const TemplateStep = ({ values, control }) => {
                   <Controller
                     name="numOfActions"
                     control={control}
-                    rules={{ min: 0, required: true }}
+                    rules={{ min: 1, required: true }}
                     render={({ field: { name, value, onChange } }) => {
                       return (
                         <div>
@@ -236,6 +265,7 @@ const TemplateStep = ({ values, control }) => {
                               10
                             </Typography>
                           </div>
+                          <FormHelperText value={value} name={name} errors={errors} />
                         </div>
                       );
                     }}
@@ -263,21 +293,28 @@ const TemplateStep = ({ values, control }) => {
           <Controller
             name="startFromScratch"
             control={control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => {
+            rules={{
+              validate: {
+                required: (v: boolean) => !!v,
+              },
+            }}
+            render={({ field: { value, name, onChange } }) => {
               return (
-                <SwButton
-                  mode="light"
-                  sx={{
-                    fontSize: '16px',
-                    height: '65px',
-                    width: '255px',
-                  }}
-                  onClick={() => onChange(!value)}
-                  className={value ? 'active-link' : ''}
-                  endIcon={<PaperIcon />}
-                  label="Start from Scratch"
-                />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <SwButton
+                    mode="light"
+                    sx={{
+                      fontSize: '16px',
+                      height: '65px',
+                      width: '255px',
+                    }}
+                    onClick={() => onChange(!value)}
+                    className={value ? 'active-link' : ''}
+                    endIcon={<PaperIcon />}
+                    label="Start from Scratch"
+                  />
+                  <FormHelperText value={value} name={name} errors={errors} />
+                </div>
               );
             }}
           />

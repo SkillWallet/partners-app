@@ -1,7 +1,7 @@
 import { Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
 
-const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, fullScreen = false }: any) => {
+const ErrorDialog = ({ mode = 'light', open, hasRetry = false, handleClose, subtitle, message, fullScreen = false }: any) => {
   const dialogSize = fullScreen
     ? {}
     : {
@@ -10,7 +10,7 @@ const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, ful
         minHeight: '200px',
       };
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+    <Dialog open={open} fullScreen={fullScreen}>
       <DialogContent
         sx={{
           ...dialogSize,
@@ -40,6 +40,7 @@ const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, ful
           >
             {subtitle}
           </Typography>
+          {hasRetry && <SwButton type="button" btnType="medium" mode={mode} onClick={() => handleClose('retry')} label="Retry" />}
         </div>
       </DialogContent>
       <DialogActions
@@ -47,7 +48,7 @@ const ErrorDialog = ({ mode = 'light', open, handleClose, subtitle, message, ful
           backgroundColor: mode !== 'light' ? 'primary.main' : 'text.primary',
         }}
       >
-        <SwButton type="button" mode={mode} onClick={handleClose} label="Dismiss" />
+        <SwButton type="button" mode={mode} onClick={() => handleClose('close')} label="Dismiss" />
       </DialogActions>
     </Dialog>
   );

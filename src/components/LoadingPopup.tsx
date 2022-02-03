@@ -10,7 +10,7 @@ const LoadingDialog = ({ mode = 'light', open, handleClose, subtitle, message, f
         minHeight: '300px',
       };
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+    <Dialog open={open} fullScreen={fullScreen}>
       <DialogContent
         sx={{
           ...dialogSize,

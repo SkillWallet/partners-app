@@ -11,6 +11,7 @@ import { Web3ContractProvider } from './web3.provider';
 import { pushImage, pushJSONDocument } from './textile.api';
 import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
 import { generatePartnersKey } from './dito.api';
+import { environment } from './environment';
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -21,15 +22,11 @@ function NoEventException(value: CommunityContractError) {
   };
 }
 
-export const createPartnersAgreement = async (
+export const createPartnersCommunity = async (
   communityRegistryAddress: string,
-  partnersRegistryAdress: string,
   metadata: CommunityIntegration,
-  numOfActions: number,
-  contractAddress: string,
   selectedtemplate: number
-) => {
-  const partnersRegistryContract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
+): Promise<string> => {
   const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
 
   if (metadata.image) {
@@ -40,14 +37,9 @@ export const createPartnersAgreement = async (
   const url = await pushJSONDocument(metadata, `metadata.json`);
   console.log('Metadata url: ', url);
 
-  const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
-    prev += curr.roleName ? 1 : 0;
-    return prev;
-  }, 0);
+  const isPermissioned = environment.env === 'production';
 
-  const isPermissioned = process.env.REACT_APP_NODE_ENV === 'production';
-
-  const createCommunityTx = await communityRegistryContract.createCommunity(
+  const createTx = await communityRegistryContract.createCommunity(
     url,
     selectedtemplate,
     100,
@@ -56,12 +48,40 @@ export const createPartnersAgreement = async (
     ethers.constants.AddressZero
   );
 
-  const createComRes = await createCommunityTx.wait();
-  const createComEvent = createComRes.events.find((e) => e.event === 'CommunityCreated');
-  const communityAddress = createComEvent.args[0];
+  const result = await createTx.wait();
+  const event = result.events.find((e) => e.event === 'CommunityCreated');
+  if (!event) {
+    throw new NoEventException({
+      code: -32603,
+      message: 'Internal JSON-RPC error.',
+      data: {
+        code: 3,
+        data: '',
+        message: 'SkillWallet:CommunityCreatedEventMissing',
+      },
+    });
+  }
+  return event.args[0];
+};
+
+export const createPartnersAgreement = async (
+  communityAddr: string,
+  partnersRegistryAdress: string,
+  metadata: CommunityIntegration,
+  numOfActions: number,
+  contractAddress: string
+) => {
+  const partnersRegistryContract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
+
+  const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
+    prev += curr.roleName ? 1 : 0;
+    return prev;
+  }, 0);
+
+  console.log('hereeeeeeeeee', totalRoles, communityAddr, partnersRegistryAdress, metadata, numOfActions);
 
   const createTx = await partnersRegistryContract.create(
-    communityAddress,
+    communityAddr,
     totalRoles,
     numOfActions,
     contractAddress ?? ethers.constants.AddressZero
@@ -70,13 +90,25 @@ export const createPartnersAgreement = async (
   const result = await createTx.wait();
   const { events } = result;
   const event = events.find((e) => e.event === SWContractEventType.PartnersAgreementCreated);
+  if (!event) {
+    throw new NoEventException({
+      code: -32603,
+      message: 'Internal JSON-RPC error.',
+      data: {
+        code: 3,
+        data: '',
+        message: `SkillWallet:${SWContractEventType.PartnersAgreementCreated}`,
+      },
+    });
+  }
 
-  const partnersAgreementAddress = event.args[0].toString();
-  const key = await generatePartnersKey(communityAddress, partnersAgreementAddress);
+  const partnersAddr = event.args[0].toString();
+
+  const key = await generatePartnersKey(communityAddr, partnersAddr);
   return {
     key,
-    communityAddr: communityAddress,
-    partnersAddr: partnersAgreementAddress,
+    communityAddr,
+    partnersAddr,
   };
 };
 

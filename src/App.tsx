@@ -60,9 +60,7 @@ function App(props) {
     };
   }, [dispatch, history, location.pathname, location.state?.from]);
 
-  const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
-
-  console.log(environment.hideDashboard, 'environment.hideDashboard');
+  const isIntegrateFlow = location?.pathname?.includes('integrate');
 
   const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
 
