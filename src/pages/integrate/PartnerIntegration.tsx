@@ -55,11 +55,6 @@ const PartnerIntegration = () => {
   const status = useSelector(IntegrateStatus);
   const agreement = useSelector(IntegrateAgreement);
 
-  useEffect(() => {
-    const event = new CustomEvent('hideSwButton');
-    window.dispatchEvent(event);
-  }, []);
-
   const {
     control,
     handleSubmit,
