@@ -50,9 +50,6 @@ const Partners = (props) => {
       dispatch(setPreviusRoute('/'));
     }
 
-    const event = new CustomEvent('showSwButton');
-    window.dispatchEvent(event);
-
     console.log('Previous route from Partners');
   }, [dispatch, location]);
 
