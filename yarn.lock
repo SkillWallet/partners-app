@@ -2096,10 +2096,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skill-wallet/auth@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-1.0.19.tgz#e98c49f7917811966d306c14469eac5e355157c1"
-  integrity sha512-cfLVQ4Y4D2HCRX1+VtAtCh1cb54eA+4WX/gxnMSz9jEn75sRc8aXLoR5wDVBXTw1dXJyzfgq51eZgI3B6rU/2g==
+"@skill-wallet/auth@^1.0.26":
+  version "1.0.26"
+  resolved "https://registry.yarnpkg.com/@skill-wallet/auth/-/auth-1.0.26.tgz#927876c88b1919d16dbdbe3e6a44c979b35090a2"
+  integrity sha512-a69Iy8y+2c9LkVA/qwxa2cDEIWV8mnR2ze/c+c4Enb5bBPnJYF9GdMb8+8txy62a4B36pQNhPcKbO55H0gIVmA==
 
 "@skill-wallet/sw-abi-types@0.0.17":
   version "0.0.17"
