@@ -43,7 +43,7 @@ function FormHelperText({ errors, name, children = null, value }) {
 export const IntegrationTemplates = [
   {
     icon: OpenSourceIcon,
-    title: 'Open-Source & DeFi',
+    title: 'DeFi & Infrastructure',
     description: `For researchers & web3, open-source teams, that innovate in a liberal fashion - 
     for a more sustainable, meritocratic world.`,
   },
@@ -55,7 +55,7 @@ export const IntegrationTemplates = [
   },
   {
     icon: LocalProjectIcon,
-    title: 'Local Projects & DAOs',
+    title: 'Social & DAO Life',
     description: `These are the Smart Contracts you’ll be tracking interactions
     with. Make sure you own them, as you will have to sign a
     transaction.`,
@@ -78,7 +78,13 @@ const TemplateStep = ({ values, control, errors }) => {
   });
 
   const getColor = (value: number): string => {
-    return +value < 45 ? 'primary.main' : +value >= 45 && +value <= 55 ? 'text.secondary' : 'background.paper';
+    if (+value === 5) {
+      return 'text.secondary';
+    }
+    if (+value < 5) {
+      return 'primary.main';
+    }
+    return 'background.paper';
   };
 
   const Template = ({ title, icon, description }, index: number) => {

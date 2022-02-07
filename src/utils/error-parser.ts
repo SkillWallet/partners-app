@@ -31,7 +31,7 @@ export const ParseSWErrorMessage = (error: any) => {
     error = error?.data?.message;
   }
 
-  if (typeof error === 'object') {
+  if (typeof error === 'object' && Object.keys(error).length > 0) {
     error = JSON.stringify(error);
   }
 
