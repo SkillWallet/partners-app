@@ -8,8 +8,8 @@ import {
 } from '@skill-wallet/sw-abi-types';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
-import { pushImage, pushJSONDocument } from './textile.api';
 import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
+import { storeMetadata } from './textile.api';
 import { generatePartnersKey } from './dito.api';
 import { environment } from './environment';
 
@@ -29,12 +29,8 @@ export const createPartnersCommunity = async (
 ): Promise<string> => {
   const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
 
-  if (metadata.image) {
-    const arrayBuffer = await (metadata.image as File).arrayBuffer();
-    metadata.image = await pushImage(arrayBuffer);
-  }
-
-  const url = await pushJSONDocument(metadata, `metadata.json`);
+  console.log(metadata);
+  const url = await storeMetadata(metadata);
   console.log('Metadata url: ', url);
 
   const isPermissioned = environment.env === 'production';
@@ -77,8 +73,6 @@ export const createPartnersAgreement = async (
     prev += curr.roleName ? 1 : 0;
     return prev;
   }, 0);
-
-  console.log('hereeeeeeeeee', totalRoles, communityAddr, partnersRegistryAdress, metadata, numOfActions);
 
   const createTx = await partnersRegistryContract.create(
     communityAddr,
@@ -217,7 +211,7 @@ export const updateAndSaveSkills = async (editedRole, community) => {
   };
   console.log('metadata: ', jsonMetadata);
 
-  const uri = await pushJSONDocument(jsonMetadata, `metadata.json`);
+  const uri = await storeMetadata(jsonMetadata);
   console.log(uri);
 
   const contract = await Web3ContractProvider(community.address, DitoCommunityAbi);
@@ -229,7 +223,7 @@ export const updateAndSaveSkills = async (editedRole, community) => {
 export const createActivityTask = async (partnersAgreementAddress: string, requestData: ActivityTask) => {
   console.log('CreateTask - metadata: ', requestData);
 
-  const uri = await pushJSONDocument(requestData, `metadata.json`);
+  const uri = await storeMetadata(requestData);
   console.log('CreateTask - uri: ', uri);
 
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);

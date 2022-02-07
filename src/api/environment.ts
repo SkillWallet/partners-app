@@ -21,11 +21,6 @@ export const swEnvVariables = {
   ditoApiUrl: 'REACT_APP_DITO_API_URL',
   ditoBucketName: 'REACT_APP_DITO_BUCKET_NAME',
 
-  // textile
-  textileKey: 'REACT_APP_TEXTILE_KEY',
-  textileSecret: 'REACT_APP_TEXTILE_SECRET',
-  textileSwBucketName: 'REACT_APP_TEXTILE_SW_BUCKET_NAME',
-
   // discord
   discordClientId: 'REACT_APP_DISCORD_CLIENT_ID',
   discordClientSecret: 'REACT_APP_DISCORD_CLIENT_SECRET',

@@ -122,6 +122,7 @@ const PartnerIntegration = () => {
   const createAgreement = async (closeStatus: 'close' | 'retry' = null) => {
     const metadata: CommunityIntegration = {
       title: values.name,
+      name: values.name,
       description: values.description,
       image: values.avatar,
       properties: {
