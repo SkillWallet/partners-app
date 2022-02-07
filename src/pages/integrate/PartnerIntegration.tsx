@@ -94,7 +94,7 @@ const PartnerIntegration = () => {
           isCoreTeamMember: false,
         },
       ],
-      startFromScratch: true,
+      startFromScratch: false,
       importedContract: false,
     },
   });
@@ -133,26 +133,32 @@ const PartnerIntegration = () => {
       },
     };
 
+    let result = null;
+
     if (!communityAddress || closeStatus !== 'retry') {
-      await dispatch(
+      result = await dispatch(
         integratePartnerCommunity({
           metadata,
           selectedTemplate: values.template,
         })
       );
     }
-    dispatch(
-      integratePartnerAgreement({
-        metadata,
-        numOfActions: values.numOfActions,
-        contractAddress: null,
-      })
-    );
+
+    if (result?.meta?.requestStatus !== 'rejected') {
+      dispatch(
+        integratePartnerAgreement({
+          metadata,
+          numOfActions: values.numOfActions,
+          contractAddress: null,
+        })
+      );
+    }
   };
 
   const handleDialogClose = (closeStatus: 'close' | 'retry' = null) => {
     dispatch(integrateUpdateStatus(ResultState.Idle));
     if (closeStatus === 'retry') {
+      debugger;
       createAgreement(closeStatus);
     }
   };
