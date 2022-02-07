@@ -191,8 +191,8 @@ export const getImportedContracts = async (partnersAgreementAddress) => {
   return contract.getImportedAddresses();
 };
 
-export const getWhitelistedAddresses = async (partnersAgreementAddress: string) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+export const getWhitelistedAddresses = async (communityAddress: string) => {
+  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
   return contract.getCoreTeamMembers();
 };
 
