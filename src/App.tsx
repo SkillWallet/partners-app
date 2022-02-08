@@ -6,7 +6,7 @@ import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
-import { environment } from '@api/environment';
+import { environment, EnvMode } from '@api/environment';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -72,7 +72,7 @@ function App(props) {
           {/* @ts-ignore */}
           <sw-auth
             partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
-            use-dev={process.env.REACT_APP_NODE_ENV === 'production' ? 'false' : 'true'}
+            use-dev={environment.env === EnvMode.Production ? 'false' : 'true'}
           />
         </div>
         {isLoading ? (
