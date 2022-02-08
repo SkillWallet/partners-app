@@ -33,6 +33,7 @@ export interface CommunityIntegration {
   properties: {
     template: string;
   };
+  name: string;
   title: string;
   description: string;
   image: File | string;

@@ -38,6 +38,20 @@ export const getMembersByCommunityAddress = async (communityAddress, isCoreTeamM
   return axios.get(`${environment.apiUrl}/community/${communityAddress}/skillwallet`, { params }).then((res) => res.data);
 };
 
+export const getCoreTeamMemberNames = async (communityAddress) => {
+  return axios.get(`${environment.apiUrl}/community/${communityAddress}/coreTeamMembers`).then((res) => res.data);
+};
+
+export const addCoreTeamName = async (communityAddress, memberAddress, memberName) => {
+  return axios
+    .post(`${environment.apiUrl}/community/${communityAddress}/coreTeamMembers`, {
+      memberAddress,
+      memberName,
+    })
+    .then((res) => res.data)
+    .catch(() => false);
+};
+
 export const getSkillwalletAddress = () => {
   return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data);
 };

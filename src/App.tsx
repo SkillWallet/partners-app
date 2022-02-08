@@ -6,6 +6,7 @@ import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
+import { environment } from '@api/environment';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -59,7 +60,9 @@ function App(props) {
     };
   }, [dispatch, history, location.pathname, location.state?.from]);
 
-  // const isIntegrateFlow = props?.location?.pathname?.includes('integrate');
+  const isIntegrateFlow = location?.pathname?.includes('integrate');
+
+  const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
 
   return (
     <>
@@ -67,7 +70,7 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <sw-auth partner-key="52eef26ebc47d7fa56b1bfd123c1a58376437d3c" />
+          <sw-auth partner-key="c3842343a29eac6d37a23b060af31a8c8655271d" use-dev="true" />
         </div>
         {isLoading ? (
           <LoadingMessage />
@@ -76,7 +79,7 @@ function App(props) {
             <Route exact component={GetStarted} path="/" {...props} />
             <Route path="/integrate" component={PartnerIntegration} {...props} />
             <Route path="/redirect" component={Redirect} {...props} />
-            {isAutheticated && <Route path="/partner" component={Partners} {...props} />}
+            {isAutheticated && !hideDashboard && <Route path="/partner" component={Partners} {...props} />}
             {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
           </Switch>
         )}
