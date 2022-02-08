@@ -4,6 +4,7 @@ import { LockDatatableItems } from '@components/datatable/DatatableHelpers';
 import { openSnackbar } from '@store/ui-reducer';
 import { createSelector } from 'reselect';
 import { getPartnersAgreementByCommunity } from '@api/dito.api';
+import { getCoreTeamMemberNames, addCoreTeamName } from '@api/skillwallet.api';
 import {
   getWhitelistedAddresses,
   addAddressToWhitelist,
@@ -16,10 +17,15 @@ import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export const fetchPartnerWhitelistedAddresses = createAsyncThunk('partner/addresses', async (address: string, { dispatch, getState }) => {
   try {
-    const whitelistedAddresses = await getWhitelistedAddresses(address);
-
+    const whitelistedAddresses = (await getWhitelistedAddresses(address)) as [];
+    const coreTeamMemberNames = await getCoreTeamMemberNames(address);
+    const result = whitelistedAddresses.map((a) => ({
+      address: a,
+      name: coreTeamMemberNames.coreTeamMembers.find((c) => c.memberAddress === a)?.memberName || 'N/A',
+    }));
+    console.log(result);
     return {
-      whitelistedAddresses,
+      whitelistedAddresses: result,
     };
   } catch (error) {
     const message = ParseSWErrorMessage(error);
@@ -111,6 +117,7 @@ export const addNewWhitelistedAddresses = createAsyncThunk('partner/addresses/ad
     }: any = getState();
     for (const newMember of newMembers) {
       await addAddressToWhitelist(userInfo?.community, newMember.address);
+      await addCoreTeamName(userInfo.community, newMember.address, newMember.name);
     }
     return dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
   } catch (error) {
@@ -249,8 +256,8 @@ export const getLockedWhitelistedAddresses = createSelector(addresses, (x1) => {
   let lockedData = LockDatatableItems(
     x1.map((w) => {
       return {
-        name: 'No Name',
-        address: w,
+        name: w.name,
+        address: w.address,
       };
     })
   );
