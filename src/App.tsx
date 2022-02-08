@@ -70,7 +70,10 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <sw-auth partner-key="c3842343a29eac6d37a23b060af31a8c8655271d" use-dev="true" />
+          <sw-auth
+            partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
+            use-dev={process.env.REACT_APP_NODE_ENV === 'production' ? 'fasle' : 'true'}
+          />
         </div>
         {isLoading ? (
           <LoadingMessage />
