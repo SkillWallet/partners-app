@@ -72,7 +72,7 @@ function App(props) {
           {/* @ts-ignore */}
           <sw-auth
             partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
-            use-dev={process.env.REACT_APP_NODE_ENV === 'production' ? 'fasle' : 'true'}
+            use-dev={process.env.REACT_APP_NODE_ENV === 'production' ? 'false' : 'true'}
           />
         </div>
         {isLoading ? (
