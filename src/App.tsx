@@ -55,7 +55,9 @@ function App(props) {
     window.addEventListener('initSkillwalletAuth', onSWInit);
     window.addEventListener('onSkillwalletLogin', onSWLogin);
 
-    InitSwAuth();
+    console.log(document.querySelector('#connect-wallet-container'));
+
+    InitSwAuth({ container: document.querySelector('#connect-wallet-container') });
 
     return () => {
       window.removeEventListener('initSkillwalletAuth', onSWInit);
@@ -69,6 +71,8 @@ function App(props) {
 
   return (
     <>
+      {console.log(isIntegrateFlow)}
+      <div id="connect-wallet-container" />
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
