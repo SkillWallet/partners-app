@@ -75,6 +75,7 @@ function App(props) {
           {/* @ts-ignore */}
           <sw-auth
             partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
+            hide-button={isIntegrateFlow ? 'true' : 'galse'}
             use-dev={environment.env === EnvMode.Production ? 'false' : 'true'}
           />
         </div>
