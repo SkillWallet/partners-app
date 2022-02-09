@@ -218,7 +218,7 @@ const CoreTeamWhitelist = () => {
         <AlertDialog open={open} handleClose={handleClose} />
         <SwShare
           mode="light"
-          url="https://skillwallet.id/"
+          url="https://onboarding.skillwallet.id/"
           title="with your team"
           sx={{
             '.MuiTypography-h2': {
@@ -232,7 +232,7 @@ const CoreTeamWhitelist = () => {
           linkedinProps={{
             title: shareMessage,
             summary: 'Do more with DAO',
-            source: 'https://skillwallet.id',
+            source: 'https://onboarding.skillwallet.id',
           }}
           telegramProps={{
             title: shareMessage,
