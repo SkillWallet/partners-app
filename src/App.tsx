@@ -7,6 +7,7 @@ import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import { environment, EnvMode } from '@api/environment';
+import { InitSwAuth } from '@skill-wallet/auth';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -53,6 +54,8 @@ function App(props) {
 
     window.addEventListener('initSkillwalletAuth', onSWInit);
     window.addEventListener('onSkillwalletLogin', onSWLogin);
+
+    InitSwAuth();
 
     return () => {
       window.removeEventListener('initSkillwalletAuth', onSWInit);
