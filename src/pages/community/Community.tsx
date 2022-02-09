@@ -6,21 +6,31 @@ import { ReactComponent as Member } from '@assets/member-card.svg';
 import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@store/store.model';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '@store/store.model';
 import './community-dashboard.scss';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { fetchPaUrl } from '@store/Partner/partner.reducer';
 
 const Community = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const basePath = props.location.pathname;
   const { community } = useSelector((state: RootState) => state.community);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+  const { paUrl } = useSelector((state: RootState) => state.partner);
 
   const [openShare, setOpenShare] = useState(false);
 
   const handleShareClose = () => {
     setOpenShare(false);
   };
+
+  useEffect(() => {
+    if (!paUrl && userInfo) {
+      const promise = dispatch(fetchPaUrl(userInfo?.community));
+      return () => promise.abort();
+    }
+  }, [dispatch, userInfo, paUrl]);
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard'));
@@ -33,7 +43,7 @@ const Community = (props) => {
     <>
       <SwShare
         mode="light"
-        url="https://skillwallet.id/"
+        url={paUrl || 'https://skillwallet.id/'}
         title="with friends"
         sx={{
           '.MuiTypography-h2': {
@@ -47,7 +57,7 @@ const Community = (props) => {
         linkedinProps={{
           title: shareMessage,
           summary: 'Do more with DAO',
-          source: 'https://skillwallet.id',
+          source: paUrl || 'https://skillwallet.id/',
         }}
         telegramProps={{
           title: shareMessage,
