@@ -25,6 +25,7 @@ import { setPreviusRoute } from '@store/ui-reducer';
 import {
   addNewWhitelistedAddresses,
   fetchPartnerWhitelistedAddresses,
+  fetchPaUrl,
   getLockedWhitelistedAddresses,
 } from '@store/Partner/partner.reducer';
 import { ResultState } from '@store/result-status';
@@ -167,7 +168,7 @@ const CoreTeamWhitelist = () => {
   const { apiRef, columns } = useDatatableApiRef(tableColumns);
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { community } = useSelector((state: RootState) => state.community);
-  const { status } = useSelector((state: RootState) => state.partner);
+  const { status, paUrl } = useSelector((state: RootState) => state.partner);
   const whitelistedAddresses = useSelector(getLockedWhitelistedAddresses);
 
   const handleClose = () => {
@@ -187,6 +188,13 @@ const CoreTeamWhitelist = () => {
     }
     dispatch(addNewWhitelistedAddresses(newItems));
   };
+
+  useEffect(() => {
+    if (!paUrl && userInfo) {
+      const promise = dispatch(fetchPaUrl(userInfo?.community));
+      return () => promise.abort();
+    }
+  }, [dispatch, userInfo, paUrl]);
 
   useEffect(() => {
     const promise = dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
@@ -218,7 +226,7 @@ const CoreTeamWhitelist = () => {
         <AlertDialog open={open} handleClose={handleClose} />
         <SwShare
           mode="light"
-          url="https://skillwallet.id/"
+          url={paUrl || 'https://skillwallet.id/'}
           title="with your team"
           sx={{
             '.MuiTypography-h2': {
@@ -232,7 +240,7 @@ const CoreTeamWhitelist = () => {
           linkedinProps={{
             title: shareMessage,
             summary: 'Do more with DAO',
-            source: 'https://skillwallet.id',
+            source: paUrl || 'https://skillwallet.id/',
           }}
           telegramProps={{
             title: shareMessage,
