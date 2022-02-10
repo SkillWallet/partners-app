@@ -7,6 +7,7 @@ import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import { environment, EnvMode } from '@api/environment';
+import { InitSwAuth } from '@skill-wallet/auth';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -54,6 +55,8 @@ function App(props) {
     window.addEventListener('initSkillwalletAuth', onSWInit);
     window.addEventListener('onSkillwalletLogin', onSWLogin);
 
+    InitSwAuth({ container: document.querySelector('#connect-wallet-container') });
+
     return () => {
       window.removeEventListener('initSkillwalletAuth', onSWInit);
       window.removeEventListener('onSkillwalletLogin', onSWLogin);
@@ -66,12 +69,14 @@ function App(props) {
 
   return (
     <>
+      <div id="connect-wallet-container" />
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
           <sw-auth
             partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
+            hide-button={isIntegrateFlow ? 'true' : 'false'}
             use-dev={environment.env === EnvMode.Production ? 'false' : 'true'}
           />
         </div>
