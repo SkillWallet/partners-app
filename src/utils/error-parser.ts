@@ -36,6 +36,7 @@ export const ParseSWErrorMessage = (error: any) => {
   }
 
   if (typeof error !== 'string') {
+    console.error(error);
     throw new Error('SW smart contract error message is not a string!');
   }
 

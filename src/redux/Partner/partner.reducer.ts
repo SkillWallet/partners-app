@@ -145,6 +145,9 @@ export const partnerSlice = createSlice({
     setDashboardBtn(state, action) {
       state.selectedDashboardBtn = action.payload;
     },
+    setPartnersAgreementCommunity(state, action) {
+      state.paCommunity = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -227,7 +230,7 @@ export const partnerSlice = createSlice({
   },
 });
 
-export const { setDashboardBtn } = partnerSlice.actions;
+export const { setDashboardBtn, setPartnersAgreementCommunity } = partnerSlice.actions;
 
 const addresses = (state) => state.partner.whitelistedAddresses;
 const contracts = (state) => state.partner.contracts;

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { withRouter, Switch, Route, Redirect as RedirectRoute, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { openSnackbar } from '@store/ui-reducer';
 import { ReactComponent as SwLogo } from '@assets/sw-logo-icon.svg';
-import { fetchCommunity } from '@store/Community/community.reducer';
-import { fetchPartnersAgreementByCommunity } from '@store/Partner/partner.reducer';
+import { setPartnersAgreementCommunity } from '@store/Partner/partner.reducer';
 import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
@@ -35,26 +33,17 @@ function App(props) {
       const isLoggedIn = !!detail;
       const sw = JSON.parse(sessionStorage.getItem('skillWallet') || '{}');
       if (isLoggedIn && sw?.isCoreTeamMember) {
-        setLoading(true);
-        const paCommunityResult = await dispatch(fetchPartnersAgreementByCommunity(sw.community));
-        setLoading(false);
-        const paCommunityWithError = paCommunityResult.meta.requestStatus === 'rejected';
-        if (!paCommunityWithError) {
-          dispatch(
-            setAuthenticated({
-              isAuthenticated: isLoggedIn,
-              userInfo: sw,
-            })
-          );
-
-          const shouldGoToDashboard = location.pathname === '/' || location.pathname === '/integrate';
-          const goTo = shouldGoToDashboard ? 'partner/dashboard' : location.pathname;
-
-          const returnUrl = location.state?.from;
-          history.push(returnUrl || goTo);
-        } else {
-          dispatch(openSnackbar({ message: 'Failed to fetch partners agreement communty!', severity: 'error' }));
-        }
+        dispatch(setPartnersAgreementCommunity(sw.partnersAgreementKey));
+        dispatch(
+          setAuthenticated({
+            isAuthenticated: isLoggedIn,
+            userInfo: sw,
+          })
+        );
+        const shouldGoToDashboard = location.pathname === '/' || location.pathname === '/integrate';
+        const goTo = shouldGoToDashboard ? 'partner/dashboard' : location.pathname;
+        const returnUrl = location.state?.from;
+        history.push(returnUrl || goTo);
       } else {
         dispatch(resetAuthState());
         history.push('/');
@@ -95,7 +84,7 @@ function App(props) {
         ) : (
           <Switch>
             <Route exact component={GetStarted} path="/" {...props} />
-            <Route path="/integrate" component={PartnerIntegration} {...props} />
+            {!isAutheticated && <Route path="/integrate" component={PartnerIntegration} {...props} />}
             <Route path="/redirect" component={Redirect} {...props} />
             {isAutheticated && !hideDashboard && <Route path="/partner" component={Partners} {...props} />}
             {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
