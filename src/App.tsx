@@ -8,6 +8,8 @@ import { RootState } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import { environment, EnvMode } from '@api/environment';
 import { InitSwAuth } from '@skill-wallet/auth';
+import detectEthereumProvider from '@metamask/detect-provider';
+import { openSnackbar } from '@store/ui-reducer';
 import Partners from './pages/Partners';
 import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
@@ -26,6 +28,27 @@ function App(props) {
   const history = useHistory();
   const [isLoading, setLoading] = useState(true);
   const { isAutheticated } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    const checkFormEthereumProvider = async () => {
+      let ethereum;
+      try {
+        ethereum = await detectEthereumProvider();
+      } catch (e) {
+        console.log(e);
+      }
+      if (!ethereum) {
+        dispatch(
+          openSnackbar({
+            message: 'Please install MetaMask and refresh the page to use the full array of Partner features.',
+            severity: 'error',
+            duration: 30000,
+          })
+        );
+      }
+    };
+    checkFormEthereumProvider();
+  }, []);
 
   useEffect(() => {
     const onSWLogin = async ({ detail }: any) => {

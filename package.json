@@ -8,7 +8,7 @@
     "eject": "react-app-rewired eject",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
-    "start": "react-app-rewired start",
+    "start": "react-app-rewired --max-old-space-size=4096 start",
     "test": "react-app-rewired test"
   },
   "browserslist": {
@@ -32,6 +32,7 @@
   "dependencies": {
     "@emotion/react": "~11.7.0",
     "@emotion/styled": "~11.6.0",
+    "@metamask/detect-provider": "^1.2.0",
     "@mui/icons-material": "~5.2.1",
     "@mui/material": "~5.2.3",
     "@mui/styles": "^5.2.3",

@@ -158,7 +158,6 @@ const PartnerIntegration = () => {
   const handleDialogClose = (closeStatus: 'close' | 'retry' = null) => {
     dispatch(integrateUpdateStatus(ResultState.Idle));
     if (closeStatus === 'retry') {
-      debugger;
       createAgreement(closeStatus);
     }
   };
