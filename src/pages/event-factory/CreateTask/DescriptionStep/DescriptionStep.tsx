@@ -127,7 +127,7 @@ const DescriptionStep = () => {
                     onChange={onChange}
                     inputProps={{ maxLength: 280 }}
                     color="primary"
-                    placeholder="Number"
+                    placeholder="Description"
                     helperText={
                       <Typography color="primary" align="right" component="span" variant="body2">
                         {280 - (value?.length || 0)} of 280 characters left

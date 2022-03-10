@@ -46,8 +46,7 @@ const DaoIntegration = () => {
   const [daoUrl, setDaoUrl] = useState('');
   const [open, setOpen] = useState(false);
   const input = useRef<any>();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-  const { paCommunity, status, paUrl } = useSelector((state: RootState) => state.partner);
+  const { status, paUrl } = useSelector((state: RootState) => state.partner);
 
   const handleClose = () => {
     setOpen(false);
@@ -81,11 +80,9 @@ const DaoIntegration = () => {
   }, [input, paUrl]);
 
   useEffect(() => {
-    if (!paUrl) {
-      const promise = dispatch(fetchPaUrl(userInfo?.community));
-      return () => promise.abort();
-    }
-  }, [dispatch, userInfo, paUrl]);
+    const promise = dispatch(fetchPaUrl());
+    return () => promise.abort();
+  }, [dispatch]);
 
   return (
     <>

@@ -44,7 +44,7 @@ const GetStarted = () => {
           </Typography>
 
           <Box className="sw-box-actions">
-            <SwButton mode="light" btnType="large" endIcon={<NetworkIcon />} component={Link} to="/integrate">
+            <SwButton disabled={isAutheticated} mode="light" btnType="large" endIcon={<NetworkIcon />} component={Link} to="/integrate">
               <>
                 <Typography fontWeight="bold" component="div" align="left" variant="h1">
                   Integrate
