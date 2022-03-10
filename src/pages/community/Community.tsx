@@ -8,15 +8,14 @@ import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
-import './community-dashboard.scss';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { fetchPaUrl } from '@store/Partner/partner.reducer';
+import './community-dashboard.scss';
 
 const Community = (props) => {
   const dispatch = useAppDispatch();
   const basePath = props.location.pathname;
   const { community } = useSelector((state: RootState) => state.community);
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const { paUrl } = useSelector((state: RootState) => state.partner);
 
   const [openShare, setOpenShare] = useState(false);
@@ -26,11 +25,9 @@ const Community = (props) => {
   };
 
   useEffect(() => {
-    if (!paUrl && userInfo) {
-      const promise = dispatch(fetchPaUrl(userInfo?.community));
-      return () => promise.abort();
-    }
-  }, [dispatch, userInfo, paUrl]);
+    const promise = dispatch(fetchPaUrl());
+    return () => promise.abort();
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard'));

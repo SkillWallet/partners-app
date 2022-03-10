@@ -1,4 +1,4 @@
-import { getPartnersAgreementByCommunity } from '@api/dito.api';
+import axios from 'axios';
 import { createActivityTask } from '@api/smart-contracts.api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { CurrentStep } from '@store/model';
@@ -34,13 +34,15 @@ const initialState: ActivityTaskState = {
 
 export const addActivityTask = createAsyncThunk('event-factory/acivity-task/create', async (task: any, { dispatch, getState }) => {
   try {
-    const { community, auth }: any = getState();
+    const { community, auth, partner }: any = getState();
     const { userInfo } = auth;
     const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
-    const partner = await getPartnersAgreementByCommunity(community.community.address);
     const selectedRole = community.roles.find(({ roleName }) => roleName === role);
 
-    return createActivityTask(partner?.partnersAgreementAddress, {
+    const result = await axios.get(community.community.image, {
+      responseType: 'blob',
+    });
+    return createActivityTask(partner?.paCommunity?.partnersAgreementAddress, {
       name: 'SkillWallet Task',
       description: community.community.description,
       image: community.community.image,

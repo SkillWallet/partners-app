@@ -9,7 +9,7 @@ export enum ActivityTypes {
 export interface ActivityTask {
   name: string;
   description: string;
-  image: string;
+  image: File;
   properties: {
     creator: string;
     creatorSkillWalletId: string;
@@ -36,7 +36,7 @@ export interface CommunityIntegration {
   name: string;
   title: string;
   description: string;
-  image: File | string;
+  image: File;
   skills: {
     roles: CommunityRole[];
   };

@@ -1,4 +1,3 @@
-import { getPartnersAgreementByCommunity } from '@api/dito.api';
 import { getTask, getTasks } from '@api/skillwallet.api';
 import { finalizeActivityTask, getActivitiesAddress, takeActivityTask } from '@api/smart-contracts.api';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
@@ -6,6 +5,7 @@ import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
 import { ErrorParser } from '@utils/error-parser';
+import { ethers } from 'ethers';
 import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export interface ActivityTaskState {
@@ -26,11 +26,9 @@ const initialState: ActivityTaskState = {
 
 export const getAllTasks = createAsyncThunk('event-factory/tasks/getAll', async (_, { dispatch, getState }) => {
   try {
-    const { auth }: any = getState();
-    const { partnersAgreementAddress } = await getPartnersAgreementByCommunity(auth?.userInfo.community);
-
-    console.log('partnersAgreementAddress: ', partnersAgreementAddress);
-    const activityAddress = await getActivitiesAddress(partnersAgreementAddress);
+    const { partner }: any = getState();
+    const activityAddress = await getActivitiesAddress(partner?.paCommunity?.partnersAgreementAddress);
+    console.log('activityAddress: ', activityAddress);
     return getTasks(activityAddress);
   } catch (error) {
     const message = ErrorParser(error);
@@ -44,6 +42,7 @@ export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', a
     const {
       auth: { userInfo },
       tasks: { tasks, selectedTask },
+      partner,
     }: any = getState();
 
     let task = selectedTask;
@@ -81,10 +80,7 @@ export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', a
     if (task) {
       return task;
     }
-
-    const { partnersAgreementAddress } = await getPartnersAgreementByCommunity(userInfo.community);
-    console.log('partnersAgreementAddress: ', partnersAgreementAddress);
-    const activityAddress = await getActivitiesAddress(partnersAgreementAddress);
+    const activityAddress = await getActivitiesAddress(partner?.paCommunity?.partnersAgreementAddress);
     return getTask(activityId, activityAddress);
   } catch (error) {
     const message = ErrorParser(error);
@@ -95,10 +91,8 @@ export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', a
 
 export const takeTask = createAsyncThunk('event-factory/tasks/takeTask', async (task: Task, { dispatch, getState }) => {
   try {
-    const { community }: any = getState();
-    const { partnersAgreementAddress } = await getPartnersAgreementByCommunity(community.community.address);
-    console.log('partnersAgreementAddress: ', partnersAgreementAddress);
-    await takeActivityTask(partnersAgreementAddress, task);
+    const { partner }: any = getState();
+    await takeActivityTask(partner?.paCommunity?.partnersAgreementAddress, task);
     return {
       ...task,
       taker: window.ethereum.selectedAddress,
@@ -113,10 +107,8 @@ export const takeTask = createAsyncThunk('event-factory/tasks/takeTask', async (
 
 export const finalizeTask = createAsyncThunk('event-factory/tasks/finalizeTask', async (task: Task, { dispatch, getState }) => {
   try {
-    const { community }: any = getState();
-    const { partnersAgreementAddress } = await getPartnersAgreementByCommunity(community.community.address);
-    console.log('partnersAgreementAddress: ', partnersAgreementAddress);
-    await finalizeActivityTask(partnersAgreementAddress, task);
+    const { partner }: any = getState();
+    await finalizeActivityTask(partner?.paCommunity?.partnersAgreementAddress, task);
     return {
       ...task,
       taker: window.ethereum.selectedAddress,
@@ -221,7 +213,7 @@ export const tasksSlice = createSlice({
 
 export const { tasksUpdateStatus, tasksUpdateSelectedTab } = tasksSlice.actions;
 
-const NotTaken = '0x0000000000000000000000000000000000000000';
+const NotTaken = ethers.constants.AddressZero;
 
 export const Tasks = (state: any) => state.tasks.tasks as Task[];
 export const TasksSelectedTab = (state: any) => state.tasks.selectedTabIndex as number;

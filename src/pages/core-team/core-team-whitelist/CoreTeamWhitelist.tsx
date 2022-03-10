@@ -190,11 +190,9 @@ const CoreTeamWhitelist = () => {
   };
 
   useEffect(() => {
-    if (!paUrl && userInfo) {
-      const promise = dispatch(fetchPaUrl(userInfo?.community));
-      return () => promise.abort();
-    }
-  }, [dispatch, userInfo, paUrl]);
+    const promise = dispatch(fetchPaUrl());
+    return () => promise.abort();
+  }, [dispatch]);
 
   useEffect(() => {
     const promise = dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));

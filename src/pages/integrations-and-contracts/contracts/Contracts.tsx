@@ -166,7 +166,6 @@ const Contracts = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [open, setOpen] = useState(false);
   const lockedContracts = useSelector(getLockedContracts);
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const { status } = useSelector((state: RootState) => state.partner);
 
   const handleClose = () => {
@@ -209,9 +208,9 @@ const Contracts = () => {
   }, [apiRef, lockedContracts]);
 
   useEffect(() => {
-    const promise = dispatch(fetchPartnerContracts(userInfo?.community));
+    const promise = dispatch(fetchPartnerContracts());
     return () => promise.abort();
-  }, [dispatch, userInfo]);
+  }, [dispatch]);
 
   return (
     <div className="sw-core-team">

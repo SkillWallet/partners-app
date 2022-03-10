@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { withRouter, Switch, Route, Redirect as RedirectRoute, useLocation, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ReactComponent as SwLogo } from '@assets/sw-logo-icon.svg';
+import { setPartnersAgreementCommunity } from '@store/Partner/partner.reducer';
 import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
-import { RootState } from '@store/store.model';
+import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import { environment, EnvMode } from '@api/environment';
 import { InitSwAuth } from '@skill-wallet/auth';
@@ -23,7 +24,7 @@ const LoadingMessage = () => (
 );
 
 function App(props) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation<any>();
   const history = useHistory();
   const [isLoading, setLoading] = useState(true);
@@ -55,16 +56,15 @@ function App(props) {
       const isLoggedIn = !!detail;
       const sw = JSON.parse(sessionStorage.getItem('skillWallet') || '{}');
       if (isLoggedIn && sw?.isCoreTeamMember) {
+        dispatch(setPartnersAgreementCommunity(sw.partnersAgreementKey));
         dispatch(
           setAuthenticated({
             isAuthenticated: isLoggedIn,
             userInfo: sw,
           })
         );
-
         const shouldGoToDashboard = location.pathname === '/' || location.pathname === '/integrate';
         const goTo = shouldGoToDashboard ? 'partner/dashboard' : location.pathname;
-
         const returnUrl = location.state?.from;
         history.push(returnUrl || goTo);
       } else {
@@ -87,7 +87,6 @@ function App(props) {
   }, [dispatch, history, location.pathname, location.state?.from]);
 
   const isIntegrateFlow = location?.pathname?.includes('integrate');
-
   const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
 
   return (
@@ -99,8 +98,8 @@ function App(props) {
           {/* @ts-ignore */}
           <sw-auth
             partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
-            hide-button={isIntegrateFlow ? 'true' : 'false'}
-            use-dev={environment.env === EnvMode.Production ? 'false' : 'true'}
+            hide-button={isLoading || isIntegrateFlow}
+            use-dev={environment.env === EnvMode.Development}
           />
         </div>
         {isLoading ? (
@@ -108,7 +107,7 @@ function App(props) {
         ) : (
           <Switch>
             <Route exact component={GetStarted} path="/" {...props} />
-            <Route path="/integrate" component={PartnerIntegration} {...props} />
+            {!isAutheticated && <Route path="/integrate" component={PartnerIntegration} {...props} />}
             <Route path="/redirect" component={Redirect} {...props} />
             {isAutheticated && !hideDashboard && <Route path="/partner" component={Partners} {...props} />}
             {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
