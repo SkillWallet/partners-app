@@ -30,7 +30,7 @@ function App(props) {
   const { isAutheticated } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    const checkFormEthereumProvider = async () => {
+    const checkForEthereumProvider = async () => {
       let ethereum;
       try {
         ethereum = await detectEthereumProvider();
@@ -47,7 +47,7 @@ function App(props) {
         );
       }
     };
-    checkFormEthereumProvider();
+    checkForEthereumProvider();
   }, []);
 
   useEffect(() => {
