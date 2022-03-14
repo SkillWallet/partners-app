@@ -223,10 +223,15 @@ export const updateAndSaveSkills = async (editedRole, community) => {
 export const createActivityTask = async (partnersAgreementAddress: string, requestData: ActivityTask) => {
   console.log('CreateTask - metadata: ', requestData);
 
-  const uri = await storeMetadata(requestData);
+  const convertBlobToFile = (blob: Blob) => new File([blob], 'community_image.jpeg');
+  const uri = await storeMetadata(requestData, convertBlobToFile);
   console.log('CreateTask - uri: ', uri);
 
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+  const activitiesAddress = await contract.getActivitiesAddress();
+  if (activitiesAddress === ethers.constants.AddressZero) {
+    await contract.deployActivities('0xcB42EB843a6136bFB759d3C4aF3FE14A7e5C123C');
+  }
   const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
   return tx.wait();
 };
@@ -238,6 +243,7 @@ export const takeActivityTask = async (partnersAgreementAddress: string, request
   const tx = await contract.takeTask(+requestData.activityId);
   const result = await tx.wait();
   const { events } = result;
+  // @ts-ignore
   const event = events.find((e) => e.event === 'TaskTaken');
   // if (!event) {
   //   throw new NoEventException({
@@ -260,6 +266,7 @@ export const finalizeActivityTask = async (partnersAgreementAddress: string, req
   const tx = await contract.finilizeTask(+requestData.activityId);
   const result = await tx.wait();
   const { events } = result;
+  // @ts-ignore
   const event = events.find((e) => e.event === 'TaskTaken');
   // if (!event) {
   //   throw new NoEventException({
@@ -274,5 +281,3 @@ export const finalizeActivityTask = async (partnersAgreementAddress: string, req
   // }
   // return event.args;
 };
-
-console.log(PartnersAgreementABI, 'PartnersAgreementABI');

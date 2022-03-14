@@ -13,7 +13,7 @@ import {
   getPAUrl,
   addUrlToPA,
 } from '@api/smart-contracts.api';
-import { ParseSWErrorMessage } from 'sw-web-shared';
+import { ErrorParser, ParseSWErrorMessage } from '@utils/error-parser';
 
 export const fetchPartnerWhitelistedAddresses = createAsyncThunk('partner/addresses', async (address: string, { dispatch, getState }) => {
   try {
@@ -23,7 +23,6 @@ export const fetchPartnerWhitelistedAddresses = createAsyncThunk('partner/addres
       address: a,
       name: coreTeamMemberNames.coreTeamMembers.find((c) => c.memberAddress === a)?.memberName || 'N/A',
     }));
-    console.log(result);
     return {
       whitelistedAddresses: result,
     };
@@ -34,19 +33,11 @@ export const fetchPartnerWhitelistedAddresses = createAsyncThunk('partner/addres
   }
 });
 
-export const fetchPartnerContracts = createAsyncThunk('partner/contracts', async (address: string, { dispatch, getState }) => {
+export const fetchPartnerContracts = createAsyncThunk('partner/contracts', async (_, { dispatch, getState }) => {
   try {
     const { partner }: any = getState();
-    let paCommunity = partner?.paCommunity;
-    if (paCommunity?.partnersAgreementAddress !== address) {
-      paCommunity = await getPartnersAgreementByCommunity(address);
-    }
-    const contracts = await getImportedContracts(paCommunity?.partnersAgreementAddress);
-
-    return {
-      paCommunity,
-      contracts,
-    };
+    const paCommunity = partner?.paCommunity;
+    return await getImportedContracts(paCommunity?.partnersAgreementAddress);
   } catch (error) {
     const message = ParseSWErrorMessage(error);
     dispatch(openSnackbar({ message, severity: 'error' }));
@@ -54,20 +45,11 @@ export const fetchPartnerContracts = createAsyncThunk('partner/contracts', async
   }
 });
 
-export const fetchPaUrl = createAsyncThunk('partner/paUrl', async (address: string, { dispatch, getState }) => {
+export const fetchPaUrl = createAsyncThunk('partner/paUrl', async (_, { dispatch, getState }) => {
   try {
     const { partner }: any = getState();
-    let paCommunity = partner?.paCommunity;
-    if (paCommunity?.partnersAgreementAddress !== address) {
-      paCommunity = await getPartnersAgreementByCommunity(address);
-    }
-
-    const paUrl = await getPAUrl(paCommunity.partnersAgreementAddress);
-
-    return {
-      paCommunity,
-      paUrl,
-    };
+    const paCommunity = partner?.paCommunity;
+    return await getPAUrl(paCommunity.partnersAgreementAddress);
   } catch (error) {
     const message = ParseSWErrorMessage(error);
     dispatch(openSnackbar({ message, severity: 'error' }));
@@ -77,10 +59,10 @@ export const fetchPaUrl = createAsyncThunk('partner/paUrl', async (address: stri
 
 export const addPaUrl = createAsyncThunk('partner/add/paUrl', async (daoUrl: string, { dispatch, getState }) => {
   try {
-    const { partner, auth }: any = getState();
-    const { userInfo } = auth;
-    await addUrlToPA(partner?.paCommunity.partnersAgreementAddress, daoUrl);
-    return dispatch(fetchPaUrl(userInfo?.community));
+    const { partner }: any = getState();
+    const paCommunity = partner?.paCommunity;
+    await addUrlToPA(paCommunity.partnersAgreementAddress, daoUrl);
+    return dispatch(fetchPaUrl());
   } catch (error) {
     const message = ParseSWErrorMessage(error);
     dispatch(openSnackbar({ message, severity: 'error' }));
@@ -90,8 +72,7 @@ export const addPaUrl = createAsyncThunk('partner/add/paUrl', async (daoUrl: str
 
 export const addRemoveContracts = createAsyncThunk('partner/contracs/addRemove', async (payload: any, { dispatch, getState }) => {
   try {
-    const { partner, auth }: any = getState();
-    const { userInfo } = auth;
+    const { partner }: any = getState();
     const address = partner?.paCommunity?.partnersAgreementAddress;
 
     const { newItems, removedItems } = payload;
@@ -101,7 +82,7 @@ export const addRemoveContracts = createAsyncThunk('partner/contracs/addRemove',
     for (const item of removedItems) {
       // await asyncCall(item);
     }
-    return dispatch(fetchPartnerContracts(userInfo?.community));
+    return dispatch(fetchPartnerContracts());
   } catch (error) {
     const message = ParseSWErrorMessage(error);
     dispatch(openSnackbar({ message, severity: 'error' }));
@@ -112,7 +93,6 @@ export const addRemoveContracts = createAsyncThunk('partner/contracs/addRemove',
 export const addNewWhitelistedAddresses = createAsyncThunk('partner/addresses/add', async (newMembers: any[], { dispatch, getState }) => {
   try {
     const {
-      partner,
       auth: { userInfo },
     }: any = getState();
     for (const newMember of newMembers) {
@@ -122,6 +102,16 @@ export const addNewWhitelistedAddresses = createAsyncThunk('partner/addresses/ad
     return dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
   } catch (error) {
     const message = ParseSWErrorMessage(error);
+    dispatch(openSnackbar({ message, severity: 'error' }));
+    throw new Error(message);
+  }
+});
+
+export const fetchPartnersAgreementByCommunity = createAsyncThunk('partner/agreement/community', async (address: string, { dispatch }) => {
+  try {
+    return await getPartnersAgreementByCommunity(address);
+  } catch (error) {
+    const message = ErrorParser(error);
     dispatch(openSnackbar({ message, severity: 'error' }));
     throw new Error(message);
   }
@@ -155,6 +145,9 @@ export const partnerSlice = createSlice({
     setDashboardBtn(state, action) {
       state.selectedDashboardBtn = action.payload;
     },
+    setPartnersAgreementCommunity(state, action) {
+      state.paCommunity = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -174,9 +167,7 @@ export const partnerSlice = createSlice({
         state.status = ResultState.Loading;
       })
       .addCase(fetchPartnerContracts.fulfilled, (state, action) => {
-        const { paCommunity, contracts } = action.payload;
-        state.paCommunity = paCommunity;
-        state.contracts = contracts;
+        state.contracts = action.payload;
         state.status = ResultState.Idle;
       })
       .addCase(fetchPartnerContracts.rejected, (state) => {
@@ -188,9 +179,7 @@ export const partnerSlice = createSlice({
         state.status = ResultState.Loading;
       })
       .addCase(fetchPaUrl.fulfilled, (state, action) => {
-        const { paCommunity, paUrl } = action.payload;
-        state.paCommunity = paCommunity;
-        state.paUrl = paUrl;
+        state.paUrl = action.payload;
         state.status = ResultState.Idle;
       })
       .addCase(fetchPaUrl.rejected, (state) => {
@@ -205,6 +194,17 @@ export const partnerSlice = createSlice({
         state.status = ResultState.Idle;
       })
       .addCase(addPaUrl.rejected, (state) => {
+        state.status = ResultState.Failed;
+      })
+
+      .addCase(fetchPartnersAgreementByCommunity.pending, (state) => {
+        state.status = ResultState.Updating;
+      })
+      .addCase(fetchPartnersAgreementByCommunity.fulfilled, (state, action) => {
+        state.paCommunity = action.payload;
+        state.status = ResultState.Idle;
+      })
+      .addCase(fetchPartnersAgreementByCommunity.rejected, (state) => {
         state.status = ResultState.Failed;
       })
 
@@ -230,7 +230,7 @@ export const partnerSlice = createSlice({
   },
 });
 
-export const { setDashboardBtn } = partnerSlice.actions;
+export const { setDashboardBtn, setPartnersAgreementCommunity } = partnerSlice.actions;
 
 const addresses = (state) => state.partner.whitelistedAddresses;
 const contracts = (state) => state.partner.contracts;
