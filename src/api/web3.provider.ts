@@ -1,4 +1,5 @@
 import { ContractInterface, ethers } from 'ethers';
+import detectEthereumProvider from '@metamask/detect-provider';
 import { environment } from './environment';
 
 export const changeNetwork = async () => {
@@ -35,18 +36,25 @@ export const changeNetwork = async () => {
   }
 };
 
-let provider = new ethers.providers.Web3Provider(window.ethereum);
-
 export const Web3ContractProvider = async (addressOrName: string, contractInterface: ContractInterface) => {
   // await changeNetwork();
 
-  if (!window.ethereum.selectedAddress) {
-    await window.ethereum.enable();
+  let ethereum;
+  try {
+    ethereum = await detectEthereumProvider();
+  } catch (e) {
+    console.log(e);
+  }
+  if (ethereum) {
+    if (!window.ethereum.selectedAddress) {
+      await window.ethereum.enable();
+    }
+  } else {
+    throw new Error('Please enable MetaMask and refresh.');
   }
 
-  if (!provider) {
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-  }
-  const signer = provider.getSigner();
+  const webProvider = new ethers.providers.Web3Provider(ethereum);
+
+  const signer = webProvider.getSigner();
   return new ethers.Contract(addressOrName, contractInterface, signer);
 };
