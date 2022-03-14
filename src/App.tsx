@@ -97,7 +97,7 @@ function App(props) {
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
           <sw-auth
-            partner-key="c3842343a29eac6d37a23b060af31a8c8655271d"
+            partner-key="0904d77ea971c3aff9e1d46410ab1600d8537641"
             hide-button={isLoading || isIntegrateFlow}
             use-dev={environment.env === EnvMode.Development}
           />
