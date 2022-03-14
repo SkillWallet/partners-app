@@ -230,7 +230,8 @@ export const createActivityTask = async (partnersAgreementAddress: string, reque
   const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
   const activitiesAddress = await contract.getActivitiesAddress();
   if (activitiesAddress === ethers.constants.AddressZero) {
-    await contract.deployActivities('0xcB42EB843a6136bFB759d3C4aF3FE14A7e5C123C');
+    const depTx = await contract.deployActivities('0xcB42EB843a6136bFB759d3C4aF3FE14A7e5C123C');
+    await depTx.wait();
   }
   const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
   return tx.wait();
