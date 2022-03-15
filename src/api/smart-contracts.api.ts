@@ -1,17 +1,17 @@
 import { ethers } from 'ethers';
 import {
-  DitoCommunityAbi,
   PartnersRegistryABI,
   SWContractEventType,
   PartnersAgreementABI,
-  CommunityRegistryAbi,
+  CommunityRegistryABI,
+  SkillWalletABI,
 } from '@skill-wallet/sw-abi-types';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
 import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
 import { storeMetadata } from './textile.api';
 import { generatePartnersKey } from './dito.api';
-import { environment } from './environment';
+import { environment, EnvMode } from './environment';
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -27,13 +27,13 @@ export const createPartnersCommunity = async (
   metadata: CommunityIntegration,
   selectedtemplate: number
 ): Promise<string> => {
-  const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
+  const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryABI);
 
   console.log(metadata);
   const url = await storeMetadata(metadata);
   console.log('Metadata url: ', url);
 
-  const isPermissioned = environment.env === 'production';
+  const isPermissioned = environment.env === EnvMode.Production;
 
   const createTx = await communityRegistryContract.createCommunity(
     url,
@@ -107,7 +107,7 @@ export const createPartnersAgreement = async (
 };
 
 export const addAddressToWhitelist = async (communityAddress, memberAddress) => {
-  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
+  const contract = await Web3ContractProvider(communityAddress, SkillWalletABI);
   const createTx = await contract.addNewCoreTeamMembers(memberAddress);
   const result = await createTx.wait();
   const event = result.events.find((e) => e.event === SWContractEventType.CoreTeamMemberAdded);
@@ -186,7 +186,7 @@ export const getImportedContracts = async (partnersAgreementAddress) => {
 };
 
 export const getWhitelistedAddresses = async (communityAddress: string) => {
-  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
+  const contract = await Web3ContractProvider(communityAddress, SkillWalletABI);
   return contract.getCoreTeamMembers();
 };
 
@@ -214,7 +214,7 @@ export const updateAndSaveSkills = async (editedRole, community) => {
   const uri = await storeMetadata(jsonMetadata);
   console.log(uri);
 
-  const contract = await Web3ContractProvider(community.address, DitoCommunityAbi);
+  const contract = await Web3ContractProvider(community.address, SkillWalletABI);
   const tx = await contract.setMetadataUri(uri);
   return tx.wait();
 };

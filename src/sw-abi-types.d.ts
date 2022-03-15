@@ -2,58 +2,79 @@ import { SWContractFunctions, SWContractEvents } from '@skill-wallet/sw-abi-type
 
 declare module 'ethers' {
   export class Contract extends BaseContract implements SWContractFunctions {
-    readonly [key: string]: ContractFunction | any;
+    activeMembersCount: () => Promise<number>;
 
-    approve: (to: string, tokenId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    addProjectId: (projectId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
     balanceOf: (owner: string) => Promise<number>;
 
-    baseURI: () => Promise<string>;
+    claimableSkillWallets: () => Promise<boolean>;
 
-    completeGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    creditsToTransfer: () => Promise<number>;
 
-    createGig: (_ditoCredits: number, _metadataUrl: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    distributedTownAddr: () => Promise<string>;
 
-    getApproved: (tokenId: number) => Promise<string>;
+    ditoCreditsAddr: () => Promise<string>;
 
-    gigs: () => Promise<{
-      creator: string;
-      taker: string;
-      ditoCredits: number;
-      status: string;
-    }>;
+    ditoCreditsHolder: () => Promise<string>;
 
-    gigsCount: () => Promise<number>;
+    getMemberAddresses: () => Promise<string[]>;
 
-    isApprovedForAll: (owner: string, operator: string) => Promise<boolean>;
+    getMembers: () => Promise<number[]>;
 
-    name: () => Promise<string>;
+    getProjects: () => Promise<number[]>;
 
-    ownerOf: (tokenId: number) => Promise<string>;
+    getSkillWalletAddress: () => Promise<string>;
 
-    safeTransferFrom: (from: string, to: string, tokenId: number, _data: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    getTemplate: () => Promise<number>;
 
-    setApprovalForAll: (operator: string, approved: boolean) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    getTokenId: () => Promise<number>;
 
-    setCommunityAddress: (_newCommunityAddress: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    getTreasuryBalance: () => Promise<number>;
 
-    submitGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    gigsAddr: () => Promise<string>;
 
-    supportsInterface: (interfaceId: string) => Promise<boolean>;
+    isMember: () => Promise<boolean>;
 
-    symbol: () => Promise<string>;
+    joinNewMember: (uri: string, role: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
-    takeGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    markAsMigrated: (_migratedTo: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
-    tokenByIndex: (index: number) => Promise<number>;
+    memberAddresses: () => Promise<string>;
 
-    tokenOfOwnerByIndex: (owner: string, index: number) => Promise<number>;
+    metadataUri: () => Promise<string>;
 
-    tokenURI: (tokenId: number) => Promise<string>;
+    migrateData: () => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
-    totalSupply: () => Promise<number>;
+    migratedFrom: () => Promise<string>;
 
-    transferFrom: (from: string, to: string, tokenId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    migratedTo: () => Promise<string>;
+
+    projectIds: () => Promise<number>;
+
+    roleMembershipsLeft: () => Promise<number>;
+
+    rolesCount: () => Promise<number>;
+
+    scarcityScore: () => Promise<number>;
+
+    setMetadataUri: (uri: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    skillWalletIds: () => Promise<number>;
+
+    status: () => Promise<number>;
+
+    tokenId: () => Promise<number>;
+
+    totalMembersAllowed: () => Promise<number>;
+
+    transferCredits: (to: string, amount: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    transferToCommunity: (from: string, amount: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    treasuryAddr: () => Promise<string>;
+
+    version: () => Promise<number>;
 
     addNewCoreTeamMembers: (member: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
@@ -61,80 +82,19 @@ declare module 'ethers' {
 
     getCoreTeamMembers: () => Promise<string[]>;
 
-    getMemberAddresses: () => Promise<string[]>;
+    isCoreTeamMember: () => Promise<boolean>;
 
-    getMembers: () => Promise<number[]>;
-
-    getSkillWalletAddress: () => Promise<string>;
-
-    getTemplate: () => Promise<number>;
-
-    isCoreTeamMember: (member: string) => Promise<boolean>;
-
-    isMember: (member: string) => Promise<boolean>;
-
-    joinNewMember: (uri: string, role: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    setMetadataUri: (uri: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    setPermissionBadgeAddress: (_permissionBadgeAddr: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    activateSkillWallet: (skillWalletId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    addDiscordIDToSkillWallet: (discordID: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    addPubKeyToSkillWallet: (skillWalletId: number, pubKey: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    claim: () => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    create: (
-      communityAddress: string,
-      rolesCount: number,
-      commitmentLevel: number,
-      partnersContractAddress: string
-    ) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    getActiveCommunity: (skillWalletId: number) => Promise<{ community: string }>;
-
-    getClaimableSkillWalletId: (skillWalletOwner: string) => Promise<number>;
-
-    getCommunityHistory: (skillWalletId: number) => Promise<{ communities: string[] }>;
-
-    getContractAddressPerAction: (action: string, caller: string) => Promise<string>;
-
-    getOSMAddress: () => Promise<string>;
-
-    getPubKeyBySkillWalletId: (skillWalletId: number) => Promise<string>;
-
-    getSkillWalletIdByOwner: (skillWalletOwner: string) => Promise<number>;
-
-    getTotalSkillWalletsRegistered: () => Promise<number>;
-
-    initialize: (_skillWalletAddress: string, _interactionNFTFactory: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
-
-    isRequestIdValid: (requestId: string) => Promise<boolean>;
-
-    isSkillWalletActivated: (skillWalletId: number) => Promise<{ status: boolean }>;
-
-    isSkillWalletClaimable: (skillWalletOwner: string) => Promise<{ status: boolean }>;
-
-    isSkillWalletRegistered: (skillWalletOwner: string) => Promise<{ status: boolean }>;
-
-    onERC721Received: () => Promise<string>;
-
-    osmAddress: () => Promise<string>;
+    isPermissioned: () => Promise<boolean>;
 
     owner: () => Promise<string>;
 
-    renounceOwnership: () => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    setPermissionBadgeAddress: (_permissionBadgeAddr: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
-    skillWalletClaimers: () => Promise<number>;
+    skillWallet: () => Promise<string>;
 
-    skillWalletToDiscordID: () => Promise<string>;
+    template: () => Promise<number>;
 
-    skillWalletToPubKey: () => Promise<string>;
-
-    transferOwnership: (newOwner: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+    testMapping: () => Promise<number>;
 
     activities: () => Promise<string>;
 
@@ -174,11 +134,15 @@ declare module 'ethers' {
 
     onERC1155Received: () => Promise<string>;
 
+    onERC721Received: () => Promise<string>;
+
     partnersContracts: () => Promise<string>;
 
     removeURL: (_url: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
-    rolesCount: () => Promise<number>;
+    setActivities: (_activity: string, _interactionNFT: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    supportsInterface: (interfaceId: string) => Promise<boolean>;
 
     takeTask: (_activityId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
@@ -186,20 +150,100 @@ declare module 'ethers' {
 
     urls: () => Promise<string>;
 
-    version: () => Promise<number>;
-
     agreementIds: () => Promise<number>;
 
     agreements: () => Promise<string>;
 
+    create: (
+      communityAddress: string,
+      rolesCount: number,
+      commitmentLevel: number,
+      partnersContractAddress: string
+    ) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
     deployer: () => Promise<string>;
 
     getPartnerAgreementAddresses: () => Promise<string[]>;
+
+    initialize: (_skillWalletAddress: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
     migrate: (_agreement: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
     setVersion: (_version: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
 
     skillWalletAddress: () => Promise<string>;
+
+    createCommunity: (
+      url: string,
+      template: number,
+      totalMembersAllowed: number,
+      coreTeamMembersCount: number,
+      isPermissioned: boolean,
+      migrateFrom: string
+    ) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    approve: (to: string, tokenId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    baseURI: () => Promise<string>;
+
+    completeGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    createGig: (_ditoCredits: number, _metadataUrl: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    getApproved: (tokenId: number) => Promise<string>;
+
+    gigs: () => Promise<{
+      creator: string;
+      taker: string;
+      ditoCredits: number;
+      status: number;
+    }>;
+
+    gigsCount: () => Promise<number>;
+
+    isApprovedForAll: (owner: string, operator: string) => Promise<boolean>;
+
+    name: () => Promise<string>;
+
+    ownerOf: (tokenId: number) => Promise<string>;
+
+    safeTransferFrom: (from: string, to: string, tokenId: number, _data: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    setApprovalForAll: (operator: string, approved: boolean) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    setCommunityAddress: (_newCommunityAddress: string) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    submitGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    symbol: () => Promise<string>;
+
+    takeGig: (_gigId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    tokenByIndex: (index: number) => Promise<number>;
+
+    tokenOfOwnerByIndex: (owner: string, index: number) => Promise<number>;
+
+    tokenURI: (tokenId: number) => Promise<string>;
+
+    totalSupply: () => Promise<number>;
+
+    transferFrom: (from: string, to: string, tokenId: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    checkpoints: () => Promise<string>;
+
+    closeCompetition: (competitionAddress: number) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    community: () => Promise<string>;
+
+    createCompetition: (
+      role: number,
+      skill1: number,
+      skill2: number,
+      skill3: number,
+      metadata: string,
+      checkpointsAmount: number
+    ) => Promise<{ wait: () => Promise<SWContractEvents> }>;
+
+    getCompetitions: () => Promise<string[]>;
   }
 }

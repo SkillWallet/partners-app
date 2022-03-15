@@ -49,7 +49,7 @@ function App(props) {
       }
     };
     checkForEthereumProvider();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const onSWLogin = async ({ detail }: any) => {
