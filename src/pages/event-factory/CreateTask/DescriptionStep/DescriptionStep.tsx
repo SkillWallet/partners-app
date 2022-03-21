@@ -51,7 +51,7 @@ const DescriptionStep = () => {
     );
 
     if (result.meta.requestStatus === 'fulfilled') {
-      await sendDiscordNotificaiton({ name: values.title, role, description }).catch((e) => {
+      await sendDiscordNotificaiton({ name: values.title, role, description: values.description }).catch((e) => {
         console.log(e);
         dispatch(
           openSnackbar({
