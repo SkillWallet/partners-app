@@ -1,6 +1,12 @@
 import axios from 'axios';
 import { environment } from './environment';
 
+export interface TaskData {
+  role: string;
+  description: string;
+  name: string;
+}
+
 export const oauthGetToken = (code: string) => {
   const details = {
     client_id: environment.discordClientId,
@@ -36,5 +42,16 @@ export const getUser = (accessToken: string) => {
         Authorization: `Bearer ${accessToken}`,
       },
     })
+    .then((res) => res.data);
+};
+
+export const sendDiscordNotificaiton = (taskData: TaskData) => {
+  const bodyFormData = new FormData();
+  bodyFormData.append(
+    'content',
+    `Hello! \n A new task called "${taskData.name}" was created. \n Description: ${taskData.description} \n Role: ${taskData.role}`
+  );
+  return axios
+    .post(`${environment.discordWebHookUrl}/${environment.discordWebHookId}/${environment.discordWebHookToken}`, bodyFormData)
     .then((res) => res.data);
 };

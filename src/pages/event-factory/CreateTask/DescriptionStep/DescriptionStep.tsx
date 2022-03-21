@@ -18,6 +18,8 @@ import {
   addActivityTask,
 } from '@store/Activity/create-task.reducer';
 import './DescriptionStep.scss';
+import { sendDiscordNotificaiton } from '@api/discord.api';
+import { openSnackbar } from '@store/ui-reducer';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();
@@ -49,6 +51,17 @@ const DescriptionStep = () => {
     );
 
     if (result.meta.requestStatus === 'fulfilled') {
+      await sendDiscordNotificaiton({ name: values.title, role, description }).catch((e) => {
+        console.log(e);
+        dispatch(
+          openSnackbar({
+            message: 'Failed to send discord message.',
+            severity: 'error',
+            duration: 5000,
+          })
+        );
+      });
+
       history.push('/partner/event-factory/create-task-success');
     }
   };
