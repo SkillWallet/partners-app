@@ -15,13 +15,14 @@ import {
   resetIntegrateState,
 } from '@store/Integrate/integrate';
 import { useAppDispatch } from '@store/store.model';
-import { setPreviusRoute } from '@store/ui-reducer';
+import { openSnackbar, setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useForm } from 'react-hook-form';
 import { CommunityIntegration } from '@api/api.model';
 import ErrorDialog from '@components/ErrorPopup';
+import { useHistory } from 'react-router-dom';
 import TemplateStep, { IntegrationTemplates } from './TemplateStep/TemplateStep';
 import ValidatePAAccessKeyDialog from './ValidatePAAccessKeyDialog';
 import ActivateCommunityDialog from './ActivateCommunityDialog';
@@ -55,6 +56,8 @@ const PartnerIntegration = () => {
   const small = useMediaQuery((theme: ThemeOptions) => theme.breakpoints.down('md'));
   const [opened, setOpened] = useState(true);
   const [isActivateKeyOpen, setIsActivateKeyOpen] = useState(true);
+  const [hasRetry, setHasRetry] = useState(true);
+  const history = useHistory();
 
   const status = useSelector(IntegrateStatus);
   const agreement = useSelector(IntegrateAgreement);
@@ -189,6 +192,25 @@ const PartnerIntegration = () => {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    const onWebComponentError = async ({ detail }: any) => {
+      dispatch(
+        openSnackbar({
+          message: 'Failed to initiate SkillWallet Connection. Try again from the home screen.',
+          severity: 'error',
+          duration: 20000,
+        })
+      );
+      history.push('/');
+    };
+
+    window.addEventListener('activateSkillWalletCommunityError', onWebComponentError);
+
+    return () => {
+      window.removeEventListener('activateSkillWalletCommunityError', onWebComponentError);
+    };
+  }, []);
 
   return (
     <>
