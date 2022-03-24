@@ -4,9 +4,12 @@ import { SwSidebar, SwLayout, SwButton } from 'sw-web-shared';
 import { useSelector } from 'react-redux';
 import { environment, EnvMode } from '@api/environment';
 import {
+  activatePartnersAgreement,
+  ActivationSucessful,
   IntegrateAgreement,
   IntegrateAgreementCommunityAddr,
   IntegrateErrorMessage,
+  IntegrateLoadingMessage,
   integratePartnerAgreement,
   integratePartnerCommunity,
   integrateSetAgreementKey,
@@ -63,6 +66,8 @@ const PartnerIntegration = () => {
   const agreement = useSelector(IntegrateAgreement);
   const communityAddress = useSelector(IntegrateAgreementCommunityAddr);
   const errorMessage = useSelector(IntegrateErrorMessage);
+  const isActivationSuccessful = useSelector(ActivationSucessful);
+  const loadingMessage = useSelector(IntegrateLoadingMessage);
 
   const {
     control,
@@ -109,17 +114,10 @@ const PartnerIntegration = () => {
     dispatch(integrateSetAgreementKey(key));
   };
 
-  const onActivateCommunity = () => {
-    dispatch(integrateUpdateStatus(ResultState.Idle));
+  const onActivateCommunity = async () => {
     const { communityAddr, partnersAddr, key } = agreement;
-    const event = new CustomEvent('activateSkillwalletCommunity', {
-      detail: {
-        communityAddr,
-        partnersAddr,
-        partnerKey: key,
-      },
-    });
-    window.dispatchEvent(event);
+    console.log(communityAddr);
+    await dispatch(activatePartnersAgreement({ communityAddr, partnersAddr, partnerKey: key }));
   };
 
   const createAgreement = async (closeStatus: 'close' | 'retry' = null) => {
@@ -159,6 +157,14 @@ const PartnerIntegration = () => {
   };
 
   const handleDialogClose = (closeStatus: 'close' | 'retry' = null) => {
+    if (!isActivationSuccessful && agreement) {
+      if (closeStatus !== 'retry') {
+        history.push('/');
+        return;
+      }
+      onActivateCommunity();
+      return;
+    }
     dispatch(integrateUpdateStatus(ResultState.Idle));
     if (closeStatus === 'retry') {
       createAgreement(closeStatus);
@@ -193,25 +199,6 @@ const PartnerIntegration = () => {
     [dispatch]
   );
 
-  useEffect(() => {
-    const onWebComponentError = async ({ detail }: any) => {
-      dispatch(
-        openSnackbar({
-          message: 'Failed to initiate SkillWallet Connection. Try again from the home screen.',
-          severity: 'error',
-          duration: 20000,
-        })
-      );
-      history.push('/');
-    };
-
-    window.addEventListener('activateSkillWalletCommunityError', onWebComponentError);
-
-    return () => {
-      window.removeEventListener('activateSkillWalletCommunityError', onWebComponentError);
-    };
-  }, []);
-
   return (
     <>
       <ActivateCommunityDialog
@@ -227,7 +214,12 @@ const PartnerIntegration = () => {
         open={status === ResultState.Failed}
         message={errorMessage || 'Something went wrong'}
       />
-      <LoadingDialog mode="dark" handleClose={handleDialogClose} open={status === ResultState.Updating} message="Signing agreement..." />
+      <LoadingDialog
+        mode="dark"
+        handleClose={handleDialogClose}
+        open={status === ResultState.Updating}
+        message={loadingMessage || 'Signing agreement...'}
+      />
       <form autoComplete="off" className="sw-integrate-base-container" onSubmit={handleSubmit(onSubmit, onError)}>
         <SwLayout
           hideTop
