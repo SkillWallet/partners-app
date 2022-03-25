@@ -211,6 +211,8 @@ const TemplateStep = ({ values, control, errors }) => {
                           value={value}
                           onChange={onChange}
                           InputProps={{ classes: { input: classes.input } }}
+                          // eslint-disable-next-line react/jsx-no-duplicate-props
+                          inputProps={{ maxLength: 20 }}
                           helperText={<FormHelperText value={value} name={name} errors={errors} />}
                         />
                       );

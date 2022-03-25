@@ -3,9 +3,9 @@ import { CommunityIntegration, CommunityRole } from '@api/api.model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
 import { createPartnersAgreement, createPartnersCommunity } from '@api/smart-contracts.api';
-import { partnerAgreementAccess } from '@api/skillwallet.api';
+import { activatePaCommunity, partnerAgreementAccess } from '@api/skillwallet.api';
 import { environment } from '@api/environment';
-import { ParseSWErrorMessage } from '@utils/error-parser';
+import { ErrorParser, ParseSWErrorMessage } from '@utils/error-parser';
 
 export interface IntegrateTaskState {
   communityInfo: {
@@ -29,6 +29,8 @@ export interface IntegrateTaskState {
   };
   isValidKey: boolean;
   agreementKey: string;
+  isActivationSuccess: boolean;
+  loadingMessage: string;
 }
 
 const initialState: IntegrateTaskState = {
@@ -45,6 +47,8 @@ const initialState: IntegrateTaskState = {
   agreementKey: null,
   communityAddr: null,
   errorMessage: null,
+  isActivationSuccess: false,
+  loadingMessage: null,
 };
 
 export const integratePartnerCommunity = createAsyncThunk(
@@ -97,6 +101,18 @@ export const validatePartnerAgreementKey = createAsyncThunk(
     } catch (error) {
       const message = ParseSWErrorMessage(error);
       dispatch(openSnackbar({ message, severity: 'error' }));
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const activatePartnersAgreement = createAsyncThunk(
+  'integrate/partner-agreement/activate',
+  async (requestBody: { communityAddr: string; partnersAddr: string; partnerKey: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      return await activatePaCommunity(requestBody);
+    } catch (error) {
+      const message = error;
       return rejectWithValue(message);
     }
   }
@@ -169,6 +185,21 @@ export const integrateSlice = createSlice({
       .addCase(validatePartnerAgreementKey.rejected, (state) => {
         state.keyStatus = ResultState.Failed;
         state.isValidKey = false;
+      })
+      .addCase(activatePartnersAgreement.pending, (state) => {
+        state.status = ResultState.Updating;
+        state.loadingMessage = 'Initiating SkillWallet.';
+      })
+      .addCase(activatePartnersAgreement.fulfilled, (state, action) => {
+        state.status = ResultState.Idle;
+        state.loadingMessage = null;
+        state.isActivationSuccess = true;
+        // state.communityAddr = action.payload;
+      })
+      .addCase(activatePartnersAgreement.rejected, (state, action) => {
+        state.status = ResultState.Failed;
+        state.isActivationSuccess = false;
+        state.errorMessage = action.payload as string;
       });
   },
 });
@@ -185,6 +216,8 @@ export const {
 
 const roles = (state) => state.integrate.roles;
 export const IntegrateStatus = (state: any) => state.integrate.status as ResultState;
+export const ActivationSucessful = (state: any) => state.integrate.isActivationSuccess as boolean;
+export const IntegrateLoadingMessage = (state: any) => state.integrate.loadingMessage as boolean;
 export const IntegrateErrorMessage = (state: any) => state.integrate.errorMessage as string;
 export const IntegrateKeyStatus = (state: any) => state.integrate.keyStatus as ResultState;
 export const IntegrateAgreement = (state: any) => state.integrate.agreement as any;

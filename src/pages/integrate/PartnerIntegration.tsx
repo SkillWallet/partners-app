@@ -4,9 +4,12 @@ import { SwSidebar, SwLayout, SwButton } from 'sw-web-shared';
 import { useSelector } from 'react-redux';
 import { environment, EnvMode } from '@api/environment';
 import {
+  activatePartnersAgreement,
+  ActivationSucessful,
   IntegrateAgreement,
   IntegrateAgreementCommunityAddr,
   IntegrateErrorMessage,
+  IntegrateLoadingMessage,
   integratePartnerAgreement,
   integratePartnerCommunity,
   integrateSetAgreementKey,
@@ -15,13 +18,14 @@ import {
   resetIntegrateState,
 } from '@store/Integrate/integrate';
 import { useAppDispatch } from '@store/store.model';
-import { setPreviusRoute } from '@store/ui-reducer';
+import { openSnackbar, setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useForm } from 'react-hook-form';
 import { CommunityIntegration } from '@api/api.model';
 import ErrorDialog from '@components/ErrorPopup';
+import { useHistory } from 'react-router-dom';
 import TemplateStep, { IntegrationTemplates } from './TemplateStep/TemplateStep';
 import ValidatePAAccessKeyDialog from './ValidatePAAccessKeyDialog';
 import ActivateCommunityDialog from './ActivateCommunityDialog';
@@ -55,11 +59,15 @@ const PartnerIntegration = () => {
   const small = useMediaQuery((theme: ThemeOptions) => theme.breakpoints.down('md'));
   const [opened, setOpened] = useState(true);
   const [isActivateKeyOpen, setIsActivateKeyOpen] = useState(true);
+  const [hasRetry, setHasRetry] = useState(true);
+  const history = useHistory();
 
   const status = useSelector(IntegrateStatus);
   const agreement = useSelector(IntegrateAgreement);
   const communityAddress = useSelector(IntegrateAgreementCommunityAddr);
   const errorMessage = useSelector(IntegrateErrorMessage);
+  const isActivationSuccessful = useSelector(ActivationSucessful);
+  const loadingMessage = useSelector(IntegrateLoadingMessage);
 
   const {
     control,
@@ -106,17 +114,10 @@ const PartnerIntegration = () => {
     dispatch(integrateSetAgreementKey(key));
   };
 
-  const onActivateCommunity = () => {
-    dispatch(integrateUpdateStatus(ResultState.Idle));
+  const onActivateCommunity = async () => {
     const { communityAddr, partnersAddr, key } = agreement;
-    const event = new CustomEvent('activateSkillwalletCommunity', {
-      detail: {
-        communityAddr,
-        partnersAddr,
-        partnerKey: key,
-      },
-    });
-    window.dispatchEvent(event);
+    console.log(communityAddr);
+    await dispatch(activatePartnersAgreement({ communityAddr, partnersAddr, partnerKey: key }));
   };
 
   const createAgreement = async (closeStatus: 'close' | 'retry' = null) => {
@@ -156,6 +157,14 @@ const PartnerIntegration = () => {
   };
 
   const handleDialogClose = (closeStatus: 'close' | 'retry' = null) => {
+    if (!isActivationSuccessful && agreement) {
+      if (closeStatus !== 'retry') {
+        history.push('/');
+        return;
+      }
+      onActivateCommunity();
+      return;
+    }
     dispatch(integrateUpdateStatus(ResultState.Idle));
     if (closeStatus === 'retry') {
       createAgreement(closeStatus);
@@ -205,7 +214,12 @@ const PartnerIntegration = () => {
         open={status === ResultState.Failed}
         message={errorMessage || 'Something went wrong'}
       />
-      <LoadingDialog mode="dark" handleClose={handleDialogClose} open={status === ResultState.Updating} message="Signing agreement..." />
+      <LoadingDialog
+        mode="dark"
+        handleClose={handleDialogClose}
+        open={status === ResultState.Updating}
+        message={loadingMessage || 'Signing agreement...'}
+      />
       <form autoComplete="off" className="sw-integrate-base-container" onSubmit={handleSubmit(onSubmit, onError)}>
         <SwLayout
           hideTop

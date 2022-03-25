@@ -71,6 +71,26 @@ export const partnerAgreementAccess = (partnerKey: string): Promise<boolean> => 
     .catch(() => false);
 };
 
+export const activatePaCommunity = (data) => {
+  const event = new CustomEvent('activateSkillwalletCommunity', {
+    detail: data,
+  });
+  window.dispatchEvent(event);
+  return new Promise((resolve, reject) => {
+    const handleResponse = ({ detail }: any) => {
+      console.log(detail);
+      resolve(detail);
+      window.removeEventListener('activateSkillWalletCommunitySuccess', handleResponse);
+    };
+    const handleError = ({ detail }: any) => {
+      reject(detail || 'Could not activate community, please try again');
+      window.removeEventListener('activateSkillWalletCommunityError', handleError);
+    };
+    window.addEventListener('activateSkillWalletCommunitySuccess', handleResponse);
+    window.addEventListener('activateSkillWalletCommunityError', handleError);
+  });
+};
+
 // @OTOD: Milena to implement method for fetching logs
 export const getLogs = (): Promise<any[]> => {
   return new Promise((resolve) => {
