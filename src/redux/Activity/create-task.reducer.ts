@@ -43,8 +43,8 @@ export const addActivityTask = createAsyncThunk('event-factory/acivity-task/crea
       responseType: 'blob',
     });
     return createActivityTask(partner?.paCommunity?.partnersAgreementAddress, {
-      name: 'SkillWallet Task',
-      description: community.community.description,
+      name: title,
+      description,
       image: community.community.image,
       properties: {
         creator: userInfo.nickname,

@@ -5,6 +5,7 @@ import {
   SWContractEventType,
   PartnersAgreementABI,
   CommunityRegistryAbi,
+  SkillWalletAbi,
 } from '@skill-wallet/sw-abi-types';
 import { Task } from '@store/model';
 import { Web3ContractProvider } from './web3.provider';
@@ -12,6 +13,7 @@ import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegrati
 import { storeMetadata } from './textile.api';
 import { generatePartnersKey } from './dito.api';
 import { environment } from './environment';
+import { getSkillwalletAddress } from './skillwallet.api';
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -27,6 +29,20 @@ export const createPartnersCommunity = async (
   metadata: CommunityIntegration,
   selectedtemplate: number
 ): Promise<string> => {
+  const swAddress = await getSkillwalletAddress();
+
+  const skillWalletContract = await Web3ContractProvider(swAddress.skillWalletAddress, SkillWalletAbi);
+  const { selectedAddress } = window.ethereum;
+  let tokenId;
+  try {
+    tokenId = await skillWalletContract.getSkillWalletIdByOwner(selectedAddress);
+  } catch (e) {
+    console.log(e);
+  }
+  if (tokenId) {
+    throw new Error('SkillWallet already belongs to a community.');
+  }
+
   const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
 
   console.log(metadata);
