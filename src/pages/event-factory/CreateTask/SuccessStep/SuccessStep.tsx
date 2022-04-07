@@ -45,7 +45,7 @@ const SuccessStep = () => {
           >
             See all Team Tasks
           </Button>
-
+          {/* 
           <SwButton
             sx={{
               width: '600px',
@@ -53,7 +53,7 @@ const SuccessStep = () => {
             }}
             mode="dark"
             label="Share on discord"
-          />
+          /> */}
         </Box>
       </div>
     </>
