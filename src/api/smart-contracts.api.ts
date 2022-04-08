@@ -16,6 +16,8 @@ import { environment } from './environment';
 import { getSkillwalletAddress } from './skillwallet.api';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const activitiesAbi = require('./Activities.json').abi;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const partnersAgreementAbi = require('./PartnersAgreement.json').abi;
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -245,22 +247,26 @@ export const createActivityTask = async (communityAddress: string, partnersAgree
   const uri = await storeMetadata(requestData, convertBlobToFile);
   console.log('CreateTask - uri: ', uri);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  let activitiesAddress = await contract.getActivitiesAddress();
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  console.log(partnersAgreementContract);
+  let activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
   if (activitiesAddress === ethers.constants.AddressZero) {
     activitiesAddress = await deployActivities(communityAddress);
+    await partnersAgreementContract.setActivities(activitiesAddress, ethers.constants.AddressZero);
   }
 
   const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
-  const tx = await activitiesContract.createActivity(ActivityTypes.CoreTeamTask, uri);
+  const tx = await activitiesContract.createTask(uri);
   return tx.wait();
 };
 
 export const takeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
   console.log('TakeTask: ', requestData);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const tx = await contract.takeTask(+requestData.activityId);
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
+  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
+  const tx = await activitiesContract.takeTask(+requestData.activityId);
   const result = await tx.wait();
   const { events } = result;
   // @ts-ignore
@@ -282,12 +288,14 @@ export const takeActivityTask = async (partnersAgreementAddress: string, request
 export const finalizeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
   console.log('FinalizeTask: ', requestData);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const tx = await contract.finilizeTask(+requestData.activityId);
-  const result = await tx.wait();
-  const { events } = result;
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
+  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
+  const tx = await activitiesContract.finilizeTask(+requestData.activityId);
+  await tx.wait();
+  // const { events } = result;
   // @ts-ignore
-  const event = events.find((e) => e.event === 'TaskTaken');
+  // const event = events.find((e) => e.event === 'TaskTaken');
   // if (!event) {
   //   throw new NoEventException({
   //     code: -32603,
