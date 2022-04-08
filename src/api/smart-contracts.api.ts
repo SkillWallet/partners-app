@@ -8,12 +8,16 @@ import {
   SkillWalletAbi,
 } from '@skill-wallet/sw-abi-types';
 import { Task } from '@store/model';
-import { Web3ContractProvider } from './web3.provider';
+import { deployActivities, Web3ContractProvider } from './web3.provider';
 import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
 import { storeMetadata } from './textile.api';
 import { generatePartnersKey } from './dito.api';
 import { environment } from './environment';
 import { getSkillwalletAddress } from './skillwallet.api';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const activitiesAbi = require('./Activities.json').abi;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const partnersAgreementAbi = require('./PartnersAgreement.json').abi;
 
 function NoEventException(value: CommunityContractError) {
   this.value = value;
@@ -236,28 +240,33 @@ export const updateAndSaveSkills = async (editedRole, community) => {
 };
 
 // Create Task
-export const createActivityTask = async (partnersAgreementAddress: string, requestData: ActivityTask) => {
+export const createActivityTask = async (communityAddress: string, partnersAgreementAddress: string, requestData: ActivityTask) => {
   console.log('CreateTask - metadata: ', requestData);
 
   const convertBlobToFile = (blob: Blob) => new File([blob], 'community_image.jpeg');
   const uri = await storeMetadata(requestData, convertBlobToFile);
   console.log('CreateTask - uri: ', uri);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const activitiesAddress = await contract.getActivitiesAddress();
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  console.log(partnersAgreementContract);
+  let activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
   if (activitiesAddress === ethers.constants.AddressZero) {
-    const depTx = await contract.deployActivities('0xcB42EB843a6136bFB759d3C4aF3FE14A7e5C123C');
-    await depTx.wait();
+    activitiesAddress = await deployActivities(communityAddress);
+    await partnersAgreementContract.setActivities(activitiesAddress, ethers.constants.AddressZero);
   }
-  const tx = await contract.createActivity(ActivityTypes.CoreTeamTask, uri);
+
+  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
+  const tx = await activitiesContract.createTask(uri);
   return tx.wait();
 };
 
 export const takeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
   console.log('TakeTask: ', requestData);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const tx = await contract.takeTask(+requestData.activityId);
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
+  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
+  const tx = await activitiesContract.takeTask(+requestData.activityId);
   const result = await tx.wait();
   const { events } = result;
   // @ts-ignore
@@ -279,12 +288,14 @@ export const takeActivityTask = async (partnersAgreementAddress: string, request
 export const finalizeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
   console.log('FinalizeTask: ', requestData);
 
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const tx = await contract.finilizeTask(+requestData.activityId);
-  const result = await tx.wait();
-  const { events } = result;
+  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
+  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
+  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
+  const tx = await activitiesContract.finilizeTask(+requestData.activityId);
+  await tx.wait();
+  // const { events } = result;
   // @ts-ignore
-  const event = events.find((e) => e.event === 'TaskTaken');
+  // const event = events.find((e) => e.event === 'TaskTaken');
   // if (!event) {
   //   throw new NoEventException({
   //     code: -32603,
