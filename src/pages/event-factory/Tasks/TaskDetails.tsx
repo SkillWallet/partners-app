@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
 import { getTaskByActivityId, SingleTask, TasksStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
-import { useAppDispatch } from '@store/store.model';
+import { RootState, useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,10 +14,13 @@ import './Tasks.scss';
 const TaskDetails = () => {
   const dispatch = useAppDispatch();
   const { taskActivityId } = useParams<any>();
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const selectedTask: Task = useSelector(SingleTask);
   const status = useSelector(TasksStatus);
 
   useEffect(() => {
+    console.log(userInfo);
+    console.log(selectedTask);
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
     dispatch(getTaskByActivityId(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
@@ -119,6 +122,7 @@ const TaskDetails = () => {
                   minHeight: '85px',
                   marginBottom: '40px',
                 }}
+                disabled
                 label="Message"
               />
 
@@ -128,10 +132,23 @@ const TaskDetails = () => {
                   width: '280px',
                   height: '85px',
                   minHeight: '85px',
-                  mb: '20px',
+                  marginBottom: '40px',
                 }}
+                disabled
                 label="Ask Update"
               />
+              {userInfo.tokenId === selectedTask.owner.tokenId && (
+                <SwButton
+                  mode="light"
+                  sx={{
+                    width: '280px',
+                    height: '85px',
+                    minHeight: '85px',
+                    mb: '20px',
+                  }}
+                  label="Finalize"
+                />
+              )}
             </Box>
             <Box
               sx={{
