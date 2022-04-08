@@ -1,30 +1,50 @@
 import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
-import { getTaskByActivityId, SingleTask, TasksStatus } from '@store/Activity/tasks.reducer';
+import {
+  finalizeTask,
+  getTaskByActivityId,
+  SingleTask,
+  TasksRefreshStatus,
+  TasksStatus,
+  tasksUpdateSelectedTab,
+  tasksUpdateStatus,
+} from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { SwButton, SwScrollbar } from 'sw-web-shared';
 import { ResultState } from '@store/result-status';
 import UserTaskDetail from './UserTaskDetail';
 import './Tasks.scss';
+// eslint-disable-next-line import/order
+import LoadingDialog from '@components/LoadingPopup';
 
 const TaskDetails = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
+  const [message, setLoadingMessage] = useState('');
   const { taskActivityId } = useParams<any>();
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const selectedTask: Task = useSelector(SingleTask);
   const status = useSelector(TasksStatus);
 
   useEffect(() => {
-    console.log(userInfo);
-    console.log(selectedTask);
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
     dispatch(getTaskByActivityId(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
   }, [dispatch, taskActivityId]);
+
+  const handleFinalizeClick = async () => {
+    setLoadingMessage('Finalizing Task...');
+    await dispatch(finalizeTask(selectedTask));
+    history.goBack();
+  };
+
+  const handleDialogClose = () => {
+    dispatch(tasksUpdateStatus(ResultState.Idle));
+  };
 
   return (
     <Box
@@ -36,6 +56,7 @@ const TaskDetails = () => {
         justifyContent: 'space-between',
       }}
     >
+      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />
       {status === ResultState.Loading ? (
         <div className="tasks-loading-spinner">
           <CircularProgress
@@ -137,7 +158,7 @@ const TaskDetails = () => {
                 disabled
                 label="Ask Update"
               />
-              {userInfo.tokenId === selectedTask.owner.tokenId && (
+              {selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
                 <SwButton
                   mode="light"
                   sx={{
@@ -146,6 +167,7 @@ const TaskDetails = () => {
                     minHeight: '85px',
                     mb: '20px',
                   }}
+                  onClick={handleFinalizeClick}
                   label="Finalize"
                 />
               )}
