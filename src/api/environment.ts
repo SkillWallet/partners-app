@@ -16,6 +16,7 @@ export const swEnvVariables = {
   partnersRegistryAdress: 'REACT_APP_PARTNERS_REGISTRY_ADDRESS',
   communityRegistryAddress: 'REACT_APP_COMMUNITY_REGISTRY_ADDRESS',
   rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
+  partnersKey: 'REACT_APP_PARTNERS_KEY',
 
   // dito
   ditoApiUrl: 'REACT_APP_DITO_API_URL',

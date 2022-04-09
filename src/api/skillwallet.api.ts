@@ -52,6 +52,18 @@ export const addCoreTeamName = async (communityAddress, memberAddress, memberNam
     .catch(() => false);
 };
 
+export const getPartnersAgreementByKey = async (partnerKey) => {
+  return axios.get(`${environment.apiUrl}/community/key/${partnerKey}`);
+};
+
+export const addDiscordUrl = async (partnerKey, discordWebhook) => {
+  return axios
+    .post(`${environment.apiUrl}/community/key/${partnerKey}/discordWebhook`, {
+      discordWebhook,
+    })
+    .then(() => discordWebhook);
+};
+
 export const getSkillwalletAddress = () => {
   return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data);
 };
