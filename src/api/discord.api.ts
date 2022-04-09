@@ -45,13 +45,11 @@ export const getUser = (accessToken: string) => {
     .then((res) => res.data);
 };
 
-export const sendDiscordNotificaiton = (taskData: TaskData) => {
+export const sendDiscordNotificaiton = (webhookUrl: string, taskData: TaskData) => {
   const bodyFormData = new FormData();
   bodyFormData.append(
     'content',
     `Hello! \n A new task called "${taskData.name}" was created. \n Description: ${taskData.description} \n Role: ${taskData.role}`
   );
-  return axios
-    .post(`${environment.discordWebHookUrl}/${environment.discordWebHookId}/${environment.discordWebHookToken}`, bodyFormData)
-    .then((res) => res.data);
+  return axios.post(webhookUrl, bodyFormData).then((res) => res.data);
 };

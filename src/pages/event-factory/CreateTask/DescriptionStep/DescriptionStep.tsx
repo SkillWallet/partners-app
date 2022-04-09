@@ -20,12 +20,14 @@ import {
 import './DescriptionStep.scss';
 import { sendDiscordNotificaiton } from '@api/discord.api';
 import { openSnackbar } from '@store/ui-reducer';
+import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { activeStep } = useSelector(ActivityCurrentStep);
   const status = useSelector(ActivityStatus);
+  const webhookUrl = useSelector(DiscordWebHookUrl);
   const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = useSelector(ActivityCurrentTask);
 
   const { control, handleSubmit, watch } = useForm({
@@ -50,9 +52,10 @@ const DescriptionStep = () => {
       })
     );
 
-    if (result.meta.requestStatus === 'fulfilled') {
-      await sendDiscordNotificaiton({ name: values.title, role, description: values.description }).catch((e) => {
-        console.log(e);
+    if (result.meta.requestStatus === 'fulfilled' && webhookUrl) {
+      try {
+        await sendDiscordNotificaiton(webhookUrl, { name: values.title, role, description: values.description });
+      } catch (error) {
         dispatch(
           openSnackbar({
             message: 'Failed to send discord message.',
@@ -60,8 +63,7 @@ const DescriptionStep = () => {
             duration: 5000,
           })
         );
-      });
-
+      }
       history.push('/partner/event-factory/create-task-success');
     }
   };

@@ -4,7 +4,7 @@ import { LockDatatableItems } from '@components/datatable/DatatableHelpers';
 import { openSnackbar } from '@store/ui-reducer';
 import { createSelector } from 'reselect';
 import { getPartnersAgreementByCommunity } from '@api/dito.api';
-import { getCoreTeamMemberNames, addCoreTeamName } from '@api/skillwallet.api';
+import { getCoreTeamMemberNames, addCoreTeamName, addDiscordUrl } from '@api/skillwallet.api';
 import {
   getWhitelistedAddresses,
   addAddressToWhitelist,
@@ -117,6 +117,17 @@ export const fetchPartnersAgreementByCommunity = createAsyncThunk('partner/agree
   }
 });
 
+export const addDiscordWebhook = createAsyncThunk('partner/discord/addurl', async (payload: any, { dispatch }) => {
+  try {
+    const { partnerKey, discordWebhook } = payload;
+    return await addDiscordUrl(partnerKey, discordWebhook);
+  } catch (error) {
+    const message = ErrorParser(error);
+    dispatch(openSnackbar({ message, severity: 'error' }));
+    throw new Error(message);
+  }
+});
+
 export interface PartnerState {
   partner: any;
   paCommunity: any;
@@ -151,6 +162,35 @@ export const partnerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(addDiscordWebhook.pending, (state) => {
+        state.status = ResultState.Updating;
+      })
+      .addCase(addDiscordWebhook.fulfilled, (state, action) => {
+        state.paCommunity = {
+          ...(state.paCommunity || {}),
+          discordWebhookUrl: action.payload,
+        };
+
+        try {
+          const authState = JSON.parse(sessionStorage.getItem('skillWallet'));
+          sessionStorage.setItem(
+            'skillWallet',
+            JSON.stringify({
+              ...authState,
+              partnersAgreementKey: {
+                ...(authState.partnersAgreementKey || {}),
+                discordWebhookUrl: action.payload,
+              },
+            })
+          );
+        } catch (error) {
+          // console.log(error);
+        }
+        state.status = ResultState.Idle;
+      })
+      .addCase(addDiscordWebhook.rejected, (state) => {
+        state.status = ResultState.Failed;
+      })
       .addCase(fetchPartnerWhitelistedAddresses.pending, (state) => {
         state.status = ResultState.Loading;
       })
@@ -234,6 +274,8 @@ export const { setDashboardBtn, setPartnersAgreementCommunity } = partnerSlice.a
 
 const addresses = (state) => state.partner.whitelistedAddresses;
 const contracts = (state) => state.partner.contracts;
+
+export const DiscordWebHookUrl = (state) => state.partner?.paCommunity?.discordWebhookUrl;
 
 export const getLockedContracts = createSelector(contracts, (x1) => {
   let lockedData = LockDatatableItems(

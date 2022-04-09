@@ -31,6 +31,7 @@ import TaskDetails from './event-factory/Tasks/TaskDetails';
 import TaskSubmit from './event-factory/Tasks/TaskSubmit';
 
 import './partners.scss';
+import DiscordIntegration from './integrations-and-contracts/discord-integration/DiscordIntegration';
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
@@ -193,6 +194,7 @@ const Partners = (props) => {
               {/* Partner> Integration and contracts */}
               <Route exact path="/partner/integrations-and-contracts" component={IntegrationDashboard} {...props} />
               <Route exact path="/partner/integrations-and-contracts/dao-integration" component={DaoIntegration} {...props} />
+              <Route exact path="/partner/integrations-and-contracts/discord-integration" component={DiscordIntegration} {...props} />
               <Route exact path="/partner/integrations-and-contracts/contracts" component={Contracts} {...props} />
 
               {/* Event factory */}

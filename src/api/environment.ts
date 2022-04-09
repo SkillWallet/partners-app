@@ -16,6 +16,7 @@ export const swEnvVariables = {
   partnersRegistryAdress: 'REACT_APP_PARTNERS_REGISTRY_ADDRESS',
   communityRegistryAddress: 'REACT_APP_COMMUNITY_REGISTRY_ADDRESS',
   rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
+  partnersKey: 'REACT_APP_PARTNERS_KEY',
 
   // dito
   ditoApiUrl: 'REACT_APP_DITO_API_URL',
@@ -27,9 +28,6 @@ export const swEnvVariables = {
   discordGrandType: 'REACT_APP_DISCORD_GRAND_TYPE',
   discordRedirectUri: 'REACT_APP_DISCORD_REDIRECT_URL',
   discordApiUrl: 'REACT_APP_DISCORD_API_URL',
-  discordWebHookUrl: 'REACT_APP_DISCORD_WEBHOOK_API_URL',
-  discordWebHookId: 'REACT_APP_DISCORD_TASK_WEBHOOK_ID',
-  discordWebHookToken: 'REACT_APP_DISCORD_TASK_WEBHOOK_TOKEN',
 };
 
 export const environment: typeof swEnvVariables = envionmentGenerator(swEnvVariables);

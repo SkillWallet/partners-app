@@ -26,17 +26,10 @@ const IntegrationCards = [
   {
     icon: DiscordBotIcon,
     title: 'Discord Bot',
-    description: `Track the Roles and IDs of your Members, create tasks, and turn
-    your community into a healthy, motivated collaboration engine!`,
+    description: `Manage your Tasks and let your community contribute - directly from your Discord Server.
+    SkillWallet's Discord Bot is a bridge between Web2 and Web3 - to track like a wizard, and react like a 🧙`,
     action: (
-      <SwButton
-        mode="light"
-        sx={{ height: '70px' }}
-        onClick={() => {
-          // @TODO: Milena to change the url
-          window.open('https://discord.com/api/oauth2/authorize?client_id=898586559228551208&permissions=8&scope=bot', '_blank');
-        }}
-      >
+      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/discord-integration">
         Integrate on Discord
       </SwButton>
     ),
