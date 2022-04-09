@@ -198,6 +198,7 @@ export const tasksSlice = createSlice({
       .addCase(finalizeTask.fulfilled, (state, action) => {
         state.status = ResultState.Success;
         state.selectedTask = action.payload;
+        state.selectedTabIndex = TaskTypes.Closed;
         state.tasks = state.tasks.map((task) => {
           if (task.activityId === action.payload.activityId) {
             return action.payload;

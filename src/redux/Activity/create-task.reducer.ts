@@ -42,7 +42,7 @@ export const addActivityTask = createAsyncThunk('event-factory/acivity-task/crea
     const result = await axios.get(community.community.image, {
       responseType: 'blob',
     });
-    return createActivityTask(partner?.paCommunity?.partnersAgreementAddress, {
+    return createActivityTask(community.community.address, partner?.paCommunity?.partnersAgreementAddress, {
       name: title,
       description,
       image: community.community.image,

@@ -96,11 +96,7 @@ function App(props) {
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
           {/* @ts-ignore */}
-          <sw-auth
-            partner-key={environment.partnersKey}
-            hide-button={isLoading || isIntegrateFlow}
-            use-dev={environment.env === EnvMode.Development}
-          />
+          <sw-auth partner-key={environment.partnersKey} hide-button={isLoading || isIntegrateFlow} use-dev="true" />
         </div>
         {isLoading ? (
           <LoadingMessage />
