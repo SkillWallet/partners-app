@@ -243,8 +243,8 @@ export const updateAndSaveSkills = async (editedRole, community) => {
 export const createActivityTask = async (communityAddress: string, partnersAgreementAddress: string, requestData: ActivityTask) => {
   console.log('CreateTask - metadata: ', requestData);
 
-  const convertBlobToFile = (blob: Blob) => new File([blob], 'community_image.jpeg');
-  const uri = await storeMetadata(requestData, convertBlobToFile);
+  // const convertBlobToFile = (blob: Blob) => new File([blob], 'community_image.jpeg');
+  const uri = await storeMetadata(requestData, undefined);
   console.log('CreateTask - uri: ', uri);
 
   const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);

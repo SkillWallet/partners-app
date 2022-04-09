@@ -39,9 +39,6 @@ export const addActivityTask = createAsyncThunk('event-factory/acivity-task/crea
     const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
     const selectedRole = community.roles.find(({ roleName }) => roleName === role);
 
-    const result = await axios.get(community.community.image, {
-      responseType: 'blob',
-    });
     return createActivityTask(community.community.address, partner?.paCommunity?.partnersAgreementAddress, {
       name: title,
       description,
