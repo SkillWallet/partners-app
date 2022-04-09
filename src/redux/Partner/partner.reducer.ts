@@ -275,6 +275,8 @@ export const { setDashboardBtn, setPartnersAgreementCommunity } = partnerSlice.a
 const addresses = (state) => state.partner.whitelistedAddresses;
 const contracts = (state) => state.partner.contracts;
 
+export const DiscordWebHookUrl = (state) => state.partner?.paCommunity?.discordWebhookUrl;
+
 export const getLockedContracts = createSelector(contracts, (x1) => {
   let lockedData = LockDatatableItems(
     x1.map((c) => {
