@@ -6,7 +6,6 @@ import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
 import { ErrorParser } from '@utils/error-parser';
 import { ethers } from 'ethers';
-import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export interface ActivityTaskState {
   status: ResultState;
@@ -89,38 +88,6 @@ export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', a
   }
 });
 
-export const takeTask = createAsyncThunk('event-factory/tasks/takeTask', async (task: Task, { dispatch, getState }) => {
-  try {
-    const { partner }: any = getState();
-    await takeActivityTask(partner?.paCommunity?.partnersAgreementAddress, task);
-    return {
-      ...task,
-      taker: window.ethereum.selectedAddress,
-      status: TaskStatus.Taken,
-    };
-  } catch (error) {
-    const message = ParseSWErrorMessage(error);
-    dispatch(openSnackbar({ message, severity: 'error' }));
-    throw new Error(message);
-  }
-});
-
-export const finalizeTask = createAsyncThunk('event-factory/tasks/finalizeTask', async (task: Task, { dispatch, getState }) => {
-  try {
-    const { partner }: any = getState();
-    await finalizeActivityTask(partner?.paCommunity?.partnersAgreementAddress, task);
-    return {
-      ...task,
-      taker: window.ethereum.selectedAddress,
-      status: TaskStatus.Finished,
-    };
-  } catch (error) {
-    const message = ParseSWErrorMessage(error);
-    dispatch(openSnackbar({ message, severity: 'error' }));
-    throw new Error(message);
-  }
-});
-
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
@@ -177,10 +144,10 @@ export const tasksSlice = createSlice({
       .addCase(getTaskByActivityId.rejected, (state) => {
         state.status = ResultState.Failed;
       })
-      .addCase(takeTask.pending, (state) => {
+      .addCase(takeActivityTask.pending, (state) => {
         state.status = ResultState.Updating;
       })
-      .addCase(takeTask.fulfilled, (state, action) => {
+      .addCase(takeActivityTask.fulfilled, (state, action) => {
         state.status = ResultState.Idle;
         state.tasks = state.tasks.map((task) => {
           if (task.activityId === action.payload.activityId) {
@@ -189,13 +156,13 @@ export const tasksSlice = createSlice({
           return task;
         });
       })
-      .addCase(takeTask.rejected, (state) => {
+      .addCase(takeActivityTask.rejected, (state) => {
         state.status = ResultState.Failed;
       })
-      .addCase(finalizeTask.pending, (state) => {
+      .addCase(finalizeActivityTask.pending, (state) => {
         state.status = ResultState.Updating;
       })
-      .addCase(finalizeTask.fulfilled, (state, action) => {
+      .addCase(finalizeActivityTask.fulfilled, (state, action) => {
         state.status = ResultState.Success;
         state.selectedTask = action.payload;
         state.selectedTabIndex = TaskTypes.Closed;
@@ -206,7 +173,7 @@ export const tasksSlice = createSlice({
           return task;
         });
       })
-      .addCase(finalizeTask.rejected, (state) => {
+      .addCase(finalizeActivityTask.rejected, (state) => {
         state.status = ResultState.Failed;
       });
   },

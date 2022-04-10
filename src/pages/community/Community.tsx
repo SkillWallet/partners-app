@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { fetchPaUrl } from '@store/Partner/partner.reducer';
 import './community-dashboard.scss';
+import { getPAUrl } from '@api/smart-contracts.api';
 
 const Community = (props) => {
   const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ const Community = (props) => {
   };
 
   useEffect(() => {
-    const promise = dispatch(fetchPaUrl());
+    const promise = dispatch(getPAUrl(null));
     return () => promise.abort();
   }, [dispatch]);
 

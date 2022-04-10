@@ -22,14 +22,10 @@ import { GetDatatableItems } from '@components/datatable/DatatableHelpers';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import {
-  addNewWhitelistedAddresses,
-  fetchPartnerWhitelistedAddresses,
-  fetchPaUrl,
-  getLockedWhitelistedAddresses,
-} from '@store/Partner/partner.reducer';
+import { getLockedWhitelistedAddresses } from '@store/Partner/partner.reducer';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
+import { addNewWhitelistedAddresses, getPAUrl, getWhitelistedAddresses } from '@api/smart-contracts.api';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -190,12 +186,12 @@ const CoreTeamWhitelist = () => {
   };
 
   useEffect(() => {
-    const promise = dispatch(fetchPaUrl());
+    const promise = dispatch(getPAUrl(null));
     return () => promise.abort();
   }, [dispatch]);
 
   useEffect(() => {
-    const promise = dispatch(fetchPartnerWhitelistedAddresses(userInfo?.community));
+    const promise = dispatch(getWhitelistedAddresses(userInfo?.community));
     return () => promise.abort();
   }, [dispatch, userInfo]);
 

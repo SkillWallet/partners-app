@@ -6,7 +6,7 @@ import { getLogs, getMembersByCommunityAddress } from '@api/skillwallet.api';
 import { openSnackbar } from '@store/ui-reducer';
 import { createSelector } from 'reselect';
 import { ActionPayload } from '@store/action-payload';
-import { updateAndSaveSkills } from '@api/smart-contracts.api';
+import { updatePartnersCommunity } from '@api/smart-contracts.api';
 
 export const fetchCommunity = createAsyncThunk('community', async (address: string, { dispatch }) => {
   try {
@@ -30,16 +30,6 @@ export const fetchMembers = createAsyncThunk('community/members', async (payload
     return await getMembersByCommunityAddress(address, isCoreTeam);
   } catch (error) {
     dispatch(openSnackbar({ message: 'Failed to load members!', severity: 'error' }));
-    return error;
-  }
-});
-
-export const updateCommunity = createAsyncThunk('community/update', async (payload: any, { dispatch }) => {
-  try {
-    const { editedRole, community } = payload;
-    return await updateAndSaveSkills(editedRole, community);
-  } catch (error) {
-    dispatch(openSnackbar({ message: 'Failed to update community!', severity: 'error' }));
     return error;
   }
 });
@@ -119,13 +109,13 @@ export const communitySlice = createSlice({
         state.members = {};
       })
       // update community
-      .addCase(updateCommunity.pending, (state) => {
+      .addCase(updatePartnersCommunity.pending, (state) => {
         state.status = ResultState.Updating;
       })
-      .addCase(updateCommunity.fulfilled, (state) => {
+      .addCase(updatePartnersCommunity.fulfilled, (state) => {
         state.status = ResultState.Idle;
       })
-      .addCase(updateCommunity.rejected, (state) => {
+      .addCase(updatePartnersCommunity.rejected, (state) => {
         state.status = ResultState.Failed;
       })
       // update community logs

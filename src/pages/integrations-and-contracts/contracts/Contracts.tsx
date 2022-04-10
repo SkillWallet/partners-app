@@ -17,12 +17,13 @@ import { ReactComponent as PinIcon } from '@assets/pin.svg';
 import { ReactComponent as SaveIcon } from '@assets/actions/confirm.svg';
 import { ReactComponent as CancelIcon } from '@assets/actions/cancel.svg';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
-import { addRemoveContracts, fetchPartnerContracts, getLockedContracts } from '@store/Partner/partner.reducer';
+import { getLockedContracts } from '@store/Partner/partner.reducer';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { addPAContracts, getPAContracts } from '@api/smart-contracts.api';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -187,7 +188,7 @@ const Contracts = () => {
       return;
     }
 
-    dispatch(addRemoveContracts({ removedItems, newItems }));
+    dispatch(addPAContracts({ removedItems, newItems }));
   };
 
   useEffect(() => {
@@ -208,7 +209,7 @@ const Contracts = () => {
   }, [apiRef, lockedContracts]);
 
   useEffect(() => {
-    const promise = dispatch(fetchPartnerContracts());
+    const promise = dispatch(getPAContracts(null));
     return () => promise.abort();
   }, [dispatch]);
 

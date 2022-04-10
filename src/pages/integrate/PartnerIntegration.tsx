@@ -10,15 +10,14 @@ import {
   IntegrateAgreementCommunityAddr,
   IntegrateErrorMessage,
   IntegrateLoadingMessage,
-  integratePartnerAgreement,
-  integratePartnerCommunity,
   integrateSetAgreementKey,
   IntegrateStatus,
   integrateUpdateStatus,
   resetIntegrateState,
 } from '@store/Integrate/integrate';
+import { createPartnersAgreement, createPartnersCommunity } from '@api/smart-contracts.api';
 import { useAppDispatch } from '@store/store.model';
-import { openSnackbar, setPreviusRoute } from '@store/ui-reducer';
+import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -138,7 +137,7 @@ const PartnerIntegration = () => {
 
     if (!communityAddress || closeStatus !== 'retry') {
       result = await dispatch(
-        integratePartnerCommunity({
+        createPartnersCommunity({
           metadata,
           selectedTemplate: values.template,
         })
@@ -147,7 +146,7 @@ const PartnerIntegration = () => {
 
     if (result?.meta?.requestStatus !== 'rejected') {
       dispatch(
-        integratePartnerAgreement({
+        createPartnersAgreement({
           metadata,
           numOfActions: values.numOfActions,
           contractAddress: null,

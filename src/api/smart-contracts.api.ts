@@ -1,311 +1,361 @@
 import { ethers } from 'ethers';
 import {
-  DitoCommunityAbi,
-  PartnersRegistryABI,
-  SWContractEventType,
-  PartnersAgreementABI,
-  CommunityRegistryAbi,
-  SkillWalletAbi,
+  PartnersRegistryContractEventType,
+  PartnersAgreementContractEventType,
+  Web3SkillWalletProvider,
+  Web3CommunityRegistryProvider,
+  CommunityRegistryContractEventType,
+  CommunityRegistryContractFunctions,
+  Web3PartnersRegistryProvider,
+  PartnersRegistryContractFunctions,
+  SkillWalletCommunityContractFunctions,
+  Web3SkillWalletCommunityProvider,
+  Web3PartnersAgreementProvider,
+  PartnersAgreementContractFunctions,
+  Web3ActivitiesProvider,
+  ActivitiesContractEventType,
+  ActivitiesContractFunctions,
+  SkillWalletCommunityContractEventType,
 } from '@skill-wallet/sw-abi-types';
-import { Task } from '@store/model';
-import { deployActivities, Web3ContractProvider } from './web3.provider';
-import { ActivityTask, ActivityTypes, CommunityContractError, CommunityIntegration } from './api.model';
+import { TaskStatus } from '@store/model';
+import { CommunityIntegration } from './api.model';
 import { storeMetadata } from './textile.api';
-import { generatePartnersKey } from './dito.api';
+import { generatePartnersKey, getCommunityByCommunityAddress } from './dito.api';
 import { environment } from './environment';
-import { getSkillwalletAddress } from './skillwallet.api';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const activitiesAbi = require('./Activities.json').abi;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const partnersAgreementAbi = require('./PartnersAgreement.json').abi;
+import { addCoreTeamName, getCoreTeamMemberNames, getSkillwalletAddress } from './skillwallet.api';
+import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
+import { deployActivities } from './ProviderFactory/ActivityDeployment/deploy-activities';
 
-function NoEventException(value: CommunityContractError) {
-  this.value = value;
-  this.message = 'No event found!';
-  // eslint-disable-next-line func-names
-  this.toString = function () {
-    return this.value + this.message;
-  };
-}
+const communityRegistryThunkProvider = Web3ThunkProviderFactory<CommunityRegistryContractFunctions>('CommunityRegistry', {
+  provider: Web3CommunityRegistryProvider,
+});
 
-export const createPartnersCommunity = async (
-  communityRegistryAddress: string,
-  metadata: CommunityIntegration,
-  selectedtemplate: number
-): Promise<string> => {
-  const swAddress = await getSkillwalletAddress();
+const partnersRegistryThunkProvider = Web3ThunkProviderFactory<PartnersRegistryContractFunctions>('PartnersRegistry', {
+  provider: Web3PartnersRegistryProvider,
+});
 
-  const skillWalletContract = await Web3ContractProvider(swAddress.skillWalletAddress, SkillWalletAbi);
-  const { selectedAddress } = window.ethereum;
-  let tokenId;
-  try {
-    tokenId = await skillWalletContract.getSkillWalletIdByOwner(selectedAddress);
-  } catch (e) {
-    console.log(e);
+const partnersCommunityThunkProvider = Web3ThunkProviderFactory<SkillWalletCommunityContractFunctions>('PartnersCommunity', {
+  provider: Web3SkillWalletCommunityProvider,
+});
+
+const partnersAgreementThunkProvider = Web3ThunkProviderFactory<PartnersAgreementContractFunctions>('PartnersAgreement', {
+  provider: Web3PartnersAgreementProvider,
+});
+
+const activitiesThunkProvider = Web3ThunkProviderFactory<ActivitiesContractFunctions>('Activities', {
+  provider: Web3ActivitiesProvider,
+});
+
+export const createPartnersCommunity = communityRegistryThunkProvider(
+  {
+    type: 'integrate/create/community',
+    event: CommunityRegistryContractEventType.CommunityCreated,
+  },
+  () => {
+    return Promise.resolve(environment.communityRegistryAddress);
+  },
+  async (contract, requestBody: { metadata: CommunityIntegration; selectedTemplate: number }, { getState }) => {
+    const swAddress = await getSkillwalletAddress();
+    const swContract = await Web3SkillWalletProvider(swAddress.skillWalletAddress);
+    const { selectedAddress } = window.ethereum;
+    let tokenId: number;
+    try {
+      tokenId = await swContract.getSkillWalletIdByOwner(selectedAddress);
+    } catch (error) {
+      console.error(error);
+    }
+    if (tokenId) {
+      throw new Error('SkillWallet already belongs to a community.');
+    }
+
+    const { metadata, selectedTemplate } = requestBody;
+    const url = await storeMetadata(metadata);
+    console.log('Metadata url: ', url);
+    const isPermissioned = environment.env === 'production';
+    const totalMembersAllowed = 100;
+    const coreTeamMembersCount = 10;
+    const response = await contract.createCommunity(
+      url,
+      selectedTemplate,
+      totalMembersAllowed,
+      coreTeamMembersCount,
+      isPermissioned,
+      ethers.constants.AddressZero
+    );
+    return response[0];
   }
-  if (tokenId) {
-    throw new Error('SkillWallet already belongs to a community.');
+);
+
+export const createPartnersAgreement = partnersRegistryThunkProvider(
+  {
+    type: 'integrate/create/agreement',
+    event: PartnersRegistryContractEventType.PartnersAgreementCreated,
+  },
+  () => {
+    return Promise.resolve(environment.partnersRegistryAdress);
+  },
+  async (
+    contract,
+    requestBody: {
+      metadata: CommunityIntegration;
+      numOfActions: number;
+      contractAddress: string;
+    },
+    { getState }
+  ) => {
+    const { integrate } = getState();
+    const { metadata, numOfActions, contractAddress } = requestBody;
+
+    const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
+      prev += curr.roleName ? 1 : 0;
+      return prev;
+    }, 0);
+
+    const response = await contract.create(
+      integrate.communityAddr,
+      totalRoles,
+      numOfActions,
+      contractAddress ?? ethers.constants.AddressZero
+    );
+    const partnersAddr = response[0].toString();
+    const key = await generatePartnersKey(integrate.communityAddr, partnersAddr);
+    return {
+      key,
+      communityAddr: integrate.communityAddr,
+      partnersAddr,
+    };
   }
+);
 
-  const communityRegistryContract = await Web3ContractProvider(communityRegistryAddress, CommunityRegistryAbi);
-
-  console.log(metadata);
-  const url = await storeMetadata(metadata);
-  console.log('Metadata url: ', url);
-
-  const isPermissioned = environment.env === 'production';
-
-  const createTx = await communityRegistryContract.createCommunity(
-    url,
-    selectedtemplate,
-    100,
-    10,
-    isPermissioned,
-    ethers.constants.AddressZero
-  );
-
-  const result = await createTx.wait();
-  const event = result.events.find((e) => e.event === 'CommunityCreated');
-  if (!event) {
-    throw new NoEventException({
-      code: -32603,
-      message: 'Internal JSON-RPC error.',
-      data: {
-        code: 3,
-        data: '',
-        message: 'SkillWallet:CommunityCreatedEventMissing',
-      },
-    });
+export const getWhitelistedAddresses = partnersCommunityThunkProvider(
+  {
+    type: 'partner/addresses/get',
+  },
+  (thunkAPI) => {
+    const { auth } = thunkAPI.getState();
+    return Promise.resolve(auth.userInfo.community);
+  },
+  async (contract, _, { getState }) => {
+    const { auth } = getState();
+    const memberAddresses = await contract.getCoreTeamMembers();
+    const names = await getCoreTeamMemberNames(auth.userInfo.community);
+    return memberAddresses.map((a) => ({
+      address: a,
+      name: names.coreTeamMembers.find((c) => c.memberAddress === a)?.memberName || 'N/A',
+    }));
   }
-  return event.args[0];
-};
+);
 
-export const createPartnersAgreement = async (
-  communityAddr: string,
-  partnersRegistryAdress: string,
-  metadata: CommunityIntegration,
-  numOfActions: number,
-  contractAddress: string
-) => {
-  const partnersRegistryContract = await Web3ContractProvider(partnersRegistryAdress, PartnersRegistryABI);
-
-  const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
-    prev += curr.roleName ? 1 : 0;
-    return prev;
-  }, 0);
-
-  const createTx = await partnersRegistryContract.create(
-    communityAddr,
-    totalRoles,
-    numOfActions,
-    contractAddress ?? ethers.constants.AddressZero
-  );
-
-  const result = await createTx.wait();
-  const { events } = result;
-  const event = events.find((e) => e.event === SWContractEventType.PartnersAgreementCreated);
-  if (!event) {
-    throw new NoEventException({
-      code: -32603,
-      message: 'Internal JSON-RPC error.',
-      data: {
-        code: 3,
-        data: '',
-        message: `SkillWallet:${SWContractEventType.PartnersAgreementCreated}`,
-      },
-    });
+export const addNewWhitelistedAddresses = partnersCommunityThunkProvider(
+  {
+    type: 'partner/addresses/add',
+    event: SkillWalletCommunityContractEventType.CoreTeamMemberAdded,
+  },
+  (thunkAPI) => {
+    const { auth } = thunkAPI.getState();
+    return Promise.resolve(auth?.userInfo?.community);
+  },
+  async (contract, newMembers, { dispatch, getState }) => {
+    const { auth } = getState();
+    for (const newMember of newMembers) {
+      await contract.addNewCoreTeamMembers(newMember.address);
+      await addCoreTeamName(auth?.userInfo?.community, newMember.address, newMember.name);
+    }
+    return dispatch(getWhitelistedAddresses(auth.userInfo.community));
   }
+);
 
-  const partnersAddr = event.args[0].toString();
-
-  const key = await generatePartnersKey(communityAddr, partnersAddr);
-  return {
-    key,
-    communityAddr,
-    partnersAddr,
-  };
-};
-
-export const addAddressToWhitelist = async (communityAddress, memberAddress) => {
-  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
-  const createTx = await contract.addNewCoreTeamMembers(memberAddress);
-  const result = await createTx.wait();
-  const event = result.events.find((e) => e.event === SWContractEventType.CoreTeamMemberAdded);
-  if (!event) {
-    throw new NoEventException({
-      code: -32603,
-      message: 'Internal JSON-RPC error.',
-      data: {
-        code: 3,
-        data: '',
-        message: 'SkillWallet:CoreTeamMemberAddedEventMissing',
-      },
-    });
+export const getPAUrl = partnersAgreementThunkProvider(
+  {
+    type: 'partner/url/get',
+  },
+  (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    return Promise.resolve(paCommunity.partnersAgreementAddress);
+  },
+  async (contract) => {
+    const urls = await contract.getURLs();
+    return urls?.length > 0 ? urls[urls.length - 1] : undefined;
   }
-  return event.args;
-};
+);
 
-export const addUrlToPA = async (partnersAgreementAddress, url) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const createTx = await contract.addURL(url);
-  const result = await createTx.wait();
-  const { events } = result;
-  const event = events.find((e) => e.event === SWContractEventType.UrlAdded);
-
-  if (!event) {
-    throw new NoEventException({
-      code: -32603,
-      message: 'Internal JSON-RPC error.',
-      data: {
-        code: 3,
-        data: '',
-        message: 'SkillWallet:UrlAddedEventMissing',
-      },
-    });
+export const addPAUrl = partnersAgreementThunkProvider(
+  {
+    type: 'partner/url/add',
+    event: PartnersAgreementContractEventType.UrlAdded,
+  },
+  (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    return Promise.resolve(paCommunity.partnersAgreementAddress);
+  },
+  async (contract, daoUrl, { dispatch, getState }) => {
+    await contract.addURL(daoUrl);
+    return dispatch(getPAUrl(null));
   }
-  return event.args;
-};
+);
 
-export const importContractToPA = async (partnersAgreementAddress: string, contractAddress: string) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const createTx = await contract.addNewContractAddressToAgreement(contractAddress);
-
-  const result = await createTx.wait();
-  const { events } = result;
-  const event = events.find((e) => e.event === SWContractEventType.PartnersContractAdded);
-
-  if (!event) {
-    throw new NoEventException({
-      code: -32603,
-      message: 'Internal JSON-RPC error.',
-      data: {
-        code: 3,
-        data: '',
-        message: 'SkillWallet:PartnersContractAddedEventMissing',
-      },
-    });
+export const getPAContracts = partnersAgreementThunkProvider(
+  {
+    type: 'partner/contracts/get',
+  },
+  (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    return Promise.resolve(paCommunity.partnersAgreementAddress);
+  },
+  async (contract) => {
+    const contracts = await contract.getImportedAddresses();
+    return contracts;
   }
-  return event.args;
-};
+);
 
-export const getPAUrl = async (partnersAgreementAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  const urls = await contract.getURLs();
-  console.log('urls', urls);
-  return urls?.length > 0 ? urls[urls.length - 1] : undefined;
-};
+export const addPAContracts = partnersAgreementThunkProvider(
+  {
+    type: 'partner/contracts/add',
+    event: PartnersAgreementContractEventType.PartnersContractAdded,
+  },
+  (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    return Promise.resolve(paCommunity.partnersAgreementAddress);
+  },
+  async (contract, payload: any, { dispatch }) => {
+    const { newItems } = payload;
+    for (const item of newItems) {
+      await contract.addNewContractAddressToAgreement(item.address);
+    }
+    return dispatch(getPAContracts(null));
+  }
+);
 
-export const getActivitiesAddress = async (partnersAgreementAddress: string) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
+export const getActivitiesAddress = async (address: string) => {
+  const contract = await Web3PartnersAgreementProvider(address);
   return contract.activities();
 };
 
-export const getImportedContracts = async (partnersAgreementAddress) => {
-  const contract = await Web3ContractProvider(partnersAgreementAddress, PartnersAgreementABI);
-  return contract.getImportedAddresses();
-};
+export const updatePartnersCommunity = partnersCommunityThunkProvider(
+  {
+    type: 'partner/community/update',
+  },
+  (thunkAPI) => {
+    const { auth } = thunkAPI.getState();
+    return Promise.resolve(auth?.userInfo?.community);
+  },
+  async (contract, payload: any) => {
+    const { editedRole, community } = payload;
+    const updatedRoles = community.roles.roles.map((r) => {
+      if (r.roleName === editedRole.roleName) {
+        return editedRole;
+      }
+      return r;
+    });
 
-export const getWhitelistedAddresses = async (communityAddress: string) => {
-  const contract = await Web3ContractProvider(communityAddress, DitoCommunityAbi);
-  return contract.getCoreTeamMembers();
-};
+    const jsonMetadata = {
+      properties: {
+        template: community.template,
+      },
+      title: community.name,
+      description: community.description,
+      image: community.image,
+      skills: {
+        roles: updatedRoles,
+      },
+    };
+    console.log('metadata: ', jsonMetadata);
 
-export const updateAndSaveSkills = async (editedRole, community) => {
-  const updatedRoles = community.roles.roles.map((r) => {
-    if (r.roleName === editedRole.roleName) {
-      return editedRole;
-    }
-    return r;
-  });
-
-  const jsonMetadata = {
-    properties: {
-      template: community.template,
-    },
-    title: community.name,
-    description: community.description,
-    image: community.image,
-    skills: {
-      roles: updatedRoles,
-    },
-  };
-  console.log('metadata: ', jsonMetadata);
-
-  const uri = await storeMetadata(jsonMetadata);
-  console.log(uri);
-
-  const contract = await Web3ContractProvider(community.address, DitoCommunityAbi);
-  const tx = await contract.setMetadataUri(uri);
-  return tx.wait();
-};
-
-// Create Task
-export const createActivityTask = async (communityAddress: string, partnersAgreementAddress: string, requestData: ActivityTask) => {
-  console.log('CreateTask - metadata: ', requestData);
-
-  // const convertBlobToFile = (blob: Blob) => new File([blob], 'community_image.jpeg');
-  const uri = await storeMetadata(requestData, undefined);
-  console.log('CreateTask - uri: ', uri);
-
-  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
-  console.log(partnersAgreementContract);
-  let activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
-  if (activitiesAddress === ethers.constants.AddressZero) {
-    activitiesAddress = await deployActivities(communityAddress);
-    await partnersAgreementContract.setActivities(activitiesAddress, ethers.constants.AddressZero);
+    const uri = await storeMetadata(jsonMetadata);
+    await contract.setMetadataUri(uri);
+    return getCommunityByCommunityAddress(community.address);
   }
+);
 
-  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
-  const tx = await activitiesContract.createTask(uri);
-  return tx.wait();
-};
+export const addActivityTask = activitiesThunkProvider(
+  {
+    type: 'partner/activities/task/add',
+    event: ActivitiesContractEventType.ActivityCreated,
+  },
+  async (thunkAPI) => {
+    const { partner, community } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
+    let activitiesAddress = await contract.getActivitiesAddress();
+    if (activitiesAddress === ethers.constants.AddressZero) {
+      activitiesAddress = await deployActivities(community.community.address);
+      await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
+    }
+    return Promise.resolve(activitiesAddress);
+  },
+  async (contract, task: any, { getState }) => {
+    const { community, auth }: any = getState();
+    const { userInfo } = auth;
+    const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
+    const selectedRole = community.roles.find(({ roleName }) => roleName === role);
 
-export const takeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
-  console.log('TakeTask: ', requestData);
+    const metadata = {
+      name: title,
+      description,
+      image: community.community.image,
+      properties: {
+        creator: userInfo.nickname,
+        creatorSkillWalletId: window.ethereum.selectedAddress,
+        role: selectedRole,
+        roleId: role,
+        participants,
+        allParticipants,
+        description,
+        title,
+        isCoreTeamMembersOnly,
+      },
+    };
+    const uri = await storeMetadata(metadata);
+    console.log('CreateTask - uri: ', uri);
+    const result = await contract.createTask(uri);
+    return result;
+  }
+);
 
-  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
-  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
-  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
-  const tx = await activitiesContract.takeTask(+requestData.activityId);
-  const result = await tx.wait();
-  const { events } = result;
-  // @ts-ignore
-  const event = events.find((e) => e.event === 'TaskTaken');
-  // if (!event) {
-  //   throw new NoEventException({
-  //     code: -32603,
-  //     message: 'Internal JSON-RPC error.',
-  //     data: {
-  //       code: 3,
-  //       data: '',
-  //       message: 'SkillWallet:TaskTakenEventMissing',
-  //     },
-  //   });
-  // }
-  // return event.args;
-};
+export const takeActivityTask = activitiesThunkProvider(
+  {
+    type: 'partner/activities/task/take',
+    event: ActivitiesContractEventType.TaskTaken,
+  },
+  async (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
+    const activitiesAddress = await contract.getActivitiesAddress();
+    return Promise.resolve(activitiesAddress);
+  },
+  async (contract, requestData: any) => {
+    await contract.takeTask(+requestData.activityId);
+    return {
+      ...requestData,
+      taker: window.ethereum.selectedAddress,
+      status: TaskStatus.Taken,
+    };
+  }
+);
 
-export const finalizeActivityTask = async (partnersAgreementAddress: string, requestData: Task) => {
-  console.log('FinalizeTask: ', requestData);
-
-  const partnersAgreementContract = await Web3ContractProvider(partnersAgreementAddress, partnersAgreementAbi);
-  const activitiesAddress = await partnersAgreementContract.getActivitiesAddress();
-  const activitiesContract = await Web3ContractProvider(activitiesAddress, activitiesAbi);
-  const tx = await activitiesContract.finilizeTask(+requestData.activityId);
-  await tx.wait();
-  // const { events } = result;
-  // @ts-ignore
-  // const event = events.find((e) => e.event === 'TaskTaken');
-  // if (!event) {
-  //   throw new NoEventException({
-  //     code: -32603,
-  //     message: 'Internal JSON-RPC error.',
-  //     data: {
-  //       code: 3,
-  //       data: '',
-  //       message: 'SkillWallet:TaskTakenEventMissing',
-  //     },
-  //   });
-  // }
-  // return event.args;
-};
+export const finalizeActivityTask = activitiesThunkProvider(
+  {
+    type: 'partner/activities/task/finalize',
+    event: ActivitiesContractEventType.ActivityFinalized,
+  },
+  async (thunkAPI) => {
+    const { partner } = thunkAPI.getState();
+    const paCommunity = partner?.paCommunity;
+    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
+    const activitiesAddress = await contract.getActivitiesAddress();
+    return Promise.resolve(activitiesAddress);
+  },
+  async (contract, requestData: any) => {
+    await contract.finilizeTask(+requestData.activityId);
+    return {
+      ...requestData,
+      taker: window.ethereum.selectedAddress,
+      status: TaskStatus.Finished,
+    };
+  }
+);

@@ -1,16 +1,10 @@
 import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
-import {
-  finalizeTask,
-  getTaskByActivityId,
-  SingleTask,
-  TasksRefreshStatus,
-  TasksStatus,
-  tasksUpdateSelectedTab,
-  tasksUpdateStatus,
-} from '@store/Activity/tasks.reducer';
+import { getTaskByActivityId, SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
-import { RootState, useAppDispatch } from '@store/store.model';
+import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { finalizeActivityTask } from '@api/smart-contracts.api';
+import LoadingDialog from '@components/LoadingPopup';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -18,8 +12,6 @@ import { SwButton, SwScrollbar } from 'sw-web-shared';
 import { ResultState } from '@store/result-status';
 import UserTaskDetail from './UserTaskDetail';
 import './Tasks.scss';
-// eslint-disable-next-line import/order
-import LoadingDialog from '@components/LoadingPopup';
 
 const TaskDetails = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +29,7 @@ const TaskDetails = () => {
 
   const handleFinalizeClick = async () => {
     setLoadingMessage('Finalizing Task...');
-    await dispatch(finalizeTask(selectedTask));
+    await dispatch(finalizeActivityTask(selectedTask));
     history.goBack();
   };
 
