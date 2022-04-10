@@ -120,7 +120,9 @@ export const fetchPartnersAgreementByCommunity = createAsyncThunk('partner/agree
 export const addDiscordWebhook = createAsyncThunk('partner/discord/addurl', async (payload: any, { dispatch }) => {
   try {
     const { partnerKey, discordWebhook } = payload;
-    return await addDiscordUrl(partnerKey, discordWebhook);
+    const url = await addDiscordUrl(partnerKey, discordWebhook);
+    dispatch(openSnackbar({ message: 'Discord webhook was updated successfully', severity: 'success' }));
+    return url;
   } catch (error) {
     const message = ErrorParser(error);
     dispatch(openSnackbar({ message, severity: 'error' }));

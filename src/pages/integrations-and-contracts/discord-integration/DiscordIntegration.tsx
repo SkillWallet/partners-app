@@ -15,7 +15,6 @@ import './discord-integration.scss';
 
 const DiscordIntegration = () => {
   const dispatch = useAppDispatch();
-  const [disabled, setDisabled] = useState(false);
   const [discordUrl, setDiscordUrl] = useState('');
   const input = useRef<any>();
   const { status, paCommunity } = useSelector((state: RootState) => state.partner);
@@ -49,7 +48,6 @@ const DiscordIntegration = () => {
     if (paCommunity.discordWebhookUrl && input.current) {
       input.current.value = paCommunity.discordWebhookUrl;
     }
-    setDisabled(!!paCommunity.discordWebhookUrl);
   }, [input, paCommunity.discordWebhookUrl]);
 
   return (
@@ -74,7 +72,7 @@ const DiscordIntegration = () => {
             </Typography>
             <TextField
               autoFocus
-              disabled={disabled || status === ResultState.Loading}
+              disabled={status === ResultState.Loading}
               focused
               color="primary"
               placeholder="https://discord.it"
@@ -100,7 +98,7 @@ const DiscordIntegration = () => {
           <SwButton
             mode="light"
             btnType="large"
-            disabled={!discordUrl?.length || status === ResultState.Loading || disabled}
+            disabled={!discordUrl?.length || status === ResultState.Loading}
             onClick={submit}
             endIcon={<EditIcon />}
           >
