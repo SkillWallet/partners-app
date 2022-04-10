@@ -26,7 +26,6 @@ const TaskDetails = () => {
   const history = useHistory();
   const [message, setLoadingMessage] = useState('');
   const { taskActivityId } = useParams<any>();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const selectedTask: Task = useSelector(SingleTask);
   const status = useSelector(TasksStatus);
 
@@ -158,7 +157,7 @@ const TaskDetails = () => {
                 disabled
                 label="Ask Update"
               />
-              {selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
+              {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
                 <SwButton
                   mode="light"
                   sx={{
