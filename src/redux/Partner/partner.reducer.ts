@@ -197,7 +197,7 @@ export const getLockedContracts = createSelector(contracts, (x1) => {
     })
   );
 
-  if (!lockedData) {
+  if (!lockedData.length) {
     lockedData = [{ id: 0, isNew: true, locked: false }];
   }
   return lockedData;
@@ -213,7 +213,7 @@ export const getLockedWhitelistedAddresses = createSelector(addresses, (x1) => {
     })
   );
 
-  if (!lockedData) {
+  if (!lockedData.length) {
     lockedData = [{ id: 0, isNew: true, locked: false }];
   }
   return lockedData;

@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { envionmentGenerator } from 'sw-web-shared';
 
 export enum EnvMode {
@@ -7,7 +6,8 @@ export enum EnvMode {
 }
 
 export const swEnvVariables = {
-  // env
+  // app config
+  rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
   env: 'REACT_APP_NODE_ENV',
   hideDashboard: 'REACT_APP_HIDE_DASHBOARD',
 
@@ -15,7 +15,6 @@ export const swEnvVariables = {
   apiUrl: 'REACT_APP_API_URL',
   partnersRegistryAdress: 'REACT_APP_PARTNERS_REGISTRY_ADDRESS',
   communityRegistryAddress: 'REACT_APP_COMMUNITY_REGISTRY_ADDRESS',
-  rpcUrls: 'REACT_APP_MATIC_RPC_URLS',
   partnersKey: 'REACT_APP_PARTNERS_KEY',
 
   // dito

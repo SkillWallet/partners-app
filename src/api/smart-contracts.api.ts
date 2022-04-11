@@ -24,7 +24,7 @@ import { generatePartnersKey, getCommunityByCommunityAddress } from './dito.api'
 import { environment } from './environment';
 import { addCoreTeamName, getCoreTeamMemberNames, getSkillwalletAddress } from './skillwallet.api';
 import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
-import { deployActivities } from './ProviderFactory/ActivityDeployment/deploy-activities';
+import { deployActivities } from './ProviderFactory/deploy-activities';
 
 const communityRegistryThunkProvider = Web3ThunkProviderFactory<CommunityRegistryContractFunctions>('CommunityRegistry', {
   provider: Web3CommunityRegistryProvider,
@@ -190,7 +190,7 @@ export const addPAUrl = partnersAgreementThunkProvider(
     const paCommunity = partner?.paCommunity;
     return Promise.resolve(paCommunity.partnersAgreementAddress);
   },
-  async (contract, daoUrl, { dispatch, getState }) => {
+  async (contract, daoUrl, { dispatch }) => {
     await contract.addURL(daoUrl);
     return dispatch(getPAUrl(null));
   }

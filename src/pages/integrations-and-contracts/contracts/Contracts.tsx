@@ -106,7 +106,7 @@ const tableColumns = (getRef) => {
       sortable: false,
       valueGetter: ({ id, row: { addedBy } }) => {
         if (!addedBy) {
-          return `New Member ${id + 1}`;
+          return `New Contract ${id + 1}`;
         }
         return addedBy;
       },
@@ -197,7 +197,8 @@ const Contracts = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!lockedContracts.length) {
+    const [firstItem] = lockedContracts;
+    if (firstItem?.isNew) {
       const timeout = setTimeout(() => {
         if (apiRef.current) {
           apiRef.current.setRowMode(0, 'edit');

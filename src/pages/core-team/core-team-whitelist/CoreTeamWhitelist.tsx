@@ -201,7 +201,8 @@ const CoreTeamWhitelist = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!whitelistedAddresses.length) {
+    const [firstItem] = whitelistedAddresses;
+    if (firstItem?.isNew) {
       const timeout = setTimeout(() => {
         if (apiRef.current) {
           apiRef.current.setRowMode(0, 'edit');
