@@ -15,12 +15,12 @@ import {
   activitySetCurrentStep,
   activityUpdateTask,
   activityUpdateTaskStatus,
-  addActivityTask,
 } from '@store/Activity/create-task.reducer';
 import './DescriptionStep.scss';
 import { sendDiscordNotificaiton } from '@api/discord.api';
 import { openSnackbar } from '@store/ui-reducer';
 import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
+import { addActivityTask } from '@api/smart-contracts.api';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();

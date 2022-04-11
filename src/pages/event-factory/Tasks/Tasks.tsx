@@ -8,13 +8,13 @@ import { Link } from 'react-router-dom';
 import SwTabs from '@components/tabs/SwTabs';
 import {
   getAllTasks,
-  takeTask,
   TasksRefreshStatus,
   TasksSelectedTab,
   TasksStatus,
   tasksUpdateSelectedTab,
   tasksUpdateStatus,
 } from '@store/Activity/tasks.reducer';
+import { takeActivityTask } from '@api/smart-contracts.api';
 import { Task, TaskTypes } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import ErrorDialog from '@components/ErrorPopup';
@@ -45,7 +45,7 @@ const Tasks = () => {
       switch (s) {
         case TaskTypes.Open:
           setLoadingMessage('Claiming task...');
-          await dispatch(takeTask(task));
+          await dispatch(takeActivityTask(task));
           break;
         default:
           break;

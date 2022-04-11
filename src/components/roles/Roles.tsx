@@ -3,17 +3,12 @@ import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
-import {
-  toggleActiveRoleSkill,
-  getCommunityRoles,
-  setActiveRole,
-  updateCommunity,
-  fetchCommunity,
-} from '@store/Community/community.reducer';
+import { toggleActiveRoleSkill, getCommunityRoles, setActiveRole, fetchCommunity } from '@store/Community/community.reducer';
 import { ResultState } from '@store/result-status';
 import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import './roles.scss';
+import { updatePartnersCommunity } from '@api/smart-contracts.api';
 
 const skillData = ['Skill 1', 'Skill 2', 'Skill 3', 'Skill 4', 'Skill 5', 'Skill 6'];
 
@@ -28,7 +23,7 @@ const Roles = (props) => {
 
   const updateSkills = async () => {
     await dispatch(
-      updateCommunity({
+      updatePartnersCommunity({
         editedRole: activeRole,
         community,
       })

@@ -1,10 +1,7 @@
-import axios from 'axios';
-import { createActivityTask } from '@api/smart-contracts.api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { addActivityTask } from '@api/smart-contracts.api';
+import { createSlice } from '@reduxjs/toolkit';
 import { CurrentStep } from '@store/model';
 import { ResultState } from '@store/result-status';
-import { openSnackbar } from '@store/ui-reducer';
-import { ParseSWErrorMessage } from 'sw-web-shared';
 
 export interface ActivityTaskState {
   currentStep: CurrentStep;
@@ -31,36 +28,6 @@ const initialState: ActivityTaskState = {
     title: '',
   },
 };
-
-export const addActivityTask = createAsyncThunk('event-factory/acivity-task/create', async (task: any, { dispatch, getState }) => {
-  try {
-    const { community, auth, partner }: any = getState();
-    const { userInfo } = auth;
-    const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
-    const selectedRole = community.roles.find(({ roleName }) => roleName === role);
-
-    return createActivityTask(community.community.address, partner?.paCommunity?.partnersAgreementAddress, {
-      name: title,
-      description,
-      image: community.community.image,
-      properties: {
-        creator: userInfo.nickname,
-        creatorSkillWalletId: window.ethereum.selectedAddress,
-        role: selectedRole,
-        roleId: role,
-        participants,
-        allParticipants,
-        description,
-        title,
-        isCoreTeamMembersOnly,
-      },
-    });
-  } catch (error) {
-    const message = ParseSWErrorMessage(error);
-    dispatch(openSnackbar({ message, severity: 'error' }));
-    throw new Error(message);
-  }
-});
 
 export const activityTaskSlice = createSlice({
   name: 'activityTask',

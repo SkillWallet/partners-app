@@ -7,7 +7,7 @@ import Redirect from '@components/Redirect';
 import { resetAuthState, setAuthenticated } from '@auth/auth.reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';
-import { environment, EnvMode } from '@api/environment';
+import { environment } from '@api/environment';
 import { InitSwAuth } from '@skill-wallet/auth';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { openSnackbar } from '@store/ui-reducer';
@@ -32,7 +32,7 @@ function App(props) {
 
   useEffect(() => {
     const checkForEthereumProvider = async () => {
-      let ethereum;
+      let ethereum: typeof window.ethereum;
       try {
         ethereum = await detectEthereumProvider();
       } catch (e) {
@@ -95,7 +95,6 @@ function App(props) {
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
-          {/* @ts-ignore */}
           <sw-auth partner-key={environment.partnersKey} hide-button={isLoading || isIntegrateFlow} use-dev="true" />
         </div>
         {isLoading ? (
