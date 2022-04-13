@@ -2,19 +2,9 @@ import { ResultState } from '@store/result-status';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ErrorParser } from '@utils/error-parser';
 import { getLogs } from '@api/skillwallet.api';
-import { fetchMembers, updatePartnersCommunity } from '@api/community.api';
+import { fetchCommunity, fetchMembers, updatePartnersCommunity } from '@api/community.api';
 import { createSelector } from 'reselect';
-import { getCommunityByCommunityAddress } from '@api/dito.api';
-
-import { Community } from '@api/api.model';
-
-export const fetchCommunity = createAsyncThunk('community', async (address: string, { dispatch }) => {
-  try {
-    return await getCommunityByCommunityAddress(address);
-  } catch (error) {
-    return ErrorParser(error, dispatch);
-  }
-});
+import { Community, CommunityRole } from '@api/community.model';
 
 export const fetchLogs = createAsyncThunk('community/logs', async (address: string, { dispatch }) => {
   try {
@@ -33,7 +23,7 @@ export interface CommunityState {
 }
 
 const initialState = {
-  community: null,
+  community: new Community(),
   members: null,
   logs: [],
   activeRole: null,
@@ -113,22 +103,23 @@ const generateSkills = (skills: any[] = []) =>
     };
   });
 
-export const communityRoles = (state): any[] =>
-  (state.community.community?.roles?.roles || []).reduce((prev, curr) => {
+const community = (state) => state.community.community as Community;
+
+const communityRoles = createSelector(community, (c) => {
+  return (c.properties?.skills?.roles || []).reduce((prev, curr) => {
     prev = [
       ...prev,
       {
-        credits: curr.credits,
-        isCoreTeamMember: curr.isCoreTeamMember,
-        roleName: curr.roleName,
+        ...curr,
         skills: generateSkills(curr.skills),
       },
     ];
     return prev;
   }, []);
+});
 
 export const getCommunityRoles = (isCoreTeam: boolean) =>
-  createSelector(communityRoles, (roles: any[]): any[] => {
+  createSelector(communityRoles, (roles: CommunityRole[]): any[] => {
     return roles.filter((curr) => curr.isCoreTeamMember === isCoreTeam);
   });
 

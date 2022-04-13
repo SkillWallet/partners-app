@@ -90,6 +90,7 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "max-classes-per-file": "off",
         "max-len": [
             "warn",
             {

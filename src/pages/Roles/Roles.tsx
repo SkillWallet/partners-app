@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
 import { SwButton } from 'sw-web-shared';
+import { Community } from '@api/community.model';
 import { useSelector } from 'react-redux';
 import { communityUpdateState, getCommunityRoles } from '@store/Community/community.reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
@@ -33,19 +34,15 @@ const Roles = (props) => {
   const values = watch();
 
   const onSubmit = async (data: typeof values) => {
-    const jsonMetadata = {
-      address: community.address,
-      properties: {
-        template: community.template,
-      },
-      title: community.name,
-      description: community.description,
-      image: community.image,
-      skills: {
-        roles: data.roles,
-      },
-    };
-    await dispatch(updatePartnersCommunity(jsonMetadata));
+    const allRoles = community.properties.skills.roles.map((r) => {
+      const role = data.roles.find((updatedRole) => updatedRole.id === r.id);
+      if (role) {
+        return role;
+      }
+      return r;
+    });
+    community.properties.skills.roles = [...allRoles];
+    await dispatch(updatePartnersCommunity(new Community(community)));
   };
 
   const handleDialogClose = () => {

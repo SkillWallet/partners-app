@@ -13,7 +13,7 @@ const isValidUrl = (uri: string) => {
   return url.protocol === 'ipfs:' || url.protocol === 'http:' || url.protocol === 'https:';
 };
 
-export function ipfsCIDToHttpUrl(url: string, isJson: boolean) {
+export function ipfsCIDToHttpUrl(url: string, isJson = false) {
   if (!url.includes('textile'))
     return isJson
       ? `https://skillwallet.infura-ipfs.io/ipfs/${url.replace('ipfs://', '')}/metadata.json`
