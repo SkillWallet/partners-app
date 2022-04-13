@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Box, CircularProgress, TextField, Typography } from '@mui/material';
-import { getTaskByActivityId, SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
+import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
@@ -12,7 +12,7 @@ import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
 import './Tasks.scss';
 import SuccessDialog from '@components/SuccessPopup';
-import { finalizeActivityTask } from '@api/smart-contracts.api';
+import { finalizeActivityTask, getTaskById } from '@api/activities.api';
 
 const TaskSubmit = () => {
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ const TaskSubmit = () => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
-    dispatch(getTaskByActivityId(taskActivityId));
+    dispatch(getTaskById(taskActivityId));
     console.log('Previous route from Event Factory Tasks submit');
   }, [dispatch, taskActivityId]);
 

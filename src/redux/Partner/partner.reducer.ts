@@ -5,15 +5,9 @@ import { openSnackbar } from '@store/ui-reducer';
 import { createSelector } from 'reselect';
 import { getPartnersAgreementByCommunity } from '@api/dito.api';
 import { addDiscordUrl } from '@api/skillwallet.api';
-import {
-  getWhitelistedAddresses,
-  addNewWhitelistedAddresses,
-  getPAUrl,
-  addPAUrl,
-  getPAContracts,
-  addPAContracts,
-} from '@api/smart-contracts.api';
 import { ErrorParser } from '@utils/error-parser';
+import { getPAContracts, getPAUrl, addPAUrl, addPAContracts } from '@api/agreement.api';
+import { getWhitelistedAddresses, addNewWhitelistedAddresses } from '@api/community.api';
 
 export const fetchPartnersAgreementByCommunity = createAsyncThunk('partner/agreement/community', async (address: string, { dispatch }) => {
   try {

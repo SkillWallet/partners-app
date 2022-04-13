@@ -1,10 +1,7 @@
-import { getTask, getTasks } from '@api/skillwallet.api';
-import { finalizeActivityTask, getActivitiesAddress, takeActivityTask } from '@api/smart-contracts.api';
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { finalizeActivityTask, getAllTasks, getTaskById, takeActivityTask } from '@api/activities.api';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
 import { ResultState } from '@store/result-status';
-import { openSnackbar } from '@store/ui-reducer';
-import { ErrorParser } from '@utils/error-parser';
 import { ethers } from 'ethers';
 
 export interface ActivityTaskState {
@@ -22,71 +19,6 @@ const initialState: ActivityTaskState = {
   selectedTabIndex: TaskTypes.Open,
   selectedTask: null,
 };
-
-export const getAllTasks = createAsyncThunk('event-factory/tasks/getAll', async (_, { dispatch, getState }) => {
-  try {
-    const { partner }: any = getState();
-    const activityAddress = await getActivitiesAddress(partner?.paCommunity?.partnersAgreementAddress);
-    console.log('activityAddress: ', activityAddress);
-    return getTasks(activityAddress);
-  } catch (error) {
-    const message = ErrorParser(error);
-    dispatch(openSnackbar({ message, severity: 'error' }));
-    throw new Error(message);
-  }
-});
-
-export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', async (activityId: string, { dispatch, getState }) => {
-  try {
-    const {
-      auth: { userInfo },
-      tasks: { tasks, selectedTask },
-      partner,
-    }: any = getState();
-
-    let task = selectedTask;
-
-    if (selectedTask?.activityId === activityId) {
-      task = {
-        task: selectedTask,
-        taker: selectedTask.owner,
-      };
-    } else {
-      task = null;
-    }
-
-    if (!task) {
-      const existingTask: Task = tasks.find((t: Task) => t.activityId === activityId);
-      if (existingTask?.owner) {
-        task = {
-          task: existingTask,
-          taker: existingTask.owner,
-        };
-      } else if (existingTask?.taker?.toLowerCase() === window.ethereum.selectedAddress?.toLowerCase()) {
-        task = {
-          task: existingTask,
-          taker: {
-            tokenId: userInfo?.tokenId,
-            imageUrl: userInfo?.imageUrl,
-            nickname: userInfo?.nickname,
-          },
-        };
-      } else {
-        task = null;
-      }
-    }
-
-    if (task) {
-      return task;
-    }
-    const activityAddress = await getActivitiesAddress(partner?.paCommunity?.partnersAgreementAddress);
-    return getTask(activityId, activityAddress);
-  } catch (error) {
-    const message = ErrorParser(error);
-    dispatch(openSnackbar({ message, severity: 'error' }));
-    throw new Error(message);
-  }
-});
 
 export const tasksSlice = createSlice({
   name: 'tasks',
@@ -121,10 +53,10 @@ export const tasksSlice = createSlice({
         state.refreshingStatus = ResultState.Idle;
         state.status = ResultState.Failed;
       })
-      .addCase(getTaskByActivityId.pending, (state) => {
+      .addCase(getTaskById.pending, (state) => {
         state.status = ResultState.Loading;
       })
-      .addCase(getTaskByActivityId.fulfilled, (state, action) => {
+      .addCase(getTaskById.fulfilled, (state, action) => {
         state.status = ResultState.Idle;
         const { task, taker } = action.payload;
 
@@ -141,7 +73,7 @@ export const tasksSlice = createSlice({
           return t;
         });
       })
-      .addCase(getTaskByActivityId.rejected, (state) => {
+      .addCase(getTaskById.rejected, (state) => {
         state.status = ResultState.Failed;
       })
       .addCase(takeActivityTask.pending, (state) => {

@@ -1,9 +1,9 @@
 import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
-import { getTaskByActivityId, SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
+import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { finalizeActivityTask } from '@api/smart-contracts.api';
+import { finalizeActivityTask, getTaskById } from '@api/activities.api';
 import LoadingDialog from '@components/LoadingPopup';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ const TaskDetails = () => {
 
   useEffect(() => {
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
-    dispatch(getTaskByActivityId(taskActivityId));
+    dispatch(getTaskById(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
   }, [dispatch, taskActivityId]);
 

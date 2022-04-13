@@ -2,7 +2,7 @@
 
 declare namespace JSX {
   interface IntrinsicElements {
-    'sw-auth': HTMLAttributes;
+    'sw-auth': React.HTMLAttributes;
   }
 }
 

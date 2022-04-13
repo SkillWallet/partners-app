@@ -10,7 +10,6 @@ import { ReactComponent as IntegrationIcon } from '@assets/integration.svg';
 import { ReactComponent as EventFactoryIcon } from '@assets/event-badge.svg';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import MembersAndActivities from '@components/member-and-activities/MembersAndActivities';
-import Roles from '@components/roles/Roles';
 import { useSelector } from 'react-redux';
 import { fetchCommunity } from '@store/Community/community.reducer';
 import { setPreviusRoute } from '@store/ui-reducer';
@@ -32,6 +31,8 @@ import TaskSubmit from './event-factory/Tasks/TaskSubmit';
 
 import './partners.scss';
 import DiscordIntegration from './integrations-and-contracts/discord-integration/DiscordIntegration';
+import GroupCall from './event-factory/GroupCall/GroupCall';
+import Roles from './Roles/Roles';
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
@@ -200,6 +201,7 @@ const Partners = (props) => {
               {/* Event factory */}
               <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
               <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
+              {/* <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} /> */}
               <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
 
               <Route component={NotFound} />
