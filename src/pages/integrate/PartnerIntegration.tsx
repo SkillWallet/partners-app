@@ -15,7 +15,7 @@ import {
   integrateUpdateStatus,
   resetIntegrateState,
 } from '@store/Integrate/integrate';
-import { createPartnersAgreement, createPartnersCommunity } from '@api/smart-contracts.api';
+import { createPartnersAgreement, createPartnersCommunity } from '@api/registry.api';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';

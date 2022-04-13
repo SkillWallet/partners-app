@@ -20,7 +20,7 @@ import './DescriptionStep.scss';
 import { sendDiscordNotificaiton } from '@api/discord.api';
 import { openSnackbar } from '@store/ui-reducer';
 import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
-import { addActivityTask } from '@api/smart-contracts.api';
+import { addActivityTask } from '@api/activities.api';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();
@@ -52,17 +52,19 @@ const DescriptionStep = () => {
       })
     );
 
-    if (result.meta.requestStatus === 'fulfilled' && webhookUrl) {
-      try {
-        await sendDiscordNotificaiton(webhookUrl, { name: values.title, role, description: values.description });
-      } catch (error) {
-        dispatch(
-          openSnackbar({
-            message: 'Failed to send discord message.',
-            severity: 'error',
-            duration: 5000,
-          })
-        );
+    if (result.meta.requestStatus === 'fulfilled') {
+      if (webhookUrl) {
+        try {
+          await sendDiscordNotificaiton(webhookUrl, { name: values.title, role, description: values.description });
+        } catch (error) {
+          dispatch(
+            openSnackbar({
+              message: 'Failed to send discord message.',
+              severity: 'error',
+              duration: 5000,
+            })
+          );
+        }
       }
       history.push('/partner/event-factory/create-task-success');
     }

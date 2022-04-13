@@ -7,15 +7,15 @@ import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
 import SwTabs from '@components/tabs/SwTabs';
 import {
-  getAllTasks,
   TasksRefreshStatus,
   TasksSelectedTab,
   TasksStatus,
   tasksUpdateSelectedTab,
   tasksUpdateStatus,
 } from '@store/Activity/tasks.reducer';
-import { takeActivityTask } from '@api/smart-contracts.api';
+import { getAllTasks, takeActivityTask } from '@api/activities.api';
 import { Task, TaskTypes } from '@store/model';
+import { ActivityTypes } from '@api/api.model';
 import { useAppDispatch } from '@store/store.model';
 import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
@@ -89,7 +89,7 @@ const Tasks = () => {
         component: TasksList,
       },
     ]);
-    dispatch(getAllTasks());
+    dispatch(getAllTasks(ActivityTypes.CoreTeamTask));
     return () => {
       dispatch(resetActivityTaskState());
     };

@@ -3,14 +3,14 @@ import Box from '@mui/material/Box';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { CircularProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { fetchLogs, fetchMembers } from '@store/Community/community.reducer';
+import { fetchLogs } from '@store/Community/community.reducer';
 import { ResultState } from '@store/result-status';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { fetchMembers } from '@api/community.api';
 import Members from './Members';
 import ActivityAndLogs from './ActivityAndLogs';
-import './member-and-activities.scss';
-
 import SwTabs from '../tabs/SwTabs';
+import './member-and-activities.scss';
 
 const getAllMembers = (members) => {
   return Object.keys(members).reduce((prev, curr) => {
@@ -93,15 +93,7 @@ function MembersAndActivities(props) {
   }, [members, logs, props]);
 
   useEffect(() => {
-    const promises = [
-      dispatch(
-        fetchMembers({
-          address: userInfo?.community,
-          isCoreTeam: props.isCoreTeamMembers,
-        })
-      ),
-      dispatch(fetchLogs(userInfo?.community)),
-    ];
+    const promises = [dispatch(fetchMembers(props.isCoreTeamMembers)), dispatch(fetchLogs(userInfo?.community))];
     return () => promises.forEach((p) => p.abort());
   }, [dispatch, userInfo, props.isCoreTeamMembers]);
   return (

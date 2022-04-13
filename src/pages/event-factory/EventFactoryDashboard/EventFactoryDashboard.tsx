@@ -69,7 +69,7 @@ const EventFactoryDashboard = () => {
             endIcon={<VideoIcon />}
             label="Group Calls"
             component={Link}
-            to="/partner/dashboard"
+            to="/partner/event-factory/group-call"
           />
           <SwButton
             mode="light"

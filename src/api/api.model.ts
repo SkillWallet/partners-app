@@ -42,6 +42,18 @@ export interface CommunityIntegration {
   };
 }
 
+export interface Community {
+  name: string;
+  address: string;
+  description: string;
+  roles: {
+    roles: CommunityRole[];
+  };
+  template: string;
+  image: string;
+  isDiToNativeCommunity: boolean;
+}
+
 export interface CommunityContractError {
   code: number;
   message: string;
@@ -50,4 +62,45 @@ export interface CommunityContractError {
     data: any;
     message: string;
   };
+}
+
+export interface SkillWallet {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+  diToCredits: number;
+  repScore: number;
+  currentCommunities: CommunityList[];
+  pastCommunities: CommunityList[];
+  skills: Skill[];
+}
+export interface SkillWalletTask {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+  timestamp: string;
+}
+export interface SkillWalletList {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+}
+export interface SkillWalletListPerRole {
+  role: string;
+  skillWallets: SkillWalletList[];
+}
+
+interface CommunityList {
+  name: string;
+  address: string;
+  members?: number;
+  description?: string;
+  scarcityScore?: number;
+  comScore?: number;
+  repCredits?: number;
+}
+
+interface Skill {
+  name: string;
+  value: number;
 }

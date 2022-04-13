@@ -1,12 +1,12 @@
 import { ResultState } from '@store/result-status';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ErrorParser } from '@utils/error-parser';
-import { getCommunityByCommunityAddress } from '@api/dito.api';
-import { getLogs, getMembersByCommunityAddress } from '@api/skillwallet.api';
-import { openSnackbar } from '@store/ui-reducer';
+import { getLogs } from '@api/skillwallet.api';
+import { fetchMembers, updatePartnersCommunity } from '@api/community.api';
 import { createSelector } from 'reselect';
-import { ActionPayload } from '@store/action-payload';
-import { updatePartnersCommunity } from '@api/smart-contracts.api';
+import { getCommunityByCommunityAddress } from '@api/dito.api';
+
+import { Community } from '@api/api.model';
 
 export const fetchCommunity = createAsyncThunk('community', async (address: string, { dispatch }) => {
   try {
@@ -24,29 +24,17 @@ export const fetchLogs = createAsyncThunk('community/logs', async (address: stri
   }
 });
 
-export const fetchMembers = createAsyncThunk('community/members', async (payload: any, { dispatch }) => {
-  try {
-    const { address, isCoreTeam } = payload;
-    return await getMembersByCommunityAddress(address, isCoreTeam);
-  } catch (error) {
-    dispatch(openSnackbar({ message: 'Failed to load members!', severity: 'error' }));
-    return error;
-  }
-});
-
 export interface CommunityState {
-  community: any;
+  community: Community;
   members: any;
   activeRoleName: string;
   status: ResultState;
-  roles: any[];
   logs: any[];
 }
 
 const initialState = {
   community: null,
   members: null,
-  roles: [],
   logs: [],
   activeRole: null,
   status: ResultState.Idle,
@@ -57,17 +45,8 @@ export const communitySlice = createSlice({
   initialState,
   reducers: {
     resetCommunityState: () => initialState,
-    setActiveRole(state, action: ActionPayload<any>) {
-      const role = state.roles.find((r) => r.roleName === action.payload);
-      state.activeRole = role;
-    },
-    toggleActiveRoleSkill(state, action: ActionPayload<any>) {
-      const index = state.activeRole.skills.findIndex((skill) => skill === action.payload);
-      if (index === -1) {
-        state.activeRole.skills = [...state.activeRole.skills, action.payload];
-      } else {
-        state.activeRole.skills.splice(index, 1);
-      }
+    communityUpdateState(state, action) {
+      state.status = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -78,19 +57,6 @@ export const communitySlice = createSlice({
       })
       .addCase(fetchCommunity.fulfilled, (state, action) => {
         state.community = action.payload;
-        const roles = action.payload?.roles?.roles || [];
-        state.roles = roles.reduce((prev, curr) => {
-          prev = [
-            ...prev,
-            {
-              credits: curr.credits,
-              isCoreTeamMember: curr.isCoreTeamMember,
-              roleName: curr.roleName,
-              skills: curr.skills,
-            },
-          ];
-          return prev;
-        }, []);
         state.status = ResultState.Idle;
       })
       .addCase(fetchCommunity.rejected, (state) => {
@@ -112,7 +78,8 @@ export const communitySlice = createSlice({
       .addCase(updatePartnersCommunity.pending, (state) => {
         state.status = ResultState.Updating;
       })
-      .addCase(updatePartnersCommunity.fulfilled, (state) => {
+      .addCase(updatePartnersCommunity.fulfilled, (state, action) => {
+        state.community = action.payload;
         state.status = ResultState.Idle;
       })
       .addCase(updatePartnersCommunity.rejected, (state) => {
@@ -133,13 +100,36 @@ export const communitySlice = createSlice({
   },
 });
 
-export const { setActiveRole, toggleActiveRoleSkill } = communitySlice.actions;
+export const { communityUpdateState } = communitySlice.actions;
 
-const communityRoles = (state) => state.community?.roles;
+const generateSkills = (skills: any[] = []) =>
+  [0, 1, 2, 3].map((_, i) => {
+    const skill = skills[i];
+    if (skill && 'name' in skill) {
+      return skill;
+    }
+    return {
+      name: '',
+    };
+  });
+
+export const communityRoles = (state): any[] =>
+  (state.community.community?.roles?.roles || []).reduce((prev, curr) => {
+    prev = [
+      ...prev,
+      {
+        credits: curr.credits,
+        isCoreTeamMember: curr.isCoreTeamMember,
+        roleName: curr.roleName,
+        skills: generateSkills(curr.skills),
+      },
+    ];
+    return prev;
+  }, []);
 
 export const getCommunityRoles = (isCoreTeam: boolean) =>
   createSelector(communityRoles, (roles: any[]): any[] => {
-    return roles.filter((curr) => curr.isCoreTeamMember !== isCoreTeam);
+    return roles.filter((curr) => curr.isCoreTeamMember === isCoreTeam);
   });
 
 export default communitySlice.reducer;

@@ -23,7 +23,7 @@ import { RootState, useAppDispatch } from '@store/store.model';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { addPAContracts, getPAContracts } from '@api/smart-contracts.api';
+import { addPAContracts, getPAContracts } from '@api/agreement.api';
 
 function AlertDialog({ handleClose, open }) {
   return (

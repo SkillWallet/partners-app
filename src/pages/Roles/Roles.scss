@@ -1,0 +1,36 @@
+@import 'sw-web-shared/lib/styles/variables';
+@import 'sw-web-shared/lib/styles/breakpoints';
+
+.sw-roles-wrapper {
+  .sw-roles {
+    margin-top: 40px;
+    grid-gap: 40px;
+    @include media-breakpoint('lt-lg') {
+      flex-direction: column;
+      height: auto;
+  
+      .sw-box {
+        grid-gap: 20px;
+      }
+    }
+  }
+
+  // .sw-form-field-content {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+
+  //   .MuiFormControl-root {
+  //     flex: 1;
+  //   }
+
+  //   .MuiFormHelperText-root {
+  //     text-align: end;
+  //     margin-right: 0;
+  //   }
+
+  //   .MuiInputBase-root {
+  //     color: $primary-color;
+  //   }
+  // }
+}

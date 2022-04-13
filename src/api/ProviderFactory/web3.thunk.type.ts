@@ -1,29 +1,30 @@
-import { ThunkDispatch, AnyAction, AsyncThunkPayloadCreatorReturnValue } from '@reduxjs/toolkit';
+import { AnyAction, AsyncThunkPayloadCreatorReturnValue, ThunkDispatch } from '@reduxjs/toolkit';
 import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 import { FallbackIfUnknown } from '@reduxjs/toolkit/dist/tsHelpers';
+import { Web3ProviderExtras } from '@skill-wallet/sw-abi-types';
 
-type Dispatch = ThunkDispatch<any, any, AnyAction>;
+export type AppDispatch = ThunkDispatch<any, any, AnyAction>;
 
-export interface BaseThunkArgs {
-  provider: any;
-  updateTransactionStateAction?: (state: string, dispatch: Dispatch) => void;
-  updateErrorStateAction?: (error: string, dispatch: Dispatch) => void;
+export interface BaseThunkArgs<FunctionsTypes, EventType> {
+  provider: (addressOrName: string, extras?: Partial<Web3ProviderExtras<EventType>>) => Promise<FunctionsTypes>;
+  updateTransactionStateAction?: (state: string, dispatch: AppDispatch) => void;
+  updateErrorStateAction?: (error: string, dispatch: AppDispatch) => void;
 }
 
-export interface ProviderEvent {
+export interface ProviderEvent<EventType> {
   type?: string;
-  event: any;
+  event: EventType;
 }
 
 export interface ProviderThunkType {
   type: string;
 }
 
-export type ThunkArgs = ProviderEvent | ProviderThunkType;
+export type ThunkArgs<EventType> = ProviderEvent<EventType> | ProviderThunkType;
 
 export interface AsyncThunkConfig {
   state?: any;
-  dispatch?: Dispatch;
+  dispatch?: AppDispatch;
   extra?: any;
   rejectValue?: any;
   serializedErrorType?: any;
@@ -43,10 +44,11 @@ type GetExtra<ThunkApiConfig> = ThunkApiConfig extends {
   ? Extra
   : any;
 type GetDispatch<ThunkApiConfig> = ThunkApiConfig extends {
-  dispatch: Dispatch;
+  dispatch: AppDispatch;
 }
-  ? FallbackIfUnknown<Dispatch, ThunkDispatch<GetState<ThunkApiConfig>, GetExtra<ThunkApiConfig>, AnyAction>>
+  ? FallbackIfUnknown<AppDispatch, ThunkDispatch<GetState<ThunkApiConfig>, GetExtra<ThunkApiConfig>, AnyAction>>
   : ThunkDispatch<GetState<ThunkApiConfig>, GetExtra<ThunkApiConfig>, AnyAction>;
+
 export type GetThunkAPI<ThunkApiConfig> = BaseThunkAPI<
   GetState<ThunkApiConfig>,
   GetExtra<ThunkApiConfig>,

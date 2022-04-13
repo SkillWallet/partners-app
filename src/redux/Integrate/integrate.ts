@@ -2,9 +2,9 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import { CommunityRole } from '@api/api.model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
-import { createPartnersAgreement, createPartnersCommunity } from '@api/smart-contracts.api';
 import { activatePaCommunity, partnerAgreementAccess } from '@api/skillwallet.api';
 import { ParseSWErrorMessage } from '@utils/error-parser';
+import { createPartnersCommunity, createPartnersAgreement } from '@api/registry.api';
 
 export interface IntegrateTaskState {
   communityInfo: {

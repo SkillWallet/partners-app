@@ -14,7 +14,7 @@ import { RootState, useAppDispatch } from '@store/store.model';
 import { useSelector } from 'react-redux';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
-import { addPAUrl, getPAUrl } from '@api/smart-contracts.api';
+import { addPAUrl, getPAUrl } from '@api/agreement.api';
 
 function AlertDialog({ handleClose, open }) {
   return (

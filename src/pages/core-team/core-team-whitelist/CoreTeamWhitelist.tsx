@@ -25,7 +25,8 @@ import { setPreviusRoute } from '@store/ui-reducer';
 import { getLockedWhitelistedAddresses } from '@store/Partner/partner.reducer';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
-import { addNewWhitelistedAddresses, getPAUrl, getWhitelistedAddresses } from '@api/smart-contracts.api';
+import { getPAUrl } from '@api/agreement.api';
+import { addNewWhitelistedAddresses, getWhitelistedAddresses } from '@api/community.api';
 
 function AlertDialog({ handleClose, open }) {
   return (
