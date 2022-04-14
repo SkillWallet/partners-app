@@ -223,7 +223,7 @@ export const getTaskById = activitiesThunkProvider(
 
     if (taskDetails.task.status > 0) {
       const swAddress = await getSkillwalletAddress();
-      const swContract = await Web3SkillWalletProvider(swAddress.skillWalletAddress);
+      const swContract = await Web3SkillWalletProvider(swAddress);
       const takerTokenId = await swContract.getSkillWalletIdByOwner(taskDetails.task.taker);
       const jsonUriCID = await swContract.tokenURI(takerTokenId);
       const response = await axios.get(ipfsCIDToHttpUrl(jsonUriCID, true));

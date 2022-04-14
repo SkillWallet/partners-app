@@ -39,7 +39,7 @@ const DAOSummaryCard = () => {
                     width: '54px',
                   }}
                   variant="square"
-                  src={community?.image}
+                  src={community?.image as string}
                 />
               }
               sx={{
@@ -80,7 +80,7 @@ const DAOSummaryCard = () => {
             }}
           >
             <CardHeader
-              title={community?.template}
+              title={community?.properties.template}
               titleTypographyProps={{
                 variant: 'h3',
                 color: 'primary.main',

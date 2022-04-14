@@ -1,9 +1,28 @@
+import { TokenInput } from 'nft.storage/dist/src/lib/interface';
+
 /* eslint-disable no-shadow */
 export enum ActivityTypes {
   None,
   CoreTeamTask,
   DiscordPoll,
   CommunityCall,
+}
+
+export class BaseNFTModel<Properties> implements Omit<TokenInput, 'image'> {
+  name: string;
+
+  description: string;
+
+  image: File | string;
+
+  properties: Properties;
+
+  constructor(data: BaseNFTModel<Properties>) {
+    this.name = data.name;
+    this.description = data.description;
+    this.image = data.image;
+    this.properties = data.properties;
+  }
 }
 
 export interface ActivityTask {
@@ -22,38 +41,6 @@ export interface ActivityTask {
     isCoreTeamMembersOnly: boolean;
   };
 }
-
-export interface CommunityRole {
-  credits: number;
-  roleName: string;
-  skills: any[];
-  isCoreTeamMember: boolean;
-}
-export interface CommunityIntegration {
-  properties: {
-    template: string;
-  };
-  name: string;
-  title: string;
-  description: string;
-  image: File;
-  skills: {
-    roles: CommunityRole[];
-  };
-}
-
-export interface Community {
-  name: string;
-  address: string;
-  description: string;
-  roles: {
-    roles: CommunityRole[];
-  };
-  template: string;
-  image: string;
-  isDiToNativeCommunity: boolean;
-}
-
 export interface CommunityContractError {
   code: number;
   message: string;

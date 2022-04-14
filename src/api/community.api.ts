@@ -5,6 +5,7 @@ import {
 } from '@skill-wallet/sw-abi-types';
 import axios from 'axios';
 import { SkillWalletList } from './api.model';
+import { Community } from './community.model';
 import { getCommunityByCommunityAddress } from './dito.api';
 import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
 import { getCoreTeamMemberNames, addCoreTeamName, getSkillwalletAddress } from './skillwallet.api';
@@ -13,6 +14,23 @@ import { storeMetadata, ipfsCIDToHttpUrl } from './textile.api';
 const partnersCommunityThunkProvider = Web3ThunkProviderFactory('PartnersCommunity', {
   provider: Web3SkillWalletCommunityProvider,
 });
+
+export const fetchCommunity = partnersCommunityThunkProvider(
+  {
+    type: 'partner/community/get',
+  },
+  (thunkAPI) => {
+    const { auth } = thunkAPI.getState();
+    return Promise.resolve(auth.userInfo.community);
+  },
+  async (contract, _) => {
+    const uri = await contract.metadataUri();
+    const metadata: Community = (await axios.get(uri)).data;
+    const community = new Community(metadata);
+    community.image = ipfsCIDToHttpUrl(community.image as string);
+    return community;
+  }
+);
 
 export const getWhitelistedAddresses = partnersCommunityThunkProvider(
   {
@@ -75,12 +93,20 @@ export const fetchMembers = partnersCommunityThunkProvider(
     const { auth } = thunkAPI.getState();
     return Promise.resolve(auth?.userInfo?.community);
   },
-  async (contract, isCoreTeam) => {
+  async (contract, isCoreTeam, thunkAPI) => {
+    const state = thunkAPI.getState();
     const skillWalletsResponse: { [role: string]: SkillWalletList[] } = {};
-    const metadataCID = await contract.metadataUri();
-    const response = await axios.get(metadataCID);
 
-    const filteredRoles = response.data.skills.roles.filter((r) => r.isCoreTeamMember === isCoreTeam).map((r) => r.roleName) as string[];
+    let { community } = state.community;
+
+    if (!community) {
+      const response = await thunkAPI.dispatch(fetchCommunity(null));
+      community = response.payload as Community;
+    }
+
+    const filteredRoles = (community as Community).properties.skills.roles
+      .filter((r) => r.isCoreTeamMember === isCoreTeam)
+      .map((r) => r.roleName) as string[];
 
     for (let i = 0; i < filteredRoles.length; i += 1) {
       skillWalletsResponse[filteredRoles[i]] = [];
@@ -88,7 +114,7 @@ export const fetchMembers = partnersCommunityThunkProvider(
 
     const memberIds = await contract.getMembers();
     const swAddress = await getSkillwalletAddress();
-    const swContract = await Web3SkillWalletProvider(swAddress.skillWalletAddress);
+    const swContract = await Web3SkillWalletProvider(swAddress);
 
     for (let i = 0; i < memberIds.length; i += 1) {
       const tokenId = memberIds[i];
@@ -96,13 +122,13 @@ export const fetchMembers = partnersCommunityThunkProvider(
       if (isActive) {
         const metadataCID = await swContract.tokenURI(Number(tokenId.toString()));
         const jsonUri = ipfsCIDToHttpUrl(metadataCID, true);
-        const jsonMetadata = await axios.get(jsonUri);
-        const [role] = jsonMetadata.data.properties.roles as any[];
+        const jsonMetadata = (await axios.get(jsonUri)).data;
+        const [role] = jsonMetadata.properties.roles as any[];
         if (filteredRoles.includes(role?.name)) {
           skillWalletsResponse[role?.name].push({
             tokenId: tokenId.toString(),
-            imageUrl: ipfsCIDToHttpUrl(jsonMetadata.data.properties.avatar, false),
-            nickname: jsonMetadata.data.properties.username,
+            imageUrl: ipfsCIDToHttpUrl(jsonMetadata.properties.avatar, false),
+            nickname: jsonMetadata.properties.username,
           });
         }
       }

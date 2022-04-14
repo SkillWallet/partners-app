@@ -6,7 +6,7 @@ import {
   Web3SkillWalletProvider,
 } from '@skill-wallet/sw-abi-types';
 import { ethers } from 'ethers';
-import { CommunityIntegration } from './api.model';
+import { Community } from './community.model';
 import { generatePartnersKey } from './dito.api';
 import { environment, EnvMode } from './environment';
 import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
@@ -29,9 +29,9 @@ export const createPartnersCommunity = communityRegistryThunkProvider(
   () => {
     return Promise.resolve(environment.communityRegistryAddress);
   },
-  async (contract, requestBody: { metadata: CommunityIntegration; selectedTemplate: number }, { getState }) => {
+  async (contract, requestBody: { metadata: Community; selectedTemplate: number }, { getState }) => {
     const swAddress = await getSkillwalletAddress();
-    const swContract = await Web3SkillWalletProvider(swAddress.skillWalletAddress);
+    const swContract = await Web3SkillWalletProvider(swAddress);
     const { selectedAddress } = window.ethereum;
     let tokenId: number;
     try {
@@ -72,16 +72,16 @@ export const createPartnersAgreement = partnersRegistryThunkProvider(
   async (
     contract,
     requestBody: {
-      metadata: CommunityIntegration;
+      community: Community;
       numOfActions: number;
       contractAddress: string;
     },
     { getState }
   ) => {
     const { integrate } = getState();
-    const { metadata, numOfActions, contractAddress } = requestBody;
+    const { community, numOfActions, contractAddress } = requestBody;
 
-    const totalRoles = metadata.skills.roles.slice(0, 3).reduce((prev, curr) => {
+    const totalRoles = community.properties.skills.roles.slice(0, 3).reduce((prev, curr) => {
       prev += curr.roleName ? 1 : 0;
       return prev;
     }, 0);
