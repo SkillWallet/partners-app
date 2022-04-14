@@ -28,10 +28,13 @@ const TaskDetails = () => {
   const { taskActivityId } = useParams<any>();
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const selectedTask: Task = useSelector(SingleTask);
+  console.log(selectedTask);
   const status = useSelector(TasksStatus);
 
   useEffect(() => {
+    console.log('bbbb');
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
+    console.log('aaaaaaa');
     dispatch(getTaskByActivityId(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
   }, [dispatch, taskActivityId]);
@@ -158,6 +161,7 @@ const TaskDetails = () => {
                 disabled
                 label="Ask Update"
               />
+              {console.log(selectedTask)}
               {selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
                 <SwButton
                   mode="light"

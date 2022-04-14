@@ -57,7 +57,9 @@ export const getTaskByActivityId = createAsyncThunk('event-factory/tasks/get', a
     }
 
     if (!task) {
+      console.log('sdadsadasda');
       const existingTask: Task = tasks.find((t: Task) => t.activityId === activityId);
+      console.log(existingTask);
       if (existingTask?.owner) {
         task = {
           task: existingTask,

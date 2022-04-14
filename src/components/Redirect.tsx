@@ -7,7 +7,7 @@ import { getUser, oauthGetToken } from '@api/discord.api';
 import { SkillWalletAbi } from '@skill-wallet/sw-abi-types';
 
 const Redirect = () => {
-  const skillWalletAddress = '0xC048276176B8D6541ac0b39B853067202b571E08';
+  const skillWalletAddress = '0xfb19708dEc0c84b739F98D9AAAE719D236Af3B32';
 
   const changeNetwork = async () => {
     try {
@@ -66,6 +66,7 @@ const Redirect = () => {
     const contract = new ethers.Contract(skillWalletAddress, SkillWalletAbi, signer);
     console.log('cntrct: ', contract);
 
+    console.log(discordId);
     const createTx = await contract.addDiscordIDToSkillWallet(discordId);
 
     const res = await createTx.wait();
