@@ -39,8 +39,7 @@ const Redirect = () => {
     const { events } = res;
     const discordIDAdded = events.find((e) => e.event === 'DiscordIDConnectedToSkillWallet');
     if (discordIDAdded) {
-      // return tokenID.
-      alert(`Congrats ${discordId}!`);
+      alert(`Congrats, you've connected your SkillWallet to your Discord ID!`);
     } else {
       alert('Please try again!');
     }
