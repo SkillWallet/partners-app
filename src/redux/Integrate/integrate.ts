@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { CommunityRole } from '@api/api.model';
 import { ResultState } from '@store/result-status';
 import { openSnackbar } from '@store/ui-reducer';
 import { activatePaCommunity, partnerAgreementAccess } from '@api/skillwallet.api';
 import { ParseSWErrorMessage } from '@utils/error-parser';
 import { createPartnersCommunity, createPartnersAgreement } from '@api/registry.api';
+import { CommunityRole, DefaultRoles } from '@api/community.model';
 
 export interface IntegrateTaskState {
   communityInfo: {
@@ -187,41 +187,24 @@ export const getRoles = createSelector(roles, (x1): CommunityRole[] => {
   const [role1, role2, role3] = x1;
   return [
     {
-      credits: 24,
+      id: 24,
       roleName: role1?.value,
       skills: [],
       isCoreTeamMember: false,
     },
     {
-      credits: 12,
+      id: 12,
       roleName: role2?.value,
       skills: [],
       isCoreTeamMember: false,
     },
     {
-      credits: 6,
+      id: 6,
       roleName: role3?.value,
       skills: [],
       isCoreTeamMember: false,
     },
-    {
-      credits: 24,
-      roleName: 'Core Team',
-      skills: [],
-      isCoreTeamMember: true,
-    },
-    {
-      credits: 12,
-      roleName: 'Advisor',
-      skills: [],
-      isCoreTeamMember: true,
-    },
-    {
-      credits: 6,
-      roleName: 'Investor',
-      skills: [],
-      isCoreTeamMember: true,
-    },
+    ...DefaultRoles,
   ];
 });
 

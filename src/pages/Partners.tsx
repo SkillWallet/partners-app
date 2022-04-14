@@ -11,7 +11,7 @@ import { ReactComponent as EventFactoryIcon } from '@assets/event-badge.svg';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import MembersAndActivities from '@components/member-and-activities/MembersAndActivities';
 import { useSelector } from 'react-redux';
-import { fetchCommunity } from '@store/Community/community.reducer';
+import { fetchCommunity } from '@api/community.api';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';

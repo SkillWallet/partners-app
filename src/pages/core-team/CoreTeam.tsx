@@ -48,7 +48,7 @@ const CoreTeam = (props) => {
             width: '111px',
           }}
           variant="square"
-          src={community?.image}
+          src={community?.image as string}
         />
         <Box
           sx={{

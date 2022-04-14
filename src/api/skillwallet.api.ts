@@ -43,8 +43,8 @@ export const addDiscordUrl = async (partnerKey, discordWebhook) => {
     .then(() => discordWebhook);
 };
 
-export const getSkillwalletAddress = () => {
-  return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data);
+export const getSkillwalletAddress = (): Promise<string> => {
+  return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data.skillWalletAddress);
 };
 
 export const partnerAgreementAccess = (partnerKey: string): Promise<boolean> => {
