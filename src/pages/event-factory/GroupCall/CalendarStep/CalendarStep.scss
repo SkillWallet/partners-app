@@ -1,0 +1,47 @@
+@import 'sw-web-shared/lib/styles/breakpoints';
+@import 'sw-web-shared/lib/styles/variables';
+
+.sw-calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  
+  .sw-form-field {
+    display: flex;
+    align-items: center;
+    margin-top: 3.125rem;
+  }
+
+  .sw-form-field-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.role-skills-fields {
+      grid-gap: 1.563rem 2.375rem;
+      width: 18.125rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .MuiFormControl-root {
+      flex: 1;
+    }
+
+    .MuiFormHelperText-root {
+      text-align: end;
+      margin-right: 0;
+    }
+
+    .MuiInputBase-root {
+      color: $primary-color;
+      width: 15.625rem;
+      height: 2.5rem;
+      font-size: 1.125rem;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-color: $primary-color;
+        border-width: 2px;
+      }
+    }
+  }
+}

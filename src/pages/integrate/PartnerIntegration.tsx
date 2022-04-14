@@ -10,20 +10,19 @@ import {
   IntegrateAgreementCommunityAddr,
   IntegrateErrorMessage,
   IntegrateLoadingMessage,
-  integratePartnerAgreement,
-  integratePartnerCommunity,
   integrateSetAgreementKey,
   IntegrateStatus,
   integrateUpdateStatus,
   resetIntegrateState,
 } from '@store/Integrate/integrate';
+import { createPartnersAgreement, createPartnersCommunity } from '@api/registry.api';
 import { useAppDispatch } from '@store/store.model';
-import { openSnackbar, setPreviusRoute } from '@store/ui-reducer';
+import { Community, CommunityRole, DefaultRoles } from '@api/community.model';
+import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useForm } from 'react-hook-form';
-import { CommunityIntegration } from '@api/api.model';
 import ErrorDialog from '@components/ErrorPopup';
 import { useHistory } from 'react-router-dom';
 import TemplateStep, { IntegrationTemplates } from './TemplateStep/TemplateStep';
@@ -32,27 +31,6 @@ import ActivateCommunityDialog from './ActivateCommunityDialog';
 import IntegrationWelcome from './IntegrationWelcome';
 import CommunityInfoStep from './CommunityInfoStep/CommunityInfoStep';
 import './PartnerIntegration.scss';
-
-const DefaultRoles = [
-  {
-    credits: 24,
-    roleName: 'Core Team',
-    skills: [],
-    isCoreTeamMember: true,
-  },
-  {
-    credits: 12,
-    roleName: 'Advisor',
-    skills: [],
-    isCoreTeamMember: true,
-  },
-  {
-    credits: 6,
-    roleName: 'Investor',
-    skills: [],
-    isCoreTeamMember: true,
-  },
-];
 
 const PartnerIntegration = () => {
   const dispatch = useAppDispatch();
@@ -84,24 +62,24 @@ const PartnerIntegration = () => {
       numOfActions: 0,
       roles: [
         {
-          credits: 24,
+          id: 1,
           roleName: '',
           skills: [],
           isCoreTeamMember: false,
         },
         {
-          credits: 12,
+          id: 2,
           roleName: '',
           skills: [],
           isCoreTeamMember: false,
         },
         {
-          credits: 6,
+          id: 3,
           roleName: '',
           skills: [],
           isCoreTeamMember: false,
         },
-      ],
+      ] as CommunityRole[],
       startFromScratch: false,
       importedContract: false,
     },
@@ -121,25 +99,24 @@ const PartnerIntegration = () => {
   };
 
   const createAgreement = async (closeStatus: 'close' | 'retry' = null) => {
-    const metadata: CommunityIntegration = {
-      title: values.name,
+    const community = new Community({
       name: values.name,
       description: values.description,
       image: values.avatar,
       properties: {
         template: IntegrationTemplates[values.template].title,
+        skills: {
+          roles: [...values.roles, ...DefaultRoles],
+        },
       },
-      skills: {
-        roles: [...values.roles, ...DefaultRoles],
-      },
-    };
+    });
 
     let result = null;
 
     if (!communityAddress || closeStatus !== 'retry') {
       result = await dispatch(
-        integratePartnerCommunity({
-          metadata,
+        createPartnersCommunity({
+          metadata: community,
           selectedTemplate: values.template,
         })
       );
@@ -147,8 +124,8 @@ const PartnerIntegration = () => {
 
     if (result?.meta?.requestStatus !== 'rejected') {
       dispatch(
-        integratePartnerAgreement({
-          metadata,
+        createPartnersAgreement({
+          community,
           numOfActions: values.numOfActions,
           contractAddress: null,
         })

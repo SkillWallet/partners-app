@@ -4,9 +4,8 @@ import { CurrentStep } from '@store/model';
 import { ResultState } from '@store/result-status';
 
 export interface ActivityTaskState {
-  currentStep: CurrentStep;
   status: ResultState;
-  taskInfo: {
+  callData: {
     description: string;
     isCoreTeamMembersOnly: boolean;
     allParticipants: boolean;
@@ -18,8 +17,7 @@ export interface ActivityTaskState {
 
 const initialState: ActivityTaskState = {
   status: ResultState.Idle,
-  currentStep: {} as CurrentStep,
-  taskInfo: {
+  callData: {
     description: null,
     isCoreTeamMembersOnly: true,
     allParticipants: false,
@@ -29,23 +27,20 @@ const initialState: ActivityTaskState = {
   },
 };
 
-export const activityTaskSlice = createSlice({
-  name: 'activityTask',
+export const activityGroupCallSlice = createSlice({
+  name: 'groupCall',
   initialState,
   reducers: {
-    activitySetCurrentStep(state, action) {
-      state.currentStep = action.payload;
-    },
-    activityUpdateTask(state, action) {
-      state.taskInfo = {
-        ...state.taskInfo,
+    activityUpdateGroupCallData(state, action) {
+      state.callData = {
+        ...state.callData,
         ...action.payload,
       };
     },
-    activityUpdateTaskStatus(state, action) {
+    activityUpdateGroupCallStatus(state, action) {
       state.status = action.payload;
     },
-    resetActivityTaskState: () => initialState,
+    resetActivityGroupCall: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -61,10 +56,9 @@ export const activityTaskSlice = createSlice({
   },
 });
 
-export const { activityUpdateTaskStatus, resetActivityTaskState, activityUpdateTask, activitySetCurrentStep } = activityTaskSlice.actions;
+export const { activityUpdateGroupCallStatus, resetActivityGroupCall, activityUpdateGroupCallData } = activityGroupCallSlice.actions;
 
-export const ActivityCurrentStep = (state: any) => state.activityTask.currentStep as CurrentStep;
-export const ActivityStatus = (state: any) => state.activityTask.status as ResultState;
-export const ActivityCurrentTask = (state: any) => state.activityTask.taskInfo as typeof initialState.taskInfo;
+export const ActivityGroupCallStatus = (state: any) => state.groupCall.status as ResultState;
+export const ActivityGroupCallData = (state: any) => state.groupCall.callData as typeof initialState.callData;
 
-export default activityTaskSlice.reducer;
+export default activityGroupCallSlice.reducer;

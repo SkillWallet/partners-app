@@ -90,15 +90,17 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "max-classes-per-file": "off",
         "max-len": [
             "warn",
             {
                 "code": 140
             }
         ],
+        "no-shadow": "off",
         "react/no-array-index-key": "off",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": "off",
         "no-console": "off",
         "import/prefer-default-export": "off",
         "no-nested-ternary": "off",

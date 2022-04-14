@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { fetchPaUrl } from '@store/Partner/partner.reducer';
+import { getPAUrl } from '@api/agreement.api';
 import './community-dashboard.scss';
 
 const Community = (props) => {
@@ -25,7 +25,7 @@ const Community = (props) => {
   };
 
   useEffect(() => {
-    const promise = dispatch(fetchPaUrl());
+    const promise = dispatch(getPAUrl(null));
     return () => promise.abort();
   }, [dispatch]);
 
@@ -87,7 +87,7 @@ const Community = (props) => {
               width: '111px',
             }}
             variant="square"
-            src={community?.image}
+            src={community?.image as string}
           />
           <Box
             sx={{

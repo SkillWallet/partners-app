@@ -16,6 +16,8 @@ const RolesStep = () => {
   const { role, isCoreTeamMembersOnly, allParticipants, participants } = useSelector(ActivityCurrentTask);
   const [roles] = useState(useSelector(getCommunityRoles(isCoreTeamMembersOnly)));
 
+  console.log(roles, isCoreTeamMembersOnly, 'roles');
+
   const { control, handleSubmit, watch } = useForm({
     mode: 'onChange',
     defaultValues: {

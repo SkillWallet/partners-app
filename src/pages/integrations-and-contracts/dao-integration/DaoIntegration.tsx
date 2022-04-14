@@ -12,9 +12,9 @@ import './dao-integration.scss';
 
 import { RootState, useAppDispatch } from '@store/store.model';
 import { useSelector } from 'react-redux';
-import { addPaUrl, fetchPaUrl } from '@store/Partner/partner.reducer';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
+import { addPAUrl, getPAUrl } from '@api/agreement.api';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -53,7 +53,7 @@ const DaoIntegration = () => {
   };
 
   const submit = async () => {
-    dispatch(addPaUrl(daoUrl));
+    dispatch(addPAUrl(daoUrl));
   };
 
   const debouncedChangeHandler = useMemo(() => {
@@ -80,7 +80,7 @@ const DaoIntegration = () => {
   }, [input, paUrl]);
 
   useEffect(() => {
-    const promise = dispatch(fetchPaUrl());
+    const promise = dispatch(getPAUrl(null));
     return () => promise.abort();
   }, [dispatch]);
 

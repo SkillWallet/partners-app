@@ -9,6 +9,7 @@ const initialState = {
   },
   logs: [],
   previousRoute: '/',
+  transactionState: null,
 };
 
 export const uiSlice = createSlice({
@@ -34,6 +35,9 @@ export const uiSlice = createSlice({
         open: false,
       };
     },
+    updateTransactionState(state, action) {
+      state.transactionState = action.payload;
+    },
     setPreviusRoute(state, action) {
       state.previousRoute = action.payload;
     },
@@ -41,6 +45,6 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { openSnackbar, closeSnackbar, addLog, setPreviusRoute } = uiSlice.actions;
+export const { openSnackbar, closeSnackbar, addLog, setPreviusRoute, updateTransactionState } = uiSlice.actions;
 
 export default uiSlice.reducer;

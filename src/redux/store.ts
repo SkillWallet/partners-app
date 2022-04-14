@@ -3,34 +3,17 @@ import logger from 'redux-logger';
 
 import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import { combineReducers } from 'redux';
-import { PersistConfig, persistReducer } from 'redux-persist';
-import activityTaskReducer from '@store/Activity/create-task.reducer';
-import communityReducer from './Community/community.reducer';
-import authSliceReducer from '../auth/auth.reducer';
-import uiSliceReducer from './ui-reducer';
-import partnerReducer from './Partner/partner.reducer';
-import integrateReducer from './Integrate/integrate';
-import tasksReducer from './Activity/tasks.reducer';
+import { persistReducer } from 'redux-persist';
+import { reducers, RootState } from './reducers';
 
-const persistConfig: PersistConfig<any> = {
+const persistConfig = {
   key: 'partnersApp',
   storage,
   stateReconciler: autoMergeLevel2,
   blacklist: ['auth', 'integrate'],
 };
 
-const reducers = combineReducers({
-  community: communityReducer,
-  partner: partnerReducer,
-  auth: authSliceReducer,
-  ui: uiSliceReducer,
-  activityTask: activityTaskReducer,
-  integrate: integrateReducer,
-  tasks: tasksReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer<RootState>(persistConfig, reducers);
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>

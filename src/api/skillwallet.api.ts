@@ -17,27 +17,6 @@ export const getUsersData = () => {
     .then((res) => res.data);
 };
 
-export const getTasks = async (activitiesAddress: string, skillwalletId = 10) => {
-  const params = {
-    activitiesAddress,
-  };
-  return axios.get(`${environment.apiUrl}/skillwallet/${skillwalletId}/tasks`, { params }).then((res) => res.data);
-};
-
-export const getTask = async (activityId: string, activitiesAddress: string, skillwalletId = 10) => {
-  const params = {
-    activitiesAddress,
-  };
-  return axios.get(`${environment.apiUrl}/skillwallet/${skillwalletId}/tasks/${activityId}`, { params }).then((res) => res.data);
-};
-
-export const getMembersByCommunityAddress = async (communityAddress, isCoreTeamMember = false) => {
-  const params = {
-    coreTeamMembers: isCoreTeamMember,
-  };
-  return axios.get(`${environment.apiUrl}/community/${communityAddress}/skillwallet`, { params }).then((res) => res.data);
-};
-
 export const getCoreTeamMemberNames = async (communityAddress) => {
   return axios.get(`${environment.apiUrl}/community/${communityAddress}/coreTeamMembers`).then((res) => res.data);
 };
@@ -64,8 +43,8 @@ export const addDiscordUrl = async (partnerKey, discordWebhook) => {
     .then(() => discordWebhook);
 };
 
-export const getSkillwalletAddress = () => {
-  return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data);
+export const getSkillwalletAddress = (): Promise<string> => {
+  return axios.get(`${environment.apiUrl}/skillwallet/config`, {}).then((res) => res.data.skillWalletAddress);
 };
 
 export const partnerAgreementAccess = (partnerKey: string): Promise<boolean> => {

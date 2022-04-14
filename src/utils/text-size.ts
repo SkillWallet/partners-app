@@ -9,3 +9,10 @@ export const FindTextCenter = (parentElWidth: number, offset = 0, metric: 'width
     return middle - size / 2 - offset;
   };
 };
+
+export const pxToRem = (px: number | string) => {
+  px = `${px}`.replace('px', '');
+  const x = 16;
+  const rem = `${(1 / x) * Number(px)}rem`;
+  return rem;
+};

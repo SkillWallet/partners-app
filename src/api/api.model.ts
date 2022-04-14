@@ -1,9 +1,28 @@
+import { TokenInput } from 'nft.storage/dist/src/lib/interface';
+
 /* eslint-disable no-shadow */
 export enum ActivityTypes {
   None,
   CoreTeamTask,
   DiscordPoll,
   CommunityCall,
+}
+
+export class BaseNFTModel<Properties> implements Omit<TokenInput, 'image'> {
+  name: string;
+
+  description: string;
+
+  image: File | string;
+
+  properties: Properties;
+
+  constructor(data: BaseNFTModel<Properties>) {
+    this.name = data.name;
+    this.description = data.description;
+    this.image = data.image;
+    this.properties = data.properties;
+  }
 }
 
 export interface ActivityTask {
@@ -22,26 +41,6 @@ export interface ActivityTask {
     isCoreTeamMembersOnly: boolean;
   };
 }
-
-export interface CommunityRole {
-  credits: number;
-  roleName: string;
-  skills: any[];
-  isCoreTeamMember: boolean;
-}
-export interface CommunityIntegration {
-  properties: {
-    template: string;
-  };
-  name: string;
-  title: string;
-  description: string;
-  image: File;
-  skills: {
-    roles: CommunityRole[];
-  };
-}
-
 export interface CommunityContractError {
   code: number;
   message: string;
@@ -50,4 +49,45 @@ export interface CommunityContractError {
     data: any;
     message: string;
   };
+}
+
+export interface SkillWallet {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+  diToCredits: number;
+  repScore: number;
+  currentCommunities: CommunityList[];
+  pastCommunities: CommunityList[];
+  skills: Skill[];
+}
+export interface SkillWalletTask {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+  timestamp: string;
+}
+export interface SkillWalletList {
+  tokenId: string;
+  nickname: string;
+  imageUrl: string;
+}
+export interface SkillWalletListPerRole {
+  role: string;
+  skillWallets: SkillWalletList[];
+}
+
+interface CommunityList {
+  name: string;
+  address: string;
+  members?: number;
+  description?: string;
+  scarcityScore?: number;
+  comScore?: number;
+  repCredits?: number;
+}
+
+interface Skill {
+  name: string;
+  value: number;
 }

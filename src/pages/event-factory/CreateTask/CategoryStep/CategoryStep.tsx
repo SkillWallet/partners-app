@@ -83,8 +83,8 @@ const CategoryStep = () => {
                   name={name}
                   mode="light"
                   btnType="semi-large"
-                  onClick={() => onChange(false)}
-                  className={!value ? 'active-link' : ''}
+                  onClick={() => onChange(true)}
+                  className={value ? 'active-link' : ''}
                   endIcon={<CoreTeam />}
                   label="Core Team"
                 />
@@ -100,8 +100,8 @@ const CategoryStep = () => {
                   name={name}
                   mode="light"
                   btnType="semi-large"
-                  onClick={() => onChange(true)}
-                  className={value ? 'active-link' : ''}
+                  onClick={() => onChange(false)}
+                  className={!value ? 'active-link' : ''}
                   endIcon={<Community />}
                   label="Community"
                 />

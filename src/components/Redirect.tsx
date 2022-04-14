@@ -4,44 +4,10 @@
 import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
-import { SkillWalletAbi } from '@skill-wallet/sw-abi-types';
+import { SkillWalletABI } from '@skill-wallet/sw-abi-types';
 
 const Redirect = () => {
   const skillWalletAddress = '0xfb19708dEc0c84b739F98D9AAAE719D236Af3B32';
-
-  const changeNetwork = async () => {
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x13881' }],
-      });
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: '0x13881', // A 0x-prefixed hexadecimal string
-                chainName: 'Mumbai',
-                nativeCurrency: {
-                  name: 'Matic',
-                  symbol: 'MATIC',
-                  decimals: 18,
-                },
-                rpcUrls: ['https://matic-mumbai.chainstacklabs.com', 'https://rpc-mumbai.matic.today'],
-                blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
-              },
-            ],
-          });
-        } catch (addError) {
-          // handle "add" error
-        }
-      }
-      // handle other "switch" errors
-    }
-  };
 
   const connectWallet = async () => {
     const { ethereum } = window;
@@ -63,7 +29,7 @@ const Redirect = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
-    const contract = new ethers.Contract(skillWalletAddress, SkillWalletAbi, signer);
+    const contract = new ethers.Contract(skillWalletAddress, SkillWalletABI, signer);
     console.log('cntrct: ', contract);
 
     console.log(discordId);

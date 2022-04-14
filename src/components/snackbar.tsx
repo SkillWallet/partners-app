@@ -28,7 +28,7 @@ export default function SWSnackbar() {
       open={open}
       onClose={handleClose}
     >
-      <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+      <Alert onClose={handleClose} severity={severity as any} sx={{ width: '100%' }}>
         {message}
       </Alert>
     </Snackbar>

@@ -1,16 +1,10 @@
 import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
-import {
-  finalizeTask,
-  getTaskByActivityId,
-  SingleTask,
-  TasksRefreshStatus,
-  TasksStatus,
-  tasksUpdateSelectedTab,
-  tasksUpdateStatus,
-} from '@store/Activity/tasks.reducer';
+import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
-import { RootState, useAppDispatch } from '@store/store.model';
+import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { finalizeActivityTask, getTaskById } from '@api/activities.api';
+import LoadingDialog from '@components/LoadingPopup';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -18,15 +12,12 @@ import { SwButton, SwScrollbar } from 'sw-web-shared';
 import { ResultState } from '@store/result-status';
 import UserTaskDetail from './UserTaskDetail';
 import './Tasks.scss';
-// eslint-disable-next-line import/order
-import LoadingDialog from '@components/LoadingPopup';
 
 const TaskDetails = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [message, setLoadingMessage] = useState('');
   const { taskActivityId } = useParams<any>();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
   const selectedTask: Task = useSelector(SingleTask);
   console.log(selectedTask);
   const status = useSelector(TasksStatus);
@@ -34,14 +25,13 @@ const TaskDetails = () => {
   useEffect(() => {
     console.log('bbbb');
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
-    console.log('aaaaaaa');
-    dispatch(getTaskByActivityId(taskActivityId));
+    dispatch(getTaskById(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
   }, [dispatch, taskActivityId]);
 
   const handleFinalizeClick = async () => {
     setLoadingMessage('Finalizing Task...');
-    await dispatch(finalizeTask(selectedTask));
+    await dispatch(finalizeActivityTask(selectedTask));
     history.goBack();
   };
 
@@ -161,8 +151,7 @@ const TaskDetails = () => {
                 disabled
                 label="Ask Update"
               />
-              {console.log(selectedTask)}
-              {selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
+              {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
                 <SwButton
                   mode="light"
                   sx={{
