@@ -95,7 +95,12 @@ function App(props) {
       <SWSnackbar />
       <div className={isLoading ? 'sw-loading' : ''}>
         <div className="connect-wallet-container">
-          <sw-auth partner-key={environment.partnersKey} hide-button={isLoading || isIntegrateFlow} use-dev="true" />
+          <sw-auth
+            partner-key={environment.partnersKey}
+            hide-button={isLoading || isIntegrateFlow}
+            disable-create-new-user={!isIntegrateFlow}
+            use-dev="true"
+          />
         </div>
         {isLoading ? (
           <LoadingMessage />
