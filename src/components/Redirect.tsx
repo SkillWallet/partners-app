@@ -5,9 +5,10 @@ import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
 import { SkillWalletABI } from '@skill-wallet/sw-abi-types';
+import { getSkillwalletAddress } from '@api/skillwallet.api';
 
 const Redirect = () => {
-  const skillWalletAddress = '0xfb19708dEc0c84b739F98D9AAAE719D236Af3B32';
+  const skillWalletAddress = getSkillwalletAddress();
 
   const connectWallet = async () => {
     const { ethereum } = window;
