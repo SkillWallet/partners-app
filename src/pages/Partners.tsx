@@ -201,7 +201,7 @@ const Partners = (props) => {
               {/* Event factory */}
               <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
               <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
-              {/* <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} /> */}
+              <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} />
               <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
 
               <Route component={NotFound} />

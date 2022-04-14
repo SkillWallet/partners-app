@@ -63,7 +63,6 @@ const EventFactoryDashboard = () => {
             to="/partner/event-factory/create-task"
           />
           <SwButton
-            disabled
             mode="light"
             btnType="large"
             endIcon={<VideoIcon />}

@@ -1,93 +1,46 @@
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, List, ListItemButton, ListItemText, Typography } from '@mui/material';
 import { useAppDispatch } from '@store/store.model';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { SwButton } from 'sw-web-shared';
-import { useEffect } from 'react';
-import { ResultState } from '@store/result-status';
-import { useForm } from 'react-hook-form';
-import {
-  ActivityCurrentStep,
-  ActivityCurrentTask,
-  ActivityStatus,
-  activitySetCurrentStep,
-  activityUpdateTask,
-  activityUpdateTaskStatus,
-} from '@store/Activity/create-task.reducer';
-import './CalendarStep.scss';
-import { sendDiscordNotificaiton } from '@api/discord.api';
-import { openSnackbar } from '@store/ui-reducer';
-import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
-import { addActivityTask } from '@api/activities.api';
-
+import { SwButton, SwScrollbar } from 'sw-web-shared';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { SwCalendarPicker } from '@components/Fields';
 import { pxToRem } from '@utils/text-size';
+import { generateTimeSlots } from '@utils/helpers';
+import { ActivityGroupCallData } from '@store/Activity/group-call.reducer';
+import { format, isEqual } from 'date-fns';
+import './CalendarStep.scss';
+import EmojiInputPicker from '@components/EmojiInputPicker/EmojiInputPicker';
 
 const CalendarStep = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { activeStep } = useSelector(ActivityCurrentStep);
-  const status = useSelector(ActivityStatus);
-  const webhookUrl = useSelector(DiscordWebHookUrl);
-  const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = useSelector(ActivityCurrentTask);
+  const { startDate, startTime } = useSelector(ActivityGroupCallData);
+  const [timeSlots] = useState(
+    generateTimeSlots({
+      start: 10,
+      end: 24,
+      interval: 30,
+    })
+  );
 
   const { control, handleSubmit, watch } = useForm({
     mode: 'onChange',
     defaultValues: {
-      title,
-      description,
+      startDate,
+      startTime,
     },
   });
   const values = watch();
 
+  console.log(values, 'values');
+
   const onSubmit = async (data: any) => {
-    await dispatch(activityUpdateTask(data));
-    const result = await dispatch(
-      addActivityTask({
-        role,
-        isCoreTeamMembersOnly,
-        allParticipants,
-        participants,
-        description: values.description,
-        title: values.title,
-      })
-    );
-
-    if (result.meta.requestStatus === 'fulfilled' && webhookUrl) {
-      try {
-        await sendDiscordNotificaiton(webhookUrl, { name: values.title, role, description: values.description });
-      } catch (error) {
-        dispatch(
-          openSnackbar({
-            message: 'Failed to send discord message.',
-            severity: 'error',
-            duration: 5000,
-          })
-        );
-      }
-      history.push('/partner/event-factory/create-task-success');
-    }
+    history.push('/partner/event-factory/create-task-success');
   };
-
-  const handleDialogClose = () => {
-    dispatch(activityUpdateTaskStatus(ResultState.Idle));
-  };
-
-  useEffect(() => {
-    if (activeStep !== 2) {
-      dispatch(
-        activitySetCurrentStep({
-          activeStep: 2,
-          title: null,
-          description: null,
-          toPrevBtnPath: '/partner/event-factory/create-task/roles',
-          left: null,
-        })
-      );
-    }
-  }, [dispatch, activeStep]);
 
   return (
     <>
@@ -105,8 +58,14 @@ const CalendarStep = () => {
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'center',
               }}
             >
+              <div className="sw-form-field">
+                <div className="sw-form-field-content">
+                  <EmojiInputPicker placeholder="test" autoFocus required color="primary" />
+                </div>
+              </div>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <div className="sw-form-field">
                   <div className="sw-form-field-content">
@@ -118,9 +77,34 @@ const CalendarStep = () => {
           </Box>
           <Divider sx={{ height: `calc(100% + ${pxToRem(40)})`, borderColor: '#707070' }} orientation="vertical" />
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: pxToRem(65) }}>
-            <div className="sw-form-field">
-              <div className="sw-form-field-content">test</div>
-            </div>
+            <Typography sx={{ height: '20px', margin: `0 auto ${pxToRem(20)} auto` }} color="primary.main" variant="h2" textAlign="center">
+              {values.startDate && format(new Date(values.startDate), 'PPPP')}
+            </Typography>
+            <SwScrollbar
+              sx={{
+                height: '400px',
+                flex: 1,
+              }}
+            >
+              <List>
+                {timeSlots.map((slot, index) => {
+                  return (
+                    <Controller
+                      key={`slot-key-${index}`}
+                      name="startTime"
+                      control={control}
+                      render={({ field: { value, onChange } }) => {
+                        return (
+                          <ListItemButton selected={isEqual(new Date(value), slot)} onClick={() => onChange(slot)}>
+                            <ListItemText primary={format(slot, 'hh:mm a')} />
+                          </ListItemButton>
+                        );
+                      }}
+                    />
+                  );
+                })}
+              </List>
+            </SwScrollbar>
           </Box>
         </Box>
 
