@@ -9,6 +9,7 @@ const CustomSwCalendarPicker = styled(CalendarPicker)(({ theme }) => ({
     color: theme.palette.primary.main,
   },
   '.PrivatePickersSlideTransition-root': {
+    minHeight: '200px',
     '.MuiButtonBase-root.Mui-disabled': {
       color: '#777777',
     },

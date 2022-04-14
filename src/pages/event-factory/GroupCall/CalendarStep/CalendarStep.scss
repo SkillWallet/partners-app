@@ -4,11 +4,36 @@
 .sw-calendar-wrapper {
   display: flex;
   flex-direction: column;
-  
+
   .sw-form-field {
     display: flex;
     align-items: center;
-    margin-top: 3.125rem;
+  }
+
+  .MuiList-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .MuiListItemButton-root {
+    width: 250px;
+    height: 50px;
+    border: 1px solid #000;
+    text-align: center;
+
+    &:hover, &.Mui-selected {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .MuiTypography-root {
+      font-size: 20px;
+    }
+
+    + .MuiListItemButton-root {
+      margin-top: 20px;
+    }
   }
 
   .sw-form-field-content {

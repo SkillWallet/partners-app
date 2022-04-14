@@ -91,6 +91,7 @@
         "@typescript-eslint/no-shadow": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "max-classes-per-file": "off",
+        "react/require-default-props": "off",
         "max-len": [
             "warn",
             {

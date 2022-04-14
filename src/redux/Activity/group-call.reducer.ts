@@ -6,24 +6,16 @@ import { ResultState } from '@store/result-status';
 export interface ActivityTaskState {
   status: ResultState;
   callData: {
-    description: string;
-    isCoreTeamMembersOnly: boolean;
-    allParticipants: boolean;
-    role: string;
-    participants: number;
-    title: string;
+    startDate: Date;
+    startTime: string;
   };
 }
 
 const initialState: ActivityTaskState = {
   status: ResultState.Idle,
   callData: {
-    description: null,
-    isCoreTeamMembersOnly: true,
-    allParticipants: false,
-    participants: 1,
-    role: null,
-    title: '',
+    startDate: null,
+    startTime: null,
   },
 };
 
