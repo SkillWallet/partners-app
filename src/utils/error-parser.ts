@@ -18,6 +18,14 @@ export const ErrorParser = (error: any, dispatch?: any): any => {
   throw new Error(error);
 };
 
+const isJson = (str: string) => {
+  try {
+    return !!JSON.parse(JSON.stringify(str));
+  } catch (e) {
+    return false;
+  }
+};
+
 export const METAMASK_POSSIBLE_ERRORS = {
   '-32700': {
     standard: 'JSON RPC 2.0',
@@ -90,18 +98,30 @@ export const ParseSWErrorMessage = (error: any) => {
     return error;
   }
 
+  if (isJson(error)) {
+    error = JSON.parse(JSON.stringify(error));
+  }
+
   const metamaskError = METAMASK_POSSIBLE_ERRORS[error?.code];
 
   if (metamaskError) {
     return metamaskError.message;
   }
 
+  if (error?.code === 'CALL_EXCEPTION') {
+    return error?.reason?.toString();
+  }
+
+  if (error?.code === 'UNEXPECTED_ARGUMENT') {
+    return error?.reason?.toString();
+  }
+
   if (error instanceof TypeError || error instanceof Error) {
-    error = error.message;
+    error = error.message?.toString();
   }
 
   if (error?.data?.message) {
-    error = error?.data?.message;
+    error = error?.data?.message?.toString();
   }
 
   if (typeof error !== 'string') {
@@ -112,5 +132,5 @@ export const ParseSWErrorMessage = (error: any) => {
   const [mainMsg, fullSwMsg] = error.split('execution reverted:');
   const [swMainMsg, parsedMsg] = (fullSwMsg || '').split('SkillWallet:');
 
-  return parsedMsg || swMainMsg || fullSwMsg || mainMsg || 'Internal JSON-RPC error.';
+  return (parsedMsg || swMainMsg || fullSwMsg || mainMsg || 'Internal JSON-RPC error.').toString();
 };

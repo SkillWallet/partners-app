@@ -7,19 +7,32 @@ import {
 } from '@skill-wallet/sw-abi-types';
 import { Task, TaskStatus } from '@store/model';
 import axios from 'axios';
+import { dateToUnix } from '@utils/date-format';
+import { sendDiscordNotification } from '@store/ui-reducer';
+import { format } from 'date-fns';
 import { ActivityTypes } from './api.model';
-import { ipfsCIDToHttpUrl, storeMetadata } from './textile.api';
+import { ipfsCIDToHttpUrl, storeAsBlob, storeMetadata } from './textile.api';
 import { getSkillwalletAddress } from './skillwallet.api';
 import { deployActivities } from './ProviderFactory/deploy-activities';
 import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
+import { Community } from './community.model';
+import { AsyncThunkConfig, GetThunkAPI } from './ProviderFactory/web3.thunk.type';
+import { DiscordMessage } from './discord.api';
 
 const activitiesThunkProvider = Web3ThunkProviderFactory('Activities', {
   provider: Web3ActivitiesProvider,
 });
 
-export const getActivitiesAddress = async (address: string) => {
-  const contract = await Web3PartnersAgreementProvider(address);
-  return contract.activities();
+const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
+  const { partner } = thunkAPI.getState();
+  const paCommunity = partner?.paCommunity;
+  const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
+  let activitiesAddress = await contract.getActivitiesAddress();
+  if (activitiesAddress === ethers.constants.AddressZero) {
+    activitiesAddress = await deployActivities(paCommunity.communityAddress);
+    await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
+  }
+  return Promise.resolve(activitiesAddress);
 };
 
 export const addActivityTask = activitiesThunkProvider(
@@ -27,28 +40,22 @@ export const addActivityTask = activitiesThunkProvider(
     type: 'partner/activities/task/add',
     event: ActivitiesContractEventType.ActivityCreated,
   },
-  async (thunkAPI) => {
-    const { partner, community } = thunkAPI.getState();
-    const paCommunity = partner?.paCommunity;
-    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-    let activitiesAddress = await contract.getActivitiesAddress();
-    if (activitiesAddress === ethers.constants.AddressZero) {
-      activitiesAddress = await deployActivities(community.community.address);
-      await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
-    }
-    return Promise.resolve(activitiesAddress);
-  },
-  async (contract, task, { getState }) => {
-    const { community, auth } = getState();
-    const { userInfo } = auth;
+  contractAddress,
+  async (contract, task, { getState, dispatch }) => {
+    const state = getState();
+    const { userInfo } = state.auth;
     const { role, isCoreTeamMembersOnly, allParticipants, participants, description, title } = task;
+    const community = state.community.community as Community;
+    const selectedRole = community.properties.skills.roles.find(({ roleName }) => roleName === role);
 
-    const selectedRole = community.community.roles.roles.find(({ roleName }) => roleName === role);
+    if (!selectedRole) {
+      throw new Error('Role is missing!');
+    }
 
     const metadata = {
       name: title,
       description,
-      image: community.community.image,
+      image: community.image,
       properties: {
         creator: userInfo.nickname,
         creatorSkillWalletId: window.ethereum.selectedAddress,
@@ -64,6 +71,21 @@ export const addActivityTask = activitiesThunkProvider(
     const uri = await storeMetadata(metadata);
     console.log('CreateTask - uri: ', uri);
     const result = await contract.createTask(uri);
+    const discordMessage: DiscordMessage = {
+      title: `New Community Task`,
+      description: `${allParticipants ? 'All' : participants} **${selectedRole.roleName}** participants can claim the task`,
+      fields: [
+        {
+          name: 'Title',
+          value: title,
+        },
+        {
+          name: 'Description',
+          value: description,
+        },
+      ],
+    };
+    await dispatch(sendDiscordNotification(discordMessage));
     return result;
   }
 );
@@ -73,13 +95,7 @@ export const takeActivityTask = activitiesThunkProvider(
     type: 'partner/activities/task/take',
     event: ActivitiesContractEventType.TaskTaken,
   },
-  async (thunkAPI) => {
-    const { partner } = thunkAPI.getState();
-    const paCommunity = partner?.paCommunity;
-    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-    const activitiesAddress = await contract.getActivitiesAddress();
-    return Promise.resolve(activitiesAddress);
-  },
+  contractAddress,
   async (contract, requestData) => {
     await contract.takeTask(+requestData.activityId);
     return {
@@ -95,13 +111,7 @@ export const finalizeActivityTask = activitiesThunkProvider(
     type: 'partner/activities/task/finalize',
     event: ActivitiesContractEventType.ActivityFinalized,
   },
-  async (thunkAPI) => {
-    const { partner } = thunkAPI.getState();
-    const paCommunity = partner?.paCommunity;
-    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-    const activitiesAddress = await contract.getActivitiesAddress();
-    return Promise.resolve(activitiesAddress);
-  },
+  contractAddress,
   async (contract, requestData) => {
     await contract.finilizeTask(+requestData.activityId);
     return {
@@ -112,17 +122,68 @@ export const finalizeActivityTask = activitiesThunkProvider(
   }
 );
 
+export const addGroupCall = activitiesThunkProvider(
+  {
+    type: 'partner/activities/group-call/add',
+    event: ActivitiesContractEventType.ActivityCreated,
+  },
+  contractAddress,
+  async (contract, callData, { getState, dispatch }) => {
+    const state = getState();
+    const { startDate, startTime, duration, allParticipants, participants, role } = callData;
+    const community = state.community.community as Community;
+    const selectedRole = community.properties.skills.roles.find(({ roleName }) => roleName === role);
+
+    if (!selectedRole) {
+      throw new Error('Role is missing!');
+    }
+
+    const start = new Date(startDate);
+    const time = new Date(startTime);
+    start.setHours(time.getHours());
+    start.setMinutes(time.getMinutes());
+    start.setSeconds(0);
+    const metadata = {
+      startTime: dateToUnix(start),
+      duration,
+      roleId: selectedRole.id,
+      allParticipants,
+      participants,
+    };
+    const uri = await storeAsBlob(metadata);
+    console.log('CreateTask - uri: ', uri);
+    const result = await contract.createActivity(ActivityTypes.CommunityCall, uri);
+    const discordMessage: DiscordMessage = {
+      title: 'New Community Call',
+      description: `${allParticipants ? 'All' : participants} **${selectedRole.roleName}** participants can join the call`,
+      fields: [
+        {
+          name: 'Date',
+          value: format(start, 'PPPP'),
+          inline: true,
+        },
+        {
+          name: 'Time',
+          value: format(time, 'hh:mm a'),
+          inline: true,
+        },
+        {
+          name: 'Duration',
+          value: duration,
+          inline: true,
+        },
+      ],
+    };
+    await dispatch(sendDiscordNotification(discordMessage));
+    return result;
+  }
+);
+
 export const getAllTasks = activitiesThunkProvider(
   {
     type: 'partner/activities/tasks/getall',
   },
-  async (thunkAPI) => {
-    const { partner } = thunkAPI.getState();
-    const paCommunity = partner?.paCommunity;
-    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-    const activitiesAddress = await contract.getActivitiesAddress();
-    return Promise.resolve(activitiesAddress);
-  },
+  contractAddress,
   async (contract, type: ActivityTypes) => {
     if (contract.contract.address === ethers.constants.AddressZero) {
       return [];
@@ -154,13 +215,7 @@ export const getTaskById = activitiesThunkProvider(
   {
     type: 'partner/activities/tasks/get',
   },
-  async (thunkAPI) => {
-    const { partner } = thunkAPI.getState();
-    const paCommunity = partner?.paCommunity;
-    const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-    const activitiesAddress = await contract.getActivitiesAddress();
-    return Promise.resolve(activitiesAddress);
-  },
+  contractAddress,
   async (contract, activityID: string, { getState }) => {
     const {
       auth: { userInfo },

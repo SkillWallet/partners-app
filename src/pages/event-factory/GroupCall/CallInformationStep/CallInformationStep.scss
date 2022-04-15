@@ -1,0 +1,73 @@
+@import 'sw-web-shared/lib/styles/breakpoints';
+@import 'sw-web-shared/lib/styles/variables';
+
+.sw-info-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .sw-form-field {
+    display: flex;
+    align-items: center;
+  }
+
+  .form-fields {
+    display: flex;
+    grid-gap: 50px;
+
+    .MuiInputBase-root {
+      width: 120px !important;
+      height: 35px;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-width: 2px !important;
+      }
+    }
+  }
+
+  .MuiListItemButton-root {
+    width: 250px;
+    height: 50px;
+    border: 1px solid #000;
+    text-align: center;
+
+    &:hover, &.Mui-selected {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .MuiTypography-root {
+      font-size: 20px;
+    }
+
+    + .MuiListItemButton-root {
+      margin-top: 20px;
+    }
+  }
+
+  .sw-form-field-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .MuiFormControl-root {
+      flex: 1;
+    }
+
+    .MuiFormHelperText-root {
+      text-align: end;
+      margin-right: 0;
+    }
+
+    .MuiInputBase-root {
+      color: $primary-color;
+      width: 15.625rem;
+      height: 2.5rem;
+      font-size: 1.125rem;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-color: $primary-color;
+        border-width: 1px;
+      }
+    }
+  }
+}

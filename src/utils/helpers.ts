@@ -28,3 +28,24 @@ export const generateTimeSlots = ({
   // return blocks.map((d) => format(d, 'hh:mm a'));
   return blocks;
 };
+
+export const generateDurationInterval = () => {
+  return [
+    {
+      label: '15 mins',
+      value: '15m',
+    },
+    {
+      label: '30 mins',
+      value: '30m',
+    },
+    {
+      label: '45 mins',
+      value: '45m',
+    },
+    {
+      label: '1 hour',
+      value: '1h',
+    },
+  ];
+};
