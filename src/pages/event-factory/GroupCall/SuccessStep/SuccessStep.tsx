@@ -27,13 +27,14 @@ const SuccessStep = () => {
           }}
         >
           <Typography align="center" color="primary.main" variant="h2" component="div">
-            Success! Your Task has been created, and deployed on the Blockchain 🎉
+            Success! Your Community call has been created and deployed on the Blockchain 🎉
           </Typography>
           <Typography align="center" color="primary.main" variant="h2" component="div">
             Now just share it with your [Team/Community] to get things started!
           </Typography>
 
           <Button
+            disabled
             sx={{
               my: '40px',
             }}
@@ -42,7 +43,7 @@ const SuccessStep = () => {
             size="small"
             color="primary"
           >
-            See all Team Tasks
+            See all Community Calls
           </Button>
           {/* 
           <SwButton

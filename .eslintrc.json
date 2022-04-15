@@ -92,6 +92,7 @@
         "@typescript-eslint/explicit-function-return-type": "off",
         "max-classes-per-file": "off",
         "react/require-default-props": "off",
+        "no-extra-boolean-cast": "off",
         "max-len": [
             "warn",
             {

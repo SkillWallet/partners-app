@@ -21,7 +21,7 @@ export function ipfsCIDToHttpUrl(url: string, isJson = false) {
   return url;
 }
 
-const storeAsBlob = async (json: any): Promise<string> => {
+export const storeAsBlob = async (json: any): Promise<string> => {
   const encodedJson = new TextEncoder().encode(JSON.stringify(json));
   const blob = new Blob([encodedJson], {
     type: 'application/json;charset=utf-8',
