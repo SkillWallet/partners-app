@@ -41,7 +41,7 @@ const IntegrationCards = [
     with. Make sure you own them, as you will have to sign a
     transaction.`,
     action: (
-      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/contracts">
+      <SwButton mode="light" disabled sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/contracts">
         Track & Add Contracts
       </SwButton>
     ),
