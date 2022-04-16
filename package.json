@@ -40,7 +40,7 @@
     "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "~5.1.0",
     "@reduxjs/toolkit": "~1.7.0",
-    "@skill-wallet/auth": "^1.0.56",
+    "@skill-wallet/auth": "^1.0.57",
     "@testing-library/jest-dom": "~5.14.1",
     "@testing-library/react": "~11.2.7",
     "@testing-library/user-event": "~12.8.3",

@@ -1,10 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { Box, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, MenuItem, Select, Typography } from '@mui/material';
 import { useAppDispatch } from '@store/store.model';
 import { useHistory } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { pxToRem } from '@utils/text-size';
-import { SwButton, SwScrollbar } from 'sw-web-shared';
+import { SwButton } from 'sw-web-shared';
 import './CreatePollParticipantsStep.scss';
 import {
   CreatePollData,
@@ -13,15 +12,13 @@ import {
   createPollUpdateStatus,
   pollUpdateData,
 } from '@store/Activity/create-poll.reducer';
-import { countWords } from '@utils/helpers';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getCommunityRoles } from '@store/Community/community.reducer';
 import { makeStyles } from '@mui/styles';
 import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
-import { removeEmoji } from '@components/EmojiInputPicker/EmojiInputPicker';
 import { addPoll } from '@api/activities.api';
 
 const useStyles = makeStyles({
@@ -48,14 +45,7 @@ const CreatePollParticipantsStep = () => {
   const errorMessage = useSelector(CreatePollError);
   const data = useSelector(CreatePollData);
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit, watch, reset } = useForm({
     mode: 'onSubmit',
     defaultValues: {
       role: data.role,
@@ -68,13 +58,11 @@ const CreatePollParticipantsStep = () => {
     dispatch(createPollUpdateStatus(ResultState.Idle));
   };
 
-  console.log(values, 'values');
-
   const onSubmit = async () => {
     const { emojis, options } = data.options.reduce(
       (prev, { option, emoji }) => {
         prev.emojis = [...prev.emojis, emoji];
-        prev.options = [...prev.options, removeEmoji(option)];
+        prev.options = [...prev.options, option];
         return prev;
       },
       {
@@ -94,7 +82,7 @@ const CreatePollParticipantsStep = () => {
     await dispatch(pollUpdateData(values));
     const result = await dispatch(addPoll(metadata));
     if (result.meta.requestStatus === 'fulfilled') {
-      history.push('/partner/event-factory/polls/success');
+      // history.push('/partner/event-factory/polls/success');
     }
   };
 

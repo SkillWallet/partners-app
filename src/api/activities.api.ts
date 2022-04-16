@@ -8,7 +8,7 @@ import {
 import { Task, TaskStatus } from '@store/model';
 import axios from 'axios';
 import { dateToUnix } from '@utils/date-format';
-import { sendDiscordNotification } from '@store/ui-reducer';
+import { sendDiscordNotification, sendDiscordPoll } from '@store/ui-reducer';
 import { format } from 'date-fns';
 import { ActivityTypes } from './api.model';
 import { ipfsCIDToHttpUrl, storeAsBlob, storeMetadata } from './textile.api';
@@ -35,23 +35,6 @@ const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
   }
   return Promise.resolve(activitiesAddress);
 };
-
-export const getRoles = async (): Promise<any[]> =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          label: 'Creative',
-        },
-        {
-          label: 'Tech',
-        },
-        {
-          label: 'Social & DAO',
-        },
-      ]);
-    }, 500);
-  });
 
 export const addActivityTask = activitiesThunkProvider(
   {
@@ -232,15 +215,36 @@ export const addPoll = activitiesThunkProvider(
     console.log('CreatePoll - uri: ', uri);
     const result = await contract.createActivity(ActivityTypes.CommunityCall, roleId, uri);
     const discordMessage: DiscordMessage = {
-      title: 'New Community Poll',
-      description: `${selectedRole.roleName} can vote in this poll!`,
-      fields: [],
+      title: 'Do you want us to implement Polls?',
+      description: `
+          Everyone from a specific role would be able to vote to 
+          achieve truly decentralized communities!
+          \n${options.join('\n')}
+          `,
+      fields: [
+        {
+          name: 'Poll Duration',
+          value: duration,
+          inline: true,
+        },
+        {
+          name: 'Role',
+          value: roleName,
+          inline: true,
+        },
+      ],
     };
 
-    // @TODO Milena
     const activityAddress = contract.contract.address;
-    const activityId = result[0].toString();
-    await dispatch(sendDiscordNotification(discordMessage));
+    const activityId = Number(result[0].toString());
+    await dispatch(
+      sendDiscordPoll({
+        message: discordMessage,
+        emojis,
+        activitiesContractAddress: activityAddress,
+        activitiesId: activityId,
+      })
+    );
     return result;
   }
 );
