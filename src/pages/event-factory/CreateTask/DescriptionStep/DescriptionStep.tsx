@@ -20,6 +20,7 @@ import './DescriptionStep.scss';
 import { openSnackbar } from '@store/ui-reducer';
 import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
 import { addActivityTask } from '@api/activities.api';
+import { countWords } from '@utils/helpers';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();
@@ -87,6 +88,12 @@ const DescriptionStep = () => {
             <Controller
               name="title"
               control={control}
+              rules={{
+                required: true,
+                validate: {
+                  maxWords: (v: string) => countWords(v) <= 6,
+                },
+              }}
               render={({ field: { name, value, onChange } }) => {
                 return (
                   <TextField
@@ -100,7 +107,7 @@ const DescriptionStep = () => {
                     color="primary"
                     helperText={
                       <Typography color="primary" align="right" component="span" variant="body2">
-                        {20 - (value?.length || 0)} Words left
+                        {6 - countWords(value)} Words left
                       </Typography>
                     }
                   />

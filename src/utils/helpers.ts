@@ -1,5 +1,7 @@
 import { addMinutes, format, isBefore, setHours, setMilliseconds, setMinutes, setSeconds } from 'date-fns';
 
+export const countWords = (value: string) => (value || '').split(' ').filter((x) => !!x).length;
+
 export const generateTimeSlots = ({
   date = new Date(),
   start,

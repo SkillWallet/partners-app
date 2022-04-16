@@ -4,8 +4,7 @@ import { Controller } from 'react-hook-form';
 import { SwUploadFile } from 'sw-web-shared';
 import { ReactComponent as UploadIcon } from '@assets/upload.svg';
 import './CommunityInfoStep.scss';
-
-const countWords = (value: string) => (value || '').split(' ').filter((x) => !!x).length;
+import { countWords } from '@utils/helpers';
 
 function FormHelperText({ errors, name, children, value }) {
   if (errors[name]) {

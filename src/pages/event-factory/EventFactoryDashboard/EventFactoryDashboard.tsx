@@ -73,11 +73,10 @@ const EventFactoryDashboard = () => {
           <SwButton
             mode="light"
             btnType="large"
-            disabled
             endIcon={<GraphIcon />}
             label="Polls & Proposals"
             component={Link}
-            to="/partner/dashboard"
+            to="/partner/event-factory/polls"
           />
         </Box>
       </Box>
