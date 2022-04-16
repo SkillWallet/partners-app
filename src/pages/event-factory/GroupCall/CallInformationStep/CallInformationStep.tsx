@@ -201,7 +201,7 @@ const CallInformationStep = () => {
                 <div className="sw-form-field-content">
                   <Controller
                     rules={{
-                      required: true,
+                      required: !values.forCoreTeamRoles,
                     }}
                     name="role"
                     control={control}
@@ -213,7 +213,7 @@ const CallInformationStep = () => {
                           value={value || ''}
                           displayEmpty
                           disabled={values.forCoreTeamRoles === undefined || values.forCoreTeamRoles === null}
-                          required
+                          required={!values.forCoreTeamRoles}
                           renderValue={(selected) => {
                             if (!selected) {
                               return 'Select One';
