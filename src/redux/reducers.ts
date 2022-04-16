@@ -7,6 +7,7 @@ import partnerReducer from './Partner/partner.reducer';
 import integrateReducer from './Integrate/integrate';
 import tasksReducer from './Activity/tasks.reducer';
 import activityGroupCallReducer from './Activity/group-call.reducer';
+import createPollReducer from './Activity/create-poll.reducer';
 
 export const reducers = combineReducers({
   community: communityReducer,
@@ -17,6 +18,7 @@ export const reducers = combineReducers({
   integrate: integrateReducer,
   tasks: tasksReducer,
   groupCall: activityGroupCallReducer,
+  createPoll: createPollReducer,
 });
 
 const rootReducer = (state, action) => {

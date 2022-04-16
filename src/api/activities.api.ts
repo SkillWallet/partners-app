@@ -18,6 +18,7 @@ import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider'
 import { Community } from './community.model';
 import { AsyncThunkConfig, GetThunkAPI } from './ProviderFactory/web3.thunk.type';
 import { DiscordMessage } from './discord.api';
+import { environment } from './environment';
 
 const activitiesThunkProvider = Web3ThunkProviderFactory('Activities', {
   provider: Web3ActivitiesProvider,
@@ -28,12 +29,30 @@ const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
   const paCommunity = partner?.paCommunity;
   const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
   let activitiesAddress = await contract.getActivitiesAddress();
+  debugger;
   if (activitiesAddress === ethers.constants.AddressZero) {
-    activitiesAddress = await deployActivities(paCommunity.communityAddress);
+    activitiesAddress = await deployActivities(paCommunity.communityAddress, environment.discordBotAddress);
     await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
   }
   return Promise.resolve(activitiesAddress);
 };
+
+export const getRoles = async (): Promise<any[]> =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          label: 'Creative',
+        },
+        {
+          label: 'Tech',
+        },
+        {
+          label: 'Social & DAO',
+        },
+      ]);
+    }, 500);
+  });
 
 export const addActivityTask = activitiesThunkProvider(
   {
@@ -70,7 +89,7 @@ export const addActivityTask = activitiesThunkProvider(
     };
     const uri = await storeMetadata(metadata);
     console.log('CreateTask - uri: ', uri);
-    const result = await contract.createTask(uri);
+    const result = await contract.createTask(selectedRole.id, uri);
     const discordMessage: DiscordMessage = {
       title: `New Community Task`,
       description: `${allParticipants ? 'All' : participants} **${selectedRole.roleName}** participants can claim the task`,
@@ -152,7 +171,7 @@ export const addGroupCall = activitiesThunkProvider(
     };
     const uri = await storeAsBlob(metadata);
     console.log('CreateTask - uri: ', uri);
-    const result = await contract.createActivity(ActivityTypes.CommunityCall, uri);
+    const result = await contract.createActivity(ActivityTypes.CommunityCall, selectedRole.id, uri);
     const discordMessage: DiscordMessage = {
       title: 'New Community Call',
       description: `${allParticipants ? 'All' : participants} **${selectedRole.roleName}** participants can join the call`,
@@ -173,6 +192,49 @@ export const addGroupCall = activitiesThunkProvider(
           inline: true,
         },
       ],
+    };
+    await dispatch(sendDiscordNotification(discordMessage));
+    return result;
+  }
+);
+export const addPoll = activitiesThunkProvider(
+  {
+    type: 'partner/activities/poll/add',
+    event: ActivitiesContractEventType.ActivityCreated,
+  },
+  contractAddress,
+  async (contract, callData, { getState, dispatch }) => {
+    const state = getState();
+    const { title, description, duration, options, emojis, role, allRoles } = callData;
+    const activityAddress = ethers.constants.AddressZero;
+    const activityId = 2;
+    const community = state.community.community as Community;
+    const selectedRole = community.properties.skills.roles.find(({ roleName }) => roleName === role);
+    let roleId = 0;
+    let roleName = 'All';
+    if (!allRoles) {
+      roleId = selectedRole.id;
+      roleName = selectedRole.roleName;
+    }
+
+    const metadata = {
+      role: roleId,
+      roleName,
+      title,
+      description,
+      duration,
+      options,
+      emojis,
+      activityId,
+      activityAddress,
+    };
+    const uri = await storeAsBlob(metadata);
+    console.log('CreatePoll - uri: ', uri);
+    const result = await contract.createActivity(ActivityTypes.CommunityCall, roleId, uri);
+    const discordMessage: DiscordMessage = {
+      title: 'New Community Poll',
+      description: `${selectedRole.roleName} can vote in this poll!`,
+      fields: [],
     };
     await dispatch(sendDiscordNotification(discordMessage));
     return result;
