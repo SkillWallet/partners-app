@@ -29,7 +29,6 @@ const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
   const paCommunity = partner?.paCommunity;
   const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
   let activitiesAddress = await contract.getActivitiesAddress();
-  debugger;
   if (activitiesAddress === ethers.constants.AddressZero) {
     activitiesAddress = await deployActivities(paCommunity.communityAddress, environment.discordBotAddress);
     await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
@@ -206,8 +205,7 @@ export const addPoll = activitiesThunkProvider(
   async (contract, callData, { getState, dispatch }) => {
     const state = getState();
     const { title, description, duration, options, emojis, role, allRoles } = callData;
-    const activityAddress = ethers.constants.AddressZero;
-    const activityId = 2;
+
     const community = state.community.community as Community;
     const selectedRole = community.properties.skills.roles.find(({ roleName }) => roleName === role);
     let roleId = 0;
@@ -215,6 +213,10 @@ export const addPoll = activitiesThunkProvider(
     if (!allRoles) {
       roleId = selectedRole.id;
       roleName = selectedRole.roleName;
+    }
+
+    if (roleId === undefined || roleId === null) {
+      throw new Error('RoleId missing!');
     }
 
     const metadata = {
@@ -225,8 +227,6 @@ export const addPoll = activitiesThunkProvider(
       duration,
       options,
       emojis,
-      activityId,
-      activityAddress,
     };
     const uri = await storeAsBlob(metadata);
     console.log('CreatePoll - uri: ', uri);
@@ -236,6 +236,10 @@ export const addPoll = activitiesThunkProvider(
       description: `${selectedRole.roleName} can vote in this poll!`,
       fields: [],
     };
+
+    // @TODO Milena
+    const activityAddress = contract.contract.address;
+    const activityId = result[0].toString();
     await dispatch(sendDiscordNotification(discordMessage));
     return result;
   }
