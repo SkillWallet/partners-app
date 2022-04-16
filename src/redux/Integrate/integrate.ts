@@ -187,13 +187,13 @@ export const getRoles = createSelector(roles, (x1): CommunityRole[] => {
   const [role1, role2, role3] = x1;
   return [
     {
-      id: 24,
+      id: 4,
       roleName: role1?.value,
       skills: [],
       isCoreTeamMember: false,
     },
     {
-      id: 12,
+      id: 5,
       roleName: role2?.value,
       skills: [],
       isCoreTeamMember: false,
