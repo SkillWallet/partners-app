@@ -6,7 +6,7 @@ export interface CommunityRoleSkill {
 }
 
 interface OldCommunity {
-  roles: CommunityRole[];
+  skills: CommunityRole[];
 }
 
 export interface CommunityRole {
@@ -40,8 +40,8 @@ export class Community extends BaseNFTModel<CommunityProperties> {
     super(data);
     this.properties = new CommunityProperties(data.properties);
 
-    if ((data as unknown as OldCommunity).roles) {
-      this.properties.skills = (data as unknown as OldCommunity).roles as unknown as typeof this.properties.skills;
+    if ((data as unknown as OldCommunity).skills) {
+      this.properties.skills = (data as unknown as OldCommunity).skills as unknown as typeof this.properties.skills;
     }
   }
 }
