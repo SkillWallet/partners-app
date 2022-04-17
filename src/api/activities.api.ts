@@ -179,6 +179,11 @@ export const addGroupCall = activitiesThunkProvider(
     return result;
   }
 );
+
+export const publishPoll = (poll) => {
+  return axios.post(`${environment.discordApiUrl}/poll`, poll).then((res) => res);
+};
+
 export const addPoll = activitiesThunkProvider(
   {
     type: 'partner/activities/poll/add',
@@ -214,37 +219,13 @@ export const addPoll = activitiesThunkProvider(
     const uri = await storeAsBlob(metadata);
     console.log('CreatePoll - uri: ', uri);
     const result = await contract.createActivity(ActivityTypes.CommunityCall, roleId, uri);
-    const discordMessage: DiscordMessage = {
-      title: 'Do you want us to implement Polls?',
-      description: `
-          Everyone from a specific role would be able to vote to 
-          achieve truly decentralized communities!
-          \n${options.join('\n')}
-          `,
-      fields: [
-        {
-          name: 'Poll Duration',
-          value: duration,
-          inline: true,
-        },
-        {
-          name: 'Role',
-          value: roleName,
-          inline: true,
-        },
-      ],
-    };
 
-    const activityAddress = contract.contract.address;
-    const activityId = Number(result[0].toString());
-    await dispatch(
-      sendDiscordPoll({
-        message: discordMessage,
-        emojis,
-        activitiesContractAddress: activityAddress,
-        activitiesId: activityId,
-      })
-    );
+    publishPoll({
+      ...metadata,
+      activitiesAddress: contract.contract.address,
+      activityId: result[0].toString(),
+    });
+
     return result;
   }
 );
