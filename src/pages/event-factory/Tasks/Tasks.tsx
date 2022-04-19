@@ -1,163 +1,209 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { resetActivityTaskState } from '@store/Activity/create-task.reducer';
-import { setPreviusRoute } from '@store/ui-reducer';
-import { SwButton } from 'sw-web-shared';
-import { Link } from 'react-router-dom';
-import SwTabs from '@components/tabs/SwTabs';
-import {
-  TasksRefreshStatus,
-  TasksSelectedTab,
-  TasksStatus,
-  tasksUpdateSelectedTab,
-  tasksUpdateStatus,
-} from '@store/Activity/tasks.reducer';
-import { getAllTasks, takeActivityTask } from '@api/activities.api';
-import { Task, TaskTypes } from '@store/model';
-import { ActivityTypes } from '@api/api.model';
-import { useAppDispatch } from '@store/store.model';
-import ErrorDialog from '@components/ErrorPopup';
-import LoadingDialog from '@components/LoadingPopup';
+/* eslint-disable react/no-unstable-nested-components */
+import { Box, CircularProgress, ListItem, Typography } from '@mui/material';
+import { FilteredTasks, TasksRefreshStatus, TasksStatus } from '@store/Activity/tasks.reducer';
+import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
 import { ResultState } from '@store/result-status';
-import TasksList from './TasksList';
+import { pxToRem } from '@utils/text-size';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { SwButton } from 'sw-web-shared';
 import './Tasks.scss';
 
-const Tasks = () => {
-  const [tabs, setTabs] = useState([]);
-  const [message, setLoadingMessage] = useState('');
-  const dispatch = useAppDispatch();
-  const selectedTabIndex = useSelector(TasksSelectedTab);
+const TasksList = (props) => {
   const status = useSelector(TasksStatus);
   const refreshStatus = useSelector(TasksRefreshStatus);
-
-  const handleDialogClose = () => {
-    dispatch(tasksUpdateStatus(ResultState.Idle));
-  };
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/dashboard/core-team'));
-    console.log('Previous route from Event Factory Tasks');
-  }, [dispatch]);
-
-  useEffect(() => {
-    const handleTask = async (s: TaskTypes, task: Task) => {
-      switch (s) {
-        case TaskTypes.Open:
-          setLoadingMessage('Claiming task...');
-          await dispatch(takeActivityTask(task));
-          break;
-        default:
-          break;
-      }
-    };
-    setTabs([
-      {
-        label: 'Open Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Open,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      {
-        label: 'Ongoing Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Ongoing,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      {
-        label: 'Closed Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Closed,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      {
-        label: 'Your Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.MyTasks,
-          handleTask,
-        },
-        component: TasksList,
-      },
-    ]);
-    dispatch(getAllTasks(ActivityTypes.CoreTeamTask));
-    return () => {
-      dispatch(resetActivityTaskState());
-    };
-  }, [dispatch]);
-
-  return (
-    <>
-      <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
-      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />
-      <div className="sw-tasks-base-container">
-        <Box
-          sx={{
-            p: 0,
-            m: 0,
-            gridGap: '0',
-          }}
-          className="sw-box"
-        >
-          <SwTabs
-            tabs={tabs}
-            selectedTabIndex={selectedTabIndex}
-            selectedTab={(selectedIndex: number) => {
-              dispatch(tasksUpdateSelectedTab(selectedIndex));
-            }}
-            tabPanelStyles={{
-              p: 0,
-            }}
-            scrollbarStyles={{
-              border: '0px',
-              p: 0,
-            }}
-          />
-        </Box>
-      </div>
-      {refreshStatus === ResultState.Loading && (
-        <div className="refreshing-loading-spinner">
-          <CircularProgress
-            size="30px"
+  const groupedTasks: GroupTask[] = useSelector(FilteredTasks(props.status));
+  const Action = (task: Task) => {
+    switch (props.status) {
+      case TaskTypes.Open:
+        return (
+          <SwButton
+            mode="light"
             sx={{
-              justifyContent: 'center',
-              alignContent: 'center',
+              width: '180px',
+              height: '85px',
             }}
+            disabled={refreshStatus === ResultState.Loading}
+            onClick={() => props.handleTask(props.status, task)}
+            label="I’ll do it!"
           />
+        );
+      case TaskTypes.Ongoing:
+        return (
+          <SwButton
+            mode="light"
+            sx={{
+              width: '220px',
+              height: '85px',
+            }}
+            component={Link}
+            to={`/partner/tasks/${task.activityId}`}
+            label="See who’s doing this"
+          />
+        );
+      case TaskTypes.Closed:
+        return (
           <Typography
             sx={{
               color: 'primary.main',
+              width: '200px',
             }}
-            variant="h6"
+            variant="h2"
           >
-            Updating tasks...
+            {new Date(+task.createdOn).toLocaleString()}
+          </Typography>
+        );
+      case TaskTypes.MyTasks:
+        if (task.status === TaskStatus.Finished) {
+          return (
+            <Typography
+              sx={{
+                color: 'primary.main',
+                width: '200px',
+              }}
+              variant="h2"
+            >
+              {new Date(+task.createdOn).toLocaleString()}
+            </Typography>
+          );
+        }
+        return (
+          <SwButton
+            mode="light"
+            sx={{
+              width: '180px',
+              height: '85px',
+            }}
+            component={Link}
+            disabled={refreshStatus === ResultState.Loading}
+            to={`/partner/tasks/${task.activityId}/submit`}
+            label="Submit"
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const Tasks = (tasks: Task[]) => {
+    if (!tasks.length) {
+      return (
+        <div className="no-tasks">
+          <Typography
+            sx={{
+              color: 'info.dark',
+              fontSize: pxToRem(25),
+            }}
+          >
+            No tasks found!
           </Typography>
         </div>
-      )}
-
-      <div className="create-task-btn">
-        <SwButton
-          mode="light"
+      );
+    }
+    return tasks.map((task, index) => {
+      return (
+        <ListItem
           sx={{
-            width: '180px',
-            height: '60px',
+            minHeight: '150px',
+            display: 'flex',
+            flexDirection: 'row',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: '#000',
+            justifyContent: 'space-between',
+            '&:not(:last-child)': {
+              borderBottom: '0',
+            },
           }}
-          to="/partner/event-factory/create-task"
-          component={Link}
-          label="Create task"
-        />
-      </div>
-    </>
+          key={index}
+          disablePadding
+        >
+          <Box
+            sx={{
+              px: '20px',
+              py: '28px',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Typography
+              sx={{
+                color: 'primary.main',
+                mb: pxToRem(25),
+                fontSize: pxToRem(25),
+              }}
+            >
+              {task.title || 'N/A'}
+            </Typography>
+            <Typography
+              sx={{
+                color: 'primary.main',
+                fontSize: pxToRem(20),
+              }}
+            >
+              {task.description}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              px: '20px',
+              py: '28px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {Action(task)}
+          </Box>
+        </ListItem>
+      );
+    });
+  };
+
+  return (
+    <div className="sw-tasks-list-base-container">
+      <Box
+        sx={{
+          p: 0,
+          m: 0,
+          gridGap: '0',
+          mt: pxToRem(20),
+        }}
+        className="sw-box"
+      >
+        {status === ResultState.Loading ? (
+          <div className="tasks-loading-spinner">
+            <CircularProgress
+              sx={{
+                justifyContent: 'center',
+                alignContent: 'center',
+              }}
+            />
+          </div>
+        ) : (
+          groupedTasks.map((group, index) => {
+            return (
+              <div className="task-group" key={index}>
+                {group.label && (
+                  <Typography
+                    sx={{
+                      color: 'primary.main',
+                      mb: '10px',
+                      fontSize: pxToRem(35),
+                    }}
+                  >
+                    {group.label}
+                  </Typography>
+                )}
+                {Tasks(group.tasks)}
+              </div>
+            );
+          })
+        )}
+      </Box>
+    </div>
   );
 };
 
-export default Tasks;
+export default TasksList;
