@@ -10,6 +10,7 @@ import { Controller, useFieldArray } from 'react-hook-form';
 import { Fragment } from 'react';
 import { makeStyles } from '@mui/styles';
 import './TemplateStep.scss';
+import { CommunityRole } from '@api/community.model';
 
 function FormHelperText({ errors, name, children = null, value }) {
   if (errors[name]) {
@@ -43,15 +44,17 @@ function FormHelperText({ errors, name, children = null, value }) {
 export const IntegrationTemplates = [
   {
     icon: OpenSourceIcon,
-    title: 'DeFi & Infrastructure',
+    title: 'Open-Source & DeFi  ',
     description: `For researchers & web3, open-source teams, that innovate in a liberal fashion - 
     for a more sustainable, meritocratic world.`,
+    defaultRoles: ['Dont', 'Do', 'Drugs'],
   },
   {
     icon: ArtNftIcon,
     title: 'Art, Events & NFTs',
     description: `From support for people in need, to innovative 
     local hubs to get together & create something greater than oneself.`,
+    defaultRoles: ['Say', 'Yes', 'To'],
   },
   {
     icon: LocalProjectIcon,
@@ -59,6 +62,7 @@ export const IntegrationTemplates = [
     description: `These are the Smart Contracts you’ll be tracking interactions
     with. Make sure you own them, as you will have to sign a
     transaction.`,
+    defaultRoles: ['Big', 'Mama', 'Drugs'],
   },
 ];
 
@@ -70,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TemplateStep = ({ values, control, errors }) => {
+const TemplateStep = ({ getValues, reset, values, control, errors }) => {
   const classes = useStyles();
   const { fields } = useFieldArray({
     control,
@@ -98,7 +102,34 @@ const TemplateStep = ({ values, control, errors }) => {
         render={({ field: { value, onChange } }) => {
           return (
             <Card
-              onClick={() => onChange(value === index ? null : index)}
+              onClick={() => {
+                onChange(value === index ? null : index);
+                console.log(value);
+                console.log(index);
+                reset({
+                  ...getValues(),
+                  roles: [
+                    {
+                      id: 1,
+                      roleName: IntegrationTemplates[index].defaultRoles[0],
+                      skills: [],
+                      isCoreTeamMember: false,
+                    },
+                    {
+                      id: 2,
+                      roleName: IntegrationTemplates[index].defaultRoles[1],
+                      skills: [],
+                      isCoreTeamMember: false,
+                    },
+                    {
+                      id: 3,
+                      roleName: IntegrationTemplates[index].defaultRoles[2],
+                      skills: [],
+                      isCoreTeamMember: false,
+                    },
+                  ] as CommunityRole[],
+                });
+              }}
               className={`sw-card ${value === index ? 'active' : ''}`}
               sx={{
                 boxShadow: 3,
@@ -194,6 +225,7 @@ const TemplateStep = ({ values, control, errors }) => {
                 <Typography color="primary" sx={{ mb: '20px' }} component="div" variant="body2">
                   The Roles you envision in your community (i.e.: dev, validator, etc.)
                 </Typography>
+                {console.log(IntegrationTemplates[values.template])}
                 {fields.map((item, index) => (
                   <Controller
                     key={`roles.${index}.roleName`}
