@@ -69,8 +69,11 @@ const EventFactoryDashboard = () => {
       <Typography textAlign="center" variant="h1">
         Welcome to your Events Factory
       </Typography>
-      <Typography textAlign="center" sx={{ my: 2 }} variant="h2">
-        Create tasks and turn your DAO into a collaboration engine
+      <Typography textAlign="center" sx={{ mt: 2 }} variant="h2">
+        Create tasks and turn your DAO
+      </Typography>
+      <Typography textAlign="center" sx={{ mb: 2 }} variant="h2">
+        into a collaboration engine 🚀
       </Typography>
       <div
         className="sw-cards"
