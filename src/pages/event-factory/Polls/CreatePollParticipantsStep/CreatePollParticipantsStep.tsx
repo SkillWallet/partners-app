@@ -82,7 +82,7 @@ const CreatePollParticipantsStep = () => {
     await dispatch(pollUpdateData(values));
     const result = await dispatch(addPoll(metadata));
     if (result.meta.requestStatus === 'fulfilled') {
-      // history.push('/partner/event-factory/polls/success');
+      history.push('/partner/event-factory/polls/success');
     }
   };
 
