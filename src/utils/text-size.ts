@@ -12,6 +12,8 @@ export const FindTextCenter = (parentElWidth: number, offset = 0, metric: 'width
 
 export const pxToRem = (px: number | string) => {
   px = `${px}`.replace('px', '');
+
+  return `${px}px`;
   const x = 16;
   const rem = `${(1 / x) * Number(px)}rem`;
   return rem;

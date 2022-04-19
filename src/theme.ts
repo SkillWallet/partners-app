@@ -127,7 +127,7 @@ export const SwTheme = createTheme({
     xxl: {
       fontSize: '60px',
     },
-    fontFamily: ['Josefin Sans', ' sans-serif'].join(','),
+    fontFamily: ['Josefin Sans', 'sans-serif'].join(','),
   },
 });
 

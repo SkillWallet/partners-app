@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { withRouter, Switch, Route, Redirect as RedirectRoute, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Box, CssBaseline } from '@mui/material';
 import { ReactComponent as SwLogo } from '@assets/sw-logo-icon.svg';
 import { setPartnersAgreementCommunity } from '@store/Partner/partner.reducer';
 import Redirect from '@components/Redirect';
@@ -12,8 +13,8 @@ import { InitSwAuth } from '@skill-wallet/auth';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { openSnackbar } from '@store/ui-reducer';
 import Partners from './pages/Partners';
-import GetStarted from './pages/get-started/get-started';
 import SWSnackbar from './components/snackbar';
+import GetStarted from './pages/get-started/get-started';
 import PartnerIntegration from './pages/integrate/PartnerIntegration';
 import './App.scss';
 
@@ -93,8 +94,14 @@ function App(props) {
   return (
     <>
       <div id="connect-wallet-container" />
+      <CssBaseline />
       <SWSnackbar />
-      <div className={isLoading ? 'sw-loading' : ''}>
+      <Box
+        sx={{
+          height: '100%',
+        }}
+        className={isLoading ? 'sw-loading' : ''}
+      >
         <div className="connect-wallet-container">
           <sw-auth
             partner-key={environment.partnersKey}
@@ -114,7 +121,7 @@ function App(props) {
             {isAutheticated ? <Route component={NotFound} /> : <RedirectRoute to={{ pathname: '/', state: { from: location.pathname } }} />}
           </Switch>
         )}
-      </div>
+      </Box>
     </>
   );
 }
