@@ -3,6 +3,7 @@ import { Box, CircularProgress, ListItem, Typography } from '@mui/material';
 import { FilteredTasks, TasksRefreshStatus, TasksStatus } from '@store/Activity/tasks.reducer';
 import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
 import { ResultState } from '@store/result-status';
+import { pxToRem } from '@utils/text-size';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { SwButton } from 'sw-web-shared';
@@ -36,7 +37,7 @@ const TasksList = (props) => {
               height: '85px',
             }}
             component={Link}
-            to={`/partner/dashboard/core-team/tasks/${task.activityId}`}
+            to={`/partner/tasks/${task.activityId}`}
             label="See who’s doing this"
           />
         );
@@ -75,7 +76,7 @@ const TasksList = (props) => {
             }}
             component={Link}
             disabled={refreshStatus === ResultState.Loading}
-            to={`/partner/dashboard/core-team/tasks/${task.activityId}/submit`}
+            to={`/partner/tasks/${task.activityId}/submit`}
             label="Submit"
           />
         );
@@ -91,8 +92,8 @@ const TasksList = (props) => {
           <Typography
             sx={{
               color: 'info.dark',
+              fontSize: pxToRem(25),
             }}
-            variant="h2"
           >
             No tasks found!
           </Typography>
@@ -108,7 +109,7 @@ const TasksList = (props) => {
             flexDirection: 'row',
             borderWidth: '2px',
             borderStyle: 'solid',
-
+            borderColor: '#000',
             justifyContent: 'space-between',
             '&:not(:last-child)': {
               borderBottom: '0',
@@ -130,17 +131,17 @@ const TasksList = (props) => {
             <Typography
               sx={{
                 color: 'primary.main',
-                mb: '10px',
+                mb: pxToRem(25),
+                fontSize: pxToRem(25),
               }}
-              variant="subtitle1"
             >
               {task.title || 'N/A'}
             </Typography>
             <Typography
               sx={{
                 color: 'primary.main',
+                fontSize: pxToRem(20),
               }}
-              variant="body1"
             >
               {task.description}
             </Typography>
@@ -167,6 +168,7 @@ const TasksList = (props) => {
           p: 0,
           m: 0,
           gridGap: '0',
+          mt: pxToRem(20),
         }}
         className="sw-box"
       >
@@ -188,8 +190,8 @@ const TasksList = (props) => {
                     sx={{
                       color: 'primary.main',
                       mb: '10px',
+                      fontSize: pxToRem(35),
                     }}
-                    variant="subtitle1"
                   >
                     {group.label}
                   </Typography>
