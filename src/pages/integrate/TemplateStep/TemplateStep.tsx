@@ -50,15 +50,14 @@ export const IntegrationTemplates = [
   {
     icon: ArtNftIcon,
     title: 'Creative',
-    description: `From support for people in need, to innovative 
-    local hubs to get together & create something greater than oneself.`,
+    description: `Art movements, writers & creatives of all kind who use
+     Art & provable ownership for purer forms of human interaction.`,
   },
   {
     icon: LocalProjectIcon,
     title: 'Public Goods',
-    description: `These are the Smart Contracts you’ll be tracking interactions
-    with. Make sure you own them, as you will have to sign a
-    transaction.`,
+    description: `From support for people in need, to innovative local
+     hubs to get together & create something greater than oneself.`,
   },
 ];
 
