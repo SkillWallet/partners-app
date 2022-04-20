@@ -1,38 +1,34 @@
 import { Alert, AlertTitle, Box, CircularProgress, Container, Typography } from '@mui/material';
-import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
+import { SingleTask, TaskErrorMessage, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { finalizeActivityTask, getTaskById } from '@api/activities.api';
-import LoadingDialog from '@components/LoadingPopup';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SwButton, SwScrollbar } from 'sw-web-shared';
 import { ResultState } from '@store/result-status';
-import UserTaskDetail from './UserTaskDetail';
 import './Tasks.scss';
+import LoadingDialog from '@components/LoadingPopup';
+import ErrorDialog from '@components/ErrorPopup';
+import UserTaskDetail from './UserTaskDetail';
 
 const TaskDetails = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
-  const [message, setLoadingMessage] = useState('');
   const { taskActivityId } = useParams<any>();
   const selectedTask: Task = useSelector(SingleTask);
-  console.log(selectedTask);
   const status = useSelector(TasksStatus);
+  const errorMessage = useSelector(TaskErrorMessage);
 
   useEffect(() => {
-    console.log('bbbb');
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
     dispatch(getTaskById(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');
   }, [dispatch, taskActivityId]);
 
   const handleFinalizeClick = async () => {
-    setLoadingMessage('Finalizing Task...');
     await dispatch(finalizeActivityTask(selectedTask));
-    history.goBack();
   };
 
   const handleDialogClose = () => {
@@ -50,7 +46,12 @@ const TaskDetails = () => {
         justifyContent: 'space-between',
       }}
     >
-      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />
+      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Finalising task" />
+      <ErrorDialog
+        handleClose={handleDialogClose}
+        open={status === ResultState.Failed}
+        message={errorMessage || 'Something went wrong'}
+      />{' '}
       {status === ResultState.Loading ? (
         <div className="tasks-loading-spinner">
           <CircularProgress
