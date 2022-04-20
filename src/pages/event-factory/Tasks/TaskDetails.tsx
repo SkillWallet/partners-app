@@ -19,9 +19,11 @@ const TaskDetails = () => {
   const [message, setLoadingMessage] = useState('');
   const { taskActivityId } = useParams<any>();
   const selectedTask: Task = useSelector(SingleTask);
+  console.log(selectedTask);
   const status = useSelector(TasksStatus);
 
   useEffect(() => {
+    console.log('bbbb');
     dispatch(setPreviusRoute('/partner/dashboard/core-team/tasks'));
     dispatch(getTaskById(taskActivityId));
     console.log('Previous route from Event Factory Tasks details');

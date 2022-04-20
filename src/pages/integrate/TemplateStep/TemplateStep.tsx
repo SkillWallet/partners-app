@@ -43,22 +43,21 @@ function FormHelperText({ errors, name, children = null, value }) {
 export const IntegrationTemplates = [
   {
     icon: OpenSourceIcon,
-    title: 'DeFi & Infrastructure',
+    title: 'Tech',
     description: `For researchers & web3, open-source teams, that innovate in a liberal fashion - 
     for a more sustainable, meritocratic world.`,
   },
   {
     icon: ArtNftIcon,
-    title: 'Art, Events & NFTs',
-    description: `From support for people in need, to innovative 
-    local hubs to get together & create something greater than oneself.`,
+    title: 'Creative',
+    description: `Art movements, writers & creatives of all kind who use
+     Art & provable ownership for purer forms of human interaction.`,
   },
   {
     icon: LocalProjectIcon,
-    title: 'Social & DAO Life',
-    description: `These are the Smart Contracts you’ll be tracking interactions
-    with. Make sure you own them, as you will have to sign a
-    transaction.`,
+    title: 'Public Goods',
+    description: `From support for people in need, to innovative local
+     hubs to get together & create something greater than oneself.`,
   },
 ];
 

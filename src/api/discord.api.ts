@@ -8,31 +8,19 @@ export interface TaskData {
 }
 
 export const oauthGetToken = (code: string) => {
-  const details = {
-    client_id: environment.discordClientId,
-    client_secret: environment.discordClientSecret,
-    grant_type: environment.discordGrandType,
-    code,
-    redirect_uri: environment.discordRedirectUri,
-  };
-
   const params = new URLSearchParams();
-
-  for (const property in details) {
-    if (property) {
-      const encodedKey = encodeURIComponent(property);
-      const encodedValue = encodeURIComponent(details[property]);
-      params.append(encodedKey, encodedValue);
-    }
-  }
-
-  return axios
-    .post(`${environment.discordApiUrl}/oauth2/token`, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    })
-    .then((res) => res.data.access_token);
+  params.append('client_id', environment.discordClientId);
+  params.append('client_secret', environment.discordClientSecret);
+  params.append('grant_type', 'authorization_code');
+  params.append('redirect_uri', environment.discordRedirectUri);
+  params.append('scope', 'identify');
+  params.append('code', code);
+  return fetch('https://discord.com/api/oauth2/token', {
+    method: 'POST',
+    body: params,
+  })
+    .then((response) => response.json())
+    .then((data) => data.access_token);
 };
 
 export const getUser = (accessToken: string) => {
@@ -51,6 +39,20 @@ export interface DiscordMessageInputField {
   inline?: boolean;
 }
 
+export interface DiscordPollMessage {
+  input: MessageEmbed;
+  emojis: string[];
+  activitiesContractAddress: string;
+  activitiesId: number;
+}
+
+export interface DiscordPollInput {
+  message: DiscordMessage;
+  emojis: string[];
+  activitiesContractAddress: string;
+  activitiesId: number;
+}
+
 export interface DiscordMessage {
   title: string;
   url?: string;
@@ -59,7 +61,12 @@ export interface DiscordMessage {
   fields?: DiscordMessageInputField[];
   image?: string;
 }
-export class DiscordMessageInput {
+
+export enum DiscordMessageType {
+  Notification,
+  Poll,
+}
+export class MessageEmbed {
   author: {
     name: string;
     image: string;
@@ -72,14 +79,14 @@ export class DiscordMessageInput {
     image: string;
   };
 
-  constructor(data: DiscordMessageInput) {
+  constructor(data: MessageEmbed) {
     this.author = data.author;
     this.footer = data.footer;
     this.message = data.message;
   }
 }
 
-export const postDiscordNotification = (webhookUrl: string, input: DiscordMessageInput) => {
+export const postDiscordNotification = (webhookUrl: string, input: MessageEmbed) => {
   const { footer, author, message } = input;
   return axios
     .post(webhookUrl, {
@@ -96,6 +103,28 @@ export const postDiscordNotification = (webhookUrl: string, input: DiscordMessag
           },
         },
       ],
+    })
+    .then((res) => res.data);
+};
+
+export const postDiscordPoll = (webhookUrl: string, { input, emojis, activitiesContractAddress, activitiesId }: DiscordPollMessage) => {
+  const { footer, author, message } = input;
+  return axios
+    .post(webhookUrl, {
+      message: {
+        ...message,
+        author: {
+          name: author.name,
+          icon_url: author.image,
+        },
+        footer: {
+          text: footer.text,
+          icon_url: footer.image,
+        },
+      },
+      emojis,
+      activitiesContractAddress,
+      activitiesId,
     })
     .then((res) => res.data);
 };

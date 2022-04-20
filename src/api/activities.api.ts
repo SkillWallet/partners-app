@@ -8,7 +8,7 @@ import {
 import { Task, TaskStatus } from '@store/model';
 import axios from 'axios';
 import { dateToUnix } from '@utils/date-format';
-import { sendDiscordNotification } from '@store/ui-reducer';
+import { sendDiscordNotification, sendDiscordPoll } from '@store/ui-reducer';
 import { format } from 'date-fns';
 import { ActivityTypes } from './api.model';
 import { ipfsCIDToHttpUrl, storeAsBlob, storeMetadata } from './textile.api';
@@ -35,23 +35,6 @@ const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
   }
   return Promise.resolve(activitiesAddress);
 };
-
-export const getRoles = async (): Promise<any[]> =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          label: 'Creative',
-        },
-        {
-          label: 'Tech',
-        },
-        {
-          label: 'Social & DAO',
-        },
-      ]);
-    }, 500);
-  });
 
 export const addActivityTask = activitiesThunkProvider(
   {
@@ -212,6 +195,11 @@ export const addGroupCall = activitiesThunkProvider(
     return result;
   }
 );
+
+export const publishPoll = (poll) => {
+  return axios.post(`${environment.discordBotUrl}/poll`, poll).then((res) => res);
+};
+
 export const addPoll = activitiesThunkProvider(
   {
     type: 'partner/activities/poll/add',
@@ -247,16 +235,13 @@ export const addPoll = activitiesThunkProvider(
     const uri = await storeAsBlob(metadata);
     console.log('CreatePoll - uri: ', uri);
     const result = await contract.createActivity(ActivityTypes.CommunityCall, roleId, uri);
-    const discordMessage: DiscordMessage = {
-      title: 'New Community Poll',
-      description: `${selectedRole.roleName} can vote in this poll!`,
-      fields: [],
-    };
 
-    // @TODO Milena
-    const activityAddress = contract.contract.address;
-    const activityId = result[0].toString();
-    await dispatch(sendDiscordNotification(discordMessage));
+    publishPoll({
+      ...metadata,
+      activitiesAddress: contract.contract.address,
+      activityId: result[0].toString(),
+    });
+
     return result;
   }
 );

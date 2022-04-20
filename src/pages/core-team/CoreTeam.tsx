@@ -92,7 +92,7 @@ const CoreTeam = (props) => {
             component={Link}
             to="/partner/dashboard/core-team/tasks"
           /> */}
-          <SwButton mode="light" btnType="large" endIcon={<Share />} label="Invite & Share" component={Link} to={`${basePath}/whitelist`} />
+          <SwButton mode="light" btnType="large" endIcon={<Share />} label="Whitelist" component={Link} to={`${basePath}/whitelist`} />
         </Box>
       </Box>
     </Container>
