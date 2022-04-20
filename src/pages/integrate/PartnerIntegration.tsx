@@ -273,7 +273,7 @@ const PartnerIntegration = () => {
               <Typography color="primary" variant="h2" component="div">
                 Select the Market that best represents your Community / protocol.
               </Typography>
-              <TemplateStep getValues={getValues} reset={reset} values={values} control={control} errors={errors} />
+              <TemplateStep values={values} control={control} errors={errors} />
               <div className="bottom-action">
                 <SwButton mode="light" type="submit" label="Sign & Deploy 🚀" />
               </div>
