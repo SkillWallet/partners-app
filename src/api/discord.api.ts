@@ -33,11 +33,57 @@ export const getUser = (accessToken: string) => {
     .then((res) => res.data);
 };
 
-export const sendDiscordNotificaiton = (webhookUrl: string, taskData: TaskData) => {
-  const bodyFormData = new FormData();
-  bodyFormData.append(
-    'content',
-    `Hello! \n A new task called "${taskData.name}" was created. \n Description: ${taskData.description} \n Role: ${taskData.role}`
-  );
-  return axios.post(webhookUrl, bodyFormData).then((res) => res.data);
+export interface DiscordMessageInputField {
+  name: string;
+  value: string;
+  inline?: boolean;
+}
+
+export interface DiscordMessage {
+  title: string;
+  url?: string;
+  description: string;
+  color?: string;
+  fields?: DiscordMessageInputField[];
+  image?: string;
+}
+export class DiscordMessageInput {
+  author: {
+    name: string;
+    image: string;
+  };
+
+  message: DiscordMessage;
+
+  footer: {
+    text: string;
+    image: string;
+  };
+
+  constructor(data: DiscordMessageInput) {
+    this.author = data.author;
+    this.footer = data.footer;
+    this.message = data.message;
+  }
+}
+
+export const postDiscordNotification = (webhookUrl: string, input: DiscordMessageInput) => {
+  const { footer, author, message } = input;
+  return axios
+    .post(webhookUrl, {
+      embeds: [
+        {
+          ...message,
+          author: {
+            name: author.name,
+            icon_url: author.image,
+          },
+          footer: {
+            text: footer.text,
+            icon_url: footer.image,
+          },
+        },
+      ],
+    })
+    .then((res) => res.data);
 };

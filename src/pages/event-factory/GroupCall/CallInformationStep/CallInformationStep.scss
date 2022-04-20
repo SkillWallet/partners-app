@@ -1,7 +1,7 @@
 @import 'sw-web-shared/lib/styles/breakpoints';
 @import 'sw-web-shared/lib/styles/variables';
 
-.sw-calendar-wrapper {
+.sw-info-wrapper {
   display: flex;
   flex-direction: column;
 
@@ -10,10 +10,18 @@
     align-items: center;
   }
 
-  .MuiList-root {
+  .form-fields {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    grid-gap: 50px;
+
+    .MuiInputBase-root {
+      width: 120px !important;
+      height: 35px;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-width: 2px !important;
+      }
+    }
   }
 
   .MuiListItemButton-root {
@@ -41,13 +49,6 @@
     align-items: center;
     justify-content: space-between;
 
-    &.role-skills-fields {
-      grid-gap: 1.563rem 2.375rem;
-      width: 18.125rem;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
     .MuiFormControl-root {
       flex: 1;
     }
@@ -65,7 +66,7 @@
 
       .MuiOutlinedInput-notchedOutline {
         border-color: $primary-color;
-        border-width: 2px;
+        border-width: 1px;
       }
     }
   }

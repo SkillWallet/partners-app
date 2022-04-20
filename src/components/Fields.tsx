@@ -9,6 +9,7 @@ const CustomSwCalendarPicker = styled(CalendarPicker)(({ theme }) => ({
     color: theme.palette.primary.main,
   },
   '.PrivatePickersSlideTransition-root': {
+    minHeight: '200px',
     '.MuiButtonBase-root.Mui-disabled': {
       color: '#777777',
     },
@@ -72,7 +73,15 @@ export const SwCalendarPicker = ({ control, name, minDate, maxDate = null, other
       name={name}
       control={control}
       render={({ field }) => {
-        return <CustomSwCalendarPicker minDate={minDate} maxDate={maxDate} date={field.value} onChange={field.onChange} {...otherProps} />;
+        return (
+          <CustomSwCalendarPicker
+            minDate={minDate}
+            maxDate={maxDate}
+            date={field.value ? new Date(field.value) : null}
+            onChange={field.onChange}
+            {...otherProps}
+          />
+        );
       }}
     />
   );

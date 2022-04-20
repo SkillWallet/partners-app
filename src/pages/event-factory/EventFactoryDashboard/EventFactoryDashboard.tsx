@@ -63,7 +63,6 @@ const EventFactoryDashboard = () => {
             to="/partner/event-factory/create-task"
           />
           <SwButton
-            disabled
             mode="light"
             btnType="large"
             endIcon={<VideoIcon />}
@@ -74,11 +73,10 @@ const EventFactoryDashboard = () => {
           <SwButton
             mode="light"
             btnType="large"
-            disabled
             endIcon={<GraphIcon />}
             label="Polls & Proposals"
             component={Link}
-            to="/partner/dashboard"
+            to="/partner/event-factory/polls"
           />
         </Box>
       </Box>

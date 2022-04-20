@@ -1,4 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { Community } from '@api/community.model';
+import { DiscordMessage, DiscordMessageInput, postDiscordNotification as sendNotification } from '@api/discord.api';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+export const sendDiscordNotification = createAsyncThunk('discord/notification', async (message: DiscordMessage, { dispatch, getState }) => {
+  try {
+    const state = getState() as any;
+    const agreement = state.partner.paCommunity;
+
+    if (!agreement.discordWebhookUrl) {
+      throw new Error('Webhook url missing');
+    }
+
+    const community = state.community.community as Community;
+    const { userInfo } = state.auth;
+    const discordMsg = new DiscordMessageInput({
+      author: {
+        name: userInfo.nickname,
+        image: userInfo.imageUrl,
+      },
+      message,
+      footer: {
+        text: `${community.description}@SkillWallet`,
+        image: community.image as string,
+      },
+    });
+    return await sendNotification(agreement.discordWebhookUrl, discordMsg);
+  } catch (error) {
+    const message = 'Could not send notification to discord';
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    dispatch(openSnackbar({ message, severity: 'error' }));
+  }
+});
 
 const initialState = {
   snackbar: {

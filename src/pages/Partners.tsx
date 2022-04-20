@@ -28,10 +28,11 @@ import SuccessStep from './event-factory/CreateTask/SuccessStep/SuccessStep';
 import Tasks from './event-factory/Tasks/Tasks';
 import TaskDetails from './event-factory/Tasks/TaskDetails';
 import TaskSubmit from './event-factory/Tasks/TaskSubmit';
-
 import './partners.scss';
 import DiscordIntegration from './integrations-and-contracts/discord-integration/DiscordIntegration';
 import GroupCall from './event-factory/GroupCall/GroupCall';
+import Polls from './event-factory/Polls/Polls';
+
 import Roles from './Roles/Roles';
 
 const Partners = (props) => {
@@ -201,7 +202,9 @@ const Partners = (props) => {
               {/* Event factory */}
               <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
               <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
-              {/* <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} /> */}
+              <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} />
+              <Route path="/partner/event-factory/polls" component={Polls} {...props} />
+
               <Route path="/partner/event-factory/create-task-success" component={SuccessStep} {...props} />
 
               <Route component={NotFound} />
