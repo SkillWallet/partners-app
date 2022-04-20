@@ -1,13 +1,56 @@
-import { Box, Card, CardContent, CardHeader, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import { Avatar, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
+
 import { ReactComponent as VideoIcon } from '@assets/video.svg';
 import { ReactComponent as GraphIcon } from '@assets/graph.svg';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
-import './EventFactoryDashboard.scss';
+
+const EventDashboardCards = [
+  {
+    icon: EditIcon,
+    title: 'Open Task',
+    description: `Customizable format for a Task about anything
+    community-related. Can be assigned to Core Team or Community
+     Members. Lives & gets tracked on the Blockchain.`,
+    action: (
+      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/create-task">
+        Open Task
+      </SwButton>
+    ),
+  },
+  {
+    icon: VideoIcon,
+    title: 'Group Calls',
+    description: `Create a Community call for your Discord
+     Server, and deploy it as a trackable Blockchain event.
+      Assign it to a specific role, or all members of the
+       community - and customize its duration!`,
+    action: (
+      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/group-call">
+        Group Call
+      </SwButton>
+    ),
+  },
+  {
+    icon: GraphIcon,
+    title: 'Polls & Proposals',
+    description: `Fair, Role-based Governance decision
+     making - based on members roles & reputation. Polls & Proposals 
+     done right. Directly on Discord, with Emojis - and reflected
+      on-chain 🙂  `,
+    action: (
+      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/polls">
+        Polls & Proposals
+      </SwButton>
+    ),
+  },
+];
 
 const EventFactoryDashboard = () => {
   const dispatch = useAppDispatch();
@@ -18,142 +61,88 @@ const EventFactoryDashboard = () => {
   }, [dispatch]);
 
   return (
-    <Box
-      className="sw-factory-dashboard-wrapper"
-      sx={{
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Box
-        sx={{
-          flex: 1,
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-        className="sw-box"
-      >
-        <Box sx={{ pb: 'auto' }}>
-          <Typography textAlign="center" component="div" variant="h1">
-            Welcome to your Interaction Factory <br />
-            <small> Create Tasks, and turn your DAO into a collaboration engine 🚀</small>
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            mx: 'auto',
-            flex: 1,
-            display: 'flex',
-            width: '350px',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gridGap: '20px',
-          }}
-        >
-          <SwButton
-            mode="light"
-            btnType="large"
-            endIcon={<EditIcon />}
-            label="Open Task"
-            component={Link}
-            to="/partner/event-factory/create-task"
-          />
-          <SwButton
-            mode="light"
-            btnType="large"
-            endIcon={<VideoIcon />}
-            label="Group Calls"
-            component={Link}
-            to="/partner/event-factory/group-call"
-          />
-          <SwButton
-            mode="light"
-            btnType="large"
-            endIcon={<GraphIcon />}
-            label="Polls & Proposals"
-            component={Link}
-            to="/partner/event-factory/polls"
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          my: 'auto',
+    <div className="sw-integration-dashboard">
+      <Typography textAlign="center" variant="h1">
+        Welcome to your Events Factory
+      </Typography>
+      <Typography textAlign="center" sx={{ mt: 2 }} variant="h2">
+        Create tasks and turn your DAO
+      </Typography>
+      <Typography textAlign="center" sx={{ mb: 2 }} variant="h2">
+        into a collaboration engine 🚀
+      </Typography>
+      <div
+        className="sw-cards"
+        style={{
+          marginTop: '50px',
+          padding: 0,
+          display: 'grid',
+          width: '100%',
+          gridGap: '55px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridAutoRows: 'minmax(380px, auto)',
         }}
       >
-        <Card
-          sx={{
-            height: '313px',
-            width: '415px',
-            mb: '20px',
-            p: '40px',
-            border: '1px solid',
-            borderColor: 'primary.main',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: 'background.dark',
-          }}
-        >
-          <CardHeader
-            sx={{
-              '.MuiAvatar-root': {
-                backgroundColor: 'transparent',
-              },
-            }}
-            title="Title"
-            titleTypographyProps={{
-              mx: 'auto',
-              align: 'center',
-              variant: 'h3',
-              color: 'primary.main',
-              mt: '6px',
-            }}
-          />
-          <CardContent
-            sx={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography color="primary.main" variant="body1" component="div">
-              This is a brilliant, informative text - detailing what tasks are for, how they reflect Blockchain events, and can be easily
-              shared on Discord to involve the Community, and reward the most active participants in a meritocratic way.
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card
-          sx={{
-            border: '1px solid',
-            width: '412px',
-            borderColor: 'primary.main',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CardHeader
-            titleTypographyProps={{
-              variant: 'h3',
-              color: 'primary.main',
-            }}
-            title="Events History"
-          />
-        </Card>
-      </Box>
-    </Box>
+        {EventDashboardCards.map(({ title, icon, description, action }, n) => (
+          <div key={n}>
+            <Card
+              sx={{
+                height: '290px',
+                mb: '20px',
+                p: '15px 34px',
+                border: '1px solid',
+                borderColor: 'primary.main',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <CardHeader
+                avatar={
+                  <Avatar
+                    sx={{
+                      height: '27px',
+                    }}
+                    variant="square"
+                    component={icon}
+                  />
+                }
+                sx={{
+                  '.MuiAvatar-root': {
+                    backgroundColor: 'transparent',
+                  },
+                }}
+                title={title}
+                titleTypographyProps={{
+                  variant: 'h3',
+                  color: 'primary.main',
+                  mt: '6px',
+                }}
+              />
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Typography color="primary.main" variant="body1" component="div">
+                  {description}
+                </Typography>
+
+                <Divider
+                  sx={{
+                    borderColor: 'primary.main',
+                  }}
+                />
+              </CardContent>
+            </Card>
+            {action}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default EventFactoryDashboard;
+export default memo(EventFactoryDashboard);
