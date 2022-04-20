@@ -29,6 +29,20 @@ const TasksList = (props) => {
           />
         );
       case TaskTypes.Ongoing:
+        if (task.status === TaskStatus.Submitted) {
+          return (
+            <SwButton
+              mode="light"
+              sx={{
+                width: '220px',
+                height: '85px',
+              }}
+              component={Link}
+              to={`/partner/tasks/finalise/${task.activityId}`}
+              label="Waiting for Approval"
+            />
+          );
+        }
         return (
           <SwButton
             mode="light"
@@ -38,7 +52,7 @@ const TasksList = (props) => {
             }}
             component={Link}
             to={`/partner/tasks/${task.activityId}`}
-            label="See who’s doing this"
+            label="Working"
           />
         );
       case TaskTypes.Closed:

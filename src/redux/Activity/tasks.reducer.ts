@@ -10,6 +10,7 @@ export interface ActivityTaskState {
   tasks: Task[];
   selectedTabIndex: TaskTypes;
   selectedTask: Task;
+  errorMessage: string;
 }
 
 const initialState: ActivityTaskState = {
@@ -18,6 +19,7 @@ const initialState: ActivityTaskState = {
   tasks: [],
   selectedTabIndex: TaskTypes.Open,
   selectedTask: null,
+  errorMessage: '',
 };
 
 export const tasksSlice = createSlice({
@@ -105,8 +107,9 @@ export const tasksSlice = createSlice({
           return task;
         });
       })
-      .addCase(finalizeActivityTask.rejected, (state) => {
+      .addCase(finalizeActivityTask.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       });
   },
 });
@@ -120,6 +123,7 @@ export const TasksSelectedTab = (state: any) => state.tasks.selectedTabIndex as 
 export const TasksStatus = (state: any) => state.tasks.status as ResultState;
 export const TasksRefreshStatus = (state: any) => state.tasks.refreshingStatus as ResultState;
 export const SingleTask = (state: any) => state.tasks.selectedTask as Task;
+export const TaskErrorMessage = (state: any) => state.tasks.errorMessage as string;
 
 export const FilteredTasks = (status: TaskTypes) =>
   createSelector(Tasks, (state: Task[]): GroupTask[] => {
