@@ -7,7 +7,6 @@ import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import MembersAndActivities from '@components/member-and-activities/MembersAndActivities';
-import Community from './Community/Community';
 import Dashboard from './deshboard/Dashboard';
 import CoreTeam from './core-team/CoreTeam';
 import CoreTeamWhitelist from './core-team/core-team-whitelist/CoreTeamWhitelist';
@@ -25,6 +24,7 @@ import Tasks from './event-factory/Tasks/Tasks';
 import YourTasks from './event-factory/Tasks/YourTasks';
 import TaskDetails from './event-factory/Tasks/TaskDetails';
 import TaskSubmit from './event-factory/Tasks/TaskSubmit';
+import Community from './community/Community';
 import TaskFinalise from './event-factory/Tasks/TaskFinalise';
 
 const Partners = (props) => {
