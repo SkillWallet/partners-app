@@ -8,31 +8,19 @@ export interface TaskData {
 }
 
 export const oauthGetToken = (code: string) => {
-  const details = {
-    client_id: environment.discordClientId,
-    client_secret: environment.discordClientSecret,
-    grant_type: environment.discordGrandType,
-    code,
-    redirect_uri: environment.discordRedirectUri,
-  };
-
   const params = new URLSearchParams();
-
-  for (const property in details) {
-    if (property) {
-      const encodedKey = encodeURIComponent(property);
-      const encodedValue = encodeURIComponent(details[property]);
-      params.append(encodedKey, encodedValue);
-    }
-  }
-
-  return axios
-    .post(`${environment.discordApiUrl}/oauth2/token`, params, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    })
-    .then((res) => res.data.access_token);
+  params.append('client_id', environment.discordClientId);
+  params.append('client_secret', environment.discordClientSecret);
+  params.append('grant_type', 'authorization_code');
+  params.append('redirect_uri', environment.discordRedirectUri);
+  params.append('scope', 'identify');
+  params.append('code', code);
+  return fetch('https://discord.com/api/oauth2/token', {
+    method: 'POST',
+    body: params,
+  })
+    .then((response) => response.json())
+    .then((data) => data.access_token);
 };
 
 export const getUser = (accessToken: string) => {

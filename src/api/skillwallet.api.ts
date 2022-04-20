@@ -1,5 +1,7 @@
+import { Web3SkillWalletProvider } from '@skill-wallet/sw-abi-types';
 import axios from 'axios';
 import { environment } from './environment';
+import { EnableAndChangeNetwork } from './ProviderFactory/web3.network';
 
 export const getUsersData = () => {
   const params = {
@@ -136,4 +138,24 @@ export const getLogs = (): Promise<any[]> => {
       },
     ]);
   });
+};
+
+export const skillWalletExists = async () => {
+  try {
+    const skillWalletAddress = await getSkillwalletAddress();
+
+    const contract = await Web3SkillWalletProvider(skillWalletAddress, { beforeRequest: () => EnableAndChangeNetwork() });
+
+    if (window.ethereum.selectedAddress) {
+      const { selectedAddress } = window.ethereum;
+      const tokenId = await contract.getSkillWalletIdByOwner(selectedAddress);
+      if (tokenId) {
+        return true;
+      }
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 };
