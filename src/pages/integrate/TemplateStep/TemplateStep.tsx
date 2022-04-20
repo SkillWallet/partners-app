@@ -194,7 +194,6 @@ const TemplateStep = ({ values, control, errors }) => {
                 <Typography color="primary" sx={{ mb: '20px' }} component="div" variant="body2">
                   The Roles you envision in your community (i.e.: dev, validator, etc.)
                 </Typography>
-                {console.log(IntegrationTemplates[values.template])}
                 {fields.map((item, index) => (
                   <Controller
                     key={`roles.${index}.roleName`}
