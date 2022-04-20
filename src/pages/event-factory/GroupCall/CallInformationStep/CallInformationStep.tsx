@@ -38,6 +38,7 @@ import LoadingDialog from '@components/LoadingPopup';
 import './CallInformationStep.scss';
 import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
 import { openSnackbar } from '@store/ui-reducer';
+import PartnerButton from '@components/Button';
 
 const useStyles = makeStyles({
   select: {
@@ -99,24 +100,24 @@ const CallInformationStep = () => {
     <>
       <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message={errorMessage || 'Something went wrong'} />
       <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Creating community call activity..." />
-      <Typography sx={{ mb: pxToRem(15) }} color="primary.main" variant="h1" fontWeight="bold" textAlign="center">
+      <Typography sx={{ mb: pxToRem(20) }} color="primary.main" fontSize={pxToRem(50)} textAlign="center">
         Group Call
       </Typography>
-      <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+      <Typography sx={{ mb: pxToRem(35) }} color="primary.main" fontSize={pxToRem(33)} textAlign="center">
+        Almost there 🙌 Now just pick a duration ⌚ <br /> And decide whether the Call is for the entire Community, or a specific Role.
       </Typography>
       <form className="sw-info-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: 'flex', flex: 1 }}>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: pxToRem(65) }}>
-            <Typography sx={{ mb: pxToRem(20), fontSize: '25px' }} color="primary.main">
+            <Typography sx={{ mb: pxToRem(20), fontSize: pxToRem(25) }} color="primary.main">
               {startDate && format(new Date(startDate), 'PPPP')}
             </Typography>
-            <Typography sx={{ mb: pxToRem(20) }} color="primary.main" variant="h3">
+            <Typography sx={{ mb: pxToRem(20) }} color="primary.main" fontSize={pxToRem(18)}>
               How long would you like the call to be?
             </Typography>
             <SwScrollbar
               sx={{
-                height: '400px',
+                height: pxToRem(400),
                 flex: 1,
               }}
             >
@@ -133,8 +134,21 @@ const CallInformationStep = () => {
                       control={control}
                       render={({ field: { value, onChange } }) => {
                         return (
-                          <ListItemButton selected={value === slot.value} onClick={() => onChange(slot.value)}>
-                            <ListItemText primary={slot.label} />
+                          <ListItemButton
+                            sx={{
+                              width: pxToRem(300),
+                              height: pxToRem(60),
+                            }}
+                            selected={value === slot.value}
+                            onClick={() => onChange(slot.value)}
+                          >
+                            <ListItemText
+                              sx={{
+                                color: 'primary.main',
+                                fontSize: pxToRem(21),
+                              }}
+                              primary={slot.label}
+                            />
                           </ListItemButton>
                         );
                       }}
@@ -154,10 +168,10 @@ const CallInformationStep = () => {
                 justifyContent: 'flex-start',
               }}
             >
-              <Typography sx={{ mb: pxToRem(20), fontSize: '25px' }} color="primary.main">
+              <Typography sx={{ mb: pxToRem(20), fontSize: pxToRem(25) }} color="primary.main">
                 Lorem ipsum dolor sit
               </Typography>
-              <Typography sx={{ mb: pxToRem(20) }} color="primary.main" variant="h3">
+              <Typography sx={{ mb: pxToRem(20), fontSize: pxToRem(18) }} color="primary.main">
                 Who will be joining the call?
               </Typography>
               <FormControl sx={{ mb: '20px' }}>
@@ -176,7 +190,12 @@ const CallInformationStep = () => {
                       <FormControlLabel
                         sx={{
                           '.MuiTypography-root': {
-                            fontSize: '19px',
+                            fontSize: pxToRem(25),
+                            color: 'primary.main',
+                          },
+                          '.MuiSvgIcon-root': {
+                            width: pxToRem(30),
+                            height: pxToRem(30),
                           },
                         }}
                         value
@@ -186,7 +205,12 @@ const CallInformationStep = () => {
                       <FormControlLabel
                         sx={{
                           '.MuiTypography-root': {
-                            fontSize: '19px',
+                            fontSize: pxToRem(25),
+                            color: 'primary.main',
+                          },
+                          '.MuiSvgIcon-root': {
+                            width: pxToRem(30),
+                            height: pxToRem(30),
                           },
                         }}
                         value={false}
@@ -240,11 +264,11 @@ const CallInformationStep = () => {
               <Typography
                 sx={{
                   color: 'primary.main',
-                  py: 2,
-                  mt: 2,
+                  fontSize: pxToRem(18),
+                  mb: pxToRem(15),
+                  mt: pxToRem(30),
                 }}
                 component="div"
-                variant="h4"
               >
                 How many Members should participate?
               </Typography>
@@ -270,6 +294,12 @@ const CallInformationStep = () => {
                             inputProps={{ min: 0 }}
                             color="primary"
                             placeholder="Number"
+                            sx={{
+                              '.MuiInputBase-root': {
+                                width: `${pxToRem(135)} !important`,
+                                height: `${pxToRem(40)} !important`,
+                              },
+                            }}
                           />
                         );
                       }}
@@ -283,20 +313,24 @@ const CallInformationStep = () => {
                       control={control}
                       render={({ field: { name, value, onChange } }) => {
                         return (
-                          <SwButton
+                          <PartnerButton
                             name={name}
                             mode="light"
                             type="button"
-                            sx={{
-                              width: '120px',
-                              height: '40px',
-                              ml: '10px',
+                            btnStyles={{
+                              width: pxToRem(135),
+                              height: pxToRem(40),
+                              fontSize: pxToRem(22),
+                              p: 0,
+                              '.sw-btn-label': {
+                                textAlign: 'center',
+                              },
                             }}
                             onClick={() => onChange(!value)}
                             className={value ? 'active-link' : ''}
                           >
                             <Typography variant="body2">All</Typography>
-                          </SwButton>
+                          </PartnerButton>
                         );
                       }}
                     />
@@ -308,13 +342,16 @@ const CallInformationStep = () => {
         </Box>
 
         <div className="bottom-action" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <SwButton
-            sx={{
-              width: pxToRem(290),
+          <PartnerButton
+            btnStyles={{
+              width: pxToRem(300),
               height: pxToRem(60),
               mb: pxToRem(40),
               mt: pxToRem(40),
               border: '1px solid',
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
             }}
             mode="light"
             type="submit"

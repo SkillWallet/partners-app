@@ -9,10 +9,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import SwEditToolbar from '@components/datatable/DatatableToolbar';
 import { GetDatatableItems, GetDatatableChangedItems } from '@components/datatable/DatatableHelpers';
-import './contracts.scss';
 import { ReactComponent as PinIcon } from '@assets/pin.svg';
 import { ReactComponent as SaveIcon } from '@assets/actions/confirm.svg';
 import { ReactComponent as CancelIcon } from '@assets/actions/cancel.svg';
@@ -24,6 +23,9 @@ import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { addPAContracts, getPAContracts } from '@api/agreement.api';
+import { pxToRem } from '@utils/text-size';
+import PartnerButton from '@components/Button';
+import './Contracts.scss';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -215,16 +217,31 @@ const Contracts = () => {
   }, [dispatch]);
 
   return (
-    <div className="sw-core-team">
+    <Container maxWidth="md" className="sw-core-team">
       <LoadingDialog open={status === ResultState.Updating} message="Updating contracts..." />
       <AlertDialog open={open} handleClose={handleClose} />
-      <Typography sx={{ my: 2 }} component="div" variant="h1">
+
+      <Typography
+        sx={{
+          mt: pxToRem(20),
+        }}
+        color="primary.main"
+        fontSize={pxToRem(50)}
+        component="div"
+      >
         Your Smart Contracts List
       </Typography>
-      <Typography sx={{ mt: 2 }} component="div" variant="h3">
+      <Typography color="primary.main" fontSize={pxToRem(25)} component="div">
         Add the Contracts used by your Protocol or DApp,
       </Typography>
-      <Typography sx={{ mb: 2 }} component="div" variant="h3">
+      <Typography
+        sx={{
+          mb: pxToRem(50),
+        }}
+        color="primary.main"
+        fontSize={pxToRem(25)}
+        component="div"
+      >
         and track how Members of your Community interact with (and provide value to) them 🙌
       </Typography>
       <SWDatatable
@@ -245,18 +262,22 @@ const Contracts = () => {
         }}
       />
       <div className="sw-table-actions">
-        <SwButton
+        <PartnerButton
           mode="light"
-          btnType="large"
           disabled={isDisabled || status === ResultState.Loading}
           onClick={submit}
           endIcon={<PinIcon />}
+          btnStyles={{
+            width: pxToRem(450),
+            height: pxToRem(100),
+            fontSize: pxToRem(28),
+          }}
         >
           Save changes
-        </SwButton>
+        </PartnerButton>
       </div>
-    </div>
+    </Container>
   );
 };
 
-export default memo(Contracts);
+export default Contracts;

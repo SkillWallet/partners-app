@@ -3,8 +3,10 @@ import { SingleTask, TaskErrorMessage, TasksStatus, tasksUpdateStatus } from '@s
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
+import PartnerButton from '@components/Button';
 import { finalizeActivityTask, getTaskById } from '@api/activities.api';
 import LoadingDialog from '@components/LoadingPopup';
+import { pxToRem } from '@utils/text-size';
 import { useEffect } from 'react';
 import ErrorDialog from '@components/ErrorPopup';
 import { useSelector } from 'react-redux';
@@ -88,7 +90,7 @@ const TaskFinalise = () => {
                   color: 'primary.main',
                   mb: '25px',
                 }}
-                variant="subtitle1"
+                fontSize={pxToRem(50)}
               >
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {selectedTask?.title || 'N/A'}
@@ -123,30 +125,36 @@ const TaskFinalise = () => {
                   color: 'primary.main',
                   mb: '50px',
                 }}
-                variant="body1"
+                fontSize={pxToRem(20)}
               >
                 {selectedTask?.description}
               </Typography>
 
-              <SwButton
+              <PartnerButton
                 mode="light"
-                sx={{
-                  width: '280px',
-                  height: '85px',
-                  minHeight: '85px',
+                btnStyles={{
+                  width: pxToRem(390),
+                  height: pxToRem(120),
                   marginBottom: '40px',
+                  p: 0,
+                  '.sw-btn-label': {
+                    textAlign: 'center',
+                  },
                 }}
                 onClick={handleFinalizeClick}
                 label="Approve"
               />
 
-              <SwButton
+              <PartnerButton
                 mode="light"
-                sx={{
-                  width: '280px',
-                  height: '85px',
-                  minHeight: '85px',
+                btnStyles={{
+                  width: pxToRem(390),
+                  height: pxToRem(120),
                   marginBottom: '40px',
+                  p: 0,
+                  '.sw-btn-label': {
+                    textAlign: 'center',
+                  },
                 }}
                 disabled
                 label="Decline"

@@ -14,9 +14,9 @@ html {
 html {
   font-size: 100%;
 
-  // @media only screen and (max-width: 1920px) {
-  //   font-size: 75%;
-  // }
+  @media only screen and (max-width: 1920px) {
+    font-size: 75%;
+  }
   // @media only screen and (max-width: 1280px) {
   //   font-size: 62.8%;
   // }
@@ -27,6 +27,10 @@ html {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.sw-btn-label {
+  margin: 0 !important;
 }
 
 .logo-img {

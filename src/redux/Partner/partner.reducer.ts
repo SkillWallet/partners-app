@@ -40,6 +40,7 @@ export interface PartnerState {
   status: ResultState;
   paUrl: string;
   selectedDashboardBtn: string;
+  errorMessage: string;
 }
 
 const initialState = {
@@ -50,6 +51,7 @@ const initialState = {
   paUrl: null,
   selectedDashboardBtn: null,
   status: ResultState.Idle,
+  errorMessage: '',
 };
 
 export const partnerSlice = createSlice({
@@ -102,9 +104,10 @@ export const partnerSlice = createSlice({
         state.whitelistedAddresses = action.payload;
         state.status = ResultState.Idle;
       })
-      .addCase(getWhitelistedAddresses.rejected, (state) => {
+      .addCase(getWhitelistedAddresses.rejected, (state, action) => {
         state.whitelistedAddresses = [];
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
       .addCase(getPAContracts.pending, (state) => {
         state.status = ResultState.Loading;
@@ -113,9 +116,10 @@ export const partnerSlice = createSlice({
         state.contracts = action.payload;
         state.status = ResultState.Idle;
       })
-      .addCase(getPAContracts.rejected, (state) => {
+      .addCase(getPAContracts.rejected, (state, action) => {
         state.contracts = [];
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
 
       .addCase(getPAUrl.pending, (state) => {
@@ -125,9 +129,10 @@ export const partnerSlice = createSlice({
         state.paUrl = action.payload;
         state.status = ResultState.Idle;
       })
-      .addCase(getPAUrl.rejected, (state) => {
+      .addCase(getPAUrl.rejected, (state, action) => {
         state.paUrl = null;
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
 
       .addCase(addPAUrl.pending, (state) => {
@@ -136,8 +141,9 @@ export const partnerSlice = createSlice({
       .addCase(addPAUrl.fulfilled, (state) => {
         state.status = ResultState.Idle;
       })
-      .addCase(addPAUrl.rejected, (state) => {
+      .addCase(addPAUrl.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
 
       .addCase(fetchPartnersAgreementByCommunity.pending, (state) => {
@@ -147,8 +153,9 @@ export const partnerSlice = createSlice({
         state.paCommunity = action.payload;
         state.status = ResultState.Idle;
       })
-      .addCase(fetchPartnersAgreementByCommunity.rejected, (state) => {
+      .addCase(fetchPartnersAgreementByCommunity.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
 
       .addCase(addNewWhitelistedAddresses.pending, (state) => {
@@ -157,8 +164,9 @@ export const partnerSlice = createSlice({
       .addCase(addNewWhitelistedAddresses.fulfilled, (state) => {
         state.status = ResultState.Idle;
       })
-      .addCase(addNewWhitelistedAddresses.rejected, (state) => {
+      .addCase(addNewWhitelistedAddresses.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       })
 
       .addCase(addPAContracts.pending, (state) => {
@@ -167,8 +175,9 @@ export const partnerSlice = createSlice({
       .addCase(addPAContracts.fulfilled, (state) => {
         state.status = ResultState.Idle;
       })
-      .addCase(addPAContracts.rejected, (state) => {
+      .addCase(addPAContracts.rejected, (state, action) => {
         state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
       });
   },
 });

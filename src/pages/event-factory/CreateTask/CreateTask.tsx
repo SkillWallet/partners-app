@@ -1,10 +1,11 @@
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SwStepper } from 'sw-web-shared';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityCurrentStep, resetActivityTaskState } from '@store/Activity/create-task.reducer';
 import { setPreviusRoute } from '@store/ui-reducer';
+import { pxToRem } from '@utils/text-size';
 import CategoryStep from './CategoryStep/CategoryStep';
 import DescriptionStep from './DescriptionStep/DescriptionStep';
 import RolesStep from './RolesStep/RolesStep';
@@ -24,40 +25,49 @@ const CreateTask = () => {
   }, [dispatch]);
 
   return (
-    <div className="sw-create-task-base-container">
+    <Container
+      maxWidth="md"
+      sx={{
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        '.MuiBox-root > .MuiBox-root:first-child': {
+          mb: pxToRem(95),
+          '.MuiSvgIcon-root': {
+            width: pxToRem(32),
+            height: pxToRem(32),
+          },
+        },
+      }}
+      className="sw-create-task-base-container"
+    >
       <Box
-        sx={{
-          p: 0,
-          m: 0,
-          gridGap: '0',
-        }}
-        className="sw-box"
+        sx={{ maxWidth: pxToRem(820), flex: 1, display: 'flex', flexDirection: 'column', m: '0 auto', width: '100%' }}
+        className="sw-box-right-inner"
       >
-        <Box sx={{ maxWidth: activeStep !== -1 ? '650px' : '100%', flexGrow: 1 }} className="sw-box-right-inner">
-          <SwStepper
-            mode="dark"
-            title={title}
-            stepperText={stepperText}
-            steps={steps}
-            description={description}
-            activeStep={activeStep}
-            descriptionTooltip={descriptionTooltip}
-            dotStyles={{
-              width: '45px',
-              height: '45px',
-            }}
-            maxWidth="580px"
-          />
-          <Box className="sw-box" sx={{ maxWidth: activeStep === -1 ? '100%' : '580px', width: '100%', margin: '20px auto' }}>
-            <Switch>
-              <Route exact path="/partner/event-factory/create-task" component={CategoryStep} />
-              <Route path="/partner/event-factory/create-task/roles" component={RolesStep} />
-              <Route path="/partner/event-factory/create-task/description" component={DescriptionStep} />
-            </Switch>
-          </Box>
+        <SwStepper
+          mode="dark"
+          title={title}
+          stepperText={stepperText}
+          steps={steps}
+          description={description}
+          activeStep={activeStep}
+          descriptionTooltip={descriptionTooltip}
+          dotStyles={{
+            width: pxToRem(63),
+            height: pxToRem(63),
+          }}
+          maxWidth="100%"
+        />
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <Switch>
+            <Route exact path="/partner/event-factory/create-task" component={CategoryStep} />
+            <Route path="/partner/event-factory/create-task/roles" component={RolesStep} />
+            <Route path="/partner/event-factory/create-task/description" component={DescriptionStep} />
+          </Switch>
         </Box>
       </Box>
-    </div>
+    </Container>
   );
 };
 

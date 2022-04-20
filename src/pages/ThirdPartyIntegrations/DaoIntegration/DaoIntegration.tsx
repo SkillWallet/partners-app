@@ -8,13 +8,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import './dao-integration.scss';
-
 import { RootState, useAppDispatch } from '@store/store.model';
 import { useSelector } from 'react-redux';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
 import { addPAUrl, getPAUrl } from '@api/agreement.api';
+import { pxToRem } from '@utils/text-size';
+import PartnerButton from '@components/Button';
+import './DaoIntegration.scss';
 
 function AlertDialog({ handleClose, open }) {
   return (
@@ -89,19 +90,32 @@ const DaoIntegration = () => {
       <LoadingDialog open={status === ResultState.Updating} message="Adding dao url..." />
       <AlertDialog handleClose={handleClose} open={open} />
       <div className="sw-data-integration">
-        <Typography color="primary" sx={{ my: 2 }} component="div" variant="h1">
+        <Typography
+          sx={{
+            mt: pxToRem(20),
+            mb: pxToRem(50),
+          }}
+          fontSize={pxToRem(50)}
+          color="primary.main"
+        >
           Your SkillWallet Auth
         </Typography>
-        <Typography color="primary" sx={{ mt: 2 }} component="div" variant="h3">
+        <Typography fontSize={pxToRem(25)} color="primary.main">
           This is where your DAO lives. Add the URL where you’ll be integrating
         </Typography>
-        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography
+          sx={{
+            mb: pxToRem(50),
+          }}
+          fontSize={pxToRem(25)}
+          color="primary.main"
+        >
           SkillWallet’s Decentralized Authentication System using your Partner Key.
         </Typography>
 
         <div className="sw-dao-form">
           <div className="sw-dao-url">
-            <Typography color="primary" component="div" variant="h3">
+            <Typography color="primary.main" component="div" fontSize={pxToRem(25)}>
               Your URL
             </Typography>
             <TextField
@@ -129,15 +143,19 @@ const DaoIntegration = () => {
               onChange={debouncedChangeHandler}
             />
           </div>
-          <SwButton
+          <PartnerButton
             mode="light"
-            btnType="large"
+            btnStyles={{
+              width: pxToRem(395),
+              height: pxToRem(100),
+              fontSize: pxToRem(28),
+            }}
             disabled={!daoUrl?.length || status === ResultState.Loading || disabled}
             onClick={submit}
             endIcon={<EditIcon />}
           >
             Confirm & Sign
-          </SwButton>
+          </PartnerButton>
         </div>
       </div>
     </Container>

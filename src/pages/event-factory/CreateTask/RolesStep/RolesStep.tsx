@@ -8,6 +8,8 @@ import { getCommunityRoles } from '@store/Community/community.reducer';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { ActivityCurrentStep, ActivityCurrentTask, activitySetCurrentStep, activityUpdateTask } from '@store/Activity/create-task.reducer';
 import './RolesStep.scss';
+import { pxToRem } from '@utils/text-size';
+import PartnerButton from '@components/Button';
 
 const RolesStep = () => {
   const dispatch = useDispatch();
@@ -50,12 +52,13 @@ const RolesStep = () => {
 
   return (
     <>
-      <form className="sw-roles-wrapper" onSubmit={handleSubmit(onSubmit)}>
+      <form className="sw-task-roles-wrapper" onSubmit={handleSubmit(onSubmit)}>
         <Typography
           sx={{
             color: 'primary.main',
             textAlign: 'center',
-            mb: 4,
+            mb: pxToRem(35),
+            fontSize: pxToRem(22),
           }}
           component="div"
           variant="h4"
@@ -74,24 +77,29 @@ const RolesStep = () => {
                   control={control}
                   render={({ field: { name, value, onChange } }) => {
                     return (
-                      <SwButton
+                      <PartnerButton
                         mode="light"
                         name={name}
                         type="button"
                         startIcon={<TagIcon />}
-                        sx={{
-                          width: '115px',
-                          height: '35px',
-                          '.MuiButton-startIcon svg': {
-                            width: '16px',
-                            height: '16px',
-                          },
-                        }}
                         onClick={() => onChange(roleName)}
                         className={value === roleName ? 'active-link' : ''}
+                        btnStyles={{
+                          width: pxToRem(160),
+                          height: pxToRem(50),
+                          fontSize: pxToRem(19),
+                          padding: `0 ${pxToRem(24)}`,
+                          '.MuiButton-startIcon': {
+                            mr: pxToRem(22),
+                            svg: {
+                              width: pxToRem(22),
+                              height: pxToRem(22),
+                            },
+                          },
+                        }}
                       >
                         <Typography variant="body2">{roleName}</Typography>
-                      </SwButton>
+                      </PartnerButton>
                     );
                   }}
                 />
@@ -104,16 +112,21 @@ const RolesStep = () => {
           sx={{
             color: 'primary.main',
             textAlign: 'center',
-            py: 2,
-            mt: 2,
+            mt: pxToRem(70),
+            mb: pxToRem(35),
+            fontSize: pxToRem(22),
           }}
           component="div"
-          variant="h4"
         >
           How many Members should participate?
         </Typography>
 
-        <div className="form-fields">
+        <div
+          className="form-fields"
+          style={{
+            gridGap: pxToRem(92),
+          }}
+        >
           <div className="sw-form-field">
             <div className="sw-form-field-content">
               <Controller
@@ -135,6 +148,12 @@ const RolesStep = () => {
                       inputProps={{ min: 0 }}
                       color="primary"
                       placeholder="Number"
+                      sx={{
+                        '.MuiInputBase-root': {
+                          width: pxToRem(135),
+                          height: pxToRem(40),
+                        },
+                      }}
                     />
                   );
                 }}
@@ -148,19 +167,23 @@ const RolesStep = () => {
                 control={control}
                 render={({ field: { name, value, onChange } }) => {
                   return (
-                    <SwButton
+                    <PartnerButton
                       name={name}
                       mode="light"
                       type="button"
-                      sx={{
-                        width: '100px',
-                        height: '30px',
+                      btnStyles={{
+                        width: pxToRem(135),
+                        height: pxToRem(40),
+                        fontSize: pxToRem(22),
+                        '.sw-btn-label': {
+                          textAlign: 'center',
+                        },
                       }}
                       onClick={() => onChange(!value)}
                       className={value ? 'active-link' : ''}
                     >
                       <Typography variant="body2">All</Typography>
-                    </SwButton>
+                    </PartnerButton>
                   );
                 }}
               />
@@ -169,10 +192,18 @@ const RolesStep = () => {
         </div>
 
         <div className="bottom-action" style={{ marginTop: '80px' }}>
-          <SwButton
+          <PartnerButton
+            type="submit"
+            btnStyles={{
+              width: pxToRem(630),
+              height: pxToRem(100),
+              fontSize: pxToRem(28),
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
+            }}
             disabled={!values.role || (values.allParticipants ? false : +values.participants === 0)}
             mode="light"
-            type="submit"
             label="Next: Describe the Task"
           />
         </div>

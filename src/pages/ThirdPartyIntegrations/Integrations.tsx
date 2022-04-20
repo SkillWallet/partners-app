@@ -1,5 +1,5 @@
 import Card from '@mui/material/Card';
-import { Avatar, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material';
+import { Avatar, CardContent, CardHeader, Container, Divider, Grid, Typography } from '@mui/material';
 
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { memo, useEffect } from 'react';
 import { ReactComponent as SwAuthIcon } from '@assets/sw-auth.svg';
 import { ReactComponent as DiscordBotIcon } from '@assets/discord-bot.svg';
 import { ReactComponent as ContractIcon } from '@assets/contract.svg';
+import { pxToRem } from '@utils/text-size';
+import PartnerButton from '@components/Button';
 
 const IntegrationCards = [
   {
@@ -18,9 +20,14 @@ const IntegrationCards = [
         integrating our Decentralized Authentication System using your
         Partner Key.`,
     action: (
-      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/dao-integration">
+      <PartnerButton
+        mode="light"
+        btnStyles={{ width: pxToRem(395), height: pxToRem(100), fontSize: pxToRem(28) }}
+        component={Link}
+        to="/partner/integrations-and-contracts/dao-integration"
+      >
         Set your DAO URL
-      </SwButton>
+      </PartnerButton>
     ),
   },
   {
@@ -29,9 +36,14 @@ const IntegrationCards = [
     description: `Manage your Tasks and let your community contribute - directly from your Discord Server.
     SkillWallet's Discord Bot is a bridge between Web2 and Web3 - to track like a wizard, and react like a 🧙`,
     action: (
-      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/discord-integration">
+      <PartnerButton
+        mode="light"
+        btnStyles={{ width: pxToRem(395), height: pxToRem(100), fontSize: pxToRem(28) }}
+        component={Link}
+        to="/partner/integrations-and-contracts/discord-integration"
+      >
         Integrate on Discord
-      </SwButton>
+      </PartnerButton>
     ),
   },
   {
@@ -41,14 +53,28 @@ const IntegrationCards = [
     with. Make sure you own them, as you will have to sign a
     transaction.`,
     action: (
-      <SwButton mode="light" disabled sx={{ height: '70px' }} component={Link} to="/partner/integrations-and-contracts/contracts">
+      <PartnerButton
+        mode="light"
+        btnStyles={{
+          p: 0,
+          '.sw-btn-label': {
+            textAlign: 'center',
+          },
+          width: pxToRem(395),
+          height: pxToRem(100),
+          fontSize: pxToRem(28),
+        }}
+        disabled
+        component={Link}
+        to="/partner/integrations-and-contracts/contracts"
+      >
         Track & Add Contracts
-      </SwButton>
+      </PartnerButton>
     ),
   },
 ];
 
-const IntegrationDashboard = () => {
+const Integrations = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,31 +84,36 @@ const IntegrationDashboard = () => {
 
   return (
     <Container maxWidth="lg" className="sw-integration-dashboard">
-      <Typography color="primary" textAlign="center" variant="h1">
+      <Typography
+        sx={{
+          textDecoration: 'underline',
+          mt: pxToRem(20),
+        }}
+        fontSize={pxToRem(50)}
+        color="primary.main"
+        textAlign="center"
+      >
         Integrations & Contracts
       </Typography>
-      <Typography color="primary" textAlign="center" sx={{ my: 2 }} variant="h2">
+      <Typography
+        sx={{
+          mb: pxToRem(50),
+        }}
+        fontSize={pxToRem(25)}
+        color="primary.main"
+        textAlign="center"
+      >
         The Operating System for your DAO
       </Typography>
-      <div
-        className="sw-cards"
-        style={{
-          marginTop: '50px',
-          padding: 0,
-          display: 'grid',
-          width: '100%',
-          gridGap: '55px',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gridAutoRows: 'minmax(380px, auto)',
-        }}
-      >
+      <Grid container justifyContent="space-around" alignItems="center" spacing={5}>
         {IntegrationCards.map(({ title, icon, description, action }, n) => (
-          <div key={n}>
+          <Grid item key={n}>
             <Card
               sx={{
-                height: '290px',
-                mb: '20px',
-                p: '15px 34px',
+                height: pxToRem(470),
+                width: pxToRem(400),
+                mb: pxToRem(35),
+                p: pxToRem(45),
                 border: '1px solid',
                 borderColor: 'primary.main',
                 display: 'flex',
@@ -100,13 +131,15 @@ const IntegrationDashboard = () => {
                   />
                 }
                 sx={{
+                  p: 0,
+                  mb: pxToRem(50),
                   '.MuiAvatar-root': {
                     backgroundColor: 'transparent',
                   },
                 }}
                 title={title}
                 titleTypographyProps={{
-                  variant: 'h3',
+                  fontSize: pxToRem(25),
                   color: 'primary.main',
                   mt: '6px',
                 }}
@@ -115,11 +148,12 @@ const IntegrationDashboard = () => {
                 sx={{
                   flex: 1,
                   display: 'flex',
+                  p: 0,
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                 }}
               >
-                <Typography color="primary.main" variant="body1" component="div">
+                <Typography color="primary.main" fontSize={pxToRem(22)} component="div">
                   {description}
                 </Typography>
 
@@ -131,11 +165,11 @@ const IntegrationDashboard = () => {
               </CardContent>
             </Card>
             {action}
-          </div>
+          </Grid>
         ))}
-      </div>
+      </Grid>
     </Container>
   );
 };
 
-export default memo(IntegrationDashboard);
+export default memo(Integrations);

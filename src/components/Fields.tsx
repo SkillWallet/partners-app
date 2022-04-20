@@ -8,11 +8,29 @@ const CustomSwCalendarPicker = styled(CalendarPicker)(({ theme }) => ({
   '.MuiTypography-caption': {
     color: theme.palette.primary.main,
   },
+  '.MuiTypography-root, .MuiButtonBase-root': {
+    fontSize: pxToRem(25),
+    width: pxToRem(50),
+    height: pxToRem(50),
+  },
+  'div[role="presentation"]': {
+    '.PrivatePickersFadeTransitionGroup-root': {
+      fontSize: pxToRem(29),
+      color: '#000',
+    },
+  },
+  '.MuiButtonBase-root .MuiSvgIcon-root': {
+    width: pxToRem(40),
+    height: pxToRem(40),
+  },
   '.PrivatePickersSlideTransition-root': {
-    minHeight: '200px',
+    minHeight: pxToRem(300),
     '.MuiButtonBase-root.Mui-disabled': {
       color: '#777777',
     },
+    // '.MuiButtonBase-root': {
+    //   margin: `0 ${pxToRem(6)}`,
+    // },
     '.MuiButtonBase-root:not(.Mui-disabled)': {
       backgroundColor: 'rgba(119, 119, 119, .25)',
       color: theme.palette.primary.main,

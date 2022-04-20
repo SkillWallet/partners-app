@@ -15,9 +15,6 @@
     grid-gap: 50px;
 
     .MuiInputBase-root {
-      width: 120px !important;
-      height: 35px;
-
       .MuiOutlinedInput-notchedOutline {
         border-width: 2px !important;
       }
@@ -62,8 +59,8 @@
 
     .MuiInputBase-root {
       color: $primary-color;
-      width: 15.625rem;
-      height: 2.5rem;
+      width: 18.75rem;
+      height: 3.75rem;
       font-size: 1.125rem;
 
       .MuiOutlinedInput-notchedOutline {

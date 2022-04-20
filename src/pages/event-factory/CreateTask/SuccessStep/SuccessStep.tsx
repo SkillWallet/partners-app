@@ -3,7 +3,6 @@ import { setPreviusRoute } from '@store/ui-reducer';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { SwButton } from 'sw-web-shared';
 import './SuccessStep.scss';
 
 const SuccessStep = () => {
@@ -39,7 +38,7 @@ const SuccessStep = () => {
               my: '40px',
             }}
             component={Link}
-            to="/partner/dashboard/core-team/tasks"
+            to="/partner/tasks"
             size="small"
             color="primary"
           >

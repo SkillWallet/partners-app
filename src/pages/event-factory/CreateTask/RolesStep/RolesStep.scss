@@ -1,7 +1,7 @@
 @import 'sw-web-shared/lib/styles/breakpoints';
 @import 'sw-web-shared/lib/styles/variables';
 
-.sw-roles-wrapper {
+.sw-task-roles-wrapper {
   width: 100%;
 
   .sw-roles-options {
@@ -14,7 +14,6 @@
   .form-fields {
     display: flex;
     justify-content: center;
-    grid-gap: 60px;
   }
 
   .sw-form-field-content {
@@ -29,8 +28,6 @@
 
     .MuiInputBase-root {
       color: $primary-color;
-      width: 100px;
-      height: 30px;
 
       input {
         height: inherit;

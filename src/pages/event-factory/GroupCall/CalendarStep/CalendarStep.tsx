@@ -13,6 +13,7 @@ import { generateTimeSlots } from '@utils/helpers';
 import { ActivityGroupCallData, activityUpdateGroupCallData } from '@store/Activity/group-call.reducer';
 import { format, isEqual } from 'date-fns';
 import './CalendarStep.scss';
+import PartnerButton from '@components/Button';
 
 const CalendarStep = () => {
   const dispatch = useAppDispatch();
@@ -42,11 +43,11 @@ const CalendarStep = () => {
 
   return (
     <>
-      <Typography sx={{ mb: pxToRem(15) }} color="primary.main" variant="h1" fontWeight="bold" textAlign="center">
+      <Typography sx={{ mb: pxToRem(20) }} color="primary.main" fontSize={pxToRem(50)} textAlign="center">
         Group Call
       </Typography>
-      <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+      <Typography sx={{ mb: pxToRem(35) }} color="primary.main" fontSize={pxToRem(33)} textAlign="center">
+        Hello friend 🖖 I’m your Web3 scheduling assistant 📞 <br /> Set a date and time for your Community Call & let’s make it official.
       </Typography>
       <form className="sw-calendar-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: 'flex', flex: 1 }}>
@@ -71,7 +72,7 @@ const CalendarStep = () => {
           <Divider sx={{ height: `calc(100% + ${pxToRem(40)})`, borderColor: '#707070' }} orientation="vertical" />
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: pxToRem(65) }}>
             <Typography
-              sx={{ height: '20px', margin: `0 auto ${pxToRem(20)} auto`, fontSize: '25px' }}
+              sx={{ height: '20px', margin: `0 auto ${pxToRem(20)} auto`, fontSize: pxToRem(25) }}
               color="primary.main"
               textAlign="center"
             >
@@ -79,7 +80,7 @@ const CalendarStep = () => {
             </Typography>
             <SwScrollbar
               sx={{
-                height: '400px',
+                height: pxToRem(400),
                 flex: 1,
               }}
             >
@@ -93,11 +94,21 @@ const CalendarStep = () => {
                       render={({ field: { value, onChange } }) => {
                         return (
                           <ListItemButton
+                            sx={{
+                              width: pxToRem(300),
+                              height: pxToRem(60),
+                            }}
                             disabled={!values.startDate}
                             selected={isEqual(new Date(!!value ? value : startTime), slot)}
                             onClick={() => onChange(slot)}
                           >
-                            <ListItemText primary={format(slot, 'hh:mm a')} />
+                            <ListItemText
+                              sx={{
+                                color: 'primary.main',
+                                fontSize: pxToRem(21),
+                              }}
+                              primary={format(slot, 'hh:mm a')}
+                            />
                           </ListItemButton>
                         );
                       }}
@@ -110,13 +121,16 @@ const CalendarStep = () => {
         </Box>
 
         <div className="bottom-action" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <SwButton
-            sx={{
-              width: pxToRem(290),
+          <PartnerButton
+            btnStyles={{
+              width: pxToRem(300),
               height: pxToRem(60),
               mb: pxToRem(40),
               mt: pxToRem(40),
               border: '1px solid',
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
             }}
             mode="light"
             type="submit"

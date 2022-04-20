@@ -27,35 +27,9 @@ import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
 import { getPAUrl } from '@api/agreement.api';
 import { addNewWhitelistedAddresses, getWhitelistedAddresses } from '@api/community.api';
-
-function AlertDialog({ handleClose, open }) {
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogContent
-        sx={{
-          minHeight: 180,
-          height: 180,
-          width: 400,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <DialogContentText textAlign="center">
-          <Typography textAlign="center" variant="h2" component="span" color="red">
-            No new members were added to whitelist!
-          </Typography>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <SwButton mode="light" onClick={handleClose} autoFocus>
-          Dismiss
-        </SwButton>
-      </DialogActions>
-    </Dialog>
-  );
-}
+import ErrorDialog from '@components/ErrorPopup';
+import { pxToRem } from '@utils/text-size';
+import PartnerButton from '@components/Button';
 
 const tableColumns = (getRef) => {
   const handleEditClick = (id) => (event) => {
@@ -165,7 +139,7 @@ const CoreTeamWhitelist = () => {
   const { apiRef, columns } = useDatatableApiRef(tableColumns);
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { community } = useSelector((state: RootState) => state.community);
-  const { status, paUrl } = useSelector((state: RootState) => state.partner);
+  const { status, paUrl, errorMessage } = useSelector((state: RootState) => state.partner);
   const whitelistedAddresses = useSelector(getLockedWhitelistedAddresses);
 
   const handleClose = () => {
@@ -197,7 +171,7 @@ const CoreTeamWhitelist = () => {
   }, [dispatch, userInfo]);
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/partner/dashboard/core-team'));
+    dispatch(setPreviusRoute('/partner/core-team'));
     console.log('Previous route from Core Team Whitelist');
   }, [dispatch]);
 
@@ -219,7 +193,8 @@ const CoreTeamWhitelist = () => {
     <Container maxWidth="md" className="sw-core-team">
       <>
         <LoadingDialog open={status === ResultState.Updating} message="Adding addresses..." />
-        <AlertDialog open={open} handleClose={handleClose} />
+        <ErrorDialog open={status === ResultState.Failed} handleClose={handleClose} message={errorMessage} />
+        <ErrorDialog open={open} handleClose={handleClose} message=" No new members were added to whitelist!" />
         <SwShare
           mode="light"
           url={paUrl || 'https://skillwallet.id/'}
@@ -244,10 +219,24 @@ const CoreTeamWhitelist = () => {
           open={openShare}
           onClose={handleShareClose}
         />
-        <Typography sx={{ my: 2 }} component="div" variant="h1">
+        <Typography
+          sx={{
+            mt: pxToRem(20),
+          }}
+          color="primary.main"
+          fontSize={pxToRem(50)}
+          component="div"
+        >
           Core Team - Whitelist
         </Typography>
-        <Typography sx={{ my: 2 }} component="div" variant="h3">
+        <Typography
+          sx={{
+            mb: pxToRem(50),
+          }}
+          color="primary.main"
+          fontSize={pxToRem(25)}
+          component="div"
+        >
           Add your Team Members’ addresses & invite them to your DAO Dashboard straight away 😎
         </Typography>
         <SWDatatable
@@ -272,18 +261,30 @@ const CoreTeamWhitelist = () => {
           }}
         />
         <div className="sw-table-actions">
-          <SwButton
+          <PartnerButton
             mode="light"
-            btnType="large"
+            endIcon={<PinIcon />}
+            label="Confirm & Whitelist"
             disabled={isDisabled || status === ResultState.Loading}
             onClick={submit}
-            endIcon={<PinIcon />}
+            btnStyles={{
+              width: pxToRem(450),
+              height: pxToRem(100),
+              fontSize: pxToRem(28),
+            }}
+          />
+          <PartnerButton
+            btnStyles={{
+              width: pxToRem(450),
+              height: pxToRem(100),
+              fontSize: pxToRem(28),
+            }}
+            mode="light"
+            onClick={() => setOpenShare(true)}
+            endIcon={<ShareIcon />}
           >
-            Confirm & Whitelist
-          </SwButton>
-          <SwButton mode="light" btnType="large" onClick={() => setOpenShare(true)} endIcon={<ShareIcon />}>
             Invite your Team
-          </SwButton>
+          </PartnerButton>
         </div>
       </>
     </Container>

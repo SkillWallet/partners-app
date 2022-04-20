@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
+import PartnerButton from '@components/Button';
 import { Box, CircularProgress, ListItem, Typography } from '@mui/material';
 import { FilteredTasks, TasksRefreshStatus, TasksStatus } from '@store/Activity/tasks.reducer';
 import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
@@ -17,11 +18,15 @@ const TasksList = (props) => {
     switch (props.status) {
       case TaskTypes.Open:
         return (
-          <SwButton
+          <PartnerButton
             mode="light"
-            sx={{
-              width: '180px',
-              height: '85px',
+            btnStyles={{
+              width: pxToRem(260),
+              height: pxToRem(120),
+              p: 0,
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
             }}
             disabled={refreshStatus === ResultState.Loading}
             onClick={() => props.handleTask(props.status, task)}
@@ -31,11 +36,15 @@ const TasksList = (props) => {
       case TaskTypes.Ongoing:
         if (task.status === TaskStatus.Submitted) {
           return (
-            <SwButton
+            <PartnerButton
               mode="light"
-              sx={{
-                width: '220px',
-                height: '85px',
+              btnStyles={{
+                width: pxToRem(260),
+                height: pxToRem(120),
+                p: 0,
+                '.sw-btn-label': {
+                  textAlign: 'center',
+                },
               }}
               component={Link}
               to={`/partner/tasks/finalise/${task.activityId}`}
@@ -44,11 +53,15 @@ const TasksList = (props) => {
           );
         }
         return (
-          <SwButton
+          <PartnerButton
             mode="light"
-            sx={{
-              width: '220px',
-              height: '85px',
+            btnStyles={{
+              width: pxToRem(260),
+              height: pxToRem(120),
+              p: 0,
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
             }}
             component={Link}
             to={`/partner/tasks/${task.activityId}`}
@@ -82,11 +95,15 @@ const TasksList = (props) => {
           );
         }
         return (
-          <SwButton
+          <PartnerButton
             mode="light"
-            sx={{
-              width: '180px',
-              height: '85px',
+            btnStyles={{
+              width: pxToRem(260),
+              height: pxToRem(120),
+              p: 0,
+              '.sw-btn-label': {
+                textAlign: 'center',
+              },
             }}
             component={Link}
             disabled={refreshStatus === ResultState.Loading}
@@ -118,7 +135,7 @@ const TasksList = (props) => {
       return (
         <ListItem
           sx={{
-            minHeight: '150px',
+            minHeight: pxToRem(215),
             display: 'flex',
             flexDirection: 'row',
             borderWidth: '2px',

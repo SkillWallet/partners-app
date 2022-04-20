@@ -8,15 +8,11 @@ import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import MembersAndActivities from '@components/member-and-activities/MembersAndActivities';
 import Community from './Community/Community';
-import Dashboard from './deshboard/Dashboard';
-import CoreTeam from './core-team/CoreTeam';
-import CoreTeamWhitelist from './core-team/core-team-whitelist/CoreTeamWhitelist';
+import Dashboard from './Dashboard/Dashboard';
+import CoreTeam from './CoreTeam/CoreTeam';
+import CoreTeamWhitelist from './CoreTeamWhitelist/CoreTeamWhitelist';
 import Roles from './Roles/Roles';
-import IntegrationDashboard from './integrations-and-contracts/dashboard/IntegrationDashboard';
-import DaoIntegration from './integrations-and-contracts/dao-integration/DaoIntegration';
-import DiscordIntegration from './integrations-and-contracts/discord-integration/DiscordIntegration';
-import Contracts from './integrations-and-contracts/contracts/Contracts';
-import EventFactoryDashboard from './event-factory/EventFactoryDashboard/EventFactoryDashboard';
+import EventFactory from './event-factory/EventFactoryDashboard';
 import CreateTask from './event-factory/CreateTask/CreateTask';
 import GroupCall from './event-factory/GroupCall/GroupCall';
 import Polls from './event-factory/Polls/Polls';
@@ -26,6 +22,10 @@ import YourTasks from './event-factory/Tasks/YourTasks';
 import TaskDetails from './event-factory/Tasks/TaskDetails';
 import TaskSubmit from './event-factory/Tasks/TaskSubmit';
 import TaskFinalise from './event-factory/Tasks/TaskFinalise';
+import Integrations from './ThirdPartyIntegrations/Integrations';
+import Contracts from './Contracts/Contracts';
+import DaoIntegration from './ThirdPartyIntegrations/DaoIntegration/DaoIntegration';
+import DiscordIntegration from './ThirdPartyIntegrations/DiscordIntegration/DiscordIntegration';
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
@@ -66,13 +66,13 @@ const Partners = (props) => {
           <Route exact path="/partner/community/roles" render={() => <Roles {...props} isCoreTeam={false} />} />
 
           {/* Partner > Integration and contracts */}
-          <Route exact path="/partner/integrations-and-contracts" component={IntegrationDashboard} {...props} />
+          <Route exact path="/partner/integrations-and-contracts" component={Integrations} {...props} />
           <Route exact path="/partner/integrations-and-contracts/dao-integration" component={DaoIntegration} {...props} />
           <Route exact path="/partner/integrations-and-contracts/discord-integration" component={DiscordIntegration} {...props} />
           <Route exact path="/partner/integrations-and-contracts/contracts" component={Contracts} {...props} />
 
           {/* Partner > Event factory */}
-          <Route exact path="/partner/event-factory" component={EventFactoryDashboard} {...props} />
+          <Route exact path="/partner/event-factory" component={EventFactory} {...props} />
           <Route path="/partner/event-factory/create-task" component={CreateTask} {...props} />
           <Route path="/partner/event-factory/group-call" component={GroupCall} {...props} />
           <Route path="/partner/event-factory/polls" component={Polls} {...props} />
