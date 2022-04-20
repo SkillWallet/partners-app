@@ -4,20 +4,15 @@
 import { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
-import { SkillWalletABI } from '@skill-wallet/sw-abi-types';
-import { getSkillwalletAddress } from '@api/skillwallet.api';
+import { SkillWalletABI, SkillWalletContractEventType, Web3SkillWalletProvider } from '@skill-wallet/sw-abi-types';
+import { getSkillwalletAddress, skillWalletExists } from '@api/skillwallet.api';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from '@store/ui-reducer';
+import { Box } from '@mui/system';
+import { CircularProgress, Typography } from '@mui/material';
 
-const Redirect = () => {
-  const skillWalletAddress = getSkillwalletAddress();
-
-  const connectWallet = async () => {
-    const { ethereum } = window;
-    try {
-      await ethereum.request({ method: 'eth_requestAccounts' });
-    } catch (error) {
-      alert(error);
-    }
-  };
+function Redirect(props) {
+  const dispatch = useDispatch();
 
   const getUserID = async (code) => {
     const accessToken = await oauthGetToken(code);
@@ -27,22 +22,28 @@ const Redirect = () => {
   };
 
   const addDiscordIDToSkillWallet = async (discordId) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const skillWalletAddress = await getSkillwalletAddress();
 
-    const contract = new ethers.Contract(skillWalletAddress, SkillWalletABI, signer);
-    console.log('cntrct: ', contract);
-
-    console.log(discordId);
-    const createTx = await contract.addDiscordIDToSkillWallet(discordId);
-
-    const res = await createTx.wait();
-    const { events } = res;
-    const discordIDAdded = events.find((e) => e.event === 'DiscordIDConnectedToSkillWallet');
-    if (discordIDAdded) {
-      alert(`Congrats, you've connected your SkillWallet to your Discord ID!`);
+    const contract = await Web3SkillWalletProvider(skillWalletAddress, {
+      event: SkillWalletContractEventType.DiscordIDConnectedToSkillWallet,
+    });
+    const response = await contract.addDiscordIDToSkillWallet(discordId);
+    if (response) {
+      dispatch(
+        openSnackbar({
+          message: `Congrats, you've connected your SkillWallet to your Discord ID!`,
+          severity: 'success',
+          duration: 15000,
+        })
+      );
     } else {
-      alert('Please try again!');
+      dispatch(
+        openSnackbar({
+          message: `Please try again.`,
+          severity: 'error',
+          duration: 15000,
+        })
+      );
     }
   };
 
@@ -50,11 +51,28 @@ const Redirect = () => {
     // await changeNetwork();
     const userID = await getUserID(code);
     if (userID) {
-      await connectWallet();
-      console.log(userID);
-      await addDiscordIDToSkillWallet(userID);
+      const exists = await skillWalletExists();
+      console.log(exists);
+      if (exists) {
+        console.log(userID);
+        await addDiscordIDToSkillWallet(userID);
+      } else {
+        dispatch(
+          openSnackbar({
+            message: `SkillWallet not found. Make sure the correct address is selected.`,
+            severity: 'error',
+            duration: 15000,
+          })
+        );
+      }
     } else {
-      alert('Please authetnicate with Discord again!');
+      dispatch(
+        openSnackbar({
+          message: `'Please authetnicate with Discord again!'`,
+          severity: 'error',
+          duration: 15000,
+        })
+      );
     }
   };
 
@@ -67,7 +85,12 @@ const Redirect = () => {
     connectSWToDiscord(code);
   }, []);
 
-  return <div />;
-};
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+      <Typography variant="h2">Discord Integration Redirect Page</Typography>
+      <CircularProgress />
+    </Box>
+  );
+}
 
 export default Redirect;
