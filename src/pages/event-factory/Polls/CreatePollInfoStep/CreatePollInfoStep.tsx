@@ -1,10 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Box, TextField, Typography } from '@mui/material';
 import { useAppDispatch } from '@store/store.model';
 import { useHistory } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { pxToRem } from '@utils/text-size';
-import { SwButton, SwScrollbar } from 'sw-web-shared';
+import { SwButton } from 'sw-web-shared';
 import './CreatePollInfoStep.scss';
 import { CreatePollData, pollUpdateData } from '@store/Activity/create-poll.reducer';
 import { countWords } from '@utils/helpers';
@@ -16,13 +15,7 @@ const CreatePollInfoStep = () => {
   const history = useHistory();
   const { title, description, duration } = useSelector(CreatePollData);
 
-  const {
-    control,
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     mode: 'onSubmit',
     defaultValues: {
       title,
@@ -39,10 +32,7 @@ const CreatePollInfoStep = () => {
 
   const values = watch();
 
-  console.log(values, 'values');
-
   const onSubmit = async (data: any) => {
-    console.log(data);
     await dispatch(pollUpdateData(data));
     history.push('/partner/event-factory/polls/options');
   };

@@ -1,11 +1,10 @@
-/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Box, Link, Typography } from '@mui/material';
 import { useAppDispatch } from '@store/store.model';
 import { useHistory } from 'react-router-dom';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { pxToRem } from '@utils/text-size';
-import EmojiInputPicker, { hasEmoji, removeEmoji } from '@components/EmojiInputPicker/EmojiInputPicker';
+import EmojiInputPicker, { hasEmoji } from '@components/EmojiInputPicker/EmojiInputPicker';
 import { SwButton } from 'sw-web-shared';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './CreatePollOptionsStep.scss';
@@ -17,7 +16,6 @@ function FormArrayHelperText({ errors, name, children = null, value }) {
 
   const error = errors && errors[key] && errors[key][+index] && errors[key][+index];
   if (error) {
-    console.log(errors);
     let message = '';
     const { type } = error;
     switch (type) {
@@ -60,14 +58,12 @@ const CreatePollOptionsStep = () => {
     },
   });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray<any>({
+  const { fields, append, remove } = useFieldArray<any>({
     control,
     name: 'options',
   });
 
   const values = watch();
-
-  console.log(values, 'values');
 
   const onSubmit = async () => {
     await dispatch(pollUpdateData(values));

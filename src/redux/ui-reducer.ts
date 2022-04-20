@@ -1,5 +1,11 @@
 import { Community } from '@api/community.model';
-import { DiscordMessage, DiscordMessageInput, postDiscordNotification as sendNotification } from '@api/discord.api';
+import {
+  DiscordMessage,
+  DiscordPollInput,
+  MessageEmbed,
+  postDiscordNotification as sendNotification,
+  postDiscordPoll,
+} from '@api/discord.api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const sendDiscordNotification = createAsyncThunk('discord/notification', async (message: DiscordMessage, { dispatch, getState }) => {
@@ -13,18 +19,48 @@ export const sendDiscordNotification = createAsyncThunk('discord/notification', 
 
     const community = state.community.community as Community;
     const { userInfo } = state.auth;
-    const discordMsg = new DiscordMessageInput({
+    const discordMsg = new MessageEmbed({
       author: {
         name: userInfo.nickname,
         image: userInfo.imageUrl,
       },
       message,
       footer: {
-        text: `${community.description}@SkillWallet`,
+        text: `${community.name}@SkillWallet`,
         image: community.image as string,
       },
     });
     return await sendNotification(agreement.discordWebhookUrl, discordMsg);
+  } catch (error) {
+    const message = 'Could not send notification to discord';
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    dispatch(openSnackbar({ message, severity: 'error' }));
+  }
+});
+
+export const sendDiscordPoll = createAsyncThunk('discord/poll', async (input: DiscordPollInput, { dispatch, getState }) => {
+  try {
+    const state = getState() as any;
+    const community = state.community.community as Community;
+    const { userInfo } = state.auth;
+
+    const discordMsg = new MessageEmbed({
+      author: {
+        name: userInfo.nickname,
+        image: userInfo.imageUrl,
+      },
+      message: input.message,
+      footer: {
+        text: `${community.name}@SkillWallet`,
+        image: community.image as string,
+      },
+    });
+    return await postDiscordPoll('https://dev-api.olympics.community/poll', {
+      input: discordMsg,
+      emojis: input.emojis,
+      activitiesContractAddress: input.activitiesContractAddress,
+      activitiesId: input.activitiesId,
+    });
   } catch (error) {
     const message = 'Could not send notification to discord';
     // eslint-disable-next-line @typescript-eslint/no-use-before-define

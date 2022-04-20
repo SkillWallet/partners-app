@@ -39,6 +39,20 @@ export interface DiscordMessageInputField {
   inline?: boolean;
 }
 
+export interface DiscordPollMessage {
+  input: MessageEmbed;
+  emojis: string[];
+  activitiesContractAddress: string;
+  activitiesId: number;
+}
+
+export interface DiscordPollInput {
+  message: DiscordMessage;
+  emojis: string[];
+  activitiesContractAddress: string;
+  activitiesId: number;
+}
+
 export interface DiscordMessage {
   title: string;
   url?: string;
@@ -47,7 +61,12 @@ export interface DiscordMessage {
   fields?: DiscordMessageInputField[];
   image?: string;
 }
-export class DiscordMessageInput {
+
+export enum DiscordMessageType {
+  Notification,
+  Poll,
+}
+export class MessageEmbed {
   author: {
     name: string;
     image: string;
@@ -60,14 +79,14 @@ export class DiscordMessageInput {
     image: string;
   };
 
-  constructor(data: DiscordMessageInput) {
+  constructor(data: MessageEmbed) {
     this.author = data.author;
     this.footer = data.footer;
     this.message = data.message;
   }
 }
 
-export const postDiscordNotification = (webhookUrl: string, input: DiscordMessageInput) => {
+export const postDiscordNotification = (webhookUrl: string, input: MessageEmbed) => {
   const { footer, author, message } = input;
   return axios
     .post(webhookUrl, {
@@ -84,6 +103,28 @@ export const postDiscordNotification = (webhookUrl: string, input: DiscordMessag
           },
         },
       ],
+    })
+    .then((res) => res.data);
+};
+
+export const postDiscordPoll = (webhookUrl: string, { input, emojis, activitiesContractAddress, activitiesId }: DiscordPollMessage) => {
+  const { footer, author, message } = input;
+  return axios
+    .post(webhookUrl, {
+      message: {
+        ...message,
+        author: {
+          name: author.name,
+          icon_url: author.image,
+        },
+        footer: {
+          text: footer.text,
+          icon_url: footer.image,
+        },
+      },
+      emojis,
+      activitiesContractAddress,
+      activitiesId,
     })
     .then((res) => res.data);
 };
