@@ -181,7 +181,7 @@ export const addGroupCall = activitiesThunkProvider(
 );
 
 export const publishPoll = (poll) => {
-  return axios.post(`${environment.discordApiUrl}/poll`, poll).then((res) => res);
+  return axios.post(`${environment.discordBotUrl}/poll`, poll).then((res) => res);
 };
 
 export const addPoll = activitiesThunkProvider(
