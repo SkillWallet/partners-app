@@ -111,7 +111,7 @@ const TaskFinalise = () => {
                           m: 0,
                         }}
                       >
-                        [ Completed ]
+                        Completed
                       </AlertTitle>
                     </Alert>
                   )}
@@ -133,10 +133,11 @@ const TaskFinalise = () => {
                   width: '280px',
                   height: '85px',
                   minHeight: '85px',
-                  marginBottom: '40px',
+                  mb: '20px',
                 }}
+                disabled={selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress}
                 onClick={handleFinalizeClick}
-                label="Approve"
+                label="Finalize"
               />
 
               <SwButton
@@ -150,19 +151,6 @@ const TaskFinalise = () => {
                 disabled
                 label="Decline"
               />
-              {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
-                <SwButton
-                  mode="light"
-                  sx={{
-                    width: '280px',
-                    height: '85px',
-                    minHeight: '85px',
-                    mb: '20px',
-                  }}
-                  onClick={handleFinalizeClick}
-                  label="Finalize"
-                />
-              )}
             </Box>
             <Box
               sx={{

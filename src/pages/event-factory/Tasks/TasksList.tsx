@@ -12,7 +12,6 @@ import './Tasks.scss';
 const TasksList = (props) => {
   const status = useSelector(TasksStatus);
   const refreshStatus = useSelector(TasksRefreshStatus);
-  const userAddress = window.ethereum.selectedAddress.toString().toLowerCase() || '';
 
   const groupedTasks: GroupTask[] = useSelector(FilteredTasks(props.status));
   const Action = (task: Task) => {
@@ -25,7 +24,7 @@ const TasksList = (props) => {
               width: '180px',
               height: '85px',
             }}
-            disabled={task.creator.toLowerCase() === userAddress || refreshStatus === ResultState.Loading}
+            disabled={task.creator.toLowerCase() === window.ethereum.selectedAddress || refreshStatus === ResultState.Loading}
             onClick={() => props.handleTask(props.status, task)}
             label="I’ll do it!"
           />
