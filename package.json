@@ -32,6 +32,7 @@
   "dependencies": {
     "@emotion/react": "~11.7.0",
     "@emotion/styled": "~11.6.0",
+    "@hookform/error-message": "^2.0.0",
     "@metamask/detect-provider": "^1.2.0",
     "@mui/icons-material": "~5.2.1",
     "@mui/lab": "^5.0.0-alpha.76",
@@ -66,7 +67,7 @@
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
-    "@skill-wallet/sw-abi-types": "^0.0.33",
+    "@skill-wallet/sw-abi-types": "^0.0.34",
     "@types/jest": "~26.0.24",
     "@types/node": "~16.11.12",
     "@types/react": "~17.0.37",

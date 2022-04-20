@@ -105,7 +105,7 @@ const generateSkills = (skills: any[] = []) =>
 
 const community = (state) => state.community.community as Community;
 
-const communityRoles = createSelector(community, (c) => {
+export const allRoles = createSelector(community, (c) => {
   return (c.properties?.skills?.roles || []).reduce((prev, curr) => {
     prev = [
       ...prev,
@@ -115,11 +115,11 @@ const communityRoles = createSelector(community, (c) => {
       },
     ];
     return prev;
-  }, []);
+  }, []) as CommunityRole[];
 });
 
 export const getCommunityRoles = (isCoreTeam: boolean) =>
-  createSelector(communityRoles, (roles: CommunityRole[]): any[] => {
+  createSelector(allRoles, (roles: CommunityRole[]): any[] => {
     return roles.filter((curr) => curr.isCoreTeamMember === isCoreTeam);
   });
 

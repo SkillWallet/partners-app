@@ -55,6 +55,7 @@ function App(props) {
     const onSWLogin = async ({ detail }: any) => {
       const isLoggedIn = !!detail;
       const sw = JSON.parse(sessionStorage.getItem('skillWallet') || '{}');
+      console.log('SW: ', sw);
       if (isLoggedIn && sw?.isCoreTeamMember) {
         dispatch(setPartnersAgreementCommunity(sw.partnersAgreementKey));
         dispatch(

@@ -8,13 +8,30 @@ const removeEmojisFromText = (text = '') => {
   return text.replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '');
 };
 
+export const removeEmoji = (text: string) => {
+  const formattedText = text
+    .replace(
+      // eslint-disable-next-line max-len
+      /([#0-9]\u20E3)|[\xA9\xAE\u203C\u2047-\u2049\u2122\u2139\u3030\u303D\u3297\u3299][\uFE00-\uFEFF]?|[\u2190-\u21FF][\uFE00-\uFEFF]?|[\u2300-\u23FF][\uFE00-\uFEFF]?|[\u2460-\u24FF][\uFE00-\uFEFF]?|[\u25A0-\u25FF][\uFE00-\uFEFF]?|[\u2600-\u27BF][\uFE00-\uFEFF]?|[\u2900-\u297F][\uFE00-\uFEFF]?|[\u2B00-\u2BF0][\uFE00-\uFEFF]?|(?:\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDEFF])[\uFE00-\uFEFF]?|[\u20E3]|[\u26A0-\u3000]|\uD83E[\udd00-\uddff]|[\u00A0-\u269F]/g,
+      ''
+    )
+    .trim();
+  return formattedText;
+};
+
+export const hasEmoji = (text: string) => {
+  const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+  const result = regexExp.test(text);
+  return result;
+};
+
 interface EmojiPickerProps extends StandardTextFieldProps {
   emojiButtonProps?: {
     disabled?: boolean;
   };
 }
 
-const EmojiInputPicker = ({ emojiButtonProps, ...inputProps }: EmojiPickerProps) => {
+const EmojiInputPicker = ({ emojiButtonProps, value, onChange, ...inputProps }: EmojiPickerProps) => {
   const textRef = useRef<any>();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -27,7 +44,12 @@ const EmojiInputPicker = ({ emojiButtonProps, ...inputProps }: EmojiPickerProps)
 
   const onSelectEmoji = ({ native }) => {
     if (textRef.current) {
-      textRef.current.value = `${removeEmojisFromText(textRef.current.value).trim()} ${native}`;
+      // textRef.current.value = `${removeEmojisFromText(textRef.current.value).trim()} ${native}`;
+      onChange({
+        ...(value as unknown as any),
+        emoji: native,
+        option: `${removeEmojisFromText((value as unknown as any)?.option).trim()} ${native}`,
+      });
       closeMenu();
     }
   };
@@ -37,6 +59,13 @@ const EmojiInputPicker = ({ emojiButtonProps, ...inputProps }: EmojiPickerProps)
       <TextField
         {...inputProps}
         inputRef={textRef}
+        value={(value as unknown as any)?.option}
+        onChange={(event) => {
+          onChange({
+            ...(value as unknown as any),
+            option: event.target.value,
+          });
+        }}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">

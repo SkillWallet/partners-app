@@ -12,6 +12,7 @@ import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
 import RoleSkills from './RoleSkills';
 import './Roles.scss';
+import EditRole from './EditRole';
 
 const Roles = (props) => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,8 @@ const Roles = (props) => {
 
   const values = watch();
 
+  console.log(values, 'VALUES');
+
   const onSubmit = async (data: typeof values) => {
     const allRoles = community.properties.skills.roles.map((r) => {
       const role = data.roles.find((updatedRole) => updatedRole.id === r.id);
@@ -41,8 +44,20 @@ const Roles = (props) => {
       }
       return r;
     });
-    community.properties.skills.roles = [...allRoles];
-    await dispatch(updatePartnersCommunity(new Community(community)));
+    // community.properties.skills.roles = [...allRoles];
+    await dispatch(
+      updatePartnersCommunity(
+        new Community({
+          ...community,
+          properties: {
+            ...community.properties,
+            skills: {
+              roles: allRoles,
+            },
+          },
+        })
+      )
+    );
   };
 
   const handleDialogClose = () => {
@@ -127,6 +142,7 @@ const Roles = (props) => {
               </Box>
               <Divider sx={{ borderColor: '#707070', height: `calc(100% + ${'40px'})` }} orientation="vertical" />
               <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: '40px' }}>
+                <EditRole control={control} activeRoleIndex={activeRoleIndex} />
                 {roles.length && values.roles?.length ? <RoleSkills control={control} activeRoleIndex={activeRoleIndex} /> : null}
               </Box>
             </Box>

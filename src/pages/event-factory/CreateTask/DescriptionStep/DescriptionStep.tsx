@@ -17,10 +17,10 @@ import {
   activityUpdateTaskStatus,
 } from '@store/Activity/create-task.reducer';
 import './DescriptionStep.scss';
-import { sendDiscordNotificaiton } from '@api/discord.api';
 import { openSnackbar } from '@store/ui-reducer';
 import { DiscordWebHookUrl } from '@store/Partner/partner.reducer';
 import { addActivityTask } from '@api/activities.api';
+import { countWords } from '@utils/helpers';
 
 const DescriptionStep = () => {
   const dispatch = useAppDispatch();
@@ -53,19 +53,6 @@ const DescriptionStep = () => {
     );
 
     if (result.meta.requestStatus === 'fulfilled') {
-      if (webhookUrl) {
-        try {
-          await sendDiscordNotificaiton(webhookUrl, { name: values.title, role, description: values.description });
-        } catch (error) {
-          dispatch(
-            openSnackbar({
-              message: 'Failed to send discord message.',
-              severity: 'error',
-              duration: 5000,
-            })
-          );
-        }
-      }
       history.push('/partner/event-factory/create-task-success');
     }
   };
@@ -101,6 +88,12 @@ const DescriptionStep = () => {
             <Controller
               name="title"
               control={control}
+              rules={{
+                required: true,
+                validate: {
+                  maxWords: (v: string) => countWords(v) <= 6,
+                },
+              }}
               render={({ field: { name, value, onChange } }) => {
                 return (
                   <TextField
@@ -114,7 +107,7 @@ const DescriptionStep = () => {
                     color="primary"
                     helperText={
                       <Typography color="primary" align="right" component="span" variant="body2">
-                        {20 - (value?.length || 0)} Words left
+                        {6 - countWords(value)} Words left
                       </Typography>
                     }
                   />

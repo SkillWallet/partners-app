@@ -10,10 +10,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { SwCalendarPicker } from '@components/Fields';
 import { pxToRem } from '@utils/text-size';
 import { generateTimeSlots } from '@utils/helpers';
-import { ActivityGroupCallData } from '@store/Activity/group-call.reducer';
+import { ActivityGroupCallData, activityUpdateGroupCallData } from '@store/Activity/group-call.reducer';
 import { format, isEqual } from 'date-fns';
 import './CalendarStep.scss';
-import EmojiInputPicker from '@components/EmojiInputPicker/EmojiInputPicker';
 
 const CalendarStep = () => {
   const dispatch = useAppDispatch();
@@ -36,10 +35,9 @@ const CalendarStep = () => {
   });
   const values = watch();
 
-  console.log(values, 'values');
-
-  const onSubmit = async (data: any) => {
-    history.push('/partner/event-factory/create-task-success');
+  const onSubmit = async () => {
+    dispatch(activityUpdateGroupCallData(values));
+    history.push('/partner/event-factory/group-call/info');
   };
 
   return (
@@ -51,7 +49,7 @@ const CalendarStep = () => {
         Lorem ipsum dolor sit amet, consetetur
       </Typography>
       <form className="sw-calendar-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <Box sx={{ display: 'flex', flex: 1, mb: pxToRem(40) }}>
+        <Box sx={{ display: 'flex', flex: 1 }}>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', mr: pxToRem(65) }}>
             <Box
               sx={{
@@ -61,11 +59,6 @@ const CalendarStep = () => {
                 justifyContent: 'center',
               }}
             >
-              <div className="sw-form-field">
-                <div className="sw-form-field-content">
-                  <EmojiInputPicker placeholder="test" autoFocus required color="primary" />
-                </div>
-              </div>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <div className="sw-form-field">
                   <div className="sw-form-field-content">
@@ -77,8 +70,12 @@ const CalendarStep = () => {
           </Box>
           <Divider sx={{ height: `calc(100% + ${pxToRem(40)})`, borderColor: '#707070' }} orientation="vertical" />
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: pxToRem(65) }}>
-            <Typography sx={{ height: '20px', margin: `0 auto ${pxToRem(20)} auto` }} color="primary.main" variant="h2" textAlign="center">
-              {values.startDate && format(new Date(values.startDate), 'PPPP')}
+            <Typography
+              sx={{ height: '20px', margin: `0 auto ${pxToRem(20)} auto`, fontSize: '25px' }}
+              color="primary.main"
+              textAlign="center"
+            >
+              {values.startDate ? format(new Date(values.startDate), 'PPPP') : 'Select date'}
             </Typography>
             <SwScrollbar
               sx={{
@@ -95,7 +92,11 @@ const CalendarStep = () => {
                       control={control}
                       render={({ field: { value, onChange } }) => {
                         return (
-                          <ListItemButton selected={isEqual(new Date(value), slot)} onClick={() => onChange(slot)}>
+                          <ListItemButton
+                            disabled={!values.startDate}
+                            selected={isEqual(new Date(!!value ? value : startTime), slot)}
+                            onClick={() => onChange(slot)}
+                          >
                             <ListItemText primary={format(slot, 'hh:mm a')} />
                           </ListItemButton>
                         );
@@ -108,10 +109,7 @@ const CalendarStep = () => {
           </Box>
         </Box>
 
-        <div
-          className="bottom-action"
-          style={{ marginBottom: pxToRem(40), marginTop: pxToRem(40), display: 'flex', justifyContent: 'flex-end' }}
-        >
+        <div className="bottom-action" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <SwButton
             sx={{
               width: pxToRem(290),

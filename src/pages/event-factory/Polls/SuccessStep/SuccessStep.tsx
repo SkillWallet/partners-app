@@ -27,7 +27,7 @@ const SuccessStep = () => {
           }}
         >
           <Typography align="center" color="primary.main" variant="h2" component="div">
-            Success! Your Community call has been created and deployed on the Blockchain 🎉
+            Success! Your Community Poll has been created and deployed on the Blockchain 🎉
           </Typography>
           <Typography align="center" color="primary.main" variant="h2" component="div">
             Now just share it with your [Team/Community] to get things started!
@@ -39,11 +39,11 @@ const SuccessStep = () => {
               my: '40px',
             }}
             component={Link}
-            to="/partner/dashboard/core-team/tasks"
+            to="/partner/dashboard/core-team/polls"
             size="small"
             color="primary"
           >
-            See all Community Calls
+            See all Community Polls
           </Button>
           {/* 
           <SwButton

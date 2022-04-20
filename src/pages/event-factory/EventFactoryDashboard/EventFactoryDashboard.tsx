@@ -15,11 +15,9 @@ const EventDashboardCards = [
   {
     icon: EditIcon,
     title: 'Open Task',
-    description: `Lorem Ipsum is simply dummy text of the printing
-     and typesetting industry. Lorem Ipsum has been the industry's
-      standard dummy text ever since the 1500s, when an unknown
-       printer took a galley of type and scrambled it to make
-        a type specimen book.`,
+    description: `Customizable format for a Task about anything
+    community-related. Can be assigned to Core Team or Community
+     Members. Lives & gets tracked on the Blockchain.`,
     action: (
       <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/create-task">
         Open Task
@@ -29,11 +27,10 @@ const EventDashboardCards = [
   {
     icon: VideoIcon,
     title: 'Group Calls',
-    description: `Lorem Ipsum is simply dummy text of the printing
-    and typesetting industry. Lorem Ipsum has been the industry's
-     standard dummy text ever since the 1500s, when an unknown
-      printer took a galley of type and scrambled it to make
-       a type specimen book.`,
+    description: `Create a Community call for your Discord
+     Server, and deploy it as a trackable Blockchain event.
+      Assign it to a specific role, or all members of the
+       community - and customize its duration!`,
     action: (
       <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/group-call">
         Group Call
@@ -43,13 +40,12 @@ const EventDashboardCards = [
   {
     icon: GraphIcon,
     title: 'Polls & Proposals',
-    description: `Lorem Ipsum is simply dummy text of the printing
-    and typesetting industry. Lorem Ipsum has been the industry's
-     standard dummy text ever since the 1500s, when an unknown
-      printer took a galley of type and scrambled it to make
-       a type specimen book.`,
+    description: `Fair, Role-based Governance decision
+     making - based on members roles & reputation. Polls & Proposals 
+     done right. Directly on Discord, with Emojis - and reflected
+      on-chain 🙂  `,
     action: (
-      <SwButton mode="light" disabled sx={{ height: '70px' }} component={Link} to="/partner/dashboard">
+      <SwButton mode="light" sx={{ height: '70px' }} component={Link} to="/partner/event-factory/polls">
         Polls & Proposals
       </SwButton>
     ),

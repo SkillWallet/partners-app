@@ -5,6 +5,13 @@ export interface CommunityRoleSkill {
   [key: string]: any;
 }
 
+interface OldCommunity {
+  skills: OldCommunityRoles[];
+}
+interface OldCommunityRoles extends Omit<CommunityRole, 'id'> {
+  credits: number;
+}
+
 export interface CommunityRole {
   id: number;
   roleName: string;
@@ -35,6 +42,42 @@ export class Community extends BaseNFTModel<CommunityProperties> {
   constructor(data: Community = {} as Community) {
     super(data);
     this.properties = new CommunityProperties(data.properties);
+
+    if ((data as unknown as OldCommunity).skills) {
+      this.properties.skills = (data as unknown as OldCommunity).skills as unknown as typeof this.properties.skills;
+
+      /* Sort by  isCoreTeamMember=false so that community roles are first 
+         to make use of index as Id
+
+          Example of old roles:
+          [
+            {
+              credits: 20,
+              roleName: 'Role 1,
+              isCoreTeamMember: false,
+            }
+          ]
+
+          becomes:
+          [
+            {
+              id: 1,
+              roleName: 'Role 1,
+              isCoreTeamMember: false,
+            }
+          ]
+      
+      */
+      this.properties.skills.roles = this.properties.skills.roles
+        .sort((a, b) => (a.isCoreTeamMember === b.isCoreTeamMember ? 0 : a.isCoreTeamMember ? 1 : -1))
+        .map((role, index) => {
+          delete (role as unknown as OldCommunityRoles).credits;
+          return {
+            ...role,
+            id: index + 1,
+          };
+        });
+    }
   }
 }
 
