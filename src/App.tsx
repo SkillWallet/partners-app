@@ -88,6 +88,7 @@ function App(props) {
   }, [dispatch, history, location.pathname, location.state?.from]);
 
   const isIntegrateFlow = location?.pathname?.includes('integrate');
+  const isRedirect = location?.pathname?.includes('redirect');
   const hideDashboard = !environment.hideDashboard || environment.hideDashboard === 'true';
 
   return (
@@ -98,7 +99,7 @@ function App(props) {
         <div className="connect-wallet-container">
           <sw-auth
             partner-key={environment.partnersKey}
-            hide-button={isLoading || isIntegrateFlow}
+            hide-button={isLoading || isIntegrateFlow || isRedirect}
             disable-create-new-user={!isIntegrateFlow}
             use-dev="true"
           />
