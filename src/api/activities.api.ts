@@ -110,7 +110,7 @@ export const takeActivityTask = activitiesThunkProvider(
 export const finalizeActivityTask = activitiesThunkProvider(
   {
     type: 'partner/activities/task/finalize',
-    event: ActivitiesContractEventType.ActivityFinalized,
+    event: ActivitiesContractEventType.TaskFinalized,
   },
   contractAddress,
   async (contract, requestData) => {

@@ -23,7 +23,11 @@ const TasksList = (props) => {
               width: '180px',
               height: '85px',
             }}
+<<<<<<< Updated upstream
             disabled={refreshStatus === ResultState.Loading}
+=======
+            disabled={task.creator.toLowerCase() === window.ethereum.selectedAddress || refreshStatus === ResultState.Loading}
+>>>>>>> Stashed changes
             onClick={() => props.handleTask(props.status, task)}
             label="I’ll do it!"
           />
