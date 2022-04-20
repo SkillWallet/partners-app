@@ -85,19 +85,58 @@ export const DefaultRoles: CommunityRole[] = [
   {
     id: 4,
     roleName: 'Core Team',
-    skills: [],
+    skills: [
+      {
+        name: 'Tech',
+      },
+      {
+        name: 'Product',
+      },
+      {
+        name: 'Socials & Growth',
+      },
+      {
+        name: 'Partnerships',
+      },
+    ],
     isCoreTeamMember: true,
   },
   {
     id: 5,
     roleName: 'Advisor',
-    skills: [],
+    skills: [
+      {
+        name: 'General Advise & Support',
+      },
+      {
+        name: 'Strategy',
+      },
+      {
+        name: 'Introductions',
+      },
+      {
+        name: 'Sponsoring',
+      },
+    ],
     isCoreTeamMember: true,
   },
   {
     id: 6,
     roleName: 'Investor',
-    skills: [],
+    skills: [
+      {
+        name: 'Product',
+      },
+      {
+        name: 'Growth',
+      },
+      {
+        name: 'Partner Intros',
+      },
+      {
+        name: 'Tech',
+      },
+    ],
     isCoreTeamMember: true,
   },
 ];
