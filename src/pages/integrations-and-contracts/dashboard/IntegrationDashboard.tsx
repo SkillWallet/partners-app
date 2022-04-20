@@ -1,5 +1,5 @@
 import Card from '@mui/material/Card';
-import { Avatar, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Avatar, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material';
 
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
@@ -57,11 +57,11 @@ const IntegrationDashboard = () => {
   }, [dispatch]);
 
   return (
-    <div className="sw-integration-dashboard">
-      <Typography textAlign="center" variant="h1">
+    <Container maxWidth="lg" className="sw-integration-dashboard">
+      <Typography color="primary" textAlign="center" variant="h1">
         Integrations & Contracts
       </Typography>
-      <Typography textAlign="center" sx={{ my: 2 }} variant="h2">
+      <Typography color="primary" textAlign="center" sx={{ my: 2 }} variant="h2">
         The Operating System for your DAO
       </Typography>
       <div
@@ -134,7 +134,7 @@ const IntegrationDashboard = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 

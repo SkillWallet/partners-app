@@ -24,7 +24,9 @@
 
     &:hover, &.Mui-selected {
       background-color: #000;
-      color: #fff;
+      .MuiTypography-root {
+        color: #fff;
+      }
     }
 
     .MuiTypography-root {

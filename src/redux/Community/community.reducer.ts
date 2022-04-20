@@ -103,9 +103,9 @@ const generateSkills = (skills: any[] = []) =>
     };
   });
 
-const community = (state) => state.community.community as Community;
+export const CommunityData = (state) => state.community.community as Community;
 
-export const allRoles = createSelector(community, (c) => {
+export const allRoles = createSelector(CommunityData, (c) => {
   return (c.properties?.skills?.roles || []).reduce((prev, curr) => {
     prev = [
       ...prev,

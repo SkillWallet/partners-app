@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, CircularProgress, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Typography } from '@mui/material';
 import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
@@ -40,7 +40,8 @@ const TaskDetails = () => {
   };
 
   return (
-    <Box
+    <Container
+      maxWidth="md"
       className="sw-tasks-base-container"
       sx={{
         height: '100%',
@@ -184,7 +185,7 @@ const TaskDetails = () => {
           </Box>
         </SwScrollbar>
       )}
-    </Box>
+    </Container>
   );
 };
 

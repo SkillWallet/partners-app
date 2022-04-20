@@ -30,4 +30,6 @@ export const authSlice = createSlice({
 
 export const { setAuthenticated, setUserAddress, resetAuthState } = authSlice.actions;
 
+export const UserInfo = (state) => state.auth.userInfo as any;
+
 export default authSlice.reducer;

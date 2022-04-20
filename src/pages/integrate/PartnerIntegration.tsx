@@ -201,7 +201,7 @@ const PartnerIntegration = () => {
         <SwLayout
           hideTop
           disableGutters
-          scrollbarStyles={{ margin: '24px', width: 'auto', border: '1px solid', height: 'calc(100% - 48px)' }}
+          scrollbarStyles={{ margin: '24px', width: 'auto', border: '1px solid #000', height: 'calc(100% - 48px)' }}
           top={null}
           drawer={
             <SwSidebar
@@ -217,14 +217,14 @@ const PartnerIntegration = () => {
               <Box
                 sx={{
                   backgroundColor: 'primary.main',
-                  height: 'calc(100% - 40px)',
+                  height: '100%',
                   width: 'auto',
                   p: '20px',
                 }}
               >
                 <Box
                   sx={{
-                    height: 'calc(100% - 40px)',
+                    height: 'calc(100%)',
                     p: '20px',
                     borderWidth: '1px',
                     borderStyle: 'solid',

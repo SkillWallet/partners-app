@@ -82,6 +82,9 @@ export const SwTheme = createTheme({
   },
   typography: {
     fontSize: 16,
+    allVariants: {
+      color: palette.primary.main,
+    },
     // htmlFontSize: 16,
     // // @ts-ignore
     // pxToRem: (size: number) => {
@@ -127,7 +130,7 @@ export const SwTheme = createTheme({
     xxl: {
       fontSize: '60px',
     },
-    fontFamily: ['Josefin Sans', ' sans-serif'].join(','),
+    fontFamily: ['Josefin Sans', 'sans-serif'].join(','),
   },
 });
 

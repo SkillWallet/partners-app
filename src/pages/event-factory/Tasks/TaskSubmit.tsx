@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, CircularProgress, TextField, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress, Container, TextField, Typography } from '@mui/material';
 import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
@@ -35,7 +35,7 @@ const TaskSubmit = () => {
   }, [dispatch, taskActivityId]);
 
   return (
-    <>
+    <Container maxWidth="md" sx={{ flexGrow: 1 }}>
       <SuccessDialog
         handleClose={handleDialogClose}
         open={status === ResultState.Success}
@@ -194,7 +194,7 @@ const TaskSubmit = () => {
           </>
         )}
       </Box>
-    </>
+    </Container>
   );
 };
 

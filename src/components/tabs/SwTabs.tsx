@@ -2,9 +2,9 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import './tabs.scss';
-import { SwScrollbar } from 'sw-web-shared';
 import { Typography } from '@mui/material';
+import { pxToRem } from '@utils/text-size';
+import './tabs.scss';
 
 function TabPanel(props) {
   const { children, value, index, sx, ...other } = props;
@@ -17,7 +17,17 @@ function TabPanel(props) {
       aria-labelledby={`member-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: '10px 30px 30px 30px', ...(sx || {}) }}>{children}</Box>}
+      {value === index && (
+        <Box
+          sx={{
+            p: '10px 30px 0 30px',
+            height: 'calc(100%)',
+            ...(sx || {}),
+          }}
+        >
+          {children}
+        </Box>
+      )}
     </div>
   );
 }
@@ -32,7 +42,7 @@ export default function SwTabs({ tabs, selectedTabIndex = 0, selectedTab = (e, v
 
   return (
     <Box className="sw-tabs" sx={{ width: '100%' }}>
-      <Box sx={{ mb: '24px' }}>
+      <Box>
         <Tabs
           variant="fullWidth"
           value={value}
@@ -42,7 +52,7 @@ export default function SwTabs({ tabs, selectedTabIndex = 0, selectedTab = (e, v
               display: 'none',
             },
             '.MuiButtonBase-root': {
-              height: '65px',
+              height: pxToRem(90),
               borderColor: 'primary.main',
               color: 'primary.main',
               textTransform: 'inherit',
@@ -58,7 +68,7 @@ export default function SwTabs({ tabs, selectedTabIndex = 0, selectedTab = (e, v
           ))}
         </Tabs>
       </Box>
-      <SwScrollbar
+      {/* <SwScrollbar
         sx={{
           height: 'calc(100% - 120px)',
           flex: 1,
@@ -67,31 +77,42 @@ export default function SwTabs({ tabs, selectedTabIndex = 0, selectedTab = (e, v
           ...scrollbarStyles,
         }}
       >
-        {tabs.map(({ props, component, label, hideTop }, index) => {
-          const Component = component;
-          return (
-            <TabPanel sx={tabPanelStyles} key={index} value={value} index={index}>
-              {!hideTop && (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                  }}
+        
+      </SwScrollbar> */}
+      {tabs.map(({ props, component, label, hideTop }, index) => {
+        const Component = component;
+        return (
+          <TabPanel sx={tabPanelStyles} key={index} value={value} index={index}>
+            {!hideTop && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                }}
+              >
+                <Typography
+                  sx={{ width: '100%', maxWidth: pxToRem(240), my: 2, fontSize: pxToRem(21) }}
+                  color="primary.main"
+                  textAlign="center"
+                  component="div"
                 >
-                  <Typography sx={{ my: 2 }} component="div" variant="h2">
-                    {label}
-                  </Typography>
-                  <Typography sx={{ my: 2 }} component="div" variant="h2">
-                    Total - {props?.total || 0}
-                  </Typography>
-                </div>
-              )}
+                  {label}
+                </Typography>
+                <Typography
+                  sx={{ width: '100%', maxWidth: pxToRem(240), my: 2, mb: pxToRem(20), fontSize: pxToRem(21) }}
+                  color="primary.main"
+                  textAlign="center"
+                  component="div"
+                >
+                  Total - {props?.total || 0}
+                </Typography>
+              </div>
+            )}
 
-              <Component {...props} />
-            </TabPanel>
-          );
-        })}
-      </SwScrollbar>
+            <Component {...props} />
+          </TabPanel>
+        );
+      })}
     </Box>
   );
 }

@@ -1,19 +1,12 @@
-import { BottomNavigation, Box, CircularProgress, Container, Paper, Typography } from '@mui/material';
+import { Box, CircularProgress, Container, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { resetActivityTaskState } from '@store/Activity/create-task.reducer';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
-import SwTabs from '@components/tabs/SwTabs';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  TasksRefreshStatus,
-  TasksSelectedTab,
-  TasksStatus,
-  tasksUpdateSelectedTab,
-  tasksUpdateStatus,
-} from '@store/Activity/tasks.reducer';
+import { TasksRefreshStatus, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { pxToRem } from '@utils/text-size';
 import { getAllTasks, takeActivityTask } from '@api/activities.api';
 import { Task, TaskTypes } from '@store/model';
@@ -25,11 +18,9 @@ import { ResultState } from '@store/result-status';
 import TasksList from './TasksList';
 import './Tasks.scss';
 
-const Tasks = () => {
-  const [tabs, setTabs] = useState([]);
+const YourTasks = () => {
   const [message, setLoadingMessage] = useState('');
   const dispatch = useAppDispatch();
-  const selectedTabIndex = useSelector(TasksSelectedTab);
   const status = useSelector(TasksStatus);
   const refreshStatus = useSelector(TasksRefreshStatus);
 
@@ -42,55 +33,18 @@ const Tasks = () => {
     console.log('Previous route from Event Factory Tasks');
   }, [dispatch]);
 
+  const handleTask = async (s: TaskTypes, task: Task) => {
+    switch (s) {
+      case TaskTypes.Open:
+        setLoadingMessage('Claiming task...');
+        await dispatch(takeActivityTask(task));
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    const handleTask = async (s: TaskTypes, task: Task) => {
-      switch (s) {
-        case TaskTypes.Open:
-          setLoadingMessage('Claiming task...');
-          await dispatch(takeActivityTask(task));
-          break;
-        default:
-          break;
-      }
-    };
-    setTabs([
-      {
-        label: 'Open Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Open,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      {
-        label: 'Ongoing Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Ongoing,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      {
-        label: 'Closed Tasks',
-        hideTop: true,
-        props: {
-          status: TaskTypes.Closed,
-          handleTask,
-        },
-        component: TasksList,
-      },
-      // {
-      //   label: 'Your Tasks',
-      //   hideTop: true,
-      //   props: {
-      //     status: TaskTypes.MyTasks,
-      //     handleTask,
-      //   },
-      //   component: TasksList,
-      // },
-    ]);
     dispatch(getAllTasks(ActivityTypes.CoreTeamTask));
     return () => {
       dispatch(resetActivityTaskState());
@@ -99,10 +53,11 @@ const Tasks = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: pxToRem(20) }}>
-      <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
-      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', height: pxToRem(60) }}>
-        <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gridGap: '10px' }}>
+          <Typography color="primary.main" fontSize={pxToRem(50)} component="div">
+            Your Tasks
+          </Typography>
           {refreshStatus === ResultState.Loading && (
             <div className="refreshing-loading-spinner">
               <CircularProgress
@@ -138,6 +93,19 @@ const Tasks = () => {
           />
         </div>
       </Box>
+
+      <Typography
+        sx={{
+          mb: pxToRem(50),
+        }}
+        color="primary.main"
+        fontSize={pxToRem(25)}
+        component="div"
+      >
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+      </Typography>
+      <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
+      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />
       <div className="sw-tasks-base-container">
         <Box
           sx={{
@@ -147,24 +115,11 @@ const Tasks = () => {
           }}
           className="sw-box"
         >
-          <SwTabs
-            tabs={tabs}
-            selectedTabIndex={selectedTabIndex}
-            selectedTab={(selectedIndex: number) => {
-              dispatch(tasksUpdateSelectedTab(selectedIndex));
-            }}
-            tabPanelStyles={{
-              p: 0,
-            }}
-            scrollbarStyles={{
-              border: '0px',
-              p: 0,
-            }}
-          />
+          <TasksList status={TaskTypes.MyTasks} handleTask={handleTask} />
         </Box>
       </div>
     </Container>
   );
 };
 
-export default Tasks;
+export default YourTasks;

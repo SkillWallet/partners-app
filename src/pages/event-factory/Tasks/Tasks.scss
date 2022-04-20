@@ -25,28 +25,8 @@
     margin-bottom: 20px;
   }
 
-  .MuiFormControl-root.submit-descr {
-    flex: 1;
-    .MuiFormHelperText-root {
-      text-align: end;
-      margin-right: 0;
-    }
-
-    textarea {
-      height: 200px !important;
-    }
-
-    .MuiInputBase-root {
-      color: $primary-color;
-      input {
-        text-align: center !important;
-      }
-
-      &::before,
-      &::after {
-        border-bottom: 2px solid $primary-color;
-      }
-    }
+  .MuiInputBase-root {
+    color: #000;
   }
 
   .task-group {
@@ -65,15 +45,15 @@
     margin-top: 30px;
   }
 }
-.refreshing-loading-spinner {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  text-align: center;
-}
+// .refreshing-loading-spinner {
+//   position: absolute;
+//   left: 10px;
+//   bottom: 10px;
+//   text-align: center;
+// }
 
-.create-task-btn {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-}
+// .create-task-btn {
+//   position: absolute;
+//   right: 10px;
+//   bottom: 10px;
+// }

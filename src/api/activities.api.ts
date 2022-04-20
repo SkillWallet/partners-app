@@ -123,6 +123,22 @@ export const finalizeActivityTask = activitiesThunkProvider(
   }
 );
 
+export const submitActivityTask = activitiesThunkProvider(
+  {
+    type: 'partner/activities/task/finalize',
+    event: ActivitiesContractEventType.ActivityFinalized,
+  },
+  contractAddress,
+  async (contract, requestData) => {
+    await contract.finilizeTask(+requestData.activityId);
+    return {
+      ...requestData,
+      taker: window.ethereum.selectedAddress,
+      status: TaskStatus.Submitted,
+    };
+  }
+);
+
 export const addGroupCall = activitiesThunkProvider(
   {
     type: 'partner/activities/group-call/add',
