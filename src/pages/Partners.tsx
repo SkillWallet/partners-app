@@ -25,6 +25,7 @@ import Tasks from './event-factory/Tasks/Tasks';
 import YourTasks from './event-factory/Tasks/YourTasks';
 import TaskDetails from './event-factory/Tasks/TaskDetails';
 import TaskSubmit from './event-factory/Tasks/TaskSubmit';
+import TaskFinalise from './event-factory/Tasks/TaskFinalise';
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
@@ -81,6 +82,7 @@ const Partners = (props) => {
           <Route exact path="/partner/tasks" component={Tasks} {...props} />
           <Route exact path="/partner/your-tasks" component={YourTasks} {...props} />
           <Route exact path="/partner/tasks/:taskActivityId" component={TaskDetails} {...props} />
+          <Route exact path="/partner/tasks/finalise/:taskActivityId" component={TaskFinalise} {...props} />
           <Route path="/partner/tasks/:taskActivityId/submit" component={TaskSubmit} {...props} />
 
           <Route component={NotFound} />

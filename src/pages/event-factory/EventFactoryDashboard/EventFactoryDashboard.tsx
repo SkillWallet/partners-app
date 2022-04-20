@@ -1,5 +1,5 @@
 import Card from '@mui/material/Card';
-import { Avatar, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Avatar, CardContent, CardHeader, Container, Divider, Typography } from '@mui/material';
 
 import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
@@ -61,7 +61,7 @@ const EventFactoryDashboard = () => {
   }, [dispatch]);
 
   return (
-    <div className="sw-integration-dashboard">
+    <Container maxWidth="lg" className="sw-integration-dashboard">
       <Typography textAlign="center" variant="h1">
         Welcome to your Events Factory
       </Typography>
@@ -141,7 +141,7 @@ const EventFactoryDashboard = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 
