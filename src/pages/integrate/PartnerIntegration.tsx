@@ -52,8 +52,6 @@ const PartnerIntegration = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    getValues,
-    reset,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
