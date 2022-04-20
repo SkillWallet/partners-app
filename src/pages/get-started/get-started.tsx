@@ -20,7 +20,7 @@ const GetStarted = () => {
             <img src={logoBlack} className="new-logo-img" alt="skillwallet logo" />
           </Box>
 
-          <Typography component="div" sx={{ ml: '32px', mt: '40px' }} fontWeight="bold" align="left" variant="h1" color="text.primary">
+          <Typography color="primary" component="div" sx={{ ml: '32px', mt: '40px' }} fontWeight="bold" align="left" variant="h1">
             Welcome, Partner
           </Typography>
         </Box>

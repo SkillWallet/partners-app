@@ -11,19 +11,19 @@ html {
   }
 }
 
-// html {
-//   font-size: 100%;
+html {
+  font-size: 100%;
 
-//   @media only screen and (max-width: 1920px) {
-//     font-size: 75%;
-//   }
+  // @media only screen and (max-width: 1920px) {
+  //   font-size: 75%;
+  // }
   // @media only screen and (max-width: 1280px) {
   //   font-size: 62.8%;
   // }
   // @media (max-width: 1199px) {
   //   font-size: 50%;
   // }
-// }
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -57,7 +57,7 @@ code {
 }
 
 .connect-wallet-container {
-  top: 55px;
+  top: 45px;
   right: 60px;
   height: 64px;
   position: absolute;

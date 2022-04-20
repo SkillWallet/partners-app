@@ -82,6 +82,9 @@ export const SwTheme = createTheme({
   },
   typography: {
     fontSize: 16,
+    allVariants: {
+      color: palette.primary.main,
+    },
     // htmlFontSize: 16,
     // // @ts-ignore
     // pxToRem: (size: number) => {

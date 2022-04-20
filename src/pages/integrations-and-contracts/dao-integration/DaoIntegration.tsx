@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Typography, TextField } from '@mui/material';
+import { Typography, TextField, Container } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
 import { SwButton } from 'sw-web-shared';
@@ -85,23 +85,23 @@ const DaoIntegration = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <Container maxWidth="md" sx={{ flexGrow: 1 }}>
       <LoadingDialog open={status === ResultState.Updating} message="Adding dao url..." />
       <AlertDialog handleClose={handleClose} open={open} />
       <div className="sw-data-integration">
-        <Typography sx={{ my: 2 }} component="div" variant="h1">
+        <Typography color="primary" sx={{ my: 2 }} component="div" variant="h1">
           Your SkillWallet Auth
         </Typography>
-        <Typography sx={{ mt: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mt: 2 }} component="div" variant="h3">
           This is where your DAO lives. Add the URL where you’ll be integrating
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           SkillWallet’s Decentralized Authentication System using your Partner Key.
         </Typography>
 
         <div className="sw-dao-form">
           <div className="sw-dao-url">
-            <Typography component="div" variant="h3">
+            <Typography color="primary" component="div" variant="h3">
               Your URL
             </Typography>
             <TextField
@@ -140,7 +140,7 @@ const DaoIntegration = () => {
           </SwButton>
         </div>
       </div>
-    </>
+    </Container>
   );
 };
 

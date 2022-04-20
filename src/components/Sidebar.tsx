@@ -134,7 +134,7 @@ export default function SidebarDrawer({ children }) {
         sx={{
           width: pxToRem(drawerWidth),
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { backgroundColor: '#000', border: '0', width: pxToRem(drawerWidth), boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { backgroundColor: '#000', border: '0', width: pxToRem(drawerWidth) },
         }}
       >
         {/* <div className="sw-user-info">
@@ -162,7 +162,7 @@ export default function SidebarDrawer({ children }) {
           <List
             sx={{
               width: '100%',
-              mt: pxToRem(84),
+              mt: pxToRem(0),
               '.main-menu-item:not(:first-child)': {
                 marginTop: pxToRem(20),
               },
@@ -313,10 +313,10 @@ export default function SidebarDrawer({ children }) {
       >
         <Box
           sx={{
-            mx: pxToRem(50),
-            my: pxToRem(40),
-            width: `calc(100% - ${pxToRem(102)})`,
-            height: `calc(100% - ${pxToRem(82)})`,
+            mx: pxToRem(24),
+            my: pxToRem(24),
+            width: `calc(100% - ${pxToRem(50)})`,
+            height: `calc(100% - ${pxToRem(50)})`,
             border: '1px solid #000',
             position: 'relative',
             overflow: 'hidden',
@@ -327,7 +327,7 @@ export default function SidebarDrawer({ children }) {
               background: '#FFF',
               border: 0,
             }}
-            elevation={2}
+            elevation={0}
             position="static"
           >
             <Toolbar sx={{ height: `${pxToRem(84)} !important`, justifyContent: 'space-between' }}>

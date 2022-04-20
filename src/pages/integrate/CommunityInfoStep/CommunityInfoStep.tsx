@@ -44,9 +44,9 @@ const CommunityInfoStep = ({ errors, values, control }) => {
       </Typography>
       <div
         className="sw-form-field"
-        style={{
-          height: '80px',
-        }}
+        // style={{
+        //   height: '80px',
+        // }}
       >
         <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
           Name
@@ -102,9 +102,9 @@ const CommunityInfoStep = ({ errors, values, control }) => {
       </div>
       <div
         className="sw-form-field upload-field"
-        style={{
-          height: '80px',
-        }}
+        // style={{
+        //   height: '80px',
+        // }}
       >
         <div>
           <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
@@ -152,9 +152,9 @@ const CommunityInfoStep = ({ errors, values, control }) => {
 
       <div
         className="sw-form-field"
-        style={{
-          height: '145px',
-        }}
+        // style={{
+        //   height: '145px',
+        // }}
       >
         <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
           Description

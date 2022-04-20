@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { SwButton, SwShare } from 'sw-web-shared';
 import { memo, useEffect, useState } from 'react';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Container, Typography } from '@mui/material';
 import { ReactComponent as Member } from '@assets/member-card.svg';
 import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
@@ -37,7 +37,16 @@ const Community = (props) => {
   const shareMessage = `Hey there! We've just deployed ${community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;
 
   return (
-    <>
+    <Container
+      maxWidth="lg"
+      sx={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        overflow: 'hidden',
+      }}
+    >
       <SwShare
         mode="light"
         url={paUrl || 'https://skillwallet.id/'}
@@ -63,67 +72,60 @@ const Community = (props) => {
         onClose={handleShareClose}
       />
       <Box
-        className="sw-community-dashboard"
         sx={{
-          height: '100%',
-          alignItems: 'center',
+          flex: 1,
           display: 'flex',
-          justifyContent: 'space-between',
-          overflow: 'hidden',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
         }}
+      >
+        <Avatar
+          sx={{
+            height: '111px',
+            width: '111px',
+          }}
+          variant="square"
+          src={community?.image as string}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            ml: '21px',
+          }}
+        >
+          <Typography color="primary" variant="h1">
+            {community?.name}
+          </Typography>
+          <Typography color="primary" variant="h2">
+            Community
+          </Typography>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          flex: 1,
+        }}
+        className="sw-box"
       >
         <Box
           sx={{
-            flex: 1,
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
             alignItems: 'center',
-            flexDirection: 'row',
+            justifyContent: 'center',
+            gridGap: '20px',
           }}
         >
-          <Avatar
-            sx={{
-              height: '111px',
-              width: '111px',
-            }}
-            variant="square"
-            src={community?.image as string}
-          />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              ml: '21px',
-            }}
-          >
-            <Typography variant="h1">{community?.name}</Typography>
-            <Typography variant="h2">Community</Typography>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            flex: 1,
-          }}
-          className="sw-box"
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gridGap: '20px',
-            }}
-          >
-            <SwButton mode="light" btnType="large" endIcon={<Member />} label="Members" component={Link} to={`${basePath}/members`} />
-            <SwButton mode="light" btnType="large" endIcon={<Roles />} label="Roles & Skills" component={Link} to={`${basePath}/roles`} />
-            <SwButton mode="light" btnType="large" onClick={() => setOpenShare(true)} endIcon={<Share />} label="Whitelist" />
-          </Box>
+          <SwButton mode="light" btnType="large" endIcon={<Member />} label="Members" component={Link} to={`${basePath}/members`} />
+          <SwButton mode="light" btnType="large" endIcon={<Roles />} label="Roles & Skills" component={Link} to={`${basePath}/roles`} />
+          <SwButton mode="light" btnType="large" onClick={() => setOpenShare(true)} endIcon={<Share />} label="Whitelist" />
         </Box>
       </Box>
-    </>
+    </Container>
   );
 };
 

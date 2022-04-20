@@ -81,7 +81,7 @@ const DescriptionStep = () => {
       <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Creating task..." />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="sw-form-field">
-          <Typography sx={{ mb: '15px' }} align="center" component="div" variant="h4">
+          <Typography color="primary" sx={{ mb: '15px' }} align="center" component="div" variant="h4">
             Last but least, a clear Title to help identity your Task 🙌
           </Typography>
           <div className="sw-form-field-content">
@@ -117,7 +117,7 @@ const DescriptionStep = () => {
           </div>
         </div>
         <div className="sw-form-field">
-          <Typography sx={{ mb: '15px' }} align="center" component="div" variant="h4">
+          <Typography color="primary" sx={{ mb: '15px' }} align="center" component="div" variant="h4">
             And finally, the Description of what needs to get done 😎
           </Typography>
           <div className="sw-form-field-content">

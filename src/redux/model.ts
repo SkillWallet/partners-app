@@ -19,6 +19,7 @@ export interface CurrentStep {
 export enum TaskStatus {
   Created = 0,
   Taken,
+  Submitted,
   Finished,
 }
 

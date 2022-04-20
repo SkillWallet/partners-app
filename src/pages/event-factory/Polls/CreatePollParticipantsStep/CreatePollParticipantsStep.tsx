@@ -183,7 +183,7 @@ const CreatePollParticipantsStep = () => {
                       }}
                       className={value ? 'active-link' : ''}
                     >
-                      <Typography variant="body2">All</Typography>
+                      All
                     </SwButton>
                   );
                 }}

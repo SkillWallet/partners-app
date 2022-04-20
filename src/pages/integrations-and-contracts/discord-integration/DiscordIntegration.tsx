@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Typography, TextField } from '@mui/material';
+import { Typography, TextField, Container } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
 import { SwButton } from 'sw-web-shared';
@@ -51,23 +51,23 @@ const DiscordIntegration = () => {
   }, [input, paCommunity.discordWebhookUrl]);
 
   return (
-    <>
+    <Container maxWidth="md" sx={{ flexGrow: 1 }}>
       <LoadingDialog open={status === ResultState.Updating} message="Adding webhook..." />
       <div className="sw-data-integration">
-        <Typography sx={{ my: 2 }} component="div" variant="h1">
+        <Typography color="primary" sx={{ my: 2 }} component="div" variant="h1">
           Your Community life, directly on your server.
         </Typography>
 
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           Create Tasks and let your community contribute - directly on Discord!
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           SkillWallet's Discord Bot is a bridge between Web2 and Web3 - to track like a wizard, and react like a 🧙
         </Typography>
 
         <div className="sw-dao-form">
           <div className="sw-dao-url">
-            <Typography component="div" variant="h3">
+            <Typography color="primary" component="div" variant="h3">
               Your URL
             </Typography>
             <TextField
@@ -106,23 +106,23 @@ const DiscordIntegration = () => {
           </SwButton>
         </div>
 
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           How to do it:
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           1. Open your Discord Server
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           {`2. Go to Settings --> Integrations --> Webhooks`}
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           3. Create your Webhook, and copy its URL
         </Typography>
-        <Typography sx={{ mb: 2 }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: 2 }} component="div" variant="h3">
           4. Come back here, and Paste that URL 🙂
         </Typography>
       </div>
-    </>
+    </Container>
   );
 };
 

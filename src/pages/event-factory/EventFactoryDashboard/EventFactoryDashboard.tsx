@@ -37,7 +37,7 @@ const EventFactoryDashboard = () => {
         className="sw-box"
       >
         <Box sx={{ pb: 'auto' }}>
-          <Typography textAlign="center" component="div" variant="h1">
+          <Typography color="primary" textAlign="center" component="div" variant="h1">
             Welcome to your Interaction Factory <br />
             <small> Create Tasks, and turn your DAO into a collaboration engine 🚀</small>
           </Typography>

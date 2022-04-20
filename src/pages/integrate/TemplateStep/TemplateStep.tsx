@@ -5,7 +5,7 @@ import { ReactComponent as PaperIcon } from '@assets/paper.svg';
 import { ReactComponent as OpenSourceIcon } from '@assets/open-source.svg';
 import { ReactComponent as LocalProjectIcon } from '@assets/local-project.svg';
 import { ReactComponent as ArtNftIcon } from '@assets/art-nft.svg';
-import { Avatar, Box, Card, CardContent, CardHeader, Divider, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, CardHeader, Divider, TextField, ThemeOptions, Typography, useMediaQuery } from '@mui/material';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { Fragment } from 'react';
 import { makeStyles } from '@mui/styles';
@@ -71,6 +71,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TemplateStep = ({ values, control, errors }) => {
+  const medium = useMediaQuery((theme: ThemeOptions) => theme.breakpoints.down(1300));
+  const small = useMediaQuery((theme: ThemeOptions) => theme.breakpoints.down(1000));
   const classes = useStyles();
   const { fields } = useFieldArray({
     control,
@@ -85,6 +87,16 @@ const TemplateStep = ({ values, control, errors }) => {
       return 'primary.main';
     }
     return 'background.paper';
+  };
+
+  const optionsWidth = () => {
+    if (small) {
+      return '100%';
+    }
+    if (medium) {
+      return `calc(240px * 2 + 20px)`;
+    }
+    return `calc(240px * 3 + 40px)`;
   };
 
   const Template = ({ title, icon, description }, index: number) => {
@@ -102,11 +114,11 @@ const TemplateStep = ({ values, control, errors }) => {
               className={`sw-card ${value === index ? 'active' : ''}`}
               sx={{
                 boxShadow: 3,
-                height: 'calc(290px - 40px)',
-                width: 'calc(240px - 70px)',
+                height: 'calc(290px)',
+                width: 'calc(240px)',
                 mb: '20px',
                 p: '15px 35px',
-                border: '1px solid',
+                border: '1px solid #000',
                 borderColor: 'primary.main',
                 display: 'flex',
                 flexDirection: 'column',
@@ -177,11 +189,11 @@ const TemplateStep = ({ values, control, errors }) => {
               className="sw-card-form"
               sx={{
                 boxShadow: 0,
-                height: 'calc(290px - 40px)',
-                width: 'calc(240px - 15px)',
+                height: 'calc(290px)',
+                width: 'calc(240px)',
                 mb: '20px',
                 p: '15px 0 15px 15px',
-                border: '1px solid',
+                border: '1px solid #000',
                 borderColor: 'text.primary',
                 display: 'flex',
                 flexDirection: 'column',
@@ -225,11 +237,11 @@ const TemplateStep = ({ values, control, errors }) => {
               className="sw-card-form"
               sx={{
                 boxShadow: 0,
-                height: 'calc(290px - 40px)',
-                width: 'calc(240px - 15px)',
+                height: 'calc(290px)',
+                width: 'calc(240px)',
                 mb: '20px',
                 p: '15px 0 15px 15px',
-                border: '1px solid',
+                border: '1px solid #000',
                 borderColor: 'text.primary',
                 display: 'flex',
                 flexDirection: 'column',
@@ -286,10 +298,10 @@ const TemplateStep = ({ values, control, errors }) => {
       </div>
       <Box
         sx={{
-          width: 'calc(240px * 3)',
+          width: optionsWidth(),
           margin: '0 auto',
-          border: '1px solid',
-          height: '102px',
+          border: '1px solid #000',
+          // height: '102px',
           p: '24px',
         }}
       >

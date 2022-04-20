@@ -16,7 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import SwEditToolbar from '@components/datatable/DatatableToolbar';
 import { GetDatatableItems } from '@components/datatable/DatatableHelpers';
 import { useSelector } from 'react-redux';
@@ -216,7 +216,7 @@ const CoreTeamWhitelist = () => {
   const shareMessage = `Hey there! We've just deployed ${community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;
 
   return (
-    <div className="sw-core-team">
+    <Container maxWidth="md" className="sw-core-team">
       <>
         <LoadingDialog open={status === ResultState.Updating} message="Adding addresses..." />
         <AlertDialog open={open} handleClose={handleClose} />
@@ -286,7 +286,7 @@ const CoreTeamWhitelist = () => {
           </SwButton>
         </div>
       </>
-    </div>
+    </Container>
   );
 };
 

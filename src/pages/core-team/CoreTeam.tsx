@@ -1,5 +1,5 @@
 import { SwButton } from 'sw-web-shared';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Container, Typography } from '@mui/material';
 import { ReactComponent as Member } from '@assets/member-card.svg';
 import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
@@ -22,7 +22,8 @@ const CoreTeam = (props) => {
   }, [dispatch]);
 
   return (
-    <Box
+    <Container
+      maxWidth="lg"
       className="sw-core-team-dashboard"
       sx={{
         height: '100%',
@@ -30,7 +31,6 @@ const CoreTeam = (props) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         overflow: 'hidden',
-        p: '12px',
       }}
     >
       <Box
@@ -59,8 +59,12 @@ const CoreTeam = (props) => {
             ml: '21px',
           }}
         >
-          <Typography variant="h1">{community?.name}</Typography>
-          <Typography variant="h2">Core Team</Typography>
+          <Typography color="primary" variant="h1">
+            {community?.name}
+          </Typography>
+          <Typography color="primary" variant="h2">
+            Core Team
+          </Typography>
         </Box>
       </Box>
       <Box
@@ -80,18 +84,18 @@ const CoreTeam = (props) => {
         >
           <SwButton mode="light" btnType="large" endIcon={<Member />} label="Members" component={Link} to={`${basePath}/members`} />
           <SwButton mode="light" btnType="large" endIcon={<Roles />} label="Roles & Skills" component={Link} to={`${basePath}/roles`} />
-          <SwButton
+          {/* <SwButton
             mode="light"
             btnType="large"
             endIcon={<Tasks />}
             label="Team Tasks"
             component={Link}
             to="/partner/dashboard/core-team/tasks"
-          />
+          /> */}
           <SwButton mode="light" btnType="large" endIcon={<Share />} label="Invite & Share" component={Link} to={`${basePath}/whitelist`} />
         </Box>
       </Box>
-    </Box>
+    </Container>
   );
 };
 

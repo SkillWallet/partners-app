@@ -45,6 +45,12 @@
       .sw-label {
         flex: 1;
       }
+
+      &:hover {
+        .MuiTypography-root {
+          color: #FFFFFF;
+        }
+      }
     }
   }
 
