@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { getUser, oauthGetToken } from '@api/discord.api';
 import { SkillWalletABI, SkillWalletContractEventType, Web3SkillWalletProvider } from '@skill-wallet/sw-abi-types';
@@ -13,6 +13,7 @@ import { CircularProgress, Typography } from '@mui/material';
 
 function Redirect(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   const getUserID = async (code) => {
     const accessToken = await oauthGetToken(code);
@@ -33,7 +34,7 @@ function Redirect(props) {
         openSnackbar({
           message: `Congrats, you've connected your SkillWallet to your Discord ID!`,
           severity: 'success',
-          duration: 15000,
+          duration: 30000,
         })
       );
     } else {
@@ -41,10 +42,11 @@ function Redirect(props) {
         openSnackbar({
           message: `Please try again.`,
           severity: 'error',
-          duration: 15000,
+          duration: 30000,
         })
       );
     }
+    setLoading(false);
   };
 
   const connectSWToDiscord = async (code) => {
@@ -57,20 +59,22 @@ function Redirect(props) {
         console.log(userID);
         await addDiscordIDToSkillWallet(userID);
       } else {
+        setLoading(false);
         dispatch(
           openSnackbar({
             message: `SkillWallet not found. Make sure the correct address is selected.`,
             severity: 'error',
-            duration: 15000,
+            duration: 30000,
           })
         );
       }
     } else {
+      setLoading(false);
       dispatch(
         openSnackbar({
           message: `'Please authetnicate with Discord again!'`,
           severity: 'error',
-          duration: 15000,
+          duration: 30000,
         })
       );
     }
@@ -88,7 +92,7 @@ function Redirect(props) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
       <Typography variant="h2">Discord Integration Redirect Page</Typography>
-      <CircularProgress />
+      {loading && <CircularProgress />}
     </Box>
   );
 }
