@@ -119,7 +119,7 @@ const Community = (props) => {
           >
             <SwButton mode="light" btnType="large" endIcon={<Member />} label="Members" component={Link} to={`${basePath}/members`} />
             <SwButton mode="light" btnType="large" endIcon={<Roles />} label="Roles & Skills" component={Link} to={`${basePath}/roles`} />
-            <SwButton mode="light" btnType="large" onClick={() => setOpenShare(true)} endIcon={<Share />} label="Whitelist" />
+            <SwButton mode="light" btnType="large" onClick={() => setOpenShare(true)} endIcon={<Share />} label="Invite & Share" />
           </Box>
         </Box>
       </Box>
