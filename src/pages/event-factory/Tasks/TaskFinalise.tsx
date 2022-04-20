@@ -30,7 +30,6 @@ const TaskFinalise = () => {
 
   const handleFinalizeClick = async () => {
     await dispatch(finalizeActivityTask(selectedTask));
-    history.goBack();
   };
 
   const handleDialogClose = () => {

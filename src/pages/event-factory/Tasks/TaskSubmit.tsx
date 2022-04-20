@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Box, CircularProgress, Container, TextField, Typography } from '@mui/material';
-import { SingleTask, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
+import { SingleTask, TaskErrorMessage, TasksStatus, tasksUpdateStatus } from '@store/Activity/tasks.reducer';
 import { Task, TaskStatus } from '@store/model';
 import { useAppDispatch } from '@store/store.model';
 import { setPreviusRoute } from '@store/ui-reducer';
@@ -12,16 +12,27 @@ import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
 import './Tasks.scss';
 import SuccessDialog from '@components/SuccessPopup';
-import { finalizeActivityTask, getTaskById } from '@api/activities.api';
+import { getTaskById, submitActivityTask } from '@api/activities.api';
+import { Controller, useForm } from 'react-hook-form';
 
 const TaskSubmit = () => {
   const dispatch = useAppDispatch();
   const { taskActivityId } = useParams<any>();
   const selectedTask: Task = useSelector(SingleTask);
   const status = useSelector(TasksStatus);
+  const errorMessage = useSelector(TaskErrorMessage);
+
+  const { control, handleSubmit, watch } = useForm({
+    mode: 'all',
+    defaultValues: {
+      description: '',
+    },
+  });
+  const values = watch();
+  console.log('values: ', values);
 
   const submitTask = () => {
-    dispatch(finalizeActivityTask(selectedTask));
+    dispatch(submitActivityTask({ task: selectedTask, values }));
   };
 
   const handleDialogClose = () => {
@@ -42,8 +53,8 @@ const TaskSubmit = () => {
         message="Success!"
         subtitle="You have submitted your task"
       />
-      <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
-      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Finalizing task..." />
+      <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Submitting task" />
+      <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message={errorMessage || 'Something went wrong'} />
       <Box
         className="sw-tasks-base-container"
         sx={{
@@ -89,106 +100,119 @@ const TaskSubmit = () => {
                   flex: 1,
                 }}
               >
-                <Box
-                  sx={{
-                    flex: 1,
-                    px: '20px',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Typography
+                <form className="sw-task-submit-wrapper" onSubmit={handleSubmit(submitTask)}>
+                  <Box
                     sx={{
-                      color: 'primary.main',
-                      mb: '16px',
+                      flex: 1,
+                      px: '20px',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
-                    variant="subtitle1"
                   >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      {selectedTask?.title || 'N/A'}
-                      {selectedTask?.status === TaskStatus.Finished && (
-                        <Alert
-                          sx={{
-                            border: 0,
-                            py: 0,
-                            m: 0,
-                            ml: 2,
-                            height: '30px',
-                            width: '134px',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                          severity="success"
-                        >
-                          <AlertTitle
-                            sx={{
-                              p: 0,
-                              m: 0,
-                            }}
-                          >
-                            [ Completed ]
-                          </AlertTitle>
-                        </Alert>
-                      )}
-                    </div>
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: 'primary.main',
-                      mb: '35px',
-                    }}
-                    variant="body1"
-                  >
-                    {selectedTask?.description}
-                  </Typography>
-
-                  <TextField
-                    disabled={selectedTask?.status === TaskStatus.Finished}
-                    className="submit-descr"
-                    required
-                    focused
-                    multiline
-                    rows={4}
-                    color="primary"
-                    placeholder="Type something"
-                  />
-
-                  <div className="upload-file">
                     <Typography
                       sx={{
                         color: 'primary.main',
+                        mb: '16px',
                       }}
-                      variant="h2"
+                      variant="subtitle1"
                     >
-                      testfile.jpg
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {selectedTask?.title || 'N/A'}
+                        {selectedTask?.status === TaskStatus.Finished && (
+                          <Alert
+                            sx={{
+                              border: 0,
+                              py: 0,
+                              m: 0,
+                              ml: 2,
+                              height: '30px',
+                              width: '134px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            severity="success"
+                          >
+                            <AlertTitle
+                              sx={{
+                                p: 0,
+                                m: 0,
+                              }}
+                            >
+                              [ Completed ]
+                            </AlertTitle>
+                          </Alert>
+                        )}
+                      </div>
                     </Typography>
-                    <SwButton
-                      mode="light"
+                    <Typography
                       sx={{
-                        width: '180px',
-                        height: '40px',
-                        minHeight: '40px',
+                        color: 'primary.main',
+                        mb: '35px',
                       }}
-                      disabled={selectedTask?.status === TaskStatus.Finished}
-                      label="Upload"
+                      variant="body1"
+                    >
+                      {selectedTask?.description}
+                    </Typography>
+                    <Controller
+                      name="description"
+                      key="description"
+                      control={control}
+                      render={({ field: { name, value, onChange } }) => {
+                        return (
+                          <TextField
+                            disabled={selectedTask?.status === TaskStatus.Finished}
+                            name={name}
+                            value={value || ''}
+                            onChange={onChange}
+                            className="submit-descr"
+                            required
+                            focused
+                            multiline
+                            rows={4}
+                            color="primary"
+                            placeholder="Type something"
+                          />
+                        );
+                      }}
                     />
-                  </div>
 
-                  <div className="submit-action">
-                    <SwButton
-                      mode="light"
-                      sx={{
-                        width: '180px',
-                        height: '85px',
-                        minHeight: '85px',
-                      }}
-                      disabled={selectedTask?.status === TaskStatus.Finished}
-                      onClick={submitTask}
-                      label="Submit"
-                    />
-                  </div>
-                </Box>
+                    <div className="upload-file">
+                      <Typography
+                        sx={{
+                          color: 'primary.main',
+                        }}
+                        variant="h2"
+                      >
+                        testfile.jpg
+                      </Typography>
+                      <SwButton
+                        mode="light"
+                        sx={{
+                          width: '180px',
+                          height: '40px',
+                          minHeight: '40px',
+                        }}
+                        disabled={selectedTask?.status === TaskStatus.Finished}
+                        label="Upload"
+                      />
+                    </div>
+
+                    <div className="submit-action">
+                      <SwButton
+                        mode="light"
+                        sx={{
+                          width: '180px',
+                          height: '85px',
+                          minHeight: '85px',
+                        }}
+                        disabled={selectedTask?.status === TaskStatus.Finished}
+                        onClick={submitTask}
+                        label="Submit"
+                      />
+                    </div>
+                  </Box>
+                </form>
               </SwScrollbar>
             </Box>
           </>

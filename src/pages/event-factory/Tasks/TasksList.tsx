@@ -12,6 +12,7 @@ import './Tasks.scss';
 const TasksList = (props) => {
   const status = useSelector(TasksStatus);
   const refreshStatus = useSelector(TasksRefreshStatus);
+
   const groupedTasks: GroupTask[] = useSelector(FilteredTasks(props.status));
   const Action = (task: Task) => {
     switch (props.status) {
@@ -23,11 +24,7 @@ const TasksList = (props) => {
               width: '180px',
               height: '85px',
             }}
-<<<<<<< Updated upstream
-            disabled={refreshStatus === ResultState.Loading}
-=======
             disabled={task.creator.toLowerCase() === window.ethereum.selectedAddress || refreshStatus === ResultState.Loading}
->>>>>>> Stashed changes
             onClick={() => props.handleTask(props.status, task)}
             label="I’ll do it!"
           />
@@ -72,6 +69,20 @@ const TasksList = (props) => {
           </Typography>
         );
       case TaskTypes.MyTasks:
+        if (task.status === TaskStatus.Submitted) {
+          return (
+            <SwButton
+              mode="light"
+              sx={{
+                width: '220px',
+                height: '85px',
+              }}
+              component={Link}
+              to={`/partner/tasks/finalise/${task.activityId}`}
+              label="Waiting for Approval"
+            />
+          );
+        }
         if (task.status === TaskStatus.Finished) {
           return (
             <Typography

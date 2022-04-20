@@ -1,4 +1,4 @@
-import { finalizeActivityTask, getAllTasks, getTaskById, takeActivityTask } from '@api/activities.api';
+import { finalizeActivityTask, getAllTasks, getTaskById, submitActivityTask, takeActivityTask } from '@api/activities.api';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { GroupTask, Task, TaskStatus, TaskTypes } from '@store/model';
 import { ResultState } from '@store/result-status';
@@ -108,6 +108,24 @@ export const tasksSlice = createSlice({
         });
       })
       .addCase(finalizeActivityTask.rejected, (state, action) => {
+        state.status = ResultState.Failed;
+        state.errorMessage = action.payload as string;
+      })
+      .addCase(submitActivityTask.pending, (state) => {
+        state.status = ResultState.Updating;
+      })
+      .addCase(submitActivityTask.fulfilled, (state, action) => {
+        state.status = ResultState.Success;
+        state.selectedTask = action.payload;
+        state.selectedTabIndex = TaskTypes.Closed;
+        state.tasks = state.tasks.map((task) => {
+          if (task.activityId === action.payload.activityId) {
+            return action.payload;
+          }
+          return task;
+        });
+      })
+      .addCase(submitActivityTask.rejected, (state, action) => {
         state.status = ResultState.Failed;
         state.errorMessage = action.payload as string;
       });
