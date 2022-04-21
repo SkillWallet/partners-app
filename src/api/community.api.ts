@@ -6,7 +6,6 @@ import {
 import axios from 'axios';
 import { SkillWalletList } from './api.model';
 import { Community } from './community.model';
-import { getCommunityByCommunityAddress } from './dito.api';
 import { Web3ThunkProviderFactory } from './ProviderFactory/web3-thunk.provider';
 import { getCoreTeamMemberNames, addCoreTeamName, getSkillwalletAddress } from './skillwallet.api';
 import { storeMetadata, ipfsCIDToHttpUrl } from './textile.api';
@@ -81,7 +80,7 @@ export const updatePartnersCommunity = partnersCommunityThunkProvider(
   async (contract, community) => {
     const uri = await storeMetadata(community);
     await contract.setMetadataUri(uri);
-    return getCommunityByCommunityAddress(community.address);
+    return community;
   }
 );
 
