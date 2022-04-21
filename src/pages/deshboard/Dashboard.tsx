@@ -62,9 +62,9 @@ const Dashboard = () => {
             <Typography sx={{ color: 'primary.main', textAlign: 'center', mb: pxToRem(30) }} component="div" variant="h2">
               {userInfo?.isCoreTeamMember ? 'Core Team Member' : 'Community Member'}
             </Typography>
-            <Typography sx={{ color: 'primary.main', textAlign: 'center', mb: pxToRem(30) }} component="div" variant="h2">
+            {/* <Typography sx={{ color: 'primary.main', textAlign: 'center', mb: pxToRem(30) }} component="div" variant="h2">
               Reputation Points: 888
-            </Typography>
+            </Typography> */}
             <Divider sx={{ borderColor: '#000' }} />
             <Typography sx={{ color: 'primary.main', my: pxToRem(30) }} component="div" variant="h2">
               Your open tasks: 20
@@ -138,7 +138,7 @@ const Dashboard = () => {
             <Typography sx={{ color: 'primary.main', mb: pxToRem(40) }} component="div" variant="h2">
               Total Number of Members: 20
             </Typography>
-            <Typography sx={{ color: 'primary.main', mb: pxToRem(40) }} component="div" variant="h2">
+            {/* <Typography sx={{ color: 'primary.main', mb: pxToRem(40) }} component="div" variant="h2">
               Number of Core Team: 2
             </Typography>
             <Typography sx={{ color: 'primary.main', mb: pxToRem(40) }} component="div" variant="h2">
@@ -149,7 +149,7 @@ const Dashboard = () => {
             </Typography>
             <Typography sx={{ color: 'primary.main', mb: pxToRem(40) }} component="div" variant="h2">
               Number of Core Team: 2
-            </Typography>
+            </Typography> */}
           </CardContent>
         </Card>
       }

@@ -7,7 +7,6 @@ import { SwButton } from 'sw-web-shared';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store.model';
 import './get-started.scss';
-import { useEffect } from 'react';
 
 const GetStarted = () => {
   const { isAutheticated } = useSelector((state: RootState) => state.auth);
@@ -20,7 +19,7 @@ const GetStarted = () => {
             <img src={logoBlack} className="new-logo-img" alt="skillwallet logo" />
           </Box>
 
-          <Typography color="primary" component="div" sx={{ ml: '32px', mt: '40px' }} fontWeight="bold" align="left" variant="h1">
+          <Typography component="div" sx={{ ml: '32px', mt: '40px', color: 'text.primary' }} fontWeight="bold" align="left" variant="h1">
             Welcome, Partner
           </Typography>
         </Box>

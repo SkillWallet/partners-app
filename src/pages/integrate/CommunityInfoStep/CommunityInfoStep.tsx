@@ -39,7 +39,7 @@ function FormHelperText({ errors, name, children, value }) {
 const CommunityInfoStep = ({ errors, values, control }) => {
   return (
     <div className="sw-community-description">
-      <Typography lineHeight="1" sx={{ mb: '60px' }} component="div" variant="subtitle1">
+      <Typography color="text.primary" lineHeight="1" sx={{ mb: '60px' }} component="div" variant="subtitle1">
         This is your DAO. Tell members all about it 🙌
       </Typography>
       <div
