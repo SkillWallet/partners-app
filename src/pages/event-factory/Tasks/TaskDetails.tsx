@@ -153,7 +153,7 @@ const TaskDetails = () => {
                 disabled
                 label="Ask Update"
               />
-              {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
+              {/* {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
                 <SwButton
                   mode="light"
                   sx={{
@@ -165,7 +165,7 @@ const TaskDetails = () => {
                   onClick={handleFinalizeClick}
                   label="Finalize"
                 />
-              )}
+              )} */}
             </Box>
             <Box
               sx={{

@@ -103,7 +103,8 @@ const CallInformationStep = () => {
         Group Call
       </Typography>
       <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+        Almost there 🙌 Now just pick a duration ⌚ <br />
+        And decide whether the Call is for the entire Community, or a specific Role.
       </Typography>
       <form className="sw-info-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: 'flex', flex: 1 }}>
@@ -155,7 +156,7 @@ const CallInformationStep = () => {
               }}
             >
               <Typography sx={{ mb: pxToRem(20), fontSize: '25px' }} color="primary.main">
-                Lorem ipsum dolor sit
+                Team & Role
               </Typography>
               <Typography sx={{ mb: pxToRem(20) }} color="primary.main" variant="h3">
                 Who will be joining the call?

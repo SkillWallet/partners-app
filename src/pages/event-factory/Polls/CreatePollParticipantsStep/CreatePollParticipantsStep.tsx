@@ -94,7 +94,7 @@ const CreatePollParticipantsStep = () => {
         Polls & Proposals
       </Typography>
       <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+        Decide whether this is a Poll for the entire Community, or for a specific Role.
       </Typography>
       <form className="sw-poll-participants-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>

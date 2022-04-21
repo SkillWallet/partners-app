@@ -43,7 +43,7 @@ const CreatePollInfoStep = () => {
         Polls & Proposals
       </Typography>
       <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+        Add Title, Description and Duration for your Community Proposal.
       </Typography>
       <form className="sw-poll-info-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>

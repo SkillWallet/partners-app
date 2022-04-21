@@ -46,7 +46,7 @@ const CalendarStep = () => {
         Group Call
       </Typography>
       <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Lorem ipsum dolor sit amet, consetetur
+        Hello friend 🖖 I’m your Web3 scheduling assistant 📞 <br /> Set a date and time for your Community Call & let’s make it official.
       </Typography>
       <form className="sw-calendar-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: 'flex', flex: 1 }}>
