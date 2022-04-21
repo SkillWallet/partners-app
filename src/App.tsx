@@ -107,7 +107,7 @@ function App(props) {
           <sw-auth
             partner-key={environment.partnersKey}
             hide-button={isLoading || isIntegrateFlow || isRedirect}
-            disable-create-new-user={!isIntegrateFlow}
+            // disable-create-new-user={!isIntegrateFlow}
             use-dev="true"
           />
         </div>

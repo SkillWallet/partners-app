@@ -32,7 +32,6 @@ const TaskFinalise = () => {
 
   const handleFinalizeClick = async () => {
     await dispatch(finalizeActivityTask(selectedTask));
-    history.goBack();
   };
 
   const handleDialogClose = () => {
@@ -114,7 +113,7 @@ const TaskFinalise = () => {
                           m: 0,
                         }}
                       >
-                        [ Completed ]
+                        Completed
                       </AlertTitle>
                     </Alert>
                   )}
@@ -141,8 +140,9 @@ const TaskFinalise = () => {
                     textAlign: 'center',
                   },
                 }}
+                disabled={selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress}
                 onClick={handleFinalizeClick}
-                label="Approve"
+                label="Finalize"
               />
 
               <PartnerButton
@@ -159,19 +159,6 @@ const TaskFinalise = () => {
                 disabled
                 label="Decline"
               />
-              {selectedTask && selectedTask.creator.toLowerCase() === window.ethereum.selectedAddress && (
-                <SwButton
-                  mode="light"
-                  sx={{
-                    width: '280px',
-                    height: '85px',
-                    minHeight: '85px',
-                    mb: '20px',
-                  }}
-                  onClick={handleFinalizeClick}
-                  label="Finalize"
-                />
-              )}
             </Box>
             <Box
               sx={{

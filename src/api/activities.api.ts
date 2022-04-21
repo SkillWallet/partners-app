@@ -110,7 +110,7 @@ export const takeActivityTask = activitiesThunkProvider(
 export const finalizeActivityTask = activitiesThunkProvider(
   {
     type: 'partner/activities/task/finalize',
-    event: ActivitiesContractEventType.ActivityFinalized,
+    event: ActivitiesContractEventType.TaskFinalized,
   },
   contractAddress,
   async (contract, requestData) => {
@@ -125,14 +125,24 @@ export const finalizeActivityTask = activitiesThunkProvider(
 
 export const submitActivityTask = activitiesThunkProvider(
   {
-    type: 'partner/activities/task/finalize',
-    event: ActivitiesContractEventType.ActivityFinalized,
+    type: 'partner/activities/task/submit',
+    event: ActivitiesContractEventType.TaskSubmitted,
   },
   contractAddress,
-  async (contract, requestData) => {
-    await contract.finilizeTask(+requestData.activityId);
+  async (contract, { task, values }) => {
+    const metadata = {
+      title: task.title,
+      description: values.description,
+    };
+    console.log('task: ', task);
+    console.log('metadata: ', metadata);
+    const uri = await storeAsBlob(metadata);
+    console.log('activityId: ', +task.activityId);
+    console.log('uri: ', uri);
+    await contract.submitTask(+task.activityId, uri);
+    console.log('here!!!');
     return {
-      ...requestData,
+      ...task,
       taker: window.ethereum.selectedAddress,
       status: TaskStatus.Submitted,
     };

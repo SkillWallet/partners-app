@@ -22,6 +22,7 @@ import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
+import { pxToRem } from '@utils/text-size';
 import { useForm } from 'react-hook-form';
 import ErrorDialog from '@components/ErrorPopup';
 import { useHistory } from 'react-router-dom';
@@ -265,10 +266,10 @@ const PartnerIntegration = () => {
                 )}
               </div>
 
-              <Typography sx={{ mb: '10px' }} color="primary" variant="h1" component="div">
+              <Typography color="primary" fontSize={pxToRem(40)} component="div">
                 Partner’s Agreement
               </Typography>
-              <Typography color="primary" variant="h2" component="div">
+              <Typography color="primary" fontSize={pxToRem(25)} component="div">
                 Select the Market that best represents your Community / protocol.
               </Typography>
               <TemplateStep values={values} control={control} errors={errors} />

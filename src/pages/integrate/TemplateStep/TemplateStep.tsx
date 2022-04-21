@@ -10,6 +10,7 @@ import { Controller, useFieldArray } from 'react-hook-form';
 import { Fragment } from 'react';
 import { makeStyles } from '@mui/styles';
 import './TemplateStep.scss';
+import { pxToRem } from '@utils/text-size';
 
 function FormHelperText({ errors, name, children = null, value }) {
   if (errors[name]) {
@@ -133,9 +134,9 @@ const TemplateStep = ({ values, control, errors }) => {
                 }}
                 title={title}
                 titleTypographyProps={{
-                  variant: 'h3',
                   color: 'primary.main',
                   mt: '6px',
+                  fontSize: pxToRem(25),
                 }}
               />
               <CardContent
@@ -147,7 +148,7 @@ const TemplateStep = ({ values, control, errors }) => {
                   justifyContent: 'space-between',
                 }}
               >
-                <Typography color="primary.main" variant="body1" component="div">
+                <Typography color="primary.main" fontSize={pxToRem(19)} component="div">
                   {description}
                 </Typography>
 
@@ -199,10 +200,10 @@ const TemplateStep = ({ values, control, errors }) => {
               }}
             >
               <div className="sw-role-fields">
-                <Typography color="primary" sx={{ mb: '5px' }} component="div" variant="h3">
+                <Typography color="primary" sx={{ mb: '5px' }} component="div" fontSize={pxToRem(20)}>
                   Name 2/3 Roles/Skills.
                 </Typography>
-                <Typography color="primary" sx={{ mb: '20px' }} component="div" variant="body2">
+                <Typography color="primary" sx={{ mb: '20px' }} component="div" fontSize={pxToRem(16)}>
                   The Roles you envision in your community (i.e.: dev, validator, etc.)
                 </Typography>
                 {fields.map((item, index) => (
