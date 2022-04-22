@@ -24,6 +24,15 @@ const activitiesThunkProvider = Web3ThunkProviderFactory('Activities', {
   provider: Web3ActivitiesProvider,
 });
 
+const contractAddressWithoutDeploy = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
+  const { partner } = thunkAPI.getState();
+  const paCommunity = partner?.paCommunity;
+  const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
+  const activitiesAddress = await contract.getActivitiesAddress();
+
+  return Promise.resolve(activitiesAddress);
+};
+
 const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
   const { partner } = thunkAPI.getState();
   const paCommunity = partner?.paCommunity;
@@ -260,7 +269,7 @@ export const getAllTasks = activitiesThunkProvider(
   {
     type: 'partner/activities/tasks/getall',
   },
-  contractAddress,
+  contractAddressWithoutDeploy,
   async (contract, type: ActivityTypes) => {
     if (contract.contract.address === ethers.constants.AddressZero) {
       return [];
