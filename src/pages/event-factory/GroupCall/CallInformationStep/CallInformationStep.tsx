@@ -292,6 +292,16 @@ const CallInformationStep = () => {
                               width: '120px',
                               height: '40px',
                               ml: '10px',
+                              '&.active-link': {
+                                '.MuiTypography-root': {
+                                  color: '#FFF',
+                                },
+                              },
+                              '&:hover': {
+                                '.MuiTypography-root': {
+                                  color: '#FFF',
+                                },
+                              },
                             }}
                             onClick={() => onChange(!value)}
                             className={value ? 'active-link' : ''}
