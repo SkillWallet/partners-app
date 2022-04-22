@@ -86,6 +86,16 @@ const RolesStep = () => {
                             width: '16px',
                             height: '16px',
                           },
+                          '&.active-link': {
+                            '.MuiTypography-root': {
+                              color: '#FFF',
+                            },
+                          },
+                          '&:hover': {
+                            '.MuiTypography-root': {
+                              color: '#FFF',
+                            },
+                          },
                         }}
                         onClick={() => onChange(roleName)}
                         className={value === roleName ? 'active-link' : ''}
@@ -155,6 +165,16 @@ const RolesStep = () => {
                       sx={{
                         width: '100px',
                         height: '30px',
+                        '&.active-link': {
+                          '.MuiTypography-root': {
+                            color: '#FFF',
+                          },
+                        },
+                        '&:hover': {
+                          '.MuiTypography-root': {
+                            color: '#FFF',
+                          },
+                        },
                       }}
                       onClick={() => onChange(!value)}
                       className={value ? 'active-link' : ''}
