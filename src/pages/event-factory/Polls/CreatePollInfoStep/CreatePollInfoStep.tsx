@@ -143,6 +143,16 @@ const CreatePollInfoStep = () => {
                               width: '115px',
                               height: '35px',
                               ml: `${index !== 0 ? pxToRem(5) : '0'}`,
+                              '&.active-link': {
+                                '.MuiTypography-root': {
+                                  color: '#FFF',
+                                },
+                              },
+                              '&:hover': {
+                                '.MuiTypography-root': {
+                                  color: '#FFF',
+                                },
+                              },
                             }}
                             onClick={() => onChange(durationValue)}
                             className={value === durationValue ? 'active-link' : ''}
