@@ -165,6 +165,16 @@ const RolesStep = () => {
                       sx={{
                         width: '100px',
                         height: '30px',
+                        '&.active-link': {
+                          '.MuiTypography-root': {
+                            color: '#FFF',
+                          },
+                        },
+                        '&:hover': {
+                          '.MuiTypography-root': {
+                            color: '#FFF',
+                          },
+                        },
                       }}
                       onClick={() => onChange(!value)}
                       className={value ? 'active-link' : ''}
