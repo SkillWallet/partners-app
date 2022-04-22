@@ -86,6 +86,16 @@ const RolesStep = () => {
                             width: '16px',
                             height: '16px',
                           },
+                          '&.active-link': {
+                            '.MuiTypography-root': {
+                              color: '#FFF',
+                            },
+                          },
+                          '&:hover': {
+                            '.MuiTypography-root': {
+                              color: '#FFF',
+                            },
+                          },
                         }}
                         onClick={() => onChange(roleName)}
                         className={value === roleName ? 'active-link' : ''}
