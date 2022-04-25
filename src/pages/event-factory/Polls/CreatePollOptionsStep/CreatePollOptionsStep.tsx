@@ -76,7 +76,7 @@ const CreatePollOptionsStep = () => {
         Polls & Proposals
       </Typography>
       <Typography sx={{ opacity: 0.5, mb: pxToRem(75) }} color="primary.main" variant="h2" textAlign="center">
-        Choose between 2 - 5 options & Don’t forget your emojis
+        Add 2-to-5 options & pick an emoji for each!
       </Typography>
       <form className="sw-polls-wrapper" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>

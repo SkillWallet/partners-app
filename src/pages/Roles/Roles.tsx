@@ -3,6 +3,7 @@ import { Box, CircularProgress, Container, Divider, Typography } from '@mui/mate
 import { SwButton } from 'sw-web-shared';
 import { Community } from '@api/community.model';
 import { useSelector } from 'react-redux';
+import { pxToRem } from '@utils/text-size';
 import { communityUpdateState, getCommunityRoles } from '@store/Community/community.reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { updatePartnersCommunity } from '@api/community.api';
@@ -73,11 +74,11 @@ const Roles = (props) => {
       <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
       <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Updating community roles..." />
       <Container className="sw-roles-wrapper" maxWidth="md" sx={{ width: '100%', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <Typography sx={{ my: 2 }} color="primary.main" variant="h1" textAlign="center">
-          Roles & Skills
+        <Typography sx={{ my: 2 }} color="primary.main" fontSize={pxToRem(50)} textAlign="center">
+          {props.isCoreTeam ? 'Core Team' : 'Community'} - Roles & Skills
         </Typography>
         <Typography sx={{ my: 2 }} color="primary.main" variant="h3" textAlign="center">
-          Add Skills for each Role, and assign them to your Core Team.
+          Customize Skills & Roles for your {props.isCoreTeam ? 'Core Team' : 'Community'} Members.
         </Typography>
 
         {status === ResultState.Loading ? (

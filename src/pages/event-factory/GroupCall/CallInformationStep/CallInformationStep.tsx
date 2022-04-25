@@ -169,7 +169,7 @@ const CallInformationStep = () => {
               }}
             >
               <Typography sx={{ mb: pxToRem(20), fontSize: pxToRem(25) }} color="primary.main">
-                Lorem ipsum dolor sit
+                Team & Role
               </Typography>
               <Typography sx={{ mb: pxToRem(20), fontSize: pxToRem(18) }} color="primary.main">
                 Who will be joining the call?

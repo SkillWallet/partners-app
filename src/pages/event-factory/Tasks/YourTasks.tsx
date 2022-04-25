@@ -99,10 +99,11 @@ const YourTasks = () => {
           mb: pxToRem(50),
         }}
         color="primary.main"
-        fontSize={pxToRem(25)}
+        fontSize={pxToRem(20)}
         component="div"
       >
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+        These are the Tasks assigned to you. <br />
+        The more you tasks you complete, the more you’ll grow your Web3 reputation.
       </Typography>
       <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
       <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message={message} />

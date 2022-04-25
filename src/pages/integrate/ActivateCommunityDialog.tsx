@@ -43,10 +43,10 @@ const ActivateCommunityDialog = ({ open, handleClose, onActivateCommunity, agree
             marginTop: '20px',
           }}
         >
-          <Typography sx={{ textAlign: 'center', mt: 2 }} component="div" variant="h1">
+          <Typography color="text.primary" sx={{ textAlign: 'center', mt: 2 }} component="div" variant="h1">
             Congrats, Partner! 🎉🎉🎉
           </Typography>
-          <Typography sx={{ textAlign: 'center' }} component="div" variant="h4">
+          <Typography color="text.primary" sx={{ textAlign: 'center' }} component="div" variant="h4">
             You've successfully integrated the SkillWallet. <br /> As promised, here is your Access Key. <br /> Copy it & keep it safe:
           </Typography>
 
@@ -60,7 +60,7 @@ const ActivateCommunityDialog = ({ open, handleClose, onActivateCommunity, agree
             mode="dark"
           />
 
-          <Typography sx={{ textAlign: 'center' }} component="div" variant="body1">
+          <Typography color="text.primary" sx={{ textAlign: 'center' }} component="div" variant="body1">
             Last but not least, activate Community Name <br /> by picking your SkillWallet Role:
           </Typography>
           <SwButton type="button" mode="light" onClick={onActivateCommunity} label="Activate!" />
