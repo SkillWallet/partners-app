@@ -1,0 +1,42 @@
+@import 'sw-web-shared/lib/styles/breakpoints';
+@import 'sw-web-shared/lib/styles/variables';
+
+.sw-poll-info-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .sw-form-field {
+    width: 100%;
+  }
+
+  .sw-form-field-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 20px;
+
+    .MuiFormControl-root {
+      flex: 1;
+    }
+
+    .MuiFormHelperText-root {
+      text-align: end;
+      margin-right: 0;
+    }
+
+    .MuiFormControl-root {
+      width: 100%;
+    }
+
+    .MuiInputBase-root {
+      color: $primary-color;
+      width: 100%;
+      font-size: 1.313rem;
+
+      &::before,
+      &::after {
+        border-bottom: 2px solid $primary-color;
+      }
+    }
+  }
+}

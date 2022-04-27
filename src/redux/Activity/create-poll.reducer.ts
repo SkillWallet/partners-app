@@ -46,9 +46,7 @@ export const createPollSlice = createSlice({
         ...state.pollData,
         ...action.payload,
       };
-      console.log(state, 'STATE');
     },
-
     createPollUpdateStatus(state, action) {
       state.status = action.payload;
     },

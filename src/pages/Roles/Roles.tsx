@@ -1,8 +1,8 @@
 import { memo, useState } from 'react';
 import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
-import { SwButton } from 'sw-web-shared';
 import { Community } from '@api/community.model';
 import { useSelector } from 'react-redux';
+import PartnerButton from '@components/Button';
 import { pxToRem } from '@utils/text-size';
 import { communityUpdateState, getCommunityRoles } from '@store/Community/community.reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
@@ -12,8 +12,8 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import ErrorDialog from '@components/ErrorPopup';
 import LoadingDialog from '@components/LoadingPopup';
 import RoleSkills from './RoleSkills';
-import './Roles.scss';
 import EditRole from './EditRole';
+import './Roles.scss';
 
 const Roles = (props) => {
   const dispatch = useAppDispatch();
@@ -35,8 +35,6 @@ const Roles = (props) => {
 
   const values = watch();
 
-  console.log(values, 'VALUES');
-
   const onSubmit = async (data: typeof values) => {
     const allRoles = community.properties.skills.roles.map((r) => {
       const role = data.roles.find((updatedRole) => updatedRole.id === r.id);
@@ -45,7 +43,6 @@ const Roles = (props) => {
       }
       return r;
     });
-    // community.properties.skills.roles = [...allRoles];
     await dispatch(
       updatePartnersCommunity(
         new Community({
@@ -74,10 +71,10 @@ const Roles = (props) => {
       <ErrorDialog handleClose={handleDialogClose} open={status === ResultState.Failed} message="Something went wrong" />
       <LoadingDialog handleClose={handleDialogClose} open={status === ResultState.Updating} message="Updating community roles..." />
       <Container className="sw-roles-wrapper" maxWidth="md" sx={{ width: '100%', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <Typography sx={{ my: 2 }} color="primary.main" fontSize={pxToRem(50)} textAlign="center">
+        <Typography color="primary.main" fontSize={pxToRem(50)} textAlign="center">
           {props.isCoreTeam ? 'Core Team' : 'Community'} - Roles & Skills
         </Typography>
-        <Typography sx={{ my: 2 }} color="primary.main" variant="h3" textAlign="center">
+        <Typography sx={{ mb: pxToRem(35) }} color="primary.main" fontSize={pxToRem(33)} textAlign="center">
           Customize Skills & Roles for your {props.isCoreTeam ? 'Core Team' : 'Community'} Members.
         </Typography>
 
@@ -99,17 +96,36 @@ const Roles = (props) => {
             }}
           >
             <Box sx={{ display: 'flex', my: 2 }}>
-              <Typography sx={{ flex: 1, fontSize: '21px' }} color="primary.main" fontWeight="bold" textAlign="center">
+              <Typography
+                sx={{ flex: 1, fontSize: pxToRem(21), textTransform: 'uppercase' }}
+                color="primary.main"
+                fontWeight="bold"
+                textAlign="center"
+              >
                 Pick Your Role
               </Typography>
 
-              <Typography sx={{ flex: 1, fontSize: '21px' }} color="primary.main" fontWeight="bold" textAlign="center">
+              <Typography
+                sx={{ flex: 1, fontSize: pxToRem(21), textTransform: 'uppercase' }}
+                color="primary.main"
+                fontWeight="bold"
+                textAlign="center"
+              >
                 Add Your skills
               </Typography>
             </Box>
             <Divider sx={{ borderColor: '#707070', width: '80%', margin: '0 auto' }} />
-            <Box sx={{ display: 'flex', flex: 1, mb: '40px' }}>
-              <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', mr: '40px' }}>
+            <Box sx={{ display: 'flex', flex: 1, mb: pxToRem(40) }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  mr: pxToRem(100),
+                  justifyContent: 'center',
+                }}
+              >
                 {rolesFields.fields.map((role, index) => (
                   <Controller
                     rules={{
@@ -120,7 +136,7 @@ const Roles = (props) => {
                     control={control}
                     render={({ field: { name, value, onChange } }) => {
                       return (
-                        <SwButton
+                        <PartnerButton
                           mode="light"
                           name={name}
                           className={activeRoleIndex === index ? 'active-link' : ''}
@@ -129,11 +145,15 @@ const Roles = (props) => {
                             setActiveRoleIndex(index);
                             onChange(value);
                           }}
-                          sx={{
-                            width: '290px',
-                            height: '60px',
-                            marginTop: '65px',
+                          btnStyles={{
+                            width: pxToRem(300),
+                            height: pxToRem(60),
+                            mt: pxToRem(68),
+                            p: 0,
                             border: '1px solid',
+                            '.sw-btn-label': {
+                              textAlign: 'center',
+                            },
                           }}
                         />
                       );
@@ -142,8 +162,32 @@ const Roles = (props) => {
                 ))}
               </Box>
               <Divider sx={{ borderColor: '#707070', height: `calc(100% + ${'40px'})` }} orientation="vertical" />
-              <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: '40px' }}>
+              <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: pxToRem(100) }}>
+                <Typography
+                  sx={{
+                    color: 'primary.main',
+                    mt: pxToRem(50),
+                    mb: pxToRem(15),
+                    fontSize: pxToRem(21),
+                  }}
+                  component="div"
+                  fontWeight="bold"
+                >
+                  ROLE:
+                </Typography>
                 <EditRole control={control} activeRoleIndex={activeRoleIndex} />
+                <Typography
+                  sx={{
+                    color: 'primary.main',
+                    mt: pxToRem(50),
+                    mb: pxToRem(15),
+                    fontSize: pxToRem(21),
+                  }}
+                  component="div"
+                  fontWeight="bold"
+                >
+                  SKILLS:
+                </Typography>
                 {roles.length && values.roles?.length ? <RoleSkills control={control} activeRoleIndex={activeRoleIndex} /> : null}
               </Box>
             </Box>
@@ -153,13 +197,17 @@ const Roles = (props) => {
                 justifyContent: 'flex-end',
               }}
             >
-              <SwButton
-                sx={{
-                  width: '290px',
-                  height: '60px',
-                  mb: '40px',
-                  mt: '40px',
+              <PartnerButton
+                btnStyles={{
+                  width: pxToRem(300),
+                  height: pxToRem(60),
+                  mb: pxToRem(40),
+                  mt: pxToRem(40),
+                  p: 0,
                   border: '1px solid',
+                  '.sw-btn-label': {
+                    textAlign: 'center',
+                  },
                 }}
                 mode="light"
                 type="submit"

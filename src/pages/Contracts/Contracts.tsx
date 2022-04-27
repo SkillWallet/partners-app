@@ -1,14 +1,7 @@
-import { memo, useEffect, useState } from 'react';
-import { GridActionsCellItem } from '@mui/x-data-grid';
-
+import { MutableRefObject, useEffect, useState } from 'react';
+import { GridActionsCellItem, GridColumns, GridEditRowApi, GridRenderEditCellParams, GridRowApi } from '@mui/x-data-grid';
 import SWDatatable from '@components/datatable/Datatable';
-import { SwButton } from 'sw-web-shared';
-import { useDatatableApiRef } from '@components/datatable/DatatableRef';
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import { CustomEditComponent, useDatatableApiRef } from '@components/datatable/DatatableRef';
 import { Container, Typography } from '@mui/material';
 import SwEditToolbar from '@components/datatable/DatatableToolbar';
 import { GetDatatableItems, GetDatatableChangedItems } from '@components/datatable/DatatableHelpers';
@@ -21,42 +14,13 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
-import { setPreviusRoute } from '@store/ui-reducer';
 import { addPAContracts, getPAContracts } from '@api/agreement.api';
 import { pxToRem } from '@utils/text-size';
 import PartnerButton from '@components/Button';
 import './Contracts.scss';
+import ErrorDialog from '@components/ErrorPopup';
 
-function AlertDialog({ handleClose, open }) {
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogContent
-        sx={{
-          minHeight: 180,
-          height: 180,
-          width: 400,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <DialogContentText>
-          <Typography variant="h2" component="span" color="red">
-            No changes were made!
-          </Typography>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <SwButton mode="light" onClick={handleClose} autoFocus>
-          Dismiss
-        </SwButton>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-const tableColumns = (getRef) => {
+const tableColumns = (getRef: () => MutableRefObject<GridEditRowApi & GridRowApi>): GridColumns => {
   const handleEditClick = (id) => (event) => {
     event.stopPropagation();
     const apiRef = getRef();
@@ -85,7 +49,7 @@ const tableColumns = (getRef) => {
       field: 'id',
       width: 140,
       sortable: false,
-      valueGetter: ({ id }) => `${id + 1}.`,
+      valueGetter: ({ id }) => `${+id + 1}.`,
     },
     {
       headerName: 'Use',
@@ -93,11 +57,9 @@ const tableColumns = (getRef) => {
       editable: true,
       flex: 1,
       sortable: false,
-      valueGetter: ({ id, row: { use } }) => {
-        if (!use) {
-          return `Use ${id + 1}`;
-        }
-        return use;
+      renderEditCell: (props: GridRenderEditCellParams) => {
+        const placeholder = `Use ${+props.id + 1}`;
+        return CustomEditComponent(props, placeholder);
       },
     },
     {
@@ -106,11 +68,9 @@ const tableColumns = (getRef) => {
       editable: true,
       flex: 1,
       sortable: false,
-      valueGetter: ({ id, row: { addedBy } }) => {
-        if (!addedBy) {
-          return `New Contract ${id + 1}`;
-        }
-        return addedBy;
+      renderEditCell: (props: GridRenderEditCellParams) => {
+        const placeholder = `New Contract ${+props.id + 1}`;
+        return CustomEditComponent(props, placeholder);
       },
     },
     {
@@ -119,6 +79,7 @@ const tableColumns = (getRef) => {
       editable: true,
       flex: 1,
       sortable: false,
+      renderEditCell: (props) => CustomEditComponent(props, `Ox...`),
       valueGetter: ({ row: { address } }) => {
         if (address) {
           const middle = Math.ceil(address.length / 2);
@@ -127,14 +88,12 @@ const tableColumns = (getRef) => {
           right = right.substr(right.length - 8);
           return `${left}...${right}`;
         }
-        return `Ox...`;
       },
     },
     {
       headerName: '',
       field: 'actions',
       sortable: false,
-      className: 'sw-cell-action',
       width: 100,
       type: 'actions',
       getActions: ({ id }) => {
@@ -169,7 +128,7 @@ const Contracts = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [open, setOpen] = useState(false);
   const lockedContracts = useSelector(getLockedContracts);
-  const { status } = useSelector((state: RootState) => state.partner);
+  const { status, errorMessage } = useSelector((state: RootState) => state.partner);
 
   const handleClose = () => {
     setOpen(false);
@@ -194,11 +153,6 @@ const Contracts = () => {
   };
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
-    console.log('Previous route from Rntegrations Contracts');
-  }, [dispatch]);
-
-  useEffect(() => {
     const [firstItem] = lockedContracts;
     if (firstItem?.isNew) {
       const timeout = setTimeout(() => {
@@ -219,8 +173,8 @@ const Contracts = () => {
   return (
     <Container maxWidth="md" className="sw-core-team">
       <LoadingDialog open={status === ResultState.Updating} message="Updating contracts..." />
-      <AlertDialog open={open} handleClose={handleClose} />
-
+      <ErrorDialog open={open} handleClose={handleClose} message=" No new addresses were added!" />
+      <ErrorDialog open={status === ResultState.Failed} handleClose={handleClose} message={errorMessage} />
       <Typography
         sx={{
           mt: pxToRem(20),

@@ -8,7 +8,6 @@ import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
-import { setPreviusRoute } from '@store/ui-reducer';
 import { getPAUrl } from '@api/agreement.api';
 import { pxToRem } from '@utils/text-size';
 import PartnerButton from '@components/Button';
@@ -29,11 +28,6 @@ const Community = (props) => {
   useEffect(() => {
     const promise = dispatch(getPAUrl(null));
     return () => promise.abort();
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/dashboard'));
-    console.log('Previous route from Community Dashboard');
   }, [dispatch]);
 
   const shareMessage = `Hey there! We've just deployed ${community?.name} on SkillWallet - choose your Role in our Community, pick your Skills, and let's build something great together!`;

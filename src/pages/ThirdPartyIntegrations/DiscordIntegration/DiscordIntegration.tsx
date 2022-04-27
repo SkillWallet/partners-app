@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect, useRef, memo } from 'react';
 import { Typography, TextField, Container, Box } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
-import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import { useSelector } from 'react-redux';
 import { addDiscordWebhook } from '@store/Partner/partner.reducer';
@@ -34,11 +33,6 @@ const DiscordIntegration = () => {
     };
     return debounce(changeHandler, 10);
   }, []);
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
-    console.log('Previous route from Integrations DAO');
-  }, [dispatch]);
 
   useEffect(() => {
     return () => debouncedChangeHandler.cancel();

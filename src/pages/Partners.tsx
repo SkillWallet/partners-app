@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import SidebarDrawer from '@components/Sidebar';
 import { useSelector } from 'react-redux';
 import { fetchCommunity } from '@api/community.api';
-import { setPreviusRoute } from '@store/ui-reducer';
 import { RootState, useAppDispatch } from '@store/store.model';
 import NotFound from '@components/NotFound';
 import MembersAndActivities from '@components/member-and-activities/MembersAndActivities';
@@ -12,16 +11,16 @@ import Dashboard from './Dashboard/Dashboard';
 import CoreTeam from './CoreTeam/CoreTeam';
 import CoreTeamWhitelist from './CoreTeamWhitelist/CoreTeamWhitelist';
 import Roles from './Roles/Roles';
-import EventFactory from './event-factory/EventFactoryDashboard';
-import CreateTask from './event-factory/CreateTask/CreateTask';
-import GroupCall from './event-factory/GroupCall/GroupCall';
-import Polls from './event-factory/Polls/Polls';
-import SuccessStep from './event-factory/CreateTask/SuccessStep/SuccessStep';
-import Tasks from './event-factory/Tasks/Tasks';
-import YourTasks from './event-factory/Tasks/YourTasks';
-import TaskDetails from './event-factory/Tasks/TaskDetails';
-import TaskSubmit from './event-factory/Tasks/TaskSubmit';
-import TaskFinalise from './event-factory/Tasks/TaskFinalise';
+import EventFactory from './EventFactory/EventFactoryDashboard';
+import CreateTask from './EventFactory/CreateTask/CreateTask';
+import GroupCall from './EventFactory/GroupCall/GroupCall';
+import Polls from './EventFactory/Polls/Polls';
+import SuccessStep from './EventFactory/CreateTask/SuccessStep/SuccessStep';
+import Tasks from './EventFactory/Tasks/Tasks';
+import YourTasks from './EventFactory/Tasks/YourTasks';
+import TaskDetails from './EventFactory/Tasks/TaskDetails';
+import TaskSubmit from './EventFactory/Tasks/TaskSubmit';
+import TaskFinalise from './EventFactory/Tasks/TaskFinalise';
 import Integrations from './ThirdPartyIntegrations/Integrations';
 import Contracts from './Contracts/Contracts';
 import DaoIntegration from './ThirdPartyIntegrations/DaoIntegration/DaoIntegration';
@@ -29,16 +28,7 @@ import DiscordIntegration from './ThirdPartyIntegrations/DiscordIntegration/Disc
 
 const Partners = (props) => {
   const dispatch = useAppDispatch();
-  const location = useLocation();
-
   const { userInfo } = useSelector((state: RootState) => state.auth);
-
-  useEffect(() => {
-    if (location.pathname === '/partner/dashboard') {
-      dispatch(setPreviusRoute('/'));
-    }
-    console.log('Previous route from Partners');
-  }, [dispatch, location]);
 
   useEffect(() => {
     if (userInfo?.community) {

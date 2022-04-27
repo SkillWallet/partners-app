@@ -3,7 +3,6 @@ import { Typography, TextField, Container } from '@mui/material';
 import debounce from 'lodash.debounce';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
 import { SwButton } from 'sw-web-shared';
-import { setPreviusRoute } from '@store/ui-reducer';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -63,11 +62,6 @@ const DaoIntegration = () => {
     };
     return debounce(changeHandler, 10);
   }, []);
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/integrations-and-contracts'));
-    console.log('Previous route from Integrations DAO');
-  }, [dispatch]);
 
   useEffect(() => {
     return () => debouncedChangeHandler.cancel();

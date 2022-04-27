@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
-import { useFieldArray, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
+import { pxToRem } from '@utils/text-size';
 
 const useStyles = makeStyles(() => ({
   input: {
@@ -15,10 +15,6 @@ const useStyles = makeStyles(() => ({
 const EditRole = ({ control, activeRoleIndex }) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log(control);
-  }, []);
-
   return (
     <Controller
       key={`roles[${activeRoleIndex}].roleName`}
@@ -29,12 +25,11 @@ const EditRole = ({ control, activeRoleIndex }) => {
           <TextField
             variant="standard"
             sx={{
-              marginTop: '55px',
-              width: '290px',
+              width: pxToRem(350),
               '.MuiInput-root': {
-                width: '290px',
+                width: pxToRem(350),
                 color: 'primary.main',
-                fontSize: '21px',
+                fontSize: pxToRem(21),
                 '&:hover:not(.Mui-disabled):before': {
                   borderBottom: '1px solid #000000',
                 },

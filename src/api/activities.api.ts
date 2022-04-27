@@ -24,21 +24,12 @@ const activitiesThunkProvider = Web3ThunkProviderFactory('Activities', {
   provider: Web3ActivitiesProvider,
 });
 
-const contractAddressWithoutDeploy = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
-  const { partner } = thunkAPI.getState();
-  const paCommunity = partner?.paCommunity;
-  const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
-  const activitiesAddress = await contract.getActivitiesAddress();
-
-  return Promise.resolve(activitiesAddress);
-};
-
-const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => {
+const contractAddress = async (thunkAPI: GetThunkAPI<AsyncThunkConfig>, skipDeploy = false) => {
   const { partner } = thunkAPI.getState();
   const paCommunity = partner?.paCommunity;
   const contract = await Web3PartnersAgreementProvider(paCommunity.partnersAgreementAddress);
   let activitiesAddress = await contract.getActivitiesAddress();
-  if (activitiesAddress === ethers.constants.AddressZero) {
+  if (!skipDeploy && activitiesAddress === ethers.constants.AddressZero) {
     activitiesAddress = await deployActivities(paCommunity.communityAddress, environment.discordBotAddress);
     await contract.setActivities(activitiesAddress, ethers.constants.AddressZero);
   }
@@ -79,7 +70,6 @@ export const addActivityTask = activitiesThunkProvider(
       },
     };
     const uri = await storeMetadata(metadata);
-    console.log('CreateTask - uri: ', uri);
     const result = await contract.createTask(selectedRole.id, uri);
     const discordMessage: DiscordMessage = {
       title: `New Community Task`,
@@ -143,13 +133,8 @@ export const submitActivityTask = activitiesThunkProvider(
       title: task.title,
       description: values.description,
     };
-    console.log('task: ', task);
-    console.log('metadata: ', metadata);
     const uri = await storeAsBlob(metadata);
-    console.log('activityId: ', +task.activityId);
-    console.log('uri: ', uri);
     await contract.submitTask(+task.activityId, uri);
-    console.log('here!!!');
     return {
       ...task,
       taker: window.ethereum.selectedAddress,
@@ -187,7 +172,6 @@ export const addGroupCall = activitiesThunkProvider(
       participants,
     };
     const uri = await storeAsBlob(metadata);
-    console.log('CreateTask - uri: ', uri);
     const result = await contract.createActivity(ActivityTypes.CommunityCall, selectedRole.id, uri);
     const discordMessage: DiscordMessage = {
       title: 'New Community Call',
@@ -252,7 +236,6 @@ export const addPoll = activitiesThunkProvider(
       emojis,
     };
     const uri = await storeAsBlob(metadata);
-    console.log('CreatePoll - uri: ', uri);
     const result = await contract.createActivity(ActivityTypes.CommunityCall, roleId, uri);
 
     publishPoll({
@@ -269,7 +252,7 @@ export const getAllTasks = activitiesThunkProvider(
   {
     type: 'partner/activities/tasks/getall',
   },
-  contractAddressWithoutDeploy,
+  (thunkAPI: GetThunkAPI<AsyncThunkConfig>) => contractAddress(thunkAPI, true),
   async (contract, type: ActivityTypes) => {
     if (contract.contract.address === ethers.constants.AddressZero) {
       return [];

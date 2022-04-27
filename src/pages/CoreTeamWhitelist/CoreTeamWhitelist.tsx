@@ -1,27 +1,20 @@
 /* eslint-disable max-len */
-import { memo, useEffect, useState } from 'react';
-import { GridActionsCellItem } from '@mui/x-data-grid';
+import { memo, MutableRefObject, useEffect, useState } from 'react';
+import { GridActionsCellItem, GridColumns, GridEditRowApi, GridRenderEditCellParams, GridRowApi } from '@mui/x-data-grid';
 import { ReactComponent as EditIcon } from '@assets/actions/edit.svg';
 import { ReactComponent as CancelIcon } from '@assets/actions/cancel.svg';
 import { ReactComponent as SaveIcon } from '@assets/actions/confirm.svg';
 import { ReactComponent as LockIcon } from '@assets/actions/lock.svg';
 import { ReactComponent as PinIcon } from '@assets/pin.svg';
 import { ReactComponent as ShareIcon } from '@assets/share.svg';
-import './core-team.scss';
 import SWDatatable from '@components/datatable/Datatable';
-import { SwButton, SwShare } from 'sw-web-shared';
-import { useDatatableApiRef } from '@components/datatable/DatatableRef';
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { Container, Typography } from '@mui/material';
+import { SwShare } from 'sw-web-shared';
+import { CustomEditComponent, useDatatableApiRef } from '@components/datatable/DatatableRef';
+import { Container, IconButton, Tooltip, Typography } from '@mui/material';
 import SwEditToolbar from '@components/datatable/DatatableToolbar';
 import { GetDatatableItems } from '@components/datatable/DatatableHelpers';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '@store/store.model';
-import { setPreviusRoute } from '@store/ui-reducer';
 import { getLockedWhitelistedAddresses } from '@store/Partner/partner.reducer';
 import { ResultState } from '@store/result-status';
 import LoadingDialog from '@components/LoadingPopup';
@@ -30,8 +23,11 @@ import { addNewWhitelistedAddresses, getWhitelistedAddresses } from '@api/commun
 import ErrorDialog from '@components/ErrorPopup';
 import { pxToRem } from '@utils/text-size';
 import PartnerButton from '@components/Button';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import './core-team.scss';
 
-const tableColumns = (getRef) => {
+const tableColumns = (getRef: () => MutableRefObject<GridEditRowApi & GridRowApi>): GridColumns => {
   const handleEditClick = (id) => (event) => {
     event.stopPropagation();
     const apiRef = getRef();
@@ -62,7 +58,7 @@ const tableColumns = (getRef) => {
       field: 'id',
       width: 140,
       sortable: false,
-      valueGetter: ({ id }) => `${id + 1}.`,
+      valueGetter: ({ id }) => `${+id + 1}.`,
     },
     {
       headerName: 'Name / Note',
@@ -70,11 +66,9 @@ const tableColumns = (getRef) => {
       editable: true,
       flex: 1,
       sortable: false,
-      valueGetter: ({ id, row: { name } }) => {
-        if (!name) {
-          return `New member ${id + 1}`;
-        }
-        return name;
+      renderEditCell: (props: GridRenderEditCellParams) => {
+        const placeholder = `New member ${+props.id + 1}`;
+        return CustomEditComponent(props, placeholder);
       },
     },
     {
@@ -83,6 +77,21 @@ const tableColumns = (getRef) => {
       editable: true,
       flex: 1,
       sortable: false,
+      renderEditCell: (props) => CustomEditComponent(props, `Ox...`),
+      renderCell: ({ field, row, value }) => {
+        return (
+          <CopyToClipboard text={row[field]}>
+            <div style={{ width: '100%' }}>
+              {value}
+              <Tooltip title="Copy Address">
+                <IconButton>
+                  <ContentCopyIcon sx={{ cursor: 'pointer' }} />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </CopyToClipboard>
+        );
+      },
       valueGetter: ({ row: { address } }) => {
         if (address) {
           const middle = Math.ceil(address.length / 2);
@@ -91,14 +100,13 @@ const tableColumns = (getRef) => {
           right = right.substr(right.length - 8);
           return `${left}...${right}`;
         }
-        return `Ox...`;
+        return null;
       },
     },
     {
       headerName: '',
       field: 'actions',
       sortable: false,
-      className: 'sw-cell-action',
       width: 100,
       type: 'actions',
       getActions: ({ id }) => {
@@ -169,11 +177,6 @@ const CoreTeamWhitelist = () => {
     const promise = dispatch(getWhitelistedAddresses(userInfo?.community));
     return () => promise.abort();
   }, [dispatch, userInfo]);
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/core-team'));
-    console.log('Previous route from Core Team Whitelist');
-  }, [dispatch]);
 
   useEffect(() => {
     const [firstItem] = whitelistedAddresses;

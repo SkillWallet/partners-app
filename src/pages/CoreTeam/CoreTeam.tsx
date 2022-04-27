@@ -4,22 +4,15 @@ import { ReactComponent as Roles } from '@assets/roles.svg';
 import { ReactComponent as Share } from '@assets/share.svg';
 import { Link } from 'react-router-dom';
 import { RootState } from '@store/store.model';
-import { memo, useEffect } from 'react';
-import { setPreviusRoute } from '@store/ui-reducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { pxToRem } from '@utils/text-size';
 import PartnerButton from '@components/Button';
 import SwGrid from '@components/SwGrid';
 
 const CoreTeam = (props) => {
-  const dispatch = useDispatch();
   const basePath = props.location.pathname;
   const { community } = useSelector((state: RootState) => state.community);
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/dashboard'));
-    console.log('Previous route from Core Team Dashboard');
-  }, [dispatch]);
 
   return (
     <SwGrid

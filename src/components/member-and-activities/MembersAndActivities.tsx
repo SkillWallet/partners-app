@@ -50,12 +50,6 @@ function MembersAndActivities(props) {
   const [tabs, setTabs] = useState([]);
 
   useEffect(() => {
-    const url = props.isCoreTeamMembers ? '/partner/core-team' : '/partner/community';
-    dispatch(setPreviusRoute(url));
-    console.log('Previous route from Members');
-  }, [dispatch, props.isCoreTeamMembers]);
-
-  useEffect(() => {
     // @TODO: Make more reusable in case in the future there are more view that will have
     // members and activities
     const { isCoreTeamMembers } = props;

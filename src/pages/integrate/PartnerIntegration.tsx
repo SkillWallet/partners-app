@@ -18,7 +18,6 @@ import {
 import { createPartnersAgreement, createPartnersCommunity } from '@api/registry.api';
 import { useAppDispatch } from '@store/store.model';
 import { Community, CommunityRole, DefaultRoles } from '@api/community.model';
-import { setPreviusRoute } from '@store/ui-reducer';
 import LoadingDialog from '@components/LoadingPopup';
 import { ResultState } from '@store/result-status';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -95,7 +94,6 @@ const PartnerIntegration = () => {
 
   const onActivateCommunity = async () => {
     const { communityAddr, partnersAddr, key } = agreement;
-    console.log(communityAddr);
     await dispatch(activatePartnersAgreement({ communityAddr, partnersAddr, partnerKey: key }));
   };
 
@@ -158,11 +156,6 @@ const PartnerIntegration = () => {
   };
 
   useEffect(() => {
-    dispatch(setPreviusRoute('/'));
-    console.log('Previous route from Partner integration');
-  }, [dispatch]);
-
-  useEffect(() => {
     if (small) {
       setOpened(false);
     } else {
@@ -202,7 +195,7 @@ const PartnerIntegration = () => {
         <SwLayout
           hideTop
           disableGutters
-          scrollbarStyles={{ margin: '24px', width: 'auto', border: '1px solid #000', height: 'calc(100% - 48px)' }}
+          scrollbarStyles={{ margin: '1.5rem', width: 'auto', border: '1px solid #000', height: 'calc(100% - 3rem)' }}
           top={null}
           drawer={
             <SwSidebar

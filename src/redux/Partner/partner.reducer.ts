@@ -90,7 +90,7 @@ export const partnerSlice = createSlice({
             })
           );
         } catch (error) {
-          // console.log(error);
+          console.log(error);
         }
         state.status = ResultState.Idle;
       })

@@ -45,7 +45,6 @@ export const createPartnersCommunity = communityRegistryThunkProvider(
 
     const { metadata, selectedTemplate } = requestBody;
     const url = await storeMetadata(metadata);
-    console.log('Metadata url: ', url);
     const isPermissioned = environment.env === EnvMode.Production;
     const totalMembersAllowed = 100;
     const coreTeamMembersCount = 10;

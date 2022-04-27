@@ -1,11 +1,7 @@
 import Card from '@mui/material/Card';
 import { Avatar, CardContent, CardHeader, Container, Divider, Grid, Typography } from '@mui/material';
-
-import { SwButton } from 'sw-web-shared';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '@store/store.model';
-import { setPreviusRoute } from '@store/ui-reducer';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { ReactComponent as SwAuthIcon } from '@assets/sw-auth.svg';
 import { ReactComponent as DiscordBotIcon } from '@assets/discord-bot.svg';
 import { ReactComponent as ContractIcon } from '@assets/contract.svg';
@@ -75,13 +71,6 @@ const IntegrationCards = [
 ];
 
 const Integrations = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setPreviusRoute('/partner/dashboard'));
-    console.log('Previous route from Integrations Dashboard');
-  }, [dispatch]);
-
   return (
     <Container maxWidth="lg" className="sw-integration-dashboard">
       <Typography
