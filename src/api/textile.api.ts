@@ -14,7 +14,7 @@ const isValidUrl = (uri: string) => {
 };
 
 export function ipfsCIDToHttpUrl(url: string, isJson = false) {
-  if (!url.includes('textile'))
+  if (!url.includes('https://'))
     return isJson
       ? `https://skillwallet.infura-ipfs.io/ipfs/${url.replace('ipfs://', '')}/metadata.json`
       : `https://skillwallet.infura-ipfs.io/ipfs/${url.replace('ipfs://', '')}`;
