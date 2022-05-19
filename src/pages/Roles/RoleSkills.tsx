@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { useFieldArray, Controller } from 'react-hook-form';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
+import { pxToRem } from '@utils/text-size';
 
 const useStyles = makeStyles(() => ({
   input: {
@@ -19,12 +19,6 @@ const RoleSkills = ({ control, activeRoleIndex }) => {
     name: `roles[${activeRoleIndex}].skills`,
   });
 
-  useEffect(() => {
-    console.log(control);
-    // skillsFields.remove();
-    // skillsFields.insert(0, defaultSkills);
-  }, []);
-
   return (
     <>
       {skillsFields.fields.map((_, index) => {
@@ -38,12 +32,14 @@ const RoleSkills = ({ control, activeRoleIndex }) => {
                 <TextField
                   variant="standard"
                   sx={{
-                    marginTop: '55px',
-                    width: '290px',
+                    width: pxToRem(330),
+                    '& + .MuiFormControl-root': {
+                      mt: pxToRem(50),
+                    },
                     '.MuiInput-root': {
-                      width: '290px',
+                      width: pxToRem(330),
                       color: 'primary.main',
-                      fontSize: '21px',
+                      fontSize: pxToRem(21),
                       '&:hover:not(.Mui-disabled):before': {
                         borderBottom: '1px solid #000000',
                       },

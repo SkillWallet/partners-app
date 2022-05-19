@@ -11,14 +11,13 @@ import { openSnackbar } from '@store/ui-reducer';
 import { Box } from '@mui/system';
 import { CircularProgress, Typography } from '@mui/material';
 
-function Redirect(props) {
+function Redirect() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   const getUserID = async (code) => {
     const accessToken = await oauthGetToken(code);
     const user = await getUser(accessToken);
-    console.log(user);
     return user.id;
   };
 
@@ -54,9 +53,7 @@ function Redirect(props) {
     const userID = await getUserID(code);
     if (userID) {
       const exists = await skillWalletExists();
-      console.log(exists);
       if (exists) {
-        console.log(userID);
         await addDiscordIDToSkillWallet(userID);
       } else {
         setLoading(false);
@@ -84,7 +81,6 @@ function Redirect(props) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const code = urlParams.get('code');
-    console.log(code);
     if (!code) return;
     connectSWToDiscord(code);
   }, []);

@@ -1,29 +1,20 @@
-name: Partners SkillWallet App Skynet Pipeline
+name: Partners App Deployment
 
-on:
-  pull_request:
-  push:
-    branches: [main]
+on: workflow_dispatch
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  deploy:
+    name: Deploying
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/dev'
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - name: SSH & Deploy
+        uses: appleboy/ssh-action
         with:
-          node-version: 14.x
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build webapp
-        run: yarn build
-
-      - name: Deploy to Skynet
-        uses: kwypchlo/deploy-to-skynet-action@main
-        with:
-          upload-dir: build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          host: ${{ secrets.SSH_SERVER_IP }}
+          username: ${{ secrets.SSH_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ~/.scripts
+            ./docker-deploy.sh

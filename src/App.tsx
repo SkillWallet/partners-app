@@ -14,7 +14,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { openSnackbar } from '@store/ui-reducer';
 import Partners from './pages/Partners';
 import SWSnackbar from './components/snackbar';
-import GetStarted from './pages/get-started/get-started';
+import GetStarted from './pages/GetStarted/GetStarted';
 import PartnerIntegration from './pages/integrate/PartnerIntegration';
 import './App.scss';
 
@@ -56,7 +56,6 @@ function App(props) {
     const onSWLogin = async ({ detail }: any) => {
       const isLoggedIn = !!detail;
       const sw = JSON.parse(sessionStorage.getItem('skillWallet') || '{}');
-      console.log('SW: ', sw);
       if (isLoggedIn && sw?.isCoreTeamMember) {
         dispatch(setPartnersAgreementCommunity(sw.partnersAgreementKey));
         dispatch(

@@ -1,12 +1,13 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { RootState, useAppDispatch } from '@store/store.model';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Container, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fetchLogs } from '@store/Community/community.reducer';
 import { ResultState } from '@store/result-status';
 import { setPreviusRoute } from '@store/ui-reducer';
 import { fetchMembers } from '@api/community.api';
+import { pxToRem } from '@utils/text-size';
 import Members from './Members';
 import ActivityAndLogs from './ActivityAndLogs';
 import SwTabs from '../tabs/SwTabs';
@@ -47,12 +48,6 @@ function MembersAndActivities(props) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { members, logs, status } = useSelector((state: RootState) => state.community);
   const [tabs, setTabs] = useState([]);
-
-  useEffect(() => {
-    const url = props.isCoreTeamMembers ? '/partner/dashboard/core-team' : '/partner/dashboard/community';
-    dispatch(setPreviusRoute(url));
-    console.log('Previous route from Members');
-  }, [dispatch, props.isCoreTeamMembers]);
 
   useEffect(() => {
     // @TODO: Make more reusable in case in the future there are more view that will have
@@ -97,9 +92,9 @@ function MembersAndActivities(props) {
     return () => promises.forEach((p) => p.abort());
   }, [dispatch, userInfo, props.isCoreTeamMembers]);
   return (
-    <Box className="sw-members-and-activities" sx={{ width: '100%' }}>
+    <Container maxWidth="md" sx={{ width: '100%', flexGrow: 1, boxSizing: 'border-box' }}>
       {status === ResultState.Loading ? (
-        <div className="members-loading-spinner">
+        <div className="sw-loading-spinner">
           <CircularProgress
             sx={{
               justifyContent: 'center',
@@ -108,10 +103,22 @@ function MembersAndActivities(props) {
           />
         </div>
       ) : (
-        <SwTabs tabs={tabs} />
+        <Box>
+          <Typography
+            color="primary"
+            sx={{
+              mt: pxToRem(20),
+              mb: pxToRem(50),
+            }}
+            fontSize={pxToRem(50)}
+          >
+            Your Team Members
+          </Typography>
+          <SwTabs tabs={tabs} />
+        </Box>
       )}
-    </Box>
+    </Container>
   );
 }
 
-export default memo(MembersAndActivities);
+export default MembersAndActivities;

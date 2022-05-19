@@ -5,6 +5,7 @@ import { SwUploadFile } from 'sw-web-shared';
 import { ReactComponent as UploadIcon } from '@assets/upload.svg';
 import './CommunityInfoStep.scss';
 import { countWords } from '@utils/helpers';
+import { pxToRem } from '@utils/text-size';
 
 function FormHelperText({ errors, name, children, value }) {
   if (errors[name]) {
@@ -39,7 +40,7 @@ function FormHelperText({ errors, name, children, value }) {
 const CommunityInfoStep = ({ errors, values, control }) => {
   return (
     <div className="sw-community-description">
-      <Typography color="text.primary" lineHeight="1" sx={{ mb: '60px' }} component="div" variant="subtitle1">
+      <Typography color="text.primary" lineHeight="1" sx={{ mb: '60px' }} component="div" fontSize={pxToRem(32)}>
         This is your DAO. Tell members all about it 🙌
       </Typography>
       <div
@@ -48,7 +49,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
         //   height: '80px',
         // }}
       >
-        <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
+        <Typography color="primary" sx={{ mb: '4px' }} component="div" fontSize={pxToRem(20)}>
           Name
         </Typography>
         <div className="sw-form-field-content">
@@ -81,6 +82,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
                       '&::-webkit-input-placeholder': {
                         color: '#707070',
                         opacity: 1,
+                        fontSize: pxToRem(18),
                       },
                       '&::-moz-placeholder': {
                         color: '#707070',
@@ -107,10 +109,10 @@ const CommunityInfoStep = ({ errors, values, control }) => {
         // }}
       >
         <div>
-          <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
+          <Typography color="primary" sx={{ mb: '4px' }} component="div" fontSize={pxToRem(20)}>
             Avatar
           </Typography>
-          <Typography sx={{ color: '#707070', mb: '12px' }} component="div" variant="body2">
+          <Typography sx={{ color: '#707070', mb: '12px' }} component="div" fontSize={pxToRem(18)}>
             Your public Logo - that’s how others will know it’s really you.
           </Typography>
         </div>
@@ -136,7 +138,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
                   />
                   <FormHelperText value={value} name={name} errors={errors}>
                     {!values.avatar ? (
-                      <div style={{ textAlign: 'center', lineHeight: '1' }}>
+                      <div style={{ textAlign: 'center', lineHeight: '1', fontSize: pxToRem(16) }}>
                         .svg, .png, <br /> or .jpg
                       </div>
                     ) : (
@@ -156,7 +158,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
         //   height: '145px',
         // }}
       >
-        <Typography color="primary" sx={{ mb: '4px' }} component="div" variant="h3">
+        <Typography fontSize={pxToRem(20)} color="primary" sx={{ mb: '4px' }} component="div">
           Description
         </Typography>
         <div className="sw-form-field-content">
@@ -182,6 +184,7 @@ const CommunityInfoStep = ({ errors, values, control }) => {
                       '&::-webkit-input-placeholder': {
                         color: '#707070',
                         opacity: 1,
+                        fontSize: pxToRem(18),
                       },
                       '&::-moz-placeholder': {
                         color: '#707070',

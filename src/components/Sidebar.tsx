@@ -330,9 +330,18 @@ export default function SidebarDrawer({ children }) {
             elevation={0}
             position="static"
           >
-            <Toolbar sx={{ height: `${pxToRem(84)} !important`, justifyContent: 'space-between' }}>
+            <Toolbar sx={{ minHeight: `${pxToRem(84)} !important`, justifyContent: 'space-between' }}>
               <div className="back-button">
-                <Button onClick={() => history.goBack()} size="small" color="primary">
+                <Button
+                  sx={{
+                    '.MuiSvgIcon-root': {
+                      mb: '4px',
+                    },
+                  }}
+                  onClick={() => history.goBack()}
+                  size="small"
+                  color="primary"
+                >
                   <KeyboardArrowLeft sx={{ height: pxToRem(35), width: pxToRem(35) }} />
                   Back
                 </Button>

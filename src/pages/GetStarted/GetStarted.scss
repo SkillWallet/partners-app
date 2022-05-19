@@ -1,0 +1,154 @@
+@import "sw-web-shared/lib/styles/variables";
+@import "sw-web-shared/lib/styles/breakpoints";
+
+.sw-get-started-container {
+  position: absolute;
+  height: calc(100%);
+  width: calc(100%);
+  display: flex !important;
+  grid-gap: 20px;
+  background-color: white;
+
+  .sw-box-logo {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-start;
+    img {
+      height: 150px;
+    }
+  }
+
+  .sw-box-title {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sw-box-actions {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    grid-gap: 60px;
+
+    img {
+      height: 50px;
+      padding: 0 20px;
+    }
+
+    .MuiButton-root {
+      text-transform: initial;
+      width: 300px;
+      height: 90px;
+      .sw-label {
+        flex: 1;
+      }
+
+      &:hover {
+        .MuiTypography-root {
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+
+  .black-box {
+    display: flex;
+    width: 460px;
+    min-width: 460px;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: black;
+    box-sizing: border-box;
+    border-right: 1px solid #FFFFFF;
+
+    .left-box {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      border: 1px solid white;
+      align-items: flex-start;
+      justify-content: flex-end;
+      margin: 20px;
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      padding: 60px 0;
+    }
+  }
+
+  .right-box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    flex: 1;
+    align-items: center;
+    justify-content: space-around;
+    background: white;
+    border-color: black;
+    margin: 1.5rem 1.5rem 1.5rem 0;
+  }
+
+  // @include media-breakpoint('lt-lg') {
+  //   flex-direction: column;
+  //   width: 80%;
+  //   margin: 0 auto;
+
+  //   & > .sw-box {
+  //     grid-gap: 10px !important;
+
+  //     .sw-box-quote {
+  //       flex: auto;
+  //     }
+
+  //     .sw-box-logo {
+  //       justify-content: center;
+  //       margin-bottom: 32px;
+  //       img {
+  //         width: 40%;
+  //       }
+  //     }
+
+  //     .sw-box-actions {
+  //       flex-direction: row;
+  //       align-items: flex-start;
+  //       max-width: 100%;
+
+  //       & > * {
+  //         flex: auto;
+  //       }
+  //     }
+
+  //     .sw-box-title {
+  //       margin-top: 20px;
+  //       flex: unset;
+  //       align-items: flex-start;
+  //       margin-bottom: 16px;
+  //       justify-content: center;
+  //       max-width: 100%;
+  //     }
+  //   }
+  // }
+
+  // @include media-breakpoint('lt-md') {
+  //   flex-direction: column;
+  //   width: 100%;
+
+  //   & > .sw-box {
+  //     &:first-child {
+  //       flex: unset !important;
+  //       flex-direction: column;
+  //       text-align: center;
+  //     }
+  //     .sw-box-actions {
+  //       flex-direction: column;
+  //       align-items: flex-start;
+  //       margin-bottom: 20px;
+  //       & > * {
+  //         flex: unset;
+  //       }
+  //     }
+  //   }
+  // }
+}

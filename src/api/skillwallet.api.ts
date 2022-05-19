@@ -71,7 +71,6 @@ export const activatePaCommunity = (data) => {
   window.dispatchEvent(event);
   return new Promise((resolve, reject) => {
     const handleResponse = ({ detail }: any) => {
-      console.log(detail);
       resolve(detail);
       window.removeEventListener('activateSkillWalletCommunitySuccess', handleResponse);
     };
@@ -155,7 +154,6 @@ export const skillWalletExists = async () => {
     }
     return false;
   } catch (e) {
-    console.log(e);
     return false;
   }
 };

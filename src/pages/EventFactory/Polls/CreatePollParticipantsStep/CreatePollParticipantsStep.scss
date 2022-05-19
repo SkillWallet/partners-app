@@ -1,0 +1,33 @@
+@import 'sw-web-shared/lib/styles/breakpoints';
+@import 'sw-web-shared/lib/styles/variables';
+
+.sw-poll-participants-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .sw-form-field-content {
+
+    .MuiFormControl-root {
+      flex: 1;
+    }
+
+    .MuiFormHelperText-root {
+      text-align: end;
+      margin-right: 0;
+    }
+
+    .MuiInputBase-root {
+      color: $primary-color;
+      width: 28.125rem;
+      height: 3.75rem;
+      font-size: 1.313rem;
+
+      margin-bottom: 2rem;
+
+      &::before,
+      &::after {
+        border-bottom: 2px solid $primary-color;
+      }
+    }
+  }
+}
