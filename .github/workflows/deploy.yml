@@ -14,7 +14,7 @@ jobs:
           host: ${{ secrets.SSH_SERVER_IP }}
           username: ${{ secrets.SSH_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ~/.scripts
             ./docker-deploy.sh
