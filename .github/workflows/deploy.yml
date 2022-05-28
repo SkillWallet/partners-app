@@ -15,8 +15,8 @@ jobs:
           username: ${{ secrets.SSH_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           # passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          shell: /bin/bash -e {0}
-          run: |
+          script: |
+            #!/usr/bin/env bash
             TARGET='dev'
 
             cd ~/playground/partners-app || exit
