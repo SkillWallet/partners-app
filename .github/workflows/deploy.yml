@@ -22,7 +22,10 @@ jobs:
 
             cd ~/playground/partners-app || exit
 
+            cd ./.git
+            sudo chmod -R a+rwX .
             ls
+            cd ..
 
             ACTION='\033[1;90m'
             NOCOLOR='\033[0m'
