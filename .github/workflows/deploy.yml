@@ -17,9 +17,12 @@ jobs:
           # passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             #!/usr/bin/env bash
+
             TARGET='dev'
 
             cd ~/playground/partners-app || exit
+
+            ls
 
             ACTION='\033[1;90m'
             NOCOLOR='\033[0m'
