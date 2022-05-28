@@ -19,7 +19,7 @@ jobs:
           run: |
             TARGET='dev'
 
-            cd ~/app || exit
+            cd ~/playground/partners-app || exit
 
             ACTION='\033[1;90m'
             NOCOLOR='\033[0m'
