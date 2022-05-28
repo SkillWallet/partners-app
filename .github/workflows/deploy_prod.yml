@@ -1,4 +1,4 @@
-name: Deployment Dev
+name: Deployment Prod
 
 on: workflow_dispatch
 
@@ -6,7 +6,7 @@ jobs:
   deploy:
     name: Deployment
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: SSH & Deploy
         uses: appleboy/ssh-action@master
@@ -17,9 +17,9 @@ jobs:
           script: |
             #!/usr/bin/env bash
 
-            TARGET='dev'
+            TARGET='master'
 
-            cd ~/playground/partners-app/.git || exit
+            cd ~/partners-app/.git || exit
             sudo chmod -R a+rwX .
             cd ..
 
@@ -49,10 +49,10 @@ jobs:
 
             # If that's not the case, we pull the latest changes and we build a new image
 
-            sudo git pull origin dev;
+            sudo git pull origin master;
 
             # Docker
 
-            docker-compose -f docker-compose.playground.yml up -d --build
+            docker-compose -f docker-compose.prod.yml up -d --build
 
             exit 0;
